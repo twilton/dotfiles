@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# Define colors
+foreground=$(cat $HOME/.Xresources | grep foreground | tail -c 8)
+COLOR1=$(cat $HOME/.Xresources | grep color6 | tail -c 8)
+COLOR2=$(cat $HOME/.Xresources | grep color3 | tail -c 8)
+COLOR3=$(cat $HOME/.Xresources | grep color7 | tail -c 8)
+
+# Kill old music
+pkill -f "dzen2 -title-name music"*
+
+# Sleep because otherwise mvwm will fuck up
+sleep 0.1
+
+# Calculate the width of the spawned music
+count=$(xftwidth "Source Code Pro:size=7" "$(mpc -f '[[%artist% - ][%title%][ - %album%]]' | head -n 1)")
+width=$(expr $count + 30)
+
+artist=$(mpc -f "[%artist% - ]" | head -n 1)
+title=$(mpc -f "[%title%]" | head -n 1)
+album=$(mpc -f "[ - %album%]" | head -n 1)
+info=$(echo "^fg($COLOR1)$artist^fg($COLOR2)$title^fg($COLOR3)$album")
+
+# Music content
+while true; do
+    # Get the current
+    current=$(mpc -f "[[%artist% - ][%title%][ - %album%]]" | head -n 1)
+
+    countnew=$(xftwidth "Source Code Pro:size=7" "$current")
+
+    if [[ $count -ne $countnew ]]; then
+        bash ~/.dotfiles/bspwm/panel/music &
+        exit
+    fi
+
+    # Send content to music_button.sh
+    echo "^fg($COLOR1)$info"
+
+    sleep 1
+done |
+
+# Spawn Music (dzen/bar)
+dzen2 -title-name music -p -geometry +50+25 -fn 'Source Code Pro:size=7' -ta c -w $width -h 40 -e 'onstart=lower' & disown

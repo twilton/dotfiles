@@ -1,0 +1,178 @@
+" execute pathogen#infect()
+" Use Vim settings, rather then Vi settings (much better!).
+" This must be first, because it changes other options as a side effect.
+set nocompatible
+filetype off
+
+" set clipboard
+" set clipboard=unnamedplus
+
+" rice
+let g:hybrid_use_Xresources = 1
+colorscheme hybrid
+" scriptencoding utf-8
+set encoding=UTF-8
+
+" General Config
+
+set number                      "Line numbers are good
+set cursorline
+set backspace=indent,eol,start  "Allow backspace in insert mode
+set history=1000                "Store lots of :cmdline history
+set showcmd                     "Show incomplete cmds down the bottom
+set showmode                    "Show current mode down the bottom
+"set gcr=a:blinkon0              "Disable cursor blink
+set visualbell                  "No sounds
+set autoread                    "Reload files changed outside vim
+
+" This makes vim act like all other editors, buffers can
+" exist in the background without being in a window.
+" http://items.sjbach.com/319/configuring-vim-right
+set hidden
+
+"turn on syntax highlighting
+syntax on
+
+" Change leader to a comma because the backslash is too far away
+" That means all \x commands turn into ,x
+" The mapleader has to be set before vundle starts loading all
+" the plugins.
+let mapleader=","
+
+" Turn Off Swap Files
+
+" set noswapfile
+set nobackup
+" set nowritebackup
+
+" Persistent Undo
+
+" Keep undo history across sessions, by storing in file.
+" Only works all the time.
+if has('persistent_undo')
+  silent !mkdir ~/.vim/backups > /dev/null 2>&1
+  set undodir=~/.vim/backups
+  set undofile
+endif
+
+" Indentation
+
+set autoindent " always set autoindenting on
+set smartindent " :h smartindent
+set smarttab " insert tabs on the start of a line according to shiftwidth, not tabstop
+set backspace=indent,eol,start " allow backspacing over everything in insert mode
+set nojoinspaces " :h joinspaces
+
+set shiftwidth=4 " affects what happens when >>, << or == is pressed
+set tabstop=4 " changes the width of the TAB char
+set softtabstop=4 " changes the width of TAB char when expand tab is set
+set shiftround " use multiple of shiftwidth when indenting
+set expandtab " affects what happens when <TAB> key is pressed
+
+
+" Display tabs, eol and trailing spaces visually
+set list listchars=tab:\ ▸\,trail:·,eol:¬
+set nowrap       "Don't wrap lines
+" set linebreak    "Wrap lines at convenient points
+
+" Folds
+
+set foldmethod=indent
+set foldnestmax=3
+set nofoldenable
+
+" Completion
+
+set wildmode=list:longest
+set wildmenu
+set wildignore=*.o,*.obj,*~
+set wildignore+=*vim/backups*
+set wildignore+=*sass-cache*
+set wildignore+=*DS_Store*
+set wildignore+=vendor/rails/**
+set wildignore+=vendor/cache/**
+set wildignore+=*.gem
+set wildignore+=log/**
+set wildignore+=tmp/**
+set wildignore+=*.png,*.jpg,*.gif
+
+" Scrolling
+
+set scrolloff=8         "Start scrolling when we're 8 lines away from margins
+set sidescrolloff=15
+set sidescroll=1
+
+" Remaps
+
+" disable EX mode
+nnoremap Q <nop>
+
+" Plugins
+
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'gmarik/Vundle.vim'
+
+" vim-airline
+Plugin 'bling/vim-airline.git'
+let g:airline_theme='lucius'
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+
+" ctrlp.vim
+Plugin 'kien/ctrlp.vim'
+
+" Gundo
+Plugin 'vim-scripts/Gundo.git'
+nnoremap <F5> :GundoToggle<CR>
+
+" nerdtree.git
+Plugin 'scrooloose/nerdtree.git'
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+map <C-n> :NERDTreeToggle<CR>
+let NERDTreeShowHidden=1
+let NERDTreeIgnore=['\.png$', '\.jpg$', '\.gif$', '\.tmp$', '\.swp$']
+
+" racket
+Plugin 'wlangstroth/vim-racket.git'
+command Racket !drracket %
+
+" vim-sensible.git
+Plugin 'tpope/vim-sensible.git'
+
+" vim-unimpaired.git
+Plugin 'tpope/vim-unimpaired.git'
+
+" vim-fugitive.git
+Plugin 'tpope/vim-fugitive.git'
+
+" gist-vim
+Plugin 'mattn/gist-vim.git'
+
+" vim-repeat.git
+Plugin 'tpope/vim-repeat.git'
+
+" vim-endwise.git
+Plugin 'tpope/vim-endwise.git'
+
+" vim-abolish.git
+Plugin 'tpope/vim-abolish.git'
+
+" vim-surround.git
+Plugin 'tpope/vim-surround.git'
+
+" nerdcommenter.git
+Plugin 'scrooloose/nerdcommenter.git'
+
+" syntastic.git
+Plugin 'scrooloose/syntastic.git'
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+call vundle#end()            " required
+filetype plugin indent on    " required

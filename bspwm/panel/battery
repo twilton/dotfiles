@@ -1,0 +1,40 @@
+#! /bin/bash
+green=$(cat $HOME/.Xresources | grep color2 | tail -c 8)
+red=$(cat $HOME/.Xresources | grep color9 | tail -c 8)
+grey=$(cat $HOME/.Xresources | grep color7 | tail -c 8)
+
+# Kill old battery
+pkill -f "dzen2 -title-name battery"*
+
+# Sleep because otherwise mvwm will fuck up
+sleep 0.1
+
+count=$(xftwidth "Source Code Pro:size=7" "[///]")
+width=$(expr $count + 30)
+margin=$(expr $width + 50)
+threshold="20"
+
+while true; do
+    batStats=$(acpi --battery | cut -d' ' -f3 | sed 's/,//')
+    percentage=$(acpi --battery | grep -o '[0-9]*%$' | sed 's/%//g')
+    if [ "$batStats" == "" ]; then
+        info="^fg($grey)[^fg($green)///^fg($grey)]"
+    elif [ "$batStats" == "Unknown" ]; then
+        info="^fg($grey)[^fg($green)///^fg($grey)]"
+    elif [ "$batStats" == "Charging" ]; then
+        info="^fg($grey)[^fg($green)++ ^fg($grey)]"
+    elif [ "$percentage" -le "$threshold" ]; then
+        info="^fg($red)[^fg($red)!!!^fg($red)]"
+    elif [ "$batStats" == "Discharging" ]; then
+        info="^fg($grey)[^fg($red)-- ^fg($grey)]"
+    else
+        info="^fg($grey)[^fg($green)///^fg($grey)]"
+    fi
+
+    echo "$info"
+
+    sleep 5
+done |
+
+# Spawn Battery (dzen/bar)
+dzen2 -title-name battery -p -geometry -$margin+25 -fn 'Source Code Pro:size=7' -ta c -w $width -h 40 -e 'onstart=lower' & disown
