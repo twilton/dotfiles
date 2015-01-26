@@ -1,0 +1,4 @@
+backups/
+bundle/
+!bundle/Vundle.vim/
+.netrwhist

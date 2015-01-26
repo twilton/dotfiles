@@ -1,0 +1,30 @@
+- clean: ['~']
+
+- link:
+    ~/.gitconfig: gitconfig
+    ~/.gitignore_global: gitignore_global
+    ~/.asoundrc: alsa/.asoundrc
+    ~/bin: bin/
+    ~/.config/bspwm: bspwm/
+    ~/.compton.conf: compton/.compton.conf
+    ~/.config/mpd: mpd/
+    ~/.config/mpv: mpv/
+    ~/.ncmpcpp: ncmpcpp/
+    ~/.config/ranger: ranger/
+    ~/.config/sxhkd: sxhkd/
+    ~/.vim: vim/
+    ~/.vimrc: .vimrc
+    ~/.vimperator: vimperator/
+    ~/.vimperatorrc: .vimperatorrc
+    ~/.xinitrc: .xinitrc
+    ~/.Xresources: .Xresources
+    ~/.weechat: weechat/
+    ~/.config/zathura: zathura/
+    ~/.zsh: zsh/
+    ~/.zshrc: .zshrc
+
+- shell:
+    -
+        - git update-submodules
+        - Installing/updating submodules
+# add bin to path

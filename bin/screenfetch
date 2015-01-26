@@ -1,0 +1,27 @@
+#!/bin/bash
+#
+
+# Define colors
+foreground="\e[0;37m"
+color1="\e[0;36m"
+color2="\e[0;33m"
+
+# Get info
+hostname="$(hostname)"
+distro="arch"
+kernel="$(uname -r -s)"
+uptime="$(uptime -p | cut -d " " -f 2-)"
+# packages="$(pkginfo -i | wc -l)"
+packages="$(ls -1 /var/lib/pacman/local/ | wc -l)"
+wm="$(tail -n 1 "$HOME/.xinitrc" | cut -d " " -f 2)"
+
+# Echo rice
+echo -e ""
+echo -e $color2'       /\'"          ${color1}$USER${color2}@${color1}$hostname${foreground}"
+echo -e $color2'      /  \'"         ${color1}Distro:$foreground    $distro"
+echo -e $color2'     /    \'"        ${color1}Kernel:$foreground    $kernel"
+echo -e $color2'    /˚̆̈̉` ˚̆̈̉` \'"       ${color1}Uptime:$foreground    $uptime"
+echo -e $color2'   /   レ   \'"      ${color1}Packages:$foreground  $packages"
+echo -e $color2'  /     つ   \'"     ${color1}WM:$foreground        $wm"
+echo -e $color2' /            \'"    ${color1}Font:$foreground      source code pro"
+echo -e $color2' ‾‾‾‾‾‾‾‾‾‾‾‾‾‾'
