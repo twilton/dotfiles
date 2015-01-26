@@ -1,32 +1,23 @@
-" execute pathogen#infect()
-" Use Vim settings, rather then Vi settings (much better!).
-" This must be first, because it changes other options as a side effect.
+" vim not vi
 set nocompatible
-filetype off
-
-" set clipboard
-" set clipboard=unnamedplus
 
 " rice
 let g:hybrid_use_Xresources = 1
 colorscheme hybrid
-" scriptencoding utf-8
 set encoding=UTF-8
 
 " General Config
-
 set number                      "Line numbers are good
 set cursorline
 set backspace=indent,eol,start  "Allow backspace in insert mode
 set history=1000                "Store lots of :cmdline history
 set showcmd                     "Show incomplete cmds down the bottom
 set showmode                    "Show current mode down the bottom
-"set gcr=a:blinkon0              "Disable cursor blink
+set gcr=a:blinkon0              "Disable cursor blink
 set visualbell                  "No sounds
 set autoread                    "Reload files changed outside vim
 
-" This makes vim act like all other editors, buffers can
-" exist in the background without being in a window.
+" buffers can exist in the background without being in a window.
 " http://items.sjbach.com/319/configuring-vim-right
 set hidden
 
@@ -34,21 +25,13 @@ set hidden
 syntax on
 
 " Change leader to a comma because the backslash is too far away
-" That means all \x commands turn into ,x
-" The mapleader has to be set before vundle starts loading all
-" the plugins.
 let mapleader=","
 
 " Turn Off Swap Files
-
-" set noswapfile
 set nobackup
-" set nowritebackup
+set nowb
 
 " Persistent Undo
-
-" Keep undo history across sessions, by storing in file.
-" Only works all the time.
 if has('persistent_undo')
   silent !mkdir ~/.vim/backups > /dev/null 2>&1
   set undodir=~/.vim/backups
@@ -56,33 +39,25 @@ if has('persistent_undo')
 endif
 
 " Indentation
-
-set autoindent " always set autoindenting on
-set smartindent " :h smartindent
-set smarttab " insert tabs on the start of a line according to shiftwidth, not tabstop
-set backspace=indent,eol,start " allow backspacing over everything in insert mode
-set nojoinspaces " :h joinspaces
-
-set shiftwidth=4 " affects what happens when >>, << or == is pressed
-set tabstop=4 " changes the width of the TAB char
-set softtabstop=4 " changes the width of TAB char when expand tab is set
-set shiftround " use multiple of shiftwidth when indenting
-set expandtab " affects what happens when <TAB> key is pressed
-
-
-" Display tabs, eol and trailing spaces visually
+set autoindent
+set smartindent
+set smarttab
+set backspace=indent,eol,start
+set nojoinspaces
+set shiftwidth=4
+set tabstop=4
+set softtabstop=4
+set shiftround
+set expandtab
 set list listchars=tab:\ ▸\,trail:·,eol:¬
-set nowrap       "Don't wrap lines
-" set linebreak    "Wrap lines at convenient points
+set nowrap
 
 " Folds
-
 set foldmethod=indent
 set foldnestmax=3
 set nofoldenable
 
 " Completion
-
 set wildmode=list:longest
 set wildmenu
 set wildignore=*.o,*.obj,*~
@@ -97,18 +72,15 @@ set wildignore+=tmp/**
 set wildignore+=*.png,*.jpg,*.gif
 
 " Scrolling
-
-set scrolloff=8         "Start scrolling when we're 8 lines away from margins
+set scrolloff=8
 set sidescrolloff=15
 set sidescroll=1
 
 " Remaps
-
-" disable EX mode
 nnoremap Q <nop>
 
 " Plugins
-
+filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
