@@ -4,7 +4,7 @@
     ~/.gitconfig: gitconfig
     ~/.gitignore_global: gitignore_global
     ~/.asoundrc: alsa/.asoundrc
-    ~/bin: bin/
+    ~/.bin: bin/
     ~/.config/bspwm: bspwm/
     ~/.compton.conf: compton/.compton.conf
     ~/.config/mpd: mpd/
@@ -27,4 +27,14 @@
     -
         - git update-submodules
         - Installing/updating submodules
+    -
+        - mkdir -p ~/.config/mpd/playlists
+        - Creating mpd playlist directory
+    -
+        - touch ~/.config/mpd/{database,log,pid,state,sticker.sql}
+        - Creating mpd files
+    -
+        - mkdir -p ~/.ncmpcpp/lyrics
+        - creating ncmpcpp lyrics directory
+
 # add bin to path

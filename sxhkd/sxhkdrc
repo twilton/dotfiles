@@ -67,7 +67,6 @@ super + shift + Return
 
 super + p
     dmenu_run -h "70" -w "1000" -l "3" -x "940" -y "690" -fn "Source Code Pro for Powerline:Regular:size=12" -nb "#c5c8c6" -nf "#1d1f21" -sb "#707880" -sf "#DE935F" -dc "#1D1F21" -dim ".65" -q -i
-    # dmenu_run -h "30" -fn "Source Code Pro for Powerline:Regular:size=7" -nb "#1D1f21" -nf "#707880" -sb "#DE935F" -sf "#1D1F21" -dc "#1D1F21" -dim ".65" -q -i
 
 super + w
     firefox
