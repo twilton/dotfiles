@@ -1,150 +1,204 @@
-" vim not vi
-set nocompatible
+""" vimconf is not vi-compatible {
+    set nocompatible
+""" }
+""" vundle plugin manager {
+    filetype off                            " required to init
+    set rtp+=~/.vim/bundle/Vundle.vim       " include vundle
+    call vundle#begin()                     " init vundle
 
-" rice
-let g:hybrid_use_Xresources = 1
-colorscheme hybrid
-set encoding=UTF-8
+    " vundle
+    Plugin 'gmarik/Vundle.vim'
 
-" General Config
-set number                      "Line numbers are good
-set cursorline
-set backspace=indent,eol,start  "Allow backspace in insert mode
-set history=1000                "Store lots of :cmdline history
-set showcmd                     "Show incomplete cmds down the bottom
-set showmode                    "Show current mode down the bottom
-set gcr=a:blinkon0              "Disable cursor blink
-set visualbell                  "No sounds
-set autoread                    "Reload files changed outside vim
+    " statusline
+    Plugin 'bling/vim-airline.git'
+    " Plugin 'itchyny/lightline.vim'
+    " Plugin 'bling/vim-bufferline'
 
-" buffers can exist in the background without being in a window.
-" http://items.sjbach.com/319/configuring-vim-right
-set hidden
+    let g:airline_theme='lucius'
+    let g:airline_powerline_fonts = 1
+    let g:airline#extensions#tabline#enabled = 1
 
-"turn on syntax highlighting
-syntax on
+    " fuzzy finder
+    Plugin 'kien/ctrlp.vim'
 
-" Change leader to a comma because the backslash is too far away
-let mapleader=","
+    let g:ctrlp_clear_cache_on_exit = 0
+    let g:ctrlp_working_path_mode = 'ra'
 
-" Turn Off Swap Files
-set nobackup
-set nowb
+    " file tree
+    Plugin 'scrooloose/nerdtree.git'
 
-" Persistent Undo
-if has('persistent_undo')
-  silent !mkdir ~/.vim/backups > /dev/null 2>&1
-  set undodir=~/.vim/backups
-  set undofile
-endif
+    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+    map <C-n> :NERDTreeToggle<CR>
+    let NERDTreeShowHidden=1
+    let NERDTreeIgnore=['\.png$', '\.jpg$', '\.gif$', '\.tmp$', '\.swp$']
 
-" Indentation
-set autoindent
-set smartindent
-set smarttab
-set backspace=indent,eol,start
-set nojoinspaces
-set shiftwidth=4
-set tabstop=4
-set softtabstop=4
-set shiftround
-set expandtab
-set list listchars=tab:\ ▸\,trail:·,eol:¬
-set nowrap
+    " undo tree
+    Plugin 'vim-scripts/Gundo.git'
 
-" Folds
-set foldmethod=indent
-set foldnestmax=3
-set nofoldenable
+    nnoremap <F5> :GundoToggle<CR>
 
-" Completion
-set wildmode=list:longest
-set wildmenu
-set wildignore=*.o,*.obj,*~
-set wildignore+=*vim/backups*
-set wildignore+=*sass-cache*
-set wildignore+=*DS_Store*
-set wildignore+=vendor/rails/**
-set wildignore+=vendor/cache/**
-set wildignore+=*.gem
-set wildignore+=log/**
-set wildignore+=tmp/**
-set wildignore+=*.png,*.jpg,*.gif
+    " <Tab> everything
+    Plugin 'ervandew/supertab'
 
-" Scrolling
-set scrolloff=8
-set sidescrolloff=15
-set sidescroll=1
+    " universal set of defaults
+    Plugin 'tpope/vim-sensible.git'
 
-" Remaps
-nnoremap Q <nop>
+    " extended tpope vimrc
+    Plugin 'tpope/vim-unimpaired.git'
 
-" Plugins
-filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Plugin 'gmarik/Vundle.vim'
+    " git wrapper
+    Plugin 'tpope/vim-fugitive.git'
 
-" vim-airline
-Plugin 'bling/vim-airline.git'
-let g:airline_theme='lucius'
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
+    " gists
+    Plugin 'mattn/gist-vim.git'
 
-" ctrlp.vim
-Plugin 'kien/ctrlp.vim'
+    " repeat everything
+    Plugin 'tpope/vim-repeat.git'
 
-" Gundo
-Plugin 'vim-scripts/Gundo.git'
-nnoremap <F5> :GundoToggle<CR>
+    " end structures automatically
+    Plugin 'tpope/vim-endwise.git'
 
-" nerdtree.git
-Plugin 'scrooloose/nerdtree.git'
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-map <C-n> :NERDTreeToggle<CR>
-let NERDTreeShowHidden=1
-let NERDTreeIgnore=['\.png$', '\.jpg$', '\.gif$', '\.tmp$', '\.swp$']
+    " working with variants of a word
+    Plugin 'tpope/vim-abolish.git'
 
-" racket
-Plugin 'wlangstroth/vim-racket.git'
-command Racket !drracket %
+    " surroundings
+    Plugin 'tpope/vim-surround.git'
 
-" vim-sensible.git
-Plugin 'tpope/vim-sensible.git'
+    " super commenter
+    Plugin 'scrooloose/nerdcommenter.git'
 
-" vim-unimpaired.git
-Plugin 'tpope/vim-unimpaired.git'
+    " align everything
+    Plugin 'vim-scripts/Align'
 
-" vim-fugitive.git
-Plugin 'tpope/vim-fugitive.git'
+    " racket language support
+    Plugin 'wlangstroth/vim-racket.git'
 
-" gist-vim
-Plugin 'mattn/gist-vim.git'
+    command Racket !drracket %
 
-" vim-repeat.git
-Plugin 'tpope/vim-repeat.git'
+    " check syntax
+    Plugin 'scrooloose/syntastic.git'
 
-" vim-endwise.git
-Plugin 'tpope/vim-endwise.git'
+    set statusline+=%#warningmsg#
+    set statusline+=%{SyntasticStatuslineFlag()}
+    set statusline+=%*
+    let g:syntastic_always_populate_loc_list = 1
+    let g:syntastic_auto_loc_list = 1
+    let g:syntastic_check_on_open = 1
+    let g:syntastic_check_on_wq = 0
 
-" vim-abolish.git
-Plugin 'tpope/vim-abolish.git'
+    " end plugin call
+    call vundle#end()
+""" }
+""" user interface {
+    """ syntax highlighting {
+        filetype plugin indent on           " detec file plugin + indent
+        syntax on                           " turn on syntax highlight
+        set background=dark " we're using a dark bg
+        colorscheme hybrid                  " colorscheme
+        let g:hybrid_use_Xresources = 1     " let colorscheme use xresources
+        set encoding=UTF-8
+    """ }
+    """ interface general {
+        set cursorline                      " hilight cursor line
+        set more                            " ---more--- like less
+        set number                          " line numbers are good
+        set scrolloff=8
+        set sidescrolloff=15
+        set sidescroll=1
+        set showcmd                         " show cmds being typed
+        set title                           " window title
+        set vb t_vb=                        " disable beep and flashing
+        set wildignore=*.a,*.o,*.so,*.pyc,*.jpg,
+                    \*.jpeg,*.png,*.gif,*.pdf,*.git,
+                    \*.swp,*.swo            " tab completion ignores
 
-" vim-surround.git
-Plugin 'tpope/vim-surround.git'
+        set wildignore=*.o,*.obj,*~
+        set wildignore+=*vim/backups*
+        set wildignore+=*sass-cache*
+        set wildignore+=*DS_Store*
+        set wildignore+=vendor/rails/**
+        set wildignore+=vendor/cache/**
+        set wildignore+=*.gem
+        set wildignore+=log/**
+        set wildignore+=tmp/**
+        set wildignore+=*.png,*.jpg,*.gif
 
-" nerdcommenter.git
-Plugin 'scrooloose/nerdcommenter.git'
+        set wildmenu                        " better auto complete
+        set wildmode=longest,list           " bash-like auto complete
+        " set wildmode=list:longest
+    """ }
+""" }
+""" general settings {
+    set hidden
+    set history=1000                "Store lots of :cmdline history
+    set iskeyword+=_,$,@,%,# " not word dividers
+    set laststatus=2 " always show statusline
+    set linebreak " dont cut words on wrap
+    set list listchars=tab:\ ▸\,trail:·,eol:¬ " highlight listchars
+    set mouse= " disable mouse
+    set noshowmode " hide mode cmd line
+    set noexrc " dont use other .*rc(s)
+    set nostartofline " keep cursor column pos
+    set nowrap " dont wrap lines
+    set numberwidth=5 " 99999 lines
+    set shortmess+=I " disable startup message
+    set splitbelow "splits go below w/focus
+    set splitright " vsplits go right w/focus
+    set ttyfast " for faster redraws
+    """ folding {
+        set foldcolumn=0 " hide folding column
+        set foldmethod=indent " folds using indent
+        set foldnestmax=10 " max 10 nested folds
+        set foldlevelstart=99 "folds open by default
+    """ }
+    """ files {
+        set autoread                    "Reload files changed outside vim
+        set nobackup
+        set nowb
+        """ Persistent Undo {
+        if has('persistent_undo')
+            silent !mkdir ~/.vim/backups > /dev/null 2>&1
+            set undodir=~/.vim/backups
+            set undofile
+            set undolevels=500
+            set undoreload=10000
+        endif
+        """ }
+    """ }
+    """ text formating {
+        set autoindent
+        set ignorecase
+        set smartcase
+        set backspace=indent,eol,start  "Allow backspace in insert mode
+        set smartindent
+        set expandtab
+        set shiftround
+        set smarttab
+        set shiftwidth=4
+        set tabstop=4
+        set softtabstop=4
+        set nojoinspaces
+    """ }
+""" }
+""" keybinds {
+    """ general {
+        " Remap <leader>
+        let mapleader=","
 
-" syntastic.git
-Plugin 'scrooloose/syntastic.git'
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+        " disable ex mode
+        nnoremap Q <nop>
 
-call vundle#end()            " required
-filetype plugin indent on    " required
+        " yank/paste/delete to system keyboard
+        noremap <leader>y "+y
+        noremap <leader>d "+d
+        noremap <leader>p "+p
+        noremap <leader>P "+P
+
+        " Treat wrapped lines as normal lines
+        nnoremap j gj
+        nnoremap k gk
+
+        " Working ci(, works for both breaklined, inline and multiple ()
+        nnoremap ci( %ci(
+    """ }
+""" }
