@@ -16,6 +16,7 @@ xset dpms 0 0 300
 
 #calibrate display
 xcalib ~/.dotfiles/colorprofile.icc
+redshift -l 43:80 &
 
 # keyboard backlight
 kbdlight off

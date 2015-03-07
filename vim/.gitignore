@@ -1,4 +1,4 @@
-backups/
-bundle/
+*
+!vimrc
 !bundle/Vundle.vim/
-.netrwhist
+!colors/

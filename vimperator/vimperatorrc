@@ -20,7 +20,7 @@ set toolbars=none
 set showstatuslinks=1
 
 " Autocomplete using Firefox Awesomebar subsystem
-set complete=tbl
+set complete=tlbS
 
 " Hintchar
 set hintchars=hjklasdfgyuiopqwertnmzxcvb
@@ -32,7 +32,7 @@ set hintchars=hjklasdfgyuiopqwertnmzxcvb
 set messagetimeout=2000
 
 " startpage search
-set defsearch=ixquick
+set defsearch=startpage
 
 "
 set wildmode="full"

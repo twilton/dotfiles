@@ -2,9 +2,11 @@
 #
 
 # Define colors
+background="#1d1f21"
 foreground="\e[0;37m"
 color1="\e[0;36m"
 color2="\e[0;33m"
+
 
 # Get info
 hostname="$(hostname)"
@@ -16,12 +18,12 @@ packages="$(ls -1 /var/lib/pacman/local/ | wc -l)"
 wm="$(tail -n 1 "$HOME/.xinitrc" | cut -d " " -f 2)"
 
 # Echo rice
+echo -e "" 
+echo -e " \033[0;30m██  \033[0;31m██  \033[0;32m██  \033[0;33m██""   ${color1}$USER${color2}@${color1}$hostname${foreground}"
+echo -e                                                         "                  ${color1}Distro:$foreground    $distro"
+echo -e " \033[1;30m██  \033[1;31m██  \033[1;32m██  \033[1;33m██""   ${color1}Kernel:$foreground    $kernel"
+echo -e                                                         "                  ${color1}Uptime:$foreground    $uptime"
+echo -e " \033[0;34m██  \033[0;35m██  \033[0;36m██  \033[0;37m██""   ${color1}Packages:$foreground  $packages"
+echo -e                                                         "                  ${color1}WM:$foreground        $wm"
+echo -e " \033[1;34m██  \033[1;35m██  \033[1;36m██  \033[1;37m██""   ${color1}Font:$foreground      source code pro"
 echo -e ""
-echo -e $color2'       /\'"          ${color1}$USER${color2}@${color1}$hostname${foreground}"
-echo -e $color2'      /  \'"         ${color1}Distro:$foreground    $distro"
-echo -e $color2'     /    \'"        ${color1}Kernel:$foreground    $kernel"
-echo -e $color2'    /˚̆̈̉` ˚̆̈̉` \'"       ${color1}Uptime:$foreground    $uptime"
-echo -e $color2'   /   レ   \'"      ${color1}Packages:$foreground  $packages"
-echo -e $color2'  /     つ   \'"     ${color1}WM:$foreground        $wm"
-echo -e $color2' /            \'"    ${color1}Font:$foreground      source code pro"
-echo -e $color2' ‾‾‾‾‾‾‾‾‾‾‾‾‾‾'

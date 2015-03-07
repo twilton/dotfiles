@@ -13,10 +13,10 @@ lyrics_directory = "~/.ncmpcpp/lyrics"
 # Visualizer
 visualizer_fifo_path = "/tmp/mpd.fifo"
 visualizer_output_name = "my_fifo"
-visualizer_sync_interval = "30"
+visualizer_sync_interval = "15"
 visualizer_in_stereo = "no"
 visualizer_type = "spectrum" (frequency/wave)
-visualizer_look = "●▋"
+visualizer_look = "∙▋"
 
 # 
 song_list_format = "$7{ %n}$8 {%t}|{$8%f$9}$R$8{%b}$7{ %a}$0"

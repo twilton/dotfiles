@@ -26,8 +26,8 @@ super + {_,shift + }Tab
 super + bracket{left,right}
    bspc window -f {last,last}
 
-# super + {comma,period}
-    # bspc desktop -C {backward,forward}
+super + {comma,period}
+    bspc desktop -C {backward,forward}
 
 # resize tiled windows 
 super + shift + {l,h}
@@ -57,7 +57,7 @@ super + !button{1-3}
 super + @button{1-3}
     bspc pointer -u
 
-super + {comma,period,shift + comma,shift + period}
+super + ctrl + {j,k,h,l}
     bspc window --presel {down,up,left,right}
 
 # wm independent hotkeys
@@ -81,7 +81,7 @@ super + i
     urxvtc -e weechat
 
 super + backslash
-    bash /home/godo/scripts/panel/notifications_bar_right.sh
+    bash /home/godo/.dotfiles/bspwm/panel/notifications
 
 # Mac Shortcuts
 
