@@ -10,6 +10,25 @@ if [ -d /etc/X11/xinit/xinitrc.d ]; then
   unset f
 fi
 
+# xresources 
+[[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources
+
+#fonts
+xset +fp /usr/share/fonts/misc/
+xset +fp /usr/share/fonts/TTF/
+xset +fp /usr/share/fonts/OTF/
+xset +fp /usr/share/fonts/local/
+xset +fp /home/godo/.local/share/fonts/
+xset +fp /home/godo/.local/share/fonts/TTF
+xset fp rehash
+
+# wallpaper
+nitrogen --restore &
+
+#compositing
+compton -b
+export _JAVA_AWT_WM_NONREPARENTING=1
+
 # screen powersave
 xset +dpms
 xset dpms 0 0 300
@@ -21,30 +40,16 @@ redshift -l 43:80 &
 # keyboard backlight
 kbdlight off
 
-#fonts
-xset +fp /usr/share/fonts/misc/
-xset +fp /usr/share/fonts/TTF/
-xset +fp /usr/share/fonts/OTF/
-xset +fp /usr/share/fonts/local/
-xset +fp /home/godo/.local/share/fonts/
-xset +fp /home/godo/.local/share/fonts/TTF
-xset fp rehash
-
-[[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources
-
-# wallpaper
-nitrogen --restore &
-
-# mpd
-mpd &
-
 # mouse
 xsetroot -cursor_name left_ptr
 unclutter -noevents &
 
-#compositing
-compton -b
-export _JAVA_AWT_WM_NONREPARENTING=1
+# keyboard repeat rate
+xset r rate 300 25
+
+# mpd
+mpd &
+
 
 # WM
 sxhkd &

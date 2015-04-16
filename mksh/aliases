@@ -1,0 +1,31 @@
+# change dir
+alias ..='cd ..'
+alias ...='cd ../..'
+
+# ls by last modifications
+alias ls='ls --color=auto -lhrt'
+
+# makes directory then cds into it
+function mkcd ()
+{
+    mkdir -p "$@" && eval cd "\"\$$#\"";
+}
+
+# Sudo !!
+alias pls='sudo $(fc -ln -1)'
+
+# Download latest git commits and update the local branch
+git config --global alias.up '!git remote update -p; git merge --ff-only @{u}'
+
+# ping
+alias ping="ping -c 3"
+
+# vpn
+alias vpn='sudo openvpn --config ~/.vpn/AirVPN_Canada_UDP-2018.ovpn'
+alias vpnu='sudo openvpn --config ~/.vpn/AirVPN_United-States_UDP-2018.ovpn'
+
+# screenfetch
+alias sf='bash $SCRIPTS/screenfetch/sf_2'
+
+# livestreamer
+alias livestreamer='livestreamer -p mpv'

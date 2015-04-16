@@ -80,8 +80,17 @@ super + n
 super + i
     urxvtc -e weechat
 
+# super + backslash
+    # {bspc config right_padding 600; todo show,\
+    # pkill dunst; bspc config right_padding 0; dunst -p}
+    #bash /home/godo/.dotfiles/bspwm/panel/notifications
+    #
 super + backslash
-    bash /home/godo/.dotfiles/bspwm/panel/notifications
+    close_sidebar
+    # pkill dunst; bspc config right_padding 0; dunst -p
+
+super + d
+    open_sidebar
 
 # Mac Shortcuts
 
@@ -105,5 +114,9 @@ XF86Audio{Prev,Play,Next}
 
 # Volume Mute / Lower / Raise
 XF86Audio{Mute,LowerVolume,RaiseVolume}
-    amixer -c 1 -q set Master {toggle,5dB- unmute,5dB+ unmute}
+    {amixer -c 1 -q set Master toggle; amixer -c 2 -q set PCM toggle,\
+    amixer -c 1 -q set Master 5dB- unmute; amixer -c 2 -q set PCM 5dB- unmute,\
+    amixer -c 1 -q set Master 5dB+ unmute; amixer -c 2 -q set PCM 5dB+ unmute}
+    # amixer -c 1 -q set Master {toggle,5dB- unmute,5dB+ unmute};
+    # amixer -c 2 -q set PCM {toggle,5dB- unmute,5dB+ unmute}
 
