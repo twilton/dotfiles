@@ -1,5 +1,4 @@
 #!/bin/bash
-#
 
 # Define colors
 bc=$(tput bold)	    # bold
@@ -14,10 +13,10 @@ c7=$(tput setaf 7)  # white
 rc=$(tput sgr0)	    # reset
 
 lc=${c6}       # labels
-nc=${c3}       # user and hostname
 tc=${c7}       # text
 fc=${c3}       # first color
 sc=${c6}       # second color
+hc=${c5}       # highlight color
 
 
 # Get info
@@ -26,12 +25,11 @@ OS="arch"
 KERNEL=$(uname -sr)
 UPTIME=$(uptime -p | sed s:"up "::)
 PACKAGES=$(pacman -Q | wc -l)
-# "$(ls -1 /var/lib/pacman/local/ | wc -l)"
 WM="$(tail -n 1 "$HOME/.xinitrc" | cut -d " " -f 2)"
 
 cat << EOF
 
-${fc}        /\\${rc}        ${nc}${USER}${rc}${tc}@${rc}${nc}${HOST}${rc}
+${fc}        /\\${rc}        ${hc}${USER}${rc}${tc}@${rc}${hc}${HOST}${rc}
 ${fc}       /  \\${rc}       ${lc}OS:${rc}       ${tc}${OS}${rc}
 ${fc}      /    \\${rc}      ${lc}KERNEL:${rc}   ${tc}${KERNEL}${rc}
 ${fc}     /  **  \\${rc}     ${lc}UPTIME:${rc}   ${tc}${UPTIME}${rc}

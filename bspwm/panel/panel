@@ -1,4 +1,0 @@
-#! /bin/sh
-bash ~/.dotfiles/bspwm/panel/music &
-bash ~/.dotfiles/bspwm/panel/clock &
-bash ~/.dotfiles/bspwm/panel/battery &

@@ -87,19 +87,19 @@ super + i
     #
 super + backslash
     close_sidebar
-    # pkill dunst; bspc config right_padding 0; dunst -p
 
-super + d
-    open_sidebar
+# super + d
+    # open_sidebar
 
 # Mac Shortcuts
 
 # Screen Backlight Control
-XF86MonBrightness{Down,Up}
-    bash $SCRIPTS/notifications/{current_battery.sh,current_weather.sh}
+@XF86MonBrightness{Down,Up}
+    {scrot ~/pics/scrots/%b%d::%H%M%S.png, scrotw}
 
-# Launch A/B
-# XF86Launch{A,B}
+# Application Control
+XF86Launch{A,B}
+    {todo show, todo show}
 
 # Keyboard Backlight Control
 XF86KbdBrightness{Down,Up}
@@ -114,9 +114,12 @@ XF86Audio{Prev,Play,Next}
 
 # Volume Mute / Lower / Raise
 XF86Audio{Mute,LowerVolume,RaiseVolume}
-    {amixer -c 1 -q set Master toggle; amixer -c 2 -q set PCM toggle,\
-    amixer -c 1 -q set Master 5dB- unmute; amixer -c 2 -q set PCM 5dB- unmute,\
-    amixer -c 1 -q set Master 5dB+ unmute; amixer -c 2 -q set PCM 5dB+ unmute}
+    {pactl set-sink-mute @DEFAULT_SINK@ toggle,\
+    pactl set-sink-volume @DEFAULT_SINK@ -5%,\
+    pactl set-sink-volume @DEFAULT_SINK@ +5%}
+    # {amixer -c 1 -q set Master toggle; amixer -c 0 -q set PCM toggle,\
+    # amixer -c 1 -q set Master 5dB- unmute; amixer -c 0 -q set PCM 5dB- unmute,\
+    # amixer -c 1 -q set Master 5dB+ unmute; amixer -c 0 -q set PCM 5dB+ unmute}
     # amixer -c 1 -q set Master {toggle,5dB- unmute,5dB+ unmute};
     # amixer -c 2 -q set PCM {toggle,5dB- unmute,5dB+ unmute}
 

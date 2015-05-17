@@ -18,15 +18,10 @@ while true; do
         pkill -f "sxiv -N mpd_album_art"
 
         # display album art
-        # sxiv -N "mpd_album_art" -b -s f -g 256x256-100-100 "$MDB$MDIR$COVRET" &
         sxiv -N "mpd_album_art" -b -s f -g 256x256-100-100 "$ALBUMART" &
         # timeout -sHUP 5 sxiv -N "mpd_album_art" -b -s f -g 256x256-100-100 "$MDB$MDIR$COVRET" 2> /dev/null & 
         CURRENT=$ALBUMART
     fi
 
-
-    # exit
-
-    echo sleeping
     sleep 5
 done

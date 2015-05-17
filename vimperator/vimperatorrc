@@ -11,6 +11,7 @@ set animations=false
 
 " hide gui stuff
 " set toolbars=noaddons,nobookmarks,nomenu,nonavigation,notabs
+" "set toolbars=nomenu,nobookmarks,notabs,noaddons -- umatrix works
 set toolbars=none
 
 " statusbar
@@ -32,7 +33,7 @@ set hintchars=hjklasdfgyuiopqwertnmzxcvb
 set messagetimeout=2000
 
 " startpage search
-set defsearch=startpage
+" set defsearch=startpage
 
 "
 set wildmode="full"

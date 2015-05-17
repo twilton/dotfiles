@@ -1,0 +1,4 @@
+#! /bin/sh
+bash ~/.dotfiles/bin/music &
+bash ~/.dotfiles/bin/clock &
+bash ~/.dotfiles/bin/battery &

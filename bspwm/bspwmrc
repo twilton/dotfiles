@@ -17,4 +17,4 @@ bspc rule -a "mpd_album_art" floating=on border=off manage=false
 
 bspc monitor -d 1 2 3 4 5 6 7
 
-bash ~/.dotfiles/bspwm/panel/panel &
+bash ~/.dotfiles/bspwm/panel &

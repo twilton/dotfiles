@@ -1,0 +1,3 @@
+#! /bin/bash
+
+bspc config right_padding 600

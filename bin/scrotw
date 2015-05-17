@@ -9,17 +9,12 @@
 # Useage:      $ sh ./scrotw filename.png
 #
 
-if [ -z $1 ]; then set -- "scrotw.png"; fi
-
-echo -e "\nscrotw: Please select the window you would like to\n"\
-    "       capture by clicking the mouse in that window.\n"
-
-scrot ~/scrotw.tmp.png -sbd 1 || exit 1
-convert ~/scrotw.tmp.png -profile ~/.icc/ISOcoated_v2_300_eci.icc \
+name=$(date +'%b%d::%H%M%S').png
+scrot ~/pics/scrots/scrotw.tmp.png -sbd 1 || exit 1
+convert ~/pics/scrots/scrotw.tmp.png -profile ~/.icc/ISOcoated_v2_300_eci.icc \
     \( +clone -background "rgba(6,6,6,1)" -shadow 75x7+0+0 \) \
-    +swap -background "rgba(0,0,0,0)" -layers merge +repage ~/$1 &>/dev/null || exit 1
+    +swap -background "rgba(0,0,0,0)" -layers merge +repage ~/pics/scrots/$name &>/dev/null || exit 1
 
-rm ~/scrotw.tmp.png
+rm ~/pics/scrots/scrotw.tmp.png
 
-echo -e "Window captured and saved to \"\e[1;32m~/$1\e[0m\"."
 exit 0

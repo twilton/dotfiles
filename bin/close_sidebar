@@ -1,0 +1,7 @@
+#! /bin/bash
+
+killall dunst
+sleep 0.2
+bspc config right_padding 0
+sleep 0.1
+dunst & disown

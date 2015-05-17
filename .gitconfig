@@ -86,6 +86,8 @@
     ll = log --pretty=format:"%C(yellow)%h%C(red)%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
 # Show modified files in last commit
     dl = !git ll -1
+# List all files being tracked of current branch
+    lf = ls-files
 # List remotes
     rem = "!git config -l | grep remote.*url | tail -n +2"
 

@@ -1,0 +1,171 @@
+# startx at login
+[[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx
+
+# Set path
+export PATH="$HOME/.bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
+
+# Make UTF-8
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+
+# Hardware
+export VDPAU_DRIVER=va_gl
+
+# Default Programs
+export BROWSER='firefox'
+export EDITOR='vim'
+export VISUAL='vim'
+export TERMINAL='urxvtc'
+
+# Less options.
+export LESS='-F -g -i -M -R -S -w -X -z-4'
+
+# Substring Search
+source "$HOME/.dotfiles/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh"
+source "$HOME/.dotfiles/zsh/plugins/search.zsh"
+
+# enable zsh completion menu
+fpath=($HOME/.dotfiles/zsh/plugins/zsh-completions/src $fpath)
+source "$HOME/.dotfiles/zsh/plugins/completion.zsh"
+
+# enable coloring
+autoload -U colors && colors
+export GCC_COLORS=1
+alias ls='ls --color=auto -hrtF'
+alias lsa='ls --color=auto -oghrtF'
+alias grep='grep --color=auto'
+
+# set the prompt
+
+PROMPT="%(?.%F{cyan}.%F{red})[%F{white} %~ %(?.%F{cyan}.%F{red})]%f "
+RPROMPT=""
+
+function zle-line-init zle-keymap-select {
+    RPS1="%F{white}%(?.${${KEYMAP/vicmd/-- NORMAL --}/(main|viins)/ }.%F{red}${${KEYMAP/vicmd/-- NORMAL --}/(main|viins)/━})%{$reset_color%}"
+    RPS2=$RPS1
+    zle reset-prompt
+}
+
+zle -N zle-line-init
+zle -N zle-keymap-select
+
+# vi-like key bindings
+bindkey -v
+
+# History
+HISTSIZE=2000
+SAVEHIST=2000
+HISTFILE="$HOME/.dotfiles/zsh/history"
+setopt hist_ignore_dups
+setopt inc_append_history
+setopt share_history
+
+## ALIASES 
+
+# change dir
+alias ..='cd ..'
+alias ...='cd ../..'
+
+# Terminal
+alias c='clear'
+alias s='sudo'
+
+# Add 'protection' on rm | mv | cp
+alias rm='rm -I'
+alias cp='cp -vi'
+alias mv='mv -i'
+
+# Headaches
+alias quit='exit'
+alias :q='quit'
+alias pls='sudo $(fc -ln -1)'
+
+
+# Network
+# alias netlist='lsof -i -P | grep LISTEN' # show active network listener
+alias ping="ping -c 3"
+alias vpn='sudo openvpn --config ~/.vpn/AirVPN_Canada_UDP-2018.ovpn'
+alias vpnu='sudo openvpn --config ~/.vpn/AirVPN_United-States_UDP-2018.ovpn'
+
+# Pipes & more
+alias -g BG='& exit'
+alias -g N='> /dev/null'
+alias -g L='| less'
+alias -g M='| more'
+alias -g G='| grep'
+alias -g V='| vim -'
+
+# livestreamer
+alias livestreamer='livestreamer -p mpv'
+
+# TMUX / DTACH
+# alias t='tmux' forces 256 colors
+# alias d='dtach -A ~/tmp/irssi.sk /usr/bin/irssi'
+
+# BTPD
+# alias btc="btcli -d ~/var/btp"
+
+
+# HANDY RICKY SCRIPT
+alias rick="curl -s -L 'http://bit.ly/10hA8iC' | bash"
+alias rcommit="curl -s 'http://whatthecommit.com/index.txt'"
+
+# make use of systemcl more friendly
+# function start()   { sudo systemctl start $@;   }
+# function stop()    { sudo systemctl stop $@;    }
+# function restart() { sudo systemctl restart $@; }
+# function enable()  { sudo systemctl enable $@;  }
+# function disable() { sudo systemctl disable $@; }
+# function status()  { sudo systemctl status $@; }
+
+# easier extraction
+extract () {
+    if [ -f $1 ] ; then
+        case $1 in
+            *.tar.bz2) tar xvjf $1;;
+            *.tar.gz) tar xvzf $1;;
+            *.bz2) bunzip2 $1;;
+            *.rar) unrar x $1;;
+            *.gz) gunzip $1;;
+            *.tar) tar xvf $1;;
+            *.tbz2) tar xvjf $1;;
+            *.tgz) tar xvzf $1;;
+            *.zip) unzip $1;;
+            *.Z) uncompress $1;;
+            *.7z) 7za x $1;;
+            *) echo "'$1' cannot be extracted via >extract<" ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
+}
+
+# auto-ls after changing directory
+cd () {
+    builtin cd $@ && ls -hrtF
+}
+
+# imgur
+function imgur() {
+    url=$1
+    if [ -z "$url" ]; then
+        echo "imgur requires a valid url"
+        echo "syntax: imgur url (name)?"
+    else
+        user=$2
+        if [ -z "$user" ]; then
+            $user="unknown"
+            echo "no user found, setting user to unknown"
+        fi
+        pictures="/home/godo/pics/imgur"
+        date=`date +%b-%d-%Y`
+        album=`echo $url | sed -r 's/^(http\:\/\/)?imgur\.com(\/a\/)?//'`
+        folder="$pictures/$user/$date - $album"
+
+        python $pictures/imguralbum.py $url $folder
+        echo `touch "$folder/permalink.txt"`
+        echo "$url" >> "$folder/permalink.txt"
+        echo "permalink: $folder/permalink.txt"
+    fi
+}

@@ -1,39 +1,40 @@
 #! /bin/bash
+
+# Define colors
 green=$(cat $HOME/.Xresources | grep color2 | tail -c 8)
 red=$(cat $HOME/.Xresources | grep color9 | tail -c 8)
 grey=$(cat $HOME/.Xresources | grep color7 | tail -c 8)
 
 # Kill old battery
 pkill -f "dzen2 -title-name battery"*
-
-# Sleep because otherwise mvwm will fuck up
 sleep 0.1
 
+# Calculate the width
 count=$(xftwidth "Source Code Pro:size=7" "[///]")
 width=$(expr $count + 30)
 margin=$(expr $width + 50)
-threshold="20"
+
+# Vars
+threshold="15"
 
 while true; do
-    batStats=$(acpi --battery | cut -d' ' -f3 | sed 's/,//')
+    batStats=$(acpi --battery | cut -d ' ' -f3 | sed 's/,//')
     percentage=$(acpi --battery | grep -o '[0-9]*%$' | sed 's/%//g')
-    if [ "$batStats" == "" ]; then
-        info="^fg($grey)[^fg($green)///^fg($grey)]"
-    elif [ "$batStats" == "Unknown" ]; then
-        info="^fg($grey)[^fg($green)///^fg($grey)]"
-    elif [ "$batStats" == "Charging" ]; then
-        info="^fg($grey)[^fg($green)++ ^fg($grey)]"
+
+    if [ "$batStats" == "Charging" ]; then
+        battery="^fg($grey)[^fg($green)++ ^fg($grey)]"
     elif [ "$percentage" -le "$threshold" ]; then
-        info="^fg($red)[^fg($red)!!!^fg($red)]"
+        battery="^fg($red)[^fg($red)!!!^fg($red)]"
+        notify-send "Low Battery Warning" "PLUG IN LAPTOP NOW"
     elif [ "$batStats" == "Discharging" ]; then
-        info="^fg($grey)[^fg($red)-- ^fg($grey)]"
+        battery="^fg($grey)[^fg($red)-- ^fg($grey)]"
     else
-        info="^fg($grey)[^fg($green)///^fg($grey)]"
+        battery="^fg($grey)[^fg($green)///^fg($grey)]"
     fi
 
-    echo "$info"
+    echo "$battery"
 
-    sleep 5
+    sleep 30
 done |
 
 # Spawn Battery (dzen/bar)

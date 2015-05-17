@@ -1,5 +1,4 @@
 #!/bin/bash
-#
 
 # Define colors
 bc=$(tput bold)	    # bold

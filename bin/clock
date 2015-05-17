@@ -8,29 +8,24 @@ COLOR3=$(cat $HOME/.Xresources | grep color7 | tail -c 8)
 
 # Kill old clocks
 pkill -f "dzen2 -title-name clock"*
-
-# Sleep because otherwise mvwm will fuck up
 sleep 0.1
 
-# Calculate the width of the spawned clock
+# Calculate the width
 count=$(xftwidth "Source Code Pro:size=7" "$(date +'%A %d %I:%M %p')")
 width=$(expr $count + 30)
 margin=$(expr 1440 - $width / 2)
 
-# Clock content
 while true; do
-    # Get the time
     time=$(date +"^fg($COLOR3)%A ^fg($COLOR1)%d ^fg($COLOR2)%I^fg($COLOR3):^fg($COLOR2)%M ^fg($COLOR3)%p")
 
-    # Var and if to reload the clock on day change
+    # Reload the clock on day change
     countnew=$(xftwidth "Source Code Pro:size=7" "$(date +'%A %d %I:%M %p')")
 
     if [[ $count -ne $countnew ]]; then
-        bash ~/.dotfiles/bspwm/panel/clock &
+        bash ~/.dotfiles/bin/clock &
         exit
     fi
 
-    # Send content to clock_button.sh
     echo "$time"
 
     sleep 30
