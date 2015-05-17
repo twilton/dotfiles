@@ -70,6 +70,7 @@ alias ...='cd ../..'
 # Terminal
 alias c='clear'
 alias s='sudo'
+alias syugit='pacaur -Syu --devel --needed'
 
 # Add 'protection' on rm | mv | cp
 alias rm='rm -I'

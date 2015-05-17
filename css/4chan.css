@@ -1,0 +1,338 @@
+@-moz-document domain("boards.4chan.org") {
+	/* Relative to the general appearance of 4chan. */
+
+	html {
+		background: #1d1f21 !important;
+	}
+	
+	body {
+		background: #1d1f21 !important;
+		font-family: 'Source Code Pro', sans-serif !important;
+		color: #707880 !important;
+		margin: auto !important;
+		font-size: 11px !important;
+	}
+
+	.fileThumb {background: #1d1f21 !important;}
+
+	hr {
+		padding-top: 5px !important;
+		border: 0 !important;
+	}
+
+	/* Links */
+	a:link {
+		color: #81a2be !important;
+	}
+	a:visited, a:hover, a:active {
+		color: #b294bb !important;
+	}
+
+	/* Foreground of the header bar */
+	#board-list,
+	#custom-board-list {
+		color: #707880 !important;
+		font-family: 'Source Code Pro', sans-serif !important;
+	}
+	#header-bar a {
+		color: #707880 !important;
+	}
+
+	/* Background of the header bar */
+	#header-bar.dialog {
+		background: #282a2e !important;
+		border: 0 !important;
+	}
+
+	/* Color of the selected board on the header bar. */
+	#header-bar a.current {
+		color: #707880 !important;
+	}
+
+	/* Appearance of the menus. */
+	#menu.dialog,
+	.entry {
+		background: #1d1f21 !important;
+		border: 0 !important;
+		color: #707880 !important;
+		font-family: 'Source Code Pro', sans-serif !important;
+		font-size: 0.750rem !important;
+	}
+
+	/* Catalog search and page links, This is not ready. */
+	div.navLinks,
+	div.pagelist {
+		background: transparent !important;
+		font-family: 'Source Code Pro', sans-serif !important;
+		font-size: 0.750rem !important;
+		border: 0 !important;
+		display: inline-block !important;
+		margin-bottom: 0 !important;
+	}
+
+	/* Appearance of the thread updater and thread stats. */
+	#index-search.field,
+	#updater.dialog,
+	#thread-stats.dialog {
+		font-family: 'Source Code Pro', sans-serif !important;
+		font-size: 0.750rem !important;
+		background: transparent !important;
+		color: #707880 !important;
+		border-style: none !important;
+        display: none !important;
+	}
+
+	/* Thread updater menu */
+	#index-search.field:hover,
+	#updater.dialog:hover {
+		background: #1d1f21 !important;
+		color: #707880 !important;
+	}
+
+	/* Clean up. */
+	.bottomCtrl.desktop,
+	#absbot.absBotText,
+	.navLinks.desktop,
+	.navLinks.navLinksBot.desktop,
+    body > form:nth-child(14) {
+		display: none !important;
+	}
+
+	/* Hide ads? */
+	div.center,
+	div.topad.center,
+	div.middlead.center,
+	div.bottomad.center,
+	div.ad-plea {
+		display: none !important;
+	}
+
+	/* Display board banner? */
+	.boardBanner {
+		display: none !important;
+	}
+
+	/* Relative to posts. */
+	.post.reply {
+		font-family: 'Source Code Pro', sans-serif !important;
+		font-size: 11px !important;
+		background: #282a2e !important;
+		color: #707880 !important;
+		width: 100% !important;
+		border: 0 !important;
+		padding: 6px !important;
+		box-shadow: #707880 0 0 0px !important;
+	}
+
+	/* Relative to the thread */
+	.thread {
+		margin-top: -10px !important;
+		margin-right: 30px !important;
+		margin-left: 15px !important;
+	}
+	div.postContainer.opContainer {
+		display: inline-block !important;
+		width: 100% !important;
+		margin: auto !important;
+		margin-left: 8px !important;
+		background: #282a2e !important;
+		width: 100% !important;
+		padding: 6px !important;
+		box-shadow: #707880 0 0 0px !important;
+	}
+	.inline {
+		padding-left: 15px !important;
+		padding-right: 15px !important;
+		border: 0 !important;
+	}
+	.inline .post.reply {
+		background-color: #282a2e !important;
+		border: 0 !important;
+	}
+
+	/* Post subjects. */
+	span.subject {
+		color: #de935f !important;
+	}
+
+	/* Tripcodes. */
+	span.postertrip {
+		color: #8abeb7 !important;
+	}
+
+	/* Post numbers. */
+	span.postNum a {
+		color: #8abeb7 !important;
+	}
+
+	/* Poster's name. */
+	span.name {
+		color: #b5bd68 !important;
+		font-weight: normal !important;
+	}
+
+	/* Date and time of the posts. */
+	span.dateTime {
+		color: #707880 !important;
+	}
+
+	/* Quote links. */
+	a.quotelink {
+		color: #8abeb7 !important;
+	}
+
+	/* Link to posts quoting the current post. */
+	a.backlink {
+		color: #8abeb7 !important;
+	}
+
+	/* Greentext. */
+	span.quote {
+		color: #b5bd68 !important;
+	}
+
+	/* Post menu button. */
+	.post .menu-button {
+		float: right;
+		position: relative;
+		left: 0px;
+	}
+
+	/* Hide "hide reply" buttons. */
+	.postInfo > input,
+	a.hide-reply-button > span {
+		display: none !important;
+	}
+
+	/* Relative to post info, i.e. Post name, tripcode, post date, etc. */
+	.postInfo a,
+	div.postInfo {
+		color: #707880 !important;
+		font-size: 11px !important;
+	}
+
+	/* Relative to file info, i.e. filename, file size, resolution, etc. */
+	div.fileText {
+		font-family: 'Source Code Pro', sans-serif !important;
+		font-size: 0.750rem !important;
+	}
+
+	/* Fix post previews. */
+	#qp {
+		border: 0 !important;
+		box-shadow: none !important;
+	}
+
+
+	/* Relative to the quick reply. */
+	#qr {
+		background: #1d1f21 !important;
+		color: #707880 !important;
+		border: none !important;
+		border-radius: 2px !important;
+		box-shadow: none !important;
+		transition: all 0.2s ease 0s;
+	}
+	#qr form {
+		bottom: 11px !important;
+		right: 0% !important;
+		width: 300px !important;
+		padding: 4px !important;
+		margin-top: 23px !important;
+		padding-top: 10px !important;
+		padding-bottom: 3px !important;
+		background: #1d1f21 !important;
+		border-color: #707880 !important;
+	}
+	#dump-button {
+		background: #282a2e !important;
+		border-color: #282a2e !important;
+		color: #c5c8c6 !important;
+	}
+
+	/* Color of the fields. */
+	#qr .field {
+		background: #282a2e !important;
+		border-color: #282a2e !important;
+		color: #707880 !important;
+	}
+
+	/* Movable QR? */
+	#qr span.move {
+		/* display: none !important; */
+	}
+
+	/* Remove menu */
+	#qr select {
+		/* display: none !important; */
+	}
+
+	/* Remove bar above the fields. */
+	#qr > div {
+		position: fixed !important;
+	}
+
+	/* Relative to 4chan X's menu */
+	#fourchanx-settings.dialog,
+	fieldset legend,
+	a.tab-main.tab-selected {
+		font-family: "Source Code Pro" !important;
+		font-size: 11px !important;
+		background: #1d1f21 !important;
+		color: #707880 !important;
+	}
+
+	/* Post menu animations. */
+	.postContainer:hover .backlink {
+		margin-left: 0rem;
+		transition-delay: .1s;
+		opacity: 100;
+	}
+	.post.reply a.menu-button {
+		opacity: 0;
+		transition: all .2s;
+	}
+	.post.reply:hover .menu-button {
+		opacity: 100;
+		transition: all .1s;
+	}
+	/* QR animations. */
+	#qr.dialog.has-captcha.autohide,
+	#qr.dialog.autohide {
+		top: -300px !important;
+		height: 21px !important;
+		transition: all 0.7s ease 0s;
+	}
+
+	/* get rid of those fucking arrows at the side of every post */
+	.sideArrows {
+		display: none;
+	}
+
+	/* dialogs */
+	.yotsuba-b:root .dialog,
+	.yotsuba:root .dialog {
+		font-family: 'Source Code Pro', sans-serif !important;
+		font-size: 11px !important;
+		background: #282a2e !important;
+		color: #707880 !important;
+		border: 0 !important;
+	}
+
+	/* settings borders */
+	.yotsuba-b:root #fourchanx-settings fieldset,
+	.yotsuba:root #fourchanx-settings fieldset {
+		border: 0 !important;
+	}
+	
+	/* tripfig finder */
+	#threadFinderContainer {
+		font-family: 'Source Code Pro', sans-serif !important;
+		font-size: 11px !important;
+		background: #282a2e !important;
+		color: #707880 !important;
+		border: 0 !important;
+		margin:auto;
+		margin-bottom: 50px;
+	}
+}
