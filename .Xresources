@@ -22,6 +22,7 @@ urxvt*boldItalicFont:	fonts
 urxvt*cursorBlink: false
 urxvt*depth: 24
 urxvt*shading: 15
+urxvt*cursorColor: #aeafad
 *background: #1D1F21
 *foreground: #C5C8C6
 ! black

@@ -19,6 +19,11 @@ artist=$(mpc -f "[%artist% - ]" | head -n 1)
 title=$(mpc -f "[%title%]" | head -n 1)
 album=$(mpc -f "[ - %album%]" | head -n 1)
 music=$(echo "^fg($COLOR1)$artist^fg($COLOR2)$title^fg($COLOR3)$album")
+current=$(mpc current)
+if [[ -z $current ]]; then
+    music=$(echo "^fg($COLOR3)Playlist Empty")
+    width=$(expr $(xftwidth "Source Code Pro:size=7" "Playlist Empty") + 30)
+fi
 
 while true; do
     countnew=$(xftwidth "Source Code Pro:size=7" "$(mpc -f '[[%artist% - ][%title%][ - %album%]]' | head -n 1)")

@@ -1,101 +1,101 @@
 ## BSPWM / SXHKD Controls
 
 # quit bspwm
-super + shift + q
+alt + shift + q
     bspc quit
 
 # reload sxhkd 
-super + Escape
+alt + shift + r
     pkill -USR1 -x sxhkd
 
 # close window
-super + shift + c
+alt + shift + c
     bspc window -c
 
 # change tile method
-super + {f,m}
+alt + {f,m}
     bspc window -t {floating,fullscreen}
 
 # change selected window ( -f to focus | -s to swap )
-super + {h,j,k,l}
+alt + {h,j,k,l}
     bspc window -f {left,down,up,right}
 
-super + {_,shift + }Tab
+alt + {_,shift + }Tab
    bspc window -f {prev,next}
 
-super + bracket{left,right}
+alt + bracket{left,right}
    bspc window -f {last,last}
 
-super + {comma,period}
+alt + {comma,period}
     bspc desktop -C {backward,forward}
 
 # resize tiled windows 
-super + shift + {l,h}
+alt + shift + {l,h}
     S={+,-}; \
     bspc window -e left $\{S\}50 || \
     bspc window -e right $\{S\}50
 
-super + shift + {j,k}
+alt + shift + {j,k}
     S={+,-}; \
     bspc window -e down $\{S\}50 || \
     bspc window -e up $\{S\}50
 
 # Change workspaces 
-super + {_,shift + }{1-9,0}
+alt + {_,shift + }{1-9,0}
     bspc {desktop -f,window -d} ^{1-9,10}
 
 
 ~button1
     bspc pointer -g focus
 
-super + button{1-3}
+alt + button{1-3}
     bspc pointer -g {move,resize_side,resize_corner}
 
-super + !button{1-3}
+alt + !button{1-3}
     bspc pointer -t %i %i
 
-super + @button{1-3}
+alt + @button{1-3}
     bspc pointer -u
 
-super + ctrl + {j,k,h,l}
+alt + ctrl + {j,k,h,l}
     bspc window --presel {down,up,left,right}
 
 # wm independent hotkeys
 
-super + shift + Return
+alt + shift + Return
     urxvtc
 
-super + p
+alt + p
     dmenu_run -h "70" -w "1000" -l "3" -x "940" -y "690" -fn "Source Code Pro for Powerline:Regular:size=12" -nb "#c5c8c6" -nf "#1d1f21" -sb "#707880" -sf "#DE935F" -dc "#1D1F21" -dim ".65" -q -i
 
-super + w
+alt + w
     firefox
 
-super + r
+alt + r
     urxvtc -e ranger
 
-super + n
+alt + n
     urxvtc -e ncmpcpp
 
-super + i
+alt + i
     urxvtc -e weechat
 
-# super + backslash
+# alt + backslash
     # {bspc config right_padding 600; todo show,\
     # pkill dunst; bspc config right_padding 0; dunst -p}
     #bash /home/godo/.dotfiles/bspwm/panel/notifications
     #
-super + backslash
+alt + backslash
     close_sidebar
 
-# super + d
+# alt + d
     # open_sidebar
 
 # Mac Shortcuts
 
 # Screen Backlight Control
 @XF86MonBrightness{Down,Up}
-    {scrot ~/pics/scrots/%b%d::%H%M%S.png, scrotw}
+    {scrot ~/pics/scrots/%b%d::%H%M%S.png -q '100', scrotw}
 
 # Application Control
 XF86Launch{A,B}

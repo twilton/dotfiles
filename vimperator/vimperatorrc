@@ -11,7 +11,7 @@ set animations=false
 
 " hide gui stuff
 " set toolbars=noaddons,nobookmarks,nomenu,nonavigation,notabs
-" "set toolbars=nomenu,nobookmarks,notabs,noaddons -- umatrix works
+" set toolbars=nomenu,nobookmarks,notabs,noaddons -- umatrix works
 set toolbars=none
 
 " statusbar
@@ -33,7 +33,7 @@ set hintchars=hjklasdfgyuiopqwertnmzxcvb
 set messagetimeout=2000
 
 " startpage search
-" set defsearch=startpage
+set defsearch=google1
 
 "
 set wildmode="full"
@@ -69,14 +69,6 @@ nnoremap x :tabclose<cr>
 
 
 " Search
-cabbrev "g google
-cabbrev "c googletranslate
-cabbrev "v youtube
-cabbrev "w wikipedia
-cabbrev "a amazon
-cabbrev "t torrentz
-
-" Websites
-cabbrev "r https://www.reddit.com
-cabbrev "y https://www.youtube.com/feed/subscriptions
-cabbrev "4 http://boards.4chan.org/g/catalog
+cabbrev yt youtube
+cabbrev gt googletranslate
+cabbrev wi wikipedia

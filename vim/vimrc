@@ -9,6 +9,9 @@ call vundle#begin()                     " init vundle
 " vundle
 Plugin 'gmarik/Vundle.vim'
 
+" hybrid colorscheme
+Plugin 'w0ng/vim-hybrid'
+
 " statusline
 Plugin 'itchyny/lightline.vim'
 Plugin 'bling/vim-bufferline'
@@ -70,13 +73,16 @@ Plugin 'honza/vim-snippets'
 " check syntax
 Plugin 'scrooloose/syntastic.git'
 
+" breaking habits and taking names
+Plugin 'takac/vim-hardtime'
+
 " end plugin call
 call vundle#end()
 
 " syntax highlighting
 filetype plugin indent on           " detec file plugin + indent
 syntax on                           " turn on syntax highlight
-set background=dark " we're using a dark bg
+set background=dark                 " we're using a dark bg
 colorscheme hybrid                  " colorscheme
 let g:hybrid_use_Xresources = 1     " let colorscheme use xresources
 set encoding=UTF-8
@@ -135,14 +141,18 @@ set splitright " vsplits go right w/focus
 set ttyfast " for faster redraws
 
 " folding
+set foldlevelstart=0
 set foldcolumn=0 " hide folding column
 set foldmethod=indent " folds using indent
 set foldnestmax=10 " max 10 nested folds
 set foldlevelstart=99 "folds open by default
+nnoremap <Space> za
+vnoremap <Space> za
 
 " Search and replace
 set gdefault " default s//g (global)
 set incsearch " "live"-search
+set hlsearch " highlight all search matches
 
 " Matching
 set matchtime=2 " time to blink match {}
@@ -371,3 +381,6 @@ let g:syntastic_check_on_wq = 1
 let g:netrw_banner = 0
 let g:netrw_list_hide = '^\.$'
 let g:netrw_liststyle = 3
+
+" vim-hardtime
+let g:hardtime_default_on = 0

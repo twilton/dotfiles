@@ -53,6 +53,22 @@ zle -N zle-keymap-select
 # vi-like key bindings
 bindkey -v
 
+# environment
+autoload -Uz url-quote-magic # Smart URLs
+zle -N self-insert url-quote-magic # Smart URLs
+setopt BRACE_CCL          # Allow brace character class list expansion.
+setopt COMBINING_CHARS    # Combine zero-length punctuation characters (accents)
+                          # with the base character.
+setopt RC_QUOTES          # Allow 'Henry''s Garage' instead of 'Henry'\''s Garage'.
+setopt NONOMATCH          # Don't error if globbing fails
+unsetopt MAIL_WARNING     # Don't print a warning message if a mail file has been accessed.
+setopt LONG_LIST_JOBS     # List jobs in the long format by default.
+setopt AUTO_RESUME        # Attempt to resume existing job before creating a new process.
+setopt NOTIFY             # Report status of background jobs immediately.
+unsetopt BG_NICE          # Don't run all background jobs at a lower priority.
+unsetopt HUP              # Don't kill jobs on shell exit.
+unsetopt CHECK_JOBS       # Don't report on jobs when shell exit.
+
 # History
 HISTSIZE=2000
 SAVEHIST=2000
@@ -72,7 +88,7 @@ alias c='clear'
 alias s='sudo'
 alias syugit='pacaur -Syu --devel --needed'
 
-# Add 'protection' on rm | mv | cp
+# Add 'protection'
 alias rm='rm -I'
 alias cp='cp -vi'
 alias mv='mv -i'
@@ -82,9 +98,7 @@ alias quit='exit'
 alias :q='quit'
 alias pls='sudo $(fc -ln -1)'
 
-
 # Network
-# alias netlist='lsof -i -P | grep LISTEN' # show active network listener
 alias ping="ping -c 3"
 alias vpn='sudo openvpn --config ~/.vpn/AirVPN_Canada_UDP-2018.ovpn'
 alias vpnu='sudo openvpn --config ~/.vpn/AirVPN_United-States_UDP-2018.ovpn'
@@ -107,18 +121,17 @@ alias livestreamer='livestreamer -p mpv'
 # BTPD
 # alias btc="btcli -d ~/var/btp"
 
-
-# HANDY RICKY SCRIPT
-alias rick="curl -s -L 'http://bit.ly/10hA8iC' | bash"
-alias rcommit="curl -s 'http://whatthecommit.com/index.txt'"
-
 # make use of systemcl more friendly
-# function start()   { sudo systemctl start $@;   }
-# function stop()    { sudo systemctl stop $@;    }
-# function restart() { sudo systemctl restart $@; }
-# function enable()  { sudo systemctl enable $@;  }
-# function disable() { sudo systemctl disable $@; }
-# function status()  { sudo systemctl status $@; }
+function sstart()   { sudo systemctl start $@;   }
+function srestart() { sudo systemctl restart $@; }
+function senable()  { sudo systemctl enable $@;  }
+function sdisable() { sudo systemctl disable $@; }
+function sstatus()  { sudo systemctl status $@; }
+
+# mounting
+function nicemount() { (echo "DEVICE PATH TYPE FLAGS" && mount | awk '$2="";1') | column -t ; }
+alias mount='sudo mount'
+alias umount='sudo umount'
 
 # easier extraction
 extract () {
