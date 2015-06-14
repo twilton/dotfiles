@@ -11,7 +11,11 @@ pkill -f "dzen2 -title-name music"*
 sleep 0.1
 
 # Calculate the width
-count=$(xftwidth "Source Code Pro:size=7" "$(mpc -f '[[%artist% - ][%title%][ - %album%]]' | head -n 1)")
+music_info=$(mpc -f '[[%artist% - ][%title%][ - %album%]]' | head -n 1)
+count=$(xftwidth "Source Code Pro:size=7" "$music_info")
+if [[ $count -ge 1000 ]]; then
+    count=1000
+fi
 width=$(expr $count + 30)
 
 # Vars
@@ -26,9 +30,9 @@ if [[ -z $current ]]; then
 fi
 
 while true; do
-    countnew=$(xftwidth "Source Code Pro:size=7" "$(mpc -f '[[%artist% - ][%title%][ - %album%]]' | head -n 1)")
+    new_music_info=$(mpc -f '[[%artist% - ][%title%][ - %album%]]' | head -n 1)
 
-    if [[ $count -ne $countnew ]]; then
+    if [[ "$music_info" != "$new_music_info" ]]; then
         bash ~/.dotfiles/bin/music &
         exit
     fi

@@ -12,6 +12,10 @@ alt + shift + r
 alt + shift + c
     bspc window -c
 
+# lock mac
+alt + shift + s
+    bash lock
+
 # change tile method
 alt + {f,m}
     bspc window -t {floating,fullscreen}

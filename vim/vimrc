@@ -152,7 +152,7 @@ vnoremap <Space> za
 " Search and replace
 set gdefault " default s//g (global)
 set incsearch " "live"-search
-set hlsearch " highlight all search matches
+" set hlsearch " highlight all search matches
 
 " Matching
 set matchtime=2 " time to blink match {}

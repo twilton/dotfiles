@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+
+# i3lock script
+# -----------------------------------------------------------------------------
+# adapted from:
+#   airblader: https://github.com/Airblader/dotfiles-manjaro
+#   Fred Weinhaus: http://www.fmwconcepts.com/imagemagick/pixelize/index.php
+#   lock image: https://raw.githubusercontent.com/meskarune/i3lock-fancy/master/lock.png
+# -----------------------------------------------------------------------------
+# requires:
+#   preferred: i3lock-color, alternative: i3lock
+#   imagemagick
+#   pixelize script
+#
+#   user specific details correct and modify radius
+# -----------------------------------------------------------------------------
+set -eu
+
+# user specific
+overlay="/home/godo/pics/lock.png"
+pixelize=$(echo pixelize.sh -s 5 -m 2)
+width=2880
+height=1800
+screenshot=$(mktemp --tmpdir i3lock-scrot-XXX.png)
+lock=$(mktemp --tmpdir i3lock-final-XXX.png)
+
+# change last number in radius expression to fit your screen
+center_x=$(expr ${width} / 2)
+center_y=$(expr ${height} / 2)
+radius=$(expr ${center_y} + 94)
+
+# colors
+circle_fill="#1d1f21"
+circle_stroke="#c5c8c6"
+
+# take screenshot
+scrot -d0 ${screenshot}
+
+# fancy
+lock()
+{
+    if [ $1 -eq 0 ]; then
+        # non fancy
+        i3lock \
+            -u -i "$2"
+    elif [ $1 -eq 1 ]; then
+        i3lock \
+            --insidevercolor=c5c8c620 --insidewrongcolor=a5424220 \
+            --insidecolor=00000000 --ringvercolor=c5c8c6FF \
+            --ringvercolor=c5c8c6FF --ringwrongcolor=a54242FF \
+            --ringcolor=00000000 --linecolor=ffffff00 \
+            --textcolor=ffffff00 --keyhlcolor=c5c8c6FF \
+            --bshlcolor=a54242FF \
+            -i "$2"
+    else
+        echo ""
+        echo "something went wrong"
+        echo ""
+        exit 1
+    fi
+}
+
+# lock screen
+lock 0 "${screenshot}"
+
+# pixelate
+bash ${pixelize} ${screenshot} ${screenshot}
+
+# darken and add lock
+convert ${screenshot} -scale 20% -level -35% -modulate 40 -scale 500% \
+    -fill ${circle_fill} -stroke ${circle_stroke} -draw "fill-opacity 80% circle ${center_x},${center_y},${center_x},${radius}" \
+    -gravity center ${overlay} -composite \
+    ${lock}
+
+# kills the old lockscreen adds the new edited one
+kill $(pgrep i3lock)
+lock 1 "${lock}"
+
+trap "rm '${screenshot}' '${lock}'" EXIT

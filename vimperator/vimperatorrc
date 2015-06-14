@@ -13,9 +13,13 @@ set animations=false
 " set toolbars=noaddons,nobookmarks,nomenu,nonavigation,notabs
 " set toolbars=nomenu,nobookmarks,notabs,noaddons -- umatrix works
 set toolbars=none
+style -name ublick * #nav-bar * { visibility: visible; }
 
 " statusbar
 " set status="input,location,bookmark,history,position"
+
+" set editor
+set editor="urxvt -e vim"
 
 " show link destination in status line
 set showstatuslinks=1

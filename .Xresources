@@ -11,7 +11,7 @@ Xft.dpi: 220
 !	xft:Monaco for Powerline:regular:size=7
 !	-lucy-tewi-medium-r-Normal--11-90-75-75-p-58-iso10646-1
 
-! Xcursor.size: 64
+Xcursor.size: 16
 
 urxvt*scrollBar: false
 urxvt*internalBorder: 20

@@ -1,3 +1,5 @@
+## ENVIRONMENT
+
 # startx at login
 [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx
 
@@ -36,22 +38,35 @@ alias ls='ls --color=auto -hrtF'
 alias lsa='ls --color=auto -oghrtF'
 alias grep='grep --color=auto'
 
-# set the prompt
+# vi-like key bindings
+bindkey -v
+export KEYTIMEOUT=1
 
-PROMPT="%(?.%F{cyan}.%F{red})[%F{white} %~ %(?.%F{cyan}.%F{red})]%f "
+# set the prompt
+PROMPT="%(?.%{$fg[cyan]%}.%{$fg[red]%})[%{$fg[white]%} %~ %(?.%{$fg[cyan]%}.%{$fg[red]%})] %{$reset_color%}"
 RPROMPT=""
 
+function current_branch() {
+  local ref
+  ref=$(git symbolic-ref --quiet HEAD 2> /dev/null)
+  local ret=$?
+  if [[ $ret != 0 ]]; then
+    [[ $ret == 128 ]] && return  # no git repo.
+    ref=$(git rev-parse --short HEAD 2> /dev/null) || return
+  fi
+  echo "%{$fg[white]%} [% %{$fg[magenta]%}${ref#refs/heads/}%{$fg[white]%}]% %{$reset_color%}"
+}
+
 function zle-line-init zle-keymap-select {
-    RPS1="%F{white}%(?.${${KEYMAP/vicmd/-- NORMAL --}/(main|viins)/ }.%F{red}${${KEYMAP/vicmd/-- NORMAL --}/(main|viins)/━})%{$reset_color%}"
-    RPS2=$RPS1
+    GIT_PROMPT=$(current_branch)
+    ERROR_REPORT="%{$fg[red]%} ━%{$reset_color%}"
+    VIM_PROMPT="%{$fg[white]%} [% normal]% %{$reset_color%}"
+    RPS1="%(?.${${KEYMAP/(vicmd|opp)/$VIM_PROMPT$GIT_PROMPT}/(main|viins)/$GIT_PROMPT}.${${KEYMAP/(vicmd|opp)/$VIM_PROMPT$GIT_PROMPT$ERROR_REPORT}/(main|viins)/$GIT_PROMPT$ERROR_REPORT})"
     zle reset-prompt
 }
 
 zle -N zle-line-init
 zle -N zle-keymap-select
-
-# vi-like key bindings
-bindkey -v
 
 # environment
 autoload -Uz url-quote-magic # Smart URLs
@@ -77,11 +92,21 @@ setopt hist_ignore_dups
 setopt inc_append_history
 setopt share_history
 
+
 ## ALIASES 
 
 # change dir
 alias ..='cd ..'
 alias ...='cd ../..'
+    # make dir and cd into it
+function mkcd ()
+{
+    mkdir -p "$@" && eval cd "\"\$$#\"";
+}
+    # auto-ls after changing directory
+cd () {
+    builtin cd $@ && ls -hrtF
+}
 
 # Terminal
 alias c='clear'
@@ -133,6 +158,9 @@ function nicemount() { (echo "DEVICE PATH TYPE FLAGS" && mount | awk '$2="";1') 
 alias mount='sudo mount'
 alias umount='sudo umount'
 
+# passwords
+alias keys='kpcli --kdb /home/godo/docs/pass/cats'
+
 # easier extraction
 extract () {
     if [ -f $1 ] ; then
@@ -153,11 +181,6 @@ extract () {
     else
         echo "'$1' is not a valid file"
     fi
-}
-
-# auto-ls after changing directory
-cd () {
-    builtin cd $@ && ls -hrtF
 }
 
 # imgur
