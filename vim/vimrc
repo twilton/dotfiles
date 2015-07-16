@@ -1,8 +1,12 @@
 " vimconf is not vi-compatible
 set nocompatible
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugins
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" {{{
 " vundle plugin manager
-call plug#begin('~/.vim/plugged')         " init vimplug
+call plug#begin('~/.vim/plugged')
 
 " colorscheme
 Plug 'nanotech/jellybeans.vim'
@@ -30,6 +34,9 @@ Plug 'tpope/vim-fugitive'
 " quickrun
 Plug 'thinca/vim-quickrun'
 
+" registers!
+Plug 'junegunn/vim-peekaboo'
+
 " snippet engine and snippet repo 
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 
@@ -48,8 +55,11 @@ Plug 'jiangmiao/auto-pairs'
 " surroundings
 Plug 'tpope/vim-surround'
 
+" comments!
+Plug 'tpope/vim-commentary'
+
 " align everything
-Plug 'junegunn/vim-easy-align'
+Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
 
 " racket language support
 Plug 'wlangstroth/vim-racket', { 'for': ['racket'] }
@@ -59,99 +69,17 @@ command Racket !drracket %
 Plug 'scrooloose/syntastic'
 
 call plug#end()
+" }}}
 
-" syntax highlighting
-filetype plugin indent on           " detec file plugin + indent
-syntax on                           " turn on syntax highlight
-set background=dark                 " we're using a dark bg
-colorscheme jellybeans
-set t_Co=16
-set encoding=UTF-8
-set formatoptions+=t                " autowrap with newline char
-set tw=79                           " autowrap length is 79 col
-augroup FileTypeRules
-    autocmd!
-    autocmd BufNewFile,BufRead *.conf set ft=cfg tw=79
-    autocmd BufNewFile,BufRead *.md set ft=markdown tw=79
-    autocmd BufNewFile,BufRead *.tex set ft=tex tw=79
-    autocmd BufNewFile,BufRead *.txt set ft=sh tw=79
-augroup END
-augroup vimrc_autocmds              " sets background to red if text >= 80 col
-  autocmd BufEnter * highlight OverLength ctermbg=darkred guibg=#592929
-  autocmd BufEnter * match OverLength /\%81v.*/
-augroup END
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => General
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" {{{
+" dont use other .*rc(s)
+set noexrc
 
-" interface general
-set cursorline                      " hilight cursor line
-set more                            " ---more--- like less
-set number                          " line numbers are good
-set scrolloff=8
-set sidescrolloff=15
-set sidescroll=1
-set showcmd                         " show cmds being typed
-set title                           " window title
-set vb t_vb=                        " disable beep and flashing
-set wildignore=*.a,*.o,*.so,*.pyc,*.jpg,
-            \*.jpeg,*.png,*.gif,*.pdf,*.git,
-            \*.swp,*.swo            " tab completion ignores
-
-set wildignore=*.o,*.obj,*~
-set wildignore+=*vim/backups*
-set wildignore+=*sass-cache*
-set wildignore+=*DS_Store*
-set wildignore+=vendor/rails/**
-set wildignore+=vendor/cache/**
-set wildignore+=*.gem
-set wildignore+=log/**
-set wildignore+=tmp/**
-set wildignore+=*.png,*.jpg,*.gif
-
-set wildmenu                        " better auto complete
-set wildmode=longest,list           " bash-like auto complete
-
-" general settings
-set hidden
-set history=1000         " Store lots of :cmdline history
-set iskeyword+=_,$,@,%,# " not word dividers
-set laststatus=2         " always show statusline
-set linebreak            " dont cut words on wrap
-set list listchars=tab:\ ▸\,trail:·,eol:¬ " highlight listchars
-set mouse=               " disable mouse
-set noshowmode           " hide mode cmd line
-set noexrc               " dont use other .*rc(s)
-set nostartofline        " keep cursor column pos
-set nowrap               " dont wrap lines
-set numberwidth=5        " 99999 lines
-set shortmess+=I         " disable startup message
-set splitbelow           "splits go below w/focus
-set splitright           " vsplits go right w/focus
-set ttyfast              " for faster redraws
-
-" folding
-set foldlevelstart=0
-set foldcolumn=0         " hide folding column
-set foldmethod=syntax    " folds using syntax
-set foldnestmax=10       " max 10 nested folds
-" set foldlevelstart=99  " folds open by default
-set foldlevelstart=1     " folds closed by default
-nnoremap <Space> za
-vnoremap <Space> za
-
-" Search and replace
-set gdefault " default s//g (global)
-set incsearch " 'live'-search
-" set hlsearch " highlight all search matches
-
-" Matching
-set matchtime=2 " time to blink match {}
-set matchpairs+=<:> " for ci< or ci>
-set showmatch " tmpjump to match-bracket
-
-" files
-set autoread                    "Reload files changed outside vim
-set nobackup
-set nowb
-
+" Sets how many lines of history VIM has to remember
+set history=1000
 " Persistent Undo
 if has('persistent_undo')
     silent !mkdir ~/.vim/backups > /dev/null 2>&1
@@ -161,33 +89,221 @@ if has('persistent_undo')
     set undoreload=10000
 endif
 
-" text formating
-set autoindent
+" Enable filetype plugins
+filetype plugin indent on
+
+" With a map leader it's possible to do extra key combinations
+" like <leader>w saves the current file
+let mapleader = ","
+let g:mapleader = ","
+" }}}
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => VIM user interface
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" {{{
+" window title
+set title
+" disable startup message
+set shortmess+=I
+" A buffer becomes hidden when it is abandoned
+set hidden
+
+" disable mouse
+set mouse=
+" disable beep and flashing
+set vb t_vb=
+
+" line numbers are good
+set number
+" 99999 lines
+set numberwidth=5
+" hilight cursor line
+set cursorline
+" keep cursor column pos
+set nostartofline
+
+" show cmds being typed
+set showcmd
+" always show statusline
+set laststatus=2
+" hide mode cmd line
+set noshowmode
+" ---more--- like less
+set more
+
+" fix scrolling
+set scrolloff=8
+set sidescrolloff=15
+set sidescroll=1
+
+" Configure backspace so it acts as it should act
+set backspace=indent,eol,start
+" highlight listchars
+set list listchars=tab:\ ▸\,trail:·,eol:¬
+
+" Ignore case when searching
 set ignorecase
+" When searching try to be smart about cases 
 set smartcase
-set backspace=indent,eol,start  "Allow backspace in insert mode
-set smartindent
+" Highlight search results
+" set hlsearch
+" Makes search act like search in modern browsers
+set incsearch 
+
+" Don't redraw while executing macros (good performance config)
+set lazyredraw 
+" Faster redraws
+set ttyfast
+
+" For regular expressions turn magic on
+set magic
+" Search and replace
+set gdefault
+
+" Show matching brackets when text indicator is over them
+set showmatch
+" How many tenths of a second to blink when matching brackets
+set matchtime=2
+" matching for ci< or ci>
+set matchpairs+=<:>
+
+"splits go below w/focus
+set splitbelow
+" vsplits go right w/focus
+set splitright
+
+" fix default folding
+set foldlevelstart=0
+" hide folding column
+set foldcolumn=0 
+" folds using syntax
+set foldmethod=syntax
+" max 10 nested folds
+set foldnestmax=10
+" folds open by default
+" set foldlevelstart=99
+" folds closed by default
+set foldlevelstart=1
+" toggle folds with space
+nnoremap <Space> za
+vnoremap <Space> za
+
+" Turn on the WiLd menu
+set wildmenu                        " better auto complete
+set wildmode=longest,list           " bash-like auto complete
+
+
+" clean this up!!!!
+set wildignore=*.a,*.o,*.so,*.pyc,*.jpg,
+            \*.jpeg,*.png,*.gif,*.pdf,*.git,
+            \*.swp,*.swo            " tab completion ignores
+
+set wildignore=*.o,*.obj,*~,*.pyc
+set wildignore+=*vim/backups*
+set wildignore+=*sass-cache*
+set wildignore+=*DS_Store*
+set wildignore+=vendor/rails/**
+set wildignore+=vendor/cache/**
+set wildignore+=*.gem
+set wildignore+=log/**
+set wildignore+=tmp/**
+set wildignore+=*.png,*.jpg,*.gif
+" }}}
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Colors and Fonts
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" {{{
+" Enable syntax highlighting
+syntax on
+
+" we're using a dark bg
+set background=dark
+
+" jellybeans syntax with my xres colors
+colorscheme jellybeans
+set t_Co=16
+
+" Set utf8 as standard encoding and en_US as the standard language
+set encoding=utf8
+" set encoding=UTF-8
+
+" Use Unix as the standard file type
+set ffs=unix,dos,mac
+
+" highlight col >= 80
+augroup vimrc_autocmds
+  autocmd BufEnter * highlight OverLength ctermbg=darkred guibg=#592929
+  autocmd BufEnter * match OverLength /\%81v.*/
+augroup END
+" }}}
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Files, backups and undo
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" {{{
+" Set to auto read when a file is changed from the outside
+set autoread
+set nobackup
+set nowb
+
+" formating for other filetypes
+augroup FileTypeRules
+    autocmd!
+    autocmd BufNewFile,BufRead *.conf set ft=cfg tw=79
+    autocmd BufNewFile,BufRead *.md set ft=markdown tw=79
+    autocmd BufNewFile,BufRead *.tex set ft=tex tw=79
+    autocmd BufNewFile,BufRead *.txt set ft=sh tw=79
+augroup END
+
+" Delete trailing white space on save, useful for Python and CoffeeScript ;)
+func! DeleteTrailingWS()
+  exe "normal mz"
+  %s/\s\+$//ge
+  exe "normal `z"
+endfunc
+autocmd BufWrite *.py :call DeleteTrailingWS()
+autocmd BufWrite *.coffee :call DeleteTrailingWS()
+" }}}
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Text, tab and indent related
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" {{{
+" spaces instead of tabs
 set expandtab
-set shiftround
+" Be smart when using tabs ;)
 set smarttab
+
+" indent stuff
+set autoindent
+set smartindent
+set shiftround
+
+" 1 tab == 4 spaces
 set shiftwidth=4
 set tabstop=4
 set softtabstop=4
 set nojoinspaces
 
-" keybinds
-" Remap <leader>
-let mapleader=","
+" not word dividers
+set iskeyword+=_,$,@,%,#
 
-" disable ex mode
-nnoremap Q <nop>
+" dont wrap lines
+set nowrap
+" dont cut words on wrap
+set linebreak
+" autowrap with newline char
+set formatoptions+=t
+" autowrap length is 79 col
+set tw=79
+" }}}
 
-" yank/paste/delete to system keyboard
-noremap <leader>y "+y
-noremap <leader>d "+d
-noremap <leader>p "+p
-noremap <leader>P "+P
-
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Movement, tabs, windows, and buffers
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" {{{
 " Treat wrapped lines as normal lines
 nnoremap j gj
 nnoremap k gk
@@ -195,193 +311,292 @@ nnoremap k gk
 " Working ci(, works for both breaklined, inline and multiple ()
 nnoremap ci( %ci(
 
-" plugin settings
-" Lightline
-let g:lightline = {
-            \ 'colorscheme': 'hybrid',
-            \ 'active': {
-            \ 'left': [
-            \ ['mode', 'paste'],
-            \ ['readonly', 'fugitive'],
-            \ ['ctrlpmark', 'bufferline']
-            \ ],
-            \ 'right': [
-            \ ['lineinfo'],
-            \ ['percent'],
-            \ ['fileformat', 'fileencoding', 'filetype', 'syntastic']
-            \ ]
-            \ },
-            \ 'component': {
-            \ 'paste': '%{&paste?"!":""}'
-            \ },
-            \ 'component_function': {
-            \ 'mode' : 'MyMode',
-            \ 'fugitive' : 'MyFugitive',
-            \ 'readonly' : 'MyReadonly',
-            \ 'ctrlpmark' : 'CtrlPMark',
-            \ 'bufferline' : 'MyBufferline',
-            \ 'fileformat' : 'MyFileformat',
-            \ 'fileencoding' : 'MyFileencoding',
-            \ 'filetype' : 'MyFiletype'
-            \ },
-            \ 'component_expand': {
-            \ 'syntastic': 'SyntasticStatuslineFlag',
-            \ },
-            \ 'component_type': {
-            \ 'syntastic': 'middle',
-            \ },
-            \ 'subseparator': {
-            \ 'left': '|', 'right': '|'
-            \ }
-            \ }
+" yank/paste/delete to system keyboard
+noremap <leader>y "+y
+noremap <leader>d "+d
+noremap <leader>p "+p
+noremap <leader>P "+P
 
-let g:lightline.mode_map = {
-            \ 'n' : ' N ',
-            \ 'i' : ' I ',
-            \ 'R' : ' R ',
-            \ 'v' : ' V ',
-            \ 'V' : 'V-L',
-            \ 'c' : ' C ',
-            \ "\<C-v>" : 'V-B',
-            \ 's' : ' S ',
-            \ 'S' : 'S-L',
-            \ "\<C-s>" : 'S-B',
-            \ '?' : ' ' }
+" Switch CWD to the directory of the open buffer
+map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
-function! MyMode()
-    let fname = expand('%:t')
-    return fname == '__Tagbar__' ? 'Tagbar' :
-                \ fname == 'ControlP' ? 'CtrlP' :
-                \ winwidth('.') > 60 ? lightline#mode() : ''
-endfunction
+" Smart way to move between windows
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
 
-function! MyFugitive()
-    try
-        if expand('%:t') !~? 'Tagbar' && exists('*fugitive#head')
-            let mark = '± '
-            let _ = fugitive#head()
-            return strlen(_) ? mark._ : ''
+" Useful mappings for managing tabs
+map <leader>tn :tabnew<cr>
+map <leader>to :tabonly<cr>
+map <leader>tc :tabclose<cr>
+map <leader>tm :tabmove 
+map <leader>t<leader> :tabnext 
+" Opens a new tab with the current buffer's path
+" Super useful when editing files in the same directory
+map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
+
+" Visual mode pressing * or # searches for the current selection
+" Super useful! From an idea by Michael Naumann
+vnoremap <silent> * :call VisualSelection('f', '')<CR>
+vnoremap <silent> # :call VisualSelection('b', '')<CR>
+    " CmdLine && VisualSelection {{{
+    function! CmdLine(str)
+        exe "menu Foo.Bar :" . a:str
+        emenu Foo.Bar
+        unmenu Foo
+    endfunction 
+
+    function! VisualSelection(direction, extra_filter) range
+        let l:saved_reg = @"
+        execute "normal! vgvy"
+
+        let l:pattern = escape(@", '\\/.*$^~[]')
+        let l:pattern = substitute(l:pattern, "\n$", "", "")
+
+        if a:direction == 'b'
+            execute "normal ?" . l:pattern . "^M"
+        elseif a:direction == 'gv'
+            call CmdLine("Ag \"" . l:pattern . "\" " )
+        elseif a:direction == 'replace'
+            call CmdLine("%s" . '/'. l:pattern . '/')
+        elseif a:direction == 'f'
+            execute "normal /" . l:pattern . "^M"
         endif
-    catch
-    endtry
-    return ''
-endfunction
 
-function! MyReadonly()
-    return &ft !~? 'help' && &readonly ? '≠' : '' " or ⭤
-endfunction
+        let @/ = l:pattern
+        let @" = l:saved_reg
+    endfunction
+    " }}}
+" }}}
 
-function! CtrlPMark()
-    if expand('%:t') =~ 'ControlP'
-        call lightline#link('iR'[g:lightline.ctrlp_regex])
-        return lightline#concatenate([g:lightline.ctrlp_prev, g:lightline.ctrlp_item
-                    \ , g:lightline.ctrlp_next], 0)
-    else
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Editing mappings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" {{{
+" disable ex mode
+nnoremap Q <nop>
+
+" Remap VIM 0 to first non-blank character
+map 0 ^
+" }}}
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin Settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" {{{
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " => lightline
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " {{{
+    let g:lightline = {
+                \ 'colorscheme': 'hybrid',
+                \ 'active': {
+                \ 'left': [
+                \ ['mode', 'paste'],
+                \ ['readonly', 'fugitive'],
+                \ ['ctrlpmark', 'bufferline']
+                \ ],
+                \ 'right': [
+                \ ['lineinfo'],
+                \ ['percent'],
+                \ ['fileformat', 'fileencoding', 'filetype', 'syntastic']
+                \ ]
+                \ },
+                \ 'component': {
+                \ 'paste': '%{&paste?"!":""}'
+                \ },
+                \ 'component_function': {
+                \ 'mode' : 'MyMode',
+                \ 'fugitive' : 'MyFugitive',
+                \ 'readonly' : 'MyReadonly',
+                \ 'ctrlpmark' : 'CtrlPMark',
+                \ 'bufferline' : 'MyBufferline',
+                \ 'fileformat' : 'MyFileformat',
+                \ 'fileencoding' : 'MyFileencoding',
+                \ 'filetype' : 'MyFiletype'
+                \ },
+                \ 'component_expand': {
+                \ 'syntastic': 'SyntasticStatuslineFlag',
+                \ },
+                \ 'component_type': {
+                \ 'syntastic': 'middle',
+                \ },
+                \ 'subseparator': {
+                \ 'left': '|', 'right': '|'
+                \ }
+                \ }
+
+    let g:lightline.mode_map = {
+                \ 'n' : ' N ',
+                \ 'i' : ' I ',
+                \ 'R' : ' R ',
+                \ 'v' : ' V ',
+                \ 'V' : 'V-L',
+                \ 'c' : ' C ',
+                \ "\<C-v>" : 'V-B',
+                \ 's' : ' S ',
+                \ 'S' : 'S-L',
+                \ "\<C-s>" : 'S-B',
+                \ '?' : ' ' }
+
+    function! MyMode()
+        let fname = expand('%:t')
+        return fname == '__Tagbar__' ? 'Tagbar' :
+                    \ fname == 'ControlP' ? 'CtrlP' :
+                    \ winwidth('.') > 60 ? lightline#mode() : ''
+    endfunction
+
+    function! MyFugitive()
+        try
+            if expand('%:t') !~? 'Tagbar' && exists('*fugitive#head')
+                let mark = '± '
+                let _ = fugitive#head()
+                return strlen(_) ? mark._ : ''
+            endif
+        catch
+        endtry
         return ''
-    endif
-endfunction
+    endfunction
 
-function! MyBufferline()
-    call bufferline#refresh_status()
-    let b = g:bufferline_status_info.before
-    let c = g:bufferline_status_info.current
-    let a = g:bufferline_status_info.after
-    let alen = strlen(a)
-    let blen = strlen(b)
-    let clen = strlen(c)
-    let w = winwidth(0) * 4 / 11
-    if w < alen+blen+clen
-        let whalf = (w - strlen(c)) / 2
-        let aa = alen > whalf && blen > whalf ? a[:whalf] : alen + blen < w - clen || alen < whalf ? a : a[:(w - clen - blen)]
-        let bb = alen > whalf && blen > whalf ? b[-(whalf):] : alen + blen < w - clen || blen < whalf ? b : b[-(w - clen - alen):]
-        return (strlen(bb) < strlen(b) ? '...' : '') . bb . c . aa . (strlen(aa) < strlen(a) ? '...' : '')
-    else
-        return b . c . a
-    endif
-endfunction
+    function! MyReadonly()
+        return &ft !~? 'help' && &readonly ? '≠' : '' " or ⭤
+    endfunction
 
-function! MyFileformat()
-    return winwidth('.') > 90 ? &fileformat : ''
-endfunction
+    function! CtrlPMark()
+        if expand('%:t') =~ 'ControlP'
+            call lightline#link('iR'[g:lightline.ctrlp_regex])
+            return lightline#concatenate([g:lightline.ctrlp_prev, g:lightline.ctrlp_item
+                        \ , g:lightline.ctrlp_next], 0)
+        else
+            return ''
+        endif
+    endfunction
 
-function! MyFileencoding()
-    return winwidth('.') > 80 ? (strlen(&fenc) ? &fenc : &enc) : ''
-endfunction
+    function! MyBufferline()
+        call bufferline#refresh_status()
+        let b = g:bufferline_status_info.before
+        let c = g:bufferline_status_info.current
+        let a = g:bufferline_status_info.after
+        let alen = strlen(a)
+        let blen = strlen(b)
+        let clen = strlen(c)
+        let w = winwidth(0) * 4 / 11
+        if w < alen+blen+clen
+            let whalf = (w - strlen(c)) / 2
+            let aa = alen > whalf && blen > whalf ? a[:whalf] : alen + blen < w - clen || alen < whalf ? a : a[:(w - clen - blen)]
+            let bb = alen > whalf && blen > whalf ? b[-(whalf):] : alen + blen < w - clen || blen < whalf ? b : b[-(w - clen - alen):]
+            return (strlen(bb) < strlen(b) ? '...' : '') . bb . c . aa . (strlen(aa) < strlen(a) ? '...' : '')
+        else
+            return b . c . a
+        endif
+    endfunction
 
-function! MyFiletype()
-    return winwidth('.') > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
-endfunction
+    function! MyFileformat()
+        return winwidth('.') > 90 ? &fileformat : ''
+    endfunction
 
-let g:ctrlp_status_func = {
-            \ 'main': 'CtrlPStatusFunc_1',
-            \ 'prog': 'CtrlPStatusFunc_2',
-            \ }
+    function! MyFileencoding()
+        return winwidth('.') > 80 ? (strlen(&fenc) ? &fenc : &enc) : ''
+    endfunction
 
-function! CtrlPStatusFunc_1(focus, byfname, regex, prev, item, next, marked)
-    let g:lightline.ctrlp_regex = a:regex
-    let g:lightline.ctrlp_prev = a:prev
-    let g:lightline.ctrlp_item = a:item
-    let g:lightline.ctrlp_next = a:next
-    return lightline#statusline(0)
-endfunction
+    function! MyFiletype()
+        return winwidth('.') > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+    endfunction
 
-function! CtrlPStatusFunc_2(str)
-    return lightline#statusline(0)
-endfunction
+    let g:ctrlp_status_func = {
+                \ 'main': 'CtrlPStatusFunc_1',
+                \ 'prog': 'CtrlPStatusFunc_2',
+                \ }
 
-let g:tagbar_status_func = 'TagbarStatusFunc'
+    function! CtrlPStatusFunc_1(focus, byfname, regex, prev, item, next, marked)
+        let g:lightline.ctrlp_regex = a:regex
+        let g:lightline.ctrlp_prev = a:prev
+        let g:lightline.ctrlp_item = a:item
+        let g:lightline.ctrlp_next = a:next
+        return lightline#statusline(0)
+    endfunction
 
-function! TagbarStatusFunc(current, sort, fname, ...) abort
-    let g:lightline.fname = a:fname
-    return lightline#statusline(0)
-endfunction
+    function! CtrlPStatusFunc_2(str)
+        return lightline#statusline(0)
+    endfunction
 
-function! s:syntastic()
-    SyntasticCheck
-    call lightline#update()
-endfunction
+    let g:tagbar_status_func = 'TagbarStatusFunc'
 
-augroup AutoSyntastic
-    autocmd!
-    autocmd BufWritePost *.c,*.cpp,*.perl,*py,*.rkt call s:syntastic()
-augroup END
+    function! TagbarStatusFunc(current, sort, fname, ...) abort
+        let g:lightline.fname = a:fname
+        return lightline#statusline(0)
+    endfunction
 
-" bufferline
-let g:bufferline_echo = 0
+    function! s:syntastic()
+        SyntasticCheck
+        call lightline#update()
+    endfunction
 
-" ctrlp
-let g:ctrlp_match_window = 'bottom,order:ttb'
-let g:ctrlp_switch_buffer = 0
-let g:ctrlp_working_path_mode = 0
-let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
+    augroup AutoSyntastic
+        autocmd!
+        autocmd BufWritePost *.c,*.cpp,*.perl,*py,*.rkt call s:syntastic()
+    augroup END
+    " }}}
 
-" ultisnip
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-let g:UltiSnipsEditSplit="vertical"
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " => ctrlp
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " {{{
+    let g:ctrlp_max_height = 20
+    let g:ctrlp_match_window = 'bottom,order:ttb'
+    let g:ctrlp_switch_buffer = 0
+    let g:ctrlp_working_path_mode = 0
+    let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
+    " }}}
 
-" syntastic
-let g:syntastic_cpp_check_header = 1
-let g:syntastic_cpp_compiler_options = ' -std=c++0x'
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 1
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " => ultisnip
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " {{{
+    let g:UltiSnipsExpandTrigger="<tab>"
+    let g:UltiSnipsJumpForwardTrigger="<tab>"
+    let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+    let g:UltiSnipsEditSplit="vertical"
+    " }}}
 
-" neocomplete
-let g:acp_enableAtStartup = 0 " Disable AutoComplPop.
-let g:neocomplete#enable_at_startup = 1 " Use neocomplete.
-let g:neocomplete#enable_smart_case = 1 " Use smartcase.
-let g:neocomplete#sources#syntax#min_keyword_length = 3 " Set minimum syntax keyword length.
-let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " => syntastic
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " {{{
+    let g:syntastic_cpp_check_header = 1
+    let g:syntastic_cpp_compiler_options = ' -std=c++0x'
+    let g:syntastic_check_on_open = 1
+    let g:syntastic_check_on_wq = 1
+    " }}}
 
-" easyalign
-vmap <Enter> <Plug>(EasyAlign)
-nmap ga <Plug>(EasyAlign)
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " => neocomplete
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " {{{
+    let g:acp_enableAtStartup = 0 " Disable AutoComplPop.
+    let g:neocomplete#enable_at_startup = 1 " Use neocomplete.
+    let g:neocomplete#enable_smart_case = 1 " Use smartcase.
+    let g:neocomplete#sources#syntax#min_keyword_length = 3 " Set minimum syntax keyword length.
+    let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+    " }}}
 
-" Netrw - the bundled (network) file and directory browser
-let g:netrw_banner = 0
-let g:netrw_list_hide = '^\.$'
-let g:netrw_liststyle = 3
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " => easyalign
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " {{{
+    vmap <Enter> <Plug>(EasyAlign)
+    nmap ga <Plug>(EasyAlign)
+    " }}}
 
-" vim-hardtime
-let g:hardtime_default_on = 0
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " => netrw - bundled file browser
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " {{{
+    let g:netrw_banner = 0
+    let g:netrw_list_hide = '^\.$'
+    let g:netrw_liststyle = 3
+    " }}}
+" }}}
+
+" vim:foldmethod=marker:foldlevel=0

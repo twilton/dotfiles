@@ -19,7 +19,6 @@ urxvt*boldItalicFont:	fonts
 urxvt*cursorBlink: false
 urxvt*depth: 24
 urxvt*shading: 15
-urxvt*colorBD: #5E8D87
 
 *.foreground:   #c5c8c6
 *.background:   #1d1f21
