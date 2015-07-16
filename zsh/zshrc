@@ -4,7 +4,7 @@
 [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx
 
 # Set path
-export PATH="$HOME/.bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
+export PATH="$HOME/.bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/bin/core_perl"
 
 # Make UTF-8
 export LC_ALL=en_US.UTF-8
@@ -139,6 +139,8 @@ alias -g V='| vim -'
 # livestreamer
 alias livestreamer='livestreamer -p mpv'
 
+# xboard
+alias xboard-stockfish='xboard -fUCI -fcp stockfish -sUCI -scp stockfish'
 # TMUX / DTACH
 # alias t='tmux' forces 256 colors
 # alias d='dtach -A ~/tmp/irssi.sk /usr/bin/irssi'
@@ -206,3 +208,11 @@ function imgur() {
         echo "permalink: $folder/permalink.txt"
     fi
 }
+
+# key bindings
+    # bindkey '\e[2~' quoted-insert # ins
+bindkey '\e[3~' delete-char # del
+bindkey '\e[7~' beginning-of-line # home
+bindkey '\e[8~' end-of-line # end
+bindkey '\e[5~' beginning-of-history # pg up
+bindkey '\e[6~' end-of-history # pg down

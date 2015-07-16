@@ -4,12 +4,9 @@ Xft.hinting: true
 Xft.rgba: rgb
 Xft.hintstyle: hintfull
 Xft.dpi: 220
-! Fonts
+
 # define fonts \
 	xft:Source Code Pro for Powerline:regular:size=7
-!	-misc-stlarch-medium-r-normal--10-100-75-75-c-80-iso10646-1
-!	xft:Monaco for Powerline:regular:size=7
-!	-lucy-tewi-medium-r-Normal--11-90-75-75-p-58-iso10646-1
 
 Xcursor.size: 16
 
@@ -22,30 +19,32 @@ urxvt*boldItalicFont:	fonts
 urxvt*cursorBlink: false
 urxvt*depth: 24
 urxvt*shading: 15
-urxvt*cursorColor: #aeafad
-*background: #1D1F21
-*foreground: #C5C8C6
+urxvt*colorBD: #5E8D87
+
+*.foreground:   #c5c8c6
+*.background:   #1d1f21
+*.cursorColor:  #707880
 ! black
-*color0: #282A2E
-*color8: #373B41
+*.color0:       #282a2e
+*.color8:       #373b41
 ! red
-*color1: #A54242
-*color9: #CC6666
+*.color1:       #a54242
+*.color9:       #cc6666
 ! green
-*color2: #8C9440
-*color10: #B5BD68
+*.color2:       #8c9440
+*.color10:      #b5bd68
 ! yellow
-*color3: #DE935F
-*color11: #F0C674
+*.color3:       #DE935F
+*.color11:      #F0C674
 ! blue
-*color4: #5F819D
-*color12: #81A2BE
+*.color4:       #5F819D
+*.color12:      #81A2BE
 ! magenta
-*color5: #85678F
-*color13: #B294BB
+*.color5:       #85678F
+*.color13:      #B294BB
 ! cyan
-*color6: #5E8D87
-*color14: #8ABEB7
+*.color6:       #5E8D87
+*.color14:      #8ABEB7
 ! white
-*color7: #707880
-*color15: #C5C8C6
+*.color7:       #707880
+*.color15:      #c5c8c6

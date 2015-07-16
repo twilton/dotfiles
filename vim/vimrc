@@ -2,96 +2,83 @@
 set nocompatible
 
 " vundle plugin manager
-filetype off                            " required to init
-set rtp+=~/.vim/bundle/Vundle.vim       " include vundle
-call vundle#begin()                     " init vundle
+call plug#begin('~/.vim/plugged')         " init vimplug
 
-" vundle
-Plugin 'gmarik/Vundle.vim'
-
-" hybrid colorscheme
-Plugin 'w0ng/vim-hybrid'
+" colorscheme
+Plug 'nanotech/jellybeans.vim'
 
 " statusline
-Plugin 'itchyny/lightline.vim'
-Plugin 'bling/vim-bufferline'
+Plug 'itchyny/lightline.vim'
+Plug 'bling/vim-bufferline'
+Plug 'cocopon/lightline-hybrid.vim'
 
-" fuzzy finder
-Plugin 'kien/ctrlp.vim'
+" split width fixer
+Plug 'roman/golden-ratio'
+
+" completion engine
+Plug 'Shougo/neocomplete.vim'
 
 " <Tab> everything
-Plugin 'ervandew/supertab'
+Plug 'ervandew/supertab'
 
-" universal set of defaults
-Plugin 'tpope/vim-sensible.git'
-
-" extended tpope vimrc
-Plugin 'tpope/vim-unimpaired.git'
+" fuzzy finder
+Plug 'kien/ctrlp.vim'
 
 " git wrapper
-Plugin 'tpope/vim-fugitive.git'
+Plug 'tpope/vim-fugitive'
 
-" gists
-Plugin 'mattn/gist-vim.git'
+" quickrun
+Plug 'thinca/vim-quickrun'
+
+" snippet engine and snippet repo 
+Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 
 " repeat everything
-Plugin 'tpope/vim-repeat.git'
+Plug 'tpope/vim-repeat'
 
-" end structures automatically
-Plugin 'tpope/vim-endwise.git'
+" universal set of defaults
+Plug 'tpope/vim-sensible'
 
-" working with variants of a word
-Plugin 'tpope/vim-abolish.git'
+" extended tpope vimrc
+Plug 'tpope/vim-unimpaired'
 
 " auto closes stuff
-Plugin 'jiangmiao/auto-pairs.git'
+Plug 'jiangmiao/auto-pairs'
 
 " surroundings
-Plugin 'tpope/vim-surround.git'
-
-" super commenter
-Plugin 'scrooloose/nerdcommenter.git'
+Plug 'tpope/vim-surround'
 
 " align everything
-Plugin 'vim-scripts/Align'
+Plug 'junegunn/vim-easy-align'
 
 " racket language support
-Plugin 'wlangstroth/vim-racket.git'
-
+Plug 'wlangstroth/vim-racket', { 'for': ['racket'] }
 command Racket !drracket %
 
-" latex support
-" Plugin 'LaTeX-Box-Team/LaTeX-Box'
-" Plugin 'lervag/vim-latex'
-
-" snippet engine
-Plugin 'SirVer/ultisnips'
-
-" snippet repo
-Plugin 'honza/vim-snippets'
-
 " check syntax
-Plugin 'scrooloose/syntastic.git'
+Plug 'scrooloose/syntastic'
 
-" breaking habits and taking names
-Plugin 'takac/vim-hardtime'
-
-" end plugin call
-call vundle#end()
+call plug#end()
 
 " syntax highlighting
 filetype plugin indent on           " detec file plugin + indent
 syntax on                           " turn on syntax highlight
 set background=dark                 " we're using a dark bg
-colorscheme hybrid                  " colorscheme
-let g:hybrid_use_Xresources = 1     " let colorscheme use xresources
+colorscheme jellybeans
+set t_Co=16
 set encoding=UTF-8
+set formatoptions+=t                " autowrap with newline char
+set tw=79                           " autowrap length is 79 col
 augroup FileTypeRules
     autocmd!
     autocmd BufNewFile,BufRead *.conf set ft=cfg tw=79
     autocmd BufNewFile,BufRead *.md set ft=markdown tw=79
     autocmd BufNewFile,BufRead *.tex set ft=tex tw=79
     autocmd BufNewFile,BufRead *.txt set ft=sh tw=79
+augroup END
+augroup vimrc_autocmds              " sets background to red if text >= 80 col
+  autocmd BufEnter * highlight OverLength ctermbg=darkred guibg=#592929
+  autocmd BufEnter * match OverLength /\%81v.*/
 augroup END
 
 " interface general
@@ -124,34 +111,35 @@ set wildmode=longest,list           " bash-like auto complete
 
 " general settings
 set hidden
-set history=1000                "Store lots of :cmdline history
+set history=1000         " Store lots of :cmdline history
 set iskeyword+=_,$,@,%,# " not word dividers
-set laststatus=2 " always show statusline
-set linebreak " dont cut words on wrap
+set laststatus=2         " always show statusline
+set linebreak            " dont cut words on wrap
 set list listchars=tab:\ ▸\,trail:·,eol:¬ " highlight listchars
-set mouse= " disable mouse
-set noshowmode " hide mode cmd line
-set noexrc " dont use other .*rc(s)
-set nostartofline " keep cursor column pos
-set nowrap " dont wrap lines
-set numberwidth=5 " 99999 lines
-set shortmess+=I " disable startup message
-set splitbelow "splits go below w/focus
-set splitright " vsplits go right w/focus
-set ttyfast " for faster redraws
+set mouse=               " disable mouse
+set noshowmode           " hide mode cmd line
+set noexrc               " dont use other .*rc(s)
+set nostartofline        " keep cursor column pos
+set nowrap               " dont wrap lines
+set numberwidth=5        " 99999 lines
+set shortmess+=I         " disable startup message
+set splitbelow           "splits go below w/focus
+set splitright           " vsplits go right w/focus
+set ttyfast              " for faster redraws
 
 " folding
 set foldlevelstart=0
-set foldcolumn=0 " hide folding column
-set foldmethod=indent " folds using indent
-set foldnestmax=10 " max 10 nested folds
-set foldlevelstart=99 "folds open by default
+set foldcolumn=0         " hide folding column
+set foldmethod=syntax    " folds using syntax
+set foldnestmax=10       " max 10 nested folds
+" set foldlevelstart=99  " folds open by default
+set foldlevelstart=1     " folds closed by default
 nnoremap <Space> za
 vnoremap <Space> za
 
 " Search and replace
 set gdefault " default s//g (global)
-set incsearch " "live"-search
+set incsearch " 'live'-search
 " set hlsearch " highlight all search matches
 
 " Matching
@@ -210,7 +198,7 @@ nnoremap ci( %ci(
 " plugin settings
 " Lightline
 let g:lightline = {
-            \ 'colorscheme': 'jellybeans',
+            \ 'colorscheme': 'hybrid',
             \ 'active': {
             \ 'left': [
             \ ['mode', 'paste'],
@@ -362,8 +350,10 @@ augroup END
 let g:bufferline_echo = 0
 
 " ctrlp
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_match_window = 'bottom,order:ttb'
+let g:ctrlp_switch_buffer = 0
+let g:ctrlp_working_path_mode = 0
+let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 
 " ultisnip
 let g:UltiSnipsExpandTrigger="<tab>"
@@ -376,6 +366,17 @@ let g:syntastic_cpp_check_header = 1
 let g:syntastic_cpp_compiler_options = ' -std=c++0x'
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 1
+
+" neocomplete
+let g:acp_enableAtStartup = 0 " Disable AutoComplPop.
+let g:neocomplete#enable_at_startup = 1 " Use neocomplete.
+let g:neocomplete#enable_smart_case = 1 " Use smartcase.
+let g:neocomplete#sources#syntax#min_keyword_length = 3 " Set minimum syntax keyword length.
+let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+
+" easyalign
+vmap <Enter> <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
 
 " Netrw - the bundled (network) file and directory browser
 let g:netrw_banner = 0

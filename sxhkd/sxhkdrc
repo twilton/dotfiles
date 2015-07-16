@@ -1,87 +1,87 @@
 ## BSPWM / SXHKD Controls
 
 # quit bspwm
-alt + shift + q
+super + shift + q
     bspc quit
 
 # reload sxhkd 
-alt + shift + r
+super + shift + r
     pkill -USR1 -x sxhkd
 
 # close window
-alt + shift + c
+super + shift + c
     bspc window -c
 
 # lock mac
-alt + shift + s
+super + shift + s
     bash lock
 
 # change tile method
-alt + {f,m}
+super + {f,m}
     bspc window -t {floating,fullscreen}
 
 # change selected window ( -f to focus | -s to swap )
-alt + {h,j,k,l}
+super + {h,j,k,l}
     bspc window -f {left,down,up,right}
 
-alt + {_,shift + }Tab
+super + {_,shift + }Tab
    bspc window -f {prev,next}
 
-alt + bracket{left,right}
+super + bracket{left,right}
    bspc window -f {last,last}
 
-alt + {comma,period}
+super + {comma,period}
     bspc desktop -C {backward,forward}
 
 # resize tiled windows 
-alt + shift + {l,h}
+super + shift + {l,h}
     S={+,-}; \
     bspc window -e left $\{S\}50 || \
     bspc window -e right $\{S\}50
 
-alt + shift + {j,k}
+super + shift + {j,k}
     S={+,-}; \
     bspc window -e down $\{S\}50 || \
     bspc window -e up $\{S\}50
 
 # Change workspaces 
-alt + {_,shift + }{1-9,0}
+super + {_,shift + }{1-9,0}
     bspc {desktop -f,window -d} ^{1-9,10}
 
 
 ~button1
     bspc pointer -g focus
 
-alt + button{1-3}
+super + button{1-3}
     bspc pointer -g {move,resize_side,resize_corner}
 
-alt + !button{1-3}
+super + !button{1-3}
     bspc pointer -t %i %i
 
-alt + @button{1-3}
+super + @button{1-3}
     bspc pointer -u
 
-alt + ctrl + {j,k,h,l}
+super + ctrl + {j,k,h,l}
     bspc window --presel {down,up,left,right}
 
 # wm independent hotkeys
 
-alt + shift + Return
+super + shift + Return
     urxvtc
 
-alt + p
+super + p
     dmenu_run -h "70" -w "1000" -l "3" -x "940" -y "690" -fn "Source Code Pro for Powerline:Regular:size=12" -nb "#c5c8c6" -nf "#1d1f21" -sb "#707880" -sf "#DE935F" -dc "#1D1F21" -dim ".65" -q -i
 
-alt + w
+super + w
     firefox
 
-alt + r
+super + r
     urxvtc -e ranger
 
-alt + n
+super + n
     urxvtc -e ncmpcpp
 
-alt + i
+super + i
     urxvtc -e weechat
 
 # alt + backslash
@@ -89,7 +89,7 @@ alt + i
     # pkill dunst; bspc config right_padding 0; dunst -p}
     #bash /home/godo/.dotfiles/bspwm/panel/notifications
     #
-alt + backslash
+super + backslash
     close_sidebar
 
 # alt + d
@@ -99,10 +99,19 @@ alt + backslash
 
 # Screen Backlight Control
 @XF86MonBrightness{Down,Up}
-    {scrot ~/pics/scrots/%b%d::%H%M%S.png -q '100', scrotw}
+    xbacklight {-dec,-inc} 5
+
+shift + @XF86MonBrightness{Down,Up}
+    xbacklight -set {5,100}
+
+# alt + {F1,F2}
+    # {scrot ~/pics/scrots/%b%d::%H%M%S.png -q '100', scrotw}
 
 # Application Control
 XF86Launch{A,B}
+    {todo show, todo show}
+
+alt + {F3,F4}
     {todo show, todo show}
 
 # Keyboard Backlight Control
@@ -116,14 +125,23 @@ shift + XF86KbdBrightness{Down,Up}
 XF86Audio{Prev,Play,Next}
     mpc {prev,toggle,next}
 
+{_,shift + }Pause
+    paswitch {alsa_output.usb-GFEC_ASSP_DigiHug_USB_Audio-01.analog-stereo, \
+    alsa_output.pci-0000_00_1b.0.analog-stereo}
+    
+
+super + {Left,Pause,Right}
+    mpc {prev,toggle,next}
+
 # Volume Mute / Lower / Raise
 XF86Audio{Mute,LowerVolume,RaiseVolume}
-    {pactl set-sink-mute @DEFAULT_SINK@ toggle,\
-    pactl set-sink-volume @DEFAULT_SINK@ -5%,\
-    pactl set-sink-volume @DEFAULT_SINK@ +5%}
-    # {amixer -c 1 -q set Master toggle; amixer -c 0 -q set PCM toggle,\
-    # amixer -c 1 -q set Master 5dB- unmute; amixer -c 0 -q set PCM 5dB- unmute,\
-    # amixer -c 1 -q set Master 5dB+ unmute; amixer -c 0 -q set PCM 5dB+ unmute}
-    # amixer -c 1 -q set Master {toggle,5dB- unmute,5dB+ unmute};
-    # amixer -c 2 -q set PCM {toggle,5dB- unmute,5dB+ unmute}
+    {amixer -q set Master toggle,\
+    amixer -q set Master 5%- unmute,\
+    amixer -q set Master 5%+ unmute}
+
+super + {shift + Down,Down,Up}
+    {amixer -q set Master toggle,\
+    amixer -q set Master 5%- unmute,\
+    amixer -q set Master 5%+ unmute}
+
 

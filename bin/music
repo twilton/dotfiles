@@ -2,6 +2,7 @@
 
 # Define colors
 FG=$(cat $HOME/.Xresources | grep foreground | tail -c 8)
+#BG
 COLOR1=$(cat $HOME/.Xresources | grep color6 | tail -c 8)
 COLOR2=$(cat $HOME/.Xresources | grep color3 | tail -c 8)
 COLOR3=$(cat $HOME/.Xresources | grep color7 | tail -c 8)
@@ -11,11 +12,8 @@ pkill -f "dzen2 -title-name music"*
 sleep 0.1
 
 # Calculate the width
-music_info=$(mpc -f '[[%artist% - ][%title%][ - %album%]]' | head -n 1)
-count=$(xftwidth "Source Code Pro:size=7" "$music_info")
-if [[ $count -ge 1000 ]]; then
-    count=1000
-fi
+current=$(mpc -f '[[%artist% - ][%title%][ - %album%]]' | head -n 1)
+count=$(xftwidth "Source Code Pro:size=7" "$current")
 width=$(expr $count + 30)
 
 # Vars
@@ -23,23 +21,24 @@ artist=$(mpc -f "[%artist% - ]" | head -n 1)
 title=$(mpc -f "[%title%]" | head -n 1)
 album=$(mpc -f "[ - %album%]" | head -n 1)
 music=$(echo "^fg($COLOR1)$artist^fg($COLOR2)$title^fg($COLOR3)$album")
-current=$(mpc current)
-if [[ -z $current ]]; then
+
+empty="$(mpc current | cut -d $'\n' -f 1)"
+if [[ -z $empty ]]; then
     music=$(echo "^fg($COLOR3)Playlist Empty")
     width=$(expr $(xftwidth "Source Code Pro:size=7" "Playlist Empty") + 30)
 fi
 
 while true; do
-    new_music_info=$(mpc -f '[[%artist% - ][%title%][ - %album%]]' | head -n 1)
+    new=$(mpc -f '[[%artist% - ][%title%][ - %album%]]' | head -n 1)
 
-    if [[ "$music_info" != "$new_music_info" ]]; then
+    if [[ "$current" != "$new" ]]; then
         bash ~/.dotfiles/bin/music &
         exit
     fi
 
     echo "$music"
 
-    sleep 1
+    mpc idle >/dev/null
 done |
 
 # Spawn Music (dzen/bar)

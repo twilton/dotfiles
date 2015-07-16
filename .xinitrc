@@ -40,11 +40,11 @@ redshift -l 43:80 &
 # keyboard
 kbdlight off
 xset r rate 200 35
-xmodmap ~/.dotfiles/xmodmap/capsswap
+# xmodmap ~/.dotfiles/xmodmap/capsswap
 
 # mouse
 xsetroot -cursor_name left_ptr
-unclutter -noevents &
+unclutter &
 
 # mpd
 mpd &
