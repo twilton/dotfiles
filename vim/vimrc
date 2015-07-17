@@ -11,11 +11,6 @@ call plug#begin('~/.vim/plugged')
 " colorscheme
 Plug 'nanotech/jellybeans.vim'
 
-" statusline
-Plug 'itchyny/lightline.vim'
-Plug 'bling/vim-bufferline'
-Plug 'cocopon/lightline-hybrid.vim'
-
 " split width fixer
 Plug 'roman/golden-ratio'
 
@@ -127,8 +122,67 @@ set nostartofline
 set showcmd
 " always show statusline
 set laststatus=2
+" statusline {{{
+" buffer number
+set statusline =%4*
+set statusline+=%4.4n
+set statusline+=%*
+
+" File name
+set statusline+=%1*
+
+set statusline+=\ %<%.99F\ 
+set statusline+=%*
+
+" help file flag
+set statusline+=%6*
+set statusline+=%h
+set statusline+=%*
+
+" modified flag
+set statusline+=%2*
+set statusline+=%m
+set statusline+=%*
+
+" read only flag
+set statusline+=%3*
+set statusline+=%{&ro?'[≠]':''} " '≠':'±'
+set statusline+=%*
+
+" display fugitive
+set statusline+=%4*
+set statusline+=%{fugitive#statusline()}
+set statusline+=%*
+
+" display a warning if fileformat isnt unix
+set statusline+=%5*
+set statusline+=%{&ff!='unix'?'[ff:\ '.&ff.']':''}
+set statusline+=%*
+
+" display a warning if file encoding isnt utf-8
+set statusline+=%5*
+set statusline+=%{(&fenc!='utf-8'&&&fenc!='')?'[ft:\ '.&fenc.']':''}
+set statusline+=%*
+
+
+" separate left/right side
+set statusline+=%1*
+set statusline+=%=
+set statusline+=%*
+
+" syntax checking
+set statusline+=%5*
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+" Cursor info
+set statusline+=%1*
+set statusline+=\ %c:%l
+set statusline+=\ %P\ 
+set statusline+=%*
+" }}}
 " hide mode cmd line
-set noshowmode
+" set noshowmode
 " ---more--- like less
 set more
 
@@ -191,8 +245,7 @@ vnoremap <Space> za
 
 " Turn on the WiLd menu
 set wildmenu                        " better auto complete
-set wildmode=longest,list           " bash-like auto complete
-
+set wildmode=longest,list,full           " bash-like auto complete
 
 " clean this up!!!!
 set wildignore=*.a,*.o,*.so,*.pyc,*.jpg,
@@ -222,12 +275,24 @@ syntax on
 set background=dark
 
 " jellybeans syntax with my xres colors
-colorscheme jellybeans
 set t_Co=16
+colorscheme jellybeans
+" Jellybeans fixes
+highlight ModeMsg ctermfg=green
+highlight Folded ctermfg=darkcyan
+highlight LineNr ctermfg=darkgrey
+highlight SignColumn ctermbg=NONE
+" Statusline colors
+highlight StatusLine ctermbg=black
+highlight User1 ctermbg=black ctermfg=white
+highlight User2 ctermbg=black ctermfg=cyan
+highlight User3 ctermbg=black ctermfg=darkyellow
+highlight User4 ctermbg=black ctermfg=darkmagenta
+highlight User5 ctermbg=black ctermfg=red
+highlight User6 ctermbg=black ctermfg=grey
 
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
-" set encoding=UTF-8
 
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
@@ -268,7 +333,7 @@ autocmd BufWrite *.coffee :call DeleteTrailingWS()
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Text, tab and indent related
+" => Text, tab and indent
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " {{{
 " spaces instead of tabs
@@ -331,7 +396,7 @@ map <leader>tn :tabnew<cr>
 map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove 
-map <leader>t<leader> :tabnext 
+map <leader>t<leader> :tabnext<cr>
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
 map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
@@ -386,160 +451,6 @@ map 0 ^
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " {{{
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    " => lightline
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    " {{{
-    let g:lightline = {
-                \ 'colorscheme': 'hybrid',
-                \ 'active': {
-                \ 'left': [
-                \ ['mode', 'paste'],
-                \ ['readonly', 'fugitive'],
-                \ ['ctrlpmark', 'bufferline']
-                \ ],
-                \ 'right': [
-                \ ['lineinfo'],
-                \ ['percent'],
-                \ ['fileformat', 'fileencoding', 'filetype', 'syntastic']
-                \ ]
-                \ },
-                \ 'component': {
-                \ 'paste': '%{&paste?"!":""}'
-                \ },
-                \ 'component_function': {
-                \ 'mode' : 'MyMode',
-                \ 'fugitive' : 'MyFugitive',
-                \ 'readonly' : 'MyReadonly',
-                \ 'ctrlpmark' : 'CtrlPMark',
-                \ 'bufferline' : 'MyBufferline',
-                \ 'fileformat' : 'MyFileformat',
-                \ 'fileencoding' : 'MyFileencoding',
-                \ 'filetype' : 'MyFiletype'
-                \ },
-                \ 'component_expand': {
-                \ 'syntastic': 'SyntasticStatuslineFlag',
-                \ },
-                \ 'component_type': {
-                \ 'syntastic': 'middle',
-                \ },
-                \ 'subseparator': {
-                \ 'left': '|', 'right': '|'
-                \ }
-                \ }
-
-    let g:lightline.mode_map = {
-                \ 'n' : ' N ',
-                \ 'i' : ' I ',
-                \ 'R' : ' R ',
-                \ 'v' : ' V ',
-                \ 'V' : 'V-L',
-                \ 'c' : ' C ',
-                \ "\<C-v>" : 'V-B',
-                \ 's' : ' S ',
-                \ 'S' : 'S-L',
-                \ "\<C-s>" : 'S-B',
-                \ '?' : ' ' }
-
-    function! MyMode()
-        let fname = expand('%:t')
-        return fname == '__Tagbar__' ? 'Tagbar' :
-                    \ fname == 'ControlP' ? 'CtrlP' :
-                    \ winwidth('.') > 60 ? lightline#mode() : ''
-    endfunction
-
-    function! MyFugitive()
-        try
-            if expand('%:t') !~? 'Tagbar' && exists('*fugitive#head')
-                let mark = '± '
-                let _ = fugitive#head()
-                return strlen(_) ? mark._ : ''
-            endif
-        catch
-        endtry
-        return ''
-    endfunction
-
-    function! MyReadonly()
-        return &ft !~? 'help' && &readonly ? '≠' : '' " or ⭤
-    endfunction
-
-    function! CtrlPMark()
-        if expand('%:t') =~ 'ControlP'
-            call lightline#link('iR'[g:lightline.ctrlp_regex])
-            return lightline#concatenate([g:lightline.ctrlp_prev, g:lightline.ctrlp_item
-                        \ , g:lightline.ctrlp_next], 0)
-        else
-            return ''
-        endif
-    endfunction
-
-    function! MyBufferline()
-        call bufferline#refresh_status()
-        let b = g:bufferline_status_info.before
-        let c = g:bufferline_status_info.current
-        let a = g:bufferline_status_info.after
-        let alen = strlen(a)
-        let blen = strlen(b)
-        let clen = strlen(c)
-        let w = winwidth(0) * 4 / 11
-        if w < alen+blen+clen
-            let whalf = (w - strlen(c)) / 2
-            let aa = alen > whalf && blen > whalf ? a[:whalf] : alen + blen < w - clen || alen < whalf ? a : a[:(w - clen - blen)]
-            let bb = alen > whalf && blen > whalf ? b[-(whalf):] : alen + blen < w - clen || blen < whalf ? b : b[-(w - clen - alen):]
-            return (strlen(bb) < strlen(b) ? '...' : '') . bb . c . aa . (strlen(aa) < strlen(a) ? '...' : '')
-        else
-            return b . c . a
-        endif
-    endfunction
-
-    function! MyFileformat()
-        return winwidth('.') > 90 ? &fileformat : ''
-    endfunction
-
-    function! MyFileencoding()
-        return winwidth('.') > 80 ? (strlen(&fenc) ? &fenc : &enc) : ''
-    endfunction
-
-    function! MyFiletype()
-        return winwidth('.') > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
-    endfunction
-
-    let g:ctrlp_status_func = {
-                \ 'main': 'CtrlPStatusFunc_1',
-                \ 'prog': 'CtrlPStatusFunc_2',
-                \ }
-
-    function! CtrlPStatusFunc_1(focus, byfname, regex, prev, item, next, marked)
-        let g:lightline.ctrlp_regex = a:regex
-        let g:lightline.ctrlp_prev = a:prev
-        let g:lightline.ctrlp_item = a:item
-        let g:lightline.ctrlp_next = a:next
-        return lightline#statusline(0)
-    endfunction
-
-    function! CtrlPStatusFunc_2(str)
-        return lightline#statusline(0)
-    endfunction
-
-    let g:tagbar_status_func = 'TagbarStatusFunc'
-
-    function! TagbarStatusFunc(current, sort, fname, ...) abort
-        let g:lightline.fname = a:fname
-        return lightline#statusline(0)
-    endfunction
-
-    function! s:syntastic()
-        SyntasticCheck
-        call lightline#update()
-    endfunction
-
-    augroup AutoSyntastic
-        autocmd!
-        autocmd BufWritePost *.c,*.cpp,*.perl,*py,*.rkt call s:syntastic()
-    augroup END
-    " }}}
-
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     " => ctrlp
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     " {{{
@@ -564,6 +475,8 @@ map 0 ^
     " => syntastic
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     " {{{
+    let g:syntastic_always_populate_loc_list = 1
+    " let g:syntastic_auto_loc_list = 1
     let g:syntastic_cpp_check_header = 1
     let g:syntastic_cpp_compiler_options = ' -std=c++0x'
     let g:syntastic_check_on_open = 1
