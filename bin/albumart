@@ -7,7 +7,7 @@ MDB="$HOME/music/"
 MDIR="`mpc -f %file% | head -1 | sed 's:[^/]*$::'`"
 
 # Search for common album art filenames (folder. , back., front.,)
-COVRET=$( ls "$MDB$MDIR" | egrep "\.jpg|\.png|\.gif" )
+COVRET=$( ls "$MDB$MDIR" | egrep "\.jpg|\.png|\.gif" | head -n1 )
 
 ALBUMART="$(echo $MDB$MDIR$COVRET)"
 
