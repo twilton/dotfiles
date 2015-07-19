@@ -14,7 +14,7 @@ super + shift + c
 
 # lock mac
 super + shift + s
-    bash lock
+    bash $HOME/.dotfiles/bin/lock/lock
 
 # change tile method
 super + {f,m}

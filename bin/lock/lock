@@ -17,8 +17,8 @@
 set -eu
 
 # user specific
-overlay="$HOME/pics/lock.png"
-pixelize=$(echo pixelize.sh -s 5 -m 2)
+overlay="$HOME/.dotfiles/bin/lock/lock.png"
+pixelize=$(echo $HOME/.dotfiles/bin/lock/pixelize.sh -s 5 -m 2)
 width=2880
 height=1800
 screenshot=$(mktemp --tmpdir i3lock-scrot-XXX.png)
