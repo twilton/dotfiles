@@ -1,25 +1,28 @@
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! => X
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! {{{
+Xcursor.size: 16
 Xft.antialias: true
 Xft.autohint: false
 Xft.hinting: true
 Xft.rgba: rgb
 Xft.hintstyle: hintfull
 Xft.dpi: 220
+! }}}
 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! => Fonts
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! {{{
 # define fonts \
 	xft:Source Code Pro for Powerline:regular:size=7
+! }}}
 
-Xcursor.size: 16
-
-urxvt*scrollBar: false
-urxvt*internalBorder: 20
-urxvt*font:		fonts
-urxvt*boldFont:		fonts
-urxvt*italicFont:	fonts
-urxvt*boldItalicFont:	fonts
-urxvt*cursorBlink: false
-urxvt*depth: 24
-urxvt*shading: 15
-
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! => Default colors
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! {{{
 *.foreground:   #c5c8c6
 *.background:   #1d1f21
 *.cursorColor:  #707880
@@ -47,4 +50,21 @@ urxvt*shading: 15
 ! white
 *.color7:       #707880
 *.color15:      #c5c8c6
+! }}}
 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! => urxvt
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! {{{
+urxvt*scrollBar: false
+urxvt*internalBorder: 20
+urxvt*font:		fonts
+urxvt*boldFont:		fonts
+urxvt*italicFont:	fonts
+urxvt*boldItalicFont:	fonts
+urxvt*cursorBlink: false
+urxvt*depth: 24
+urxvt*shading: 15
+! }}}
+
+! vim:foldmethod=marker:foldlevel=0
