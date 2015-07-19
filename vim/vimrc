@@ -11,6 +11,9 @@ call plug#begin('~/.vim/plugged')
 " colorscheme
 Plug 'nanotech/jellybeans.vim'
 
+" buffers in tabline
+Plug 'ap/vim-buftabline'
+
 " split width fixer
 Plug 'roman/golden-ratio'
 
@@ -290,6 +293,11 @@ highlight User3 ctermbg=black ctermfg=darkyellow
 highlight User4 ctermbg=black ctermfg=darkmagenta
 highlight User5 ctermbg=black ctermfg=red
 highlight User6 ctermbg=black ctermfg=grey
+" buftabline colors
+highlight BufTabLineCurrent ctermbg=black ctermfg=darkmagenta
+    " *BufTabLineActive*         |PmenuSel|
+    " *BufTabLineHidden*         |TabLine|
+    " *BufTabLineFill*           |TabLineFill|
 
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
@@ -450,6 +458,14 @@ map 0 ^
 " => Plugin Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " {{{
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " => buftabline
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " {{{
+    let g:buftabline_show = 1
+    let g:buftabline_indicators = 1
+    " }}}
+
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     " => ctrlp
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
