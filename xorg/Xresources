@@ -1,0 +1,50 @@
+Xft.antialias: true
+Xft.autohint: false
+Xft.hinting: true
+Xft.rgba: rgb
+Xft.hintstyle: hintfull
+Xft.dpi: 220
+
+# define fonts \
+	xft:Source Code Pro for Powerline:regular:size=7
+
+Xcursor.size: 16
+
+urxvt*scrollBar: false
+urxvt*internalBorder: 20
+urxvt*font:		fonts
+urxvt*boldFont:		fonts
+urxvt*italicFont:	fonts
+urxvt*boldItalicFont:	fonts
+urxvt*cursorBlink: false
+urxvt*depth: 24
+urxvt*shading: 15
+
+*.foreground:   #c5c8c6
+*.background:   #1d1f21
+*.cursorColor:  #707880
+! black
+*.color0:       #282a2e
+*.color8:       #373b41
+! red
+*.color1:       #a54242
+*.color9:       #cc6666
+! green
+*.color2:       #8c9440
+*.color10:      #b5bd68
+! yellow
+*.color3:       #DE935F
+*.color11:      #F0C674
+! blue
+*.color4:       #5F819D
+*.color12:      #81A2BE
+! magenta
+*.color5:       #85678F
+*.color13:      #B294BB
+! cyan
+*.color6:       #5E8D87
+*.color14:      #8ABEB7
+! white
+*.color7:       #707880
+*.color15:      #c5c8c6
+

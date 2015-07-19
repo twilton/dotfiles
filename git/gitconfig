@@ -1,0 +1,116 @@
+[core]
+    editor = /usr/bin/vim
+[user]
+    name = godo-
+    email = taywilton@gmail.com
+[color]
+    branch = auto
+    diff = auto
+    status = auto
+[color "branch"]
+    current = red reverse
+    local = blue
+    remote = green
+[color "diff"]
+    meta = yellow
+    frag = magenta
+    old = red bold
+    new = green
+    plain = white
+[color "status"]
+    added = yellow
+    changed = green
+    untracked = cyan
+[push]
+    default = upstream
+[pull]
+    default = current
+[diff]
+    mnemonicprefix = true
+[branch]
+    autosetuprebase = always
+[apply]
+    whitespace = nowarn
+[alias]
+# General Commands
+
+# List git aliases
+    la = !git config -l | grep alias | cut -c 7-
+
+# Show working-tree status
+    st = status -s
+
+# Add
+    a = add
+    ai = add --interactive
+    au = add -u
+
+# Clone repository into new directory
+    cl = clone
+
+# Record changes to repository
+    ci = commit
+    cm = commit -m
+    cma = commit -a -m
+
+# Checkout branch or paths to working tree
+    co = checkout
+
+# List, create, or delete branches
+    br = branch
+    bra = branch -ra
+    branch = branch -ra
+
+
+# List Commands
+
+# Show changes between commits
+    d = diff --word-diff
+    dc = diff --cached
+    diff = diff --word-diff
+# Show diff of given revision
+    diffr = "!f() { git diff \"$1\"^..\"$1\"; }; f"
+    dr = "!f() { git diff \"$1\"^..\"$1\"; }; f"
+# Show diff of last commit
+    dlc = !git diff --cached HEAD^
+
+# Default short git log
+    le = log --oneline --decorate
+# List commits in short form
+    ls = log --pretty=format:"%C(yellow)%h%C(red)%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+# List oneline commits showing relative dates
+    ld = log --pretty=format:"%C(yellow)%h\\ %C(green)[%ad]%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative
+# List oneline commits showing dates
+    lds = log --pretty=format:"%C(yellow)%h\\ %C(green)%ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short --graph
+# List commits showing changed files
+    ll = log --pretty=format:"%C(yellow)%h%C(red)%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+# Show modified files in last commit
+    dl = !git ll -1
+# List all files being tracked of current branch
+    lf = ls-files
+# List remotes
+    rem = "!git config -l | grep remote.*url | tail -n +2"
+
+
+# Reset Commands
+
+# Reset current HEAD to specified state
+    r = reset
+
+
+# Find Commands
+
+# Find a file path in codebase
+    f = !git ls-files | grep -i
+# Search codebase for a string
+    gr = grep -Ii
+    grep = grep -Ii
+
+
+# Other Commands
+
+# Download latest git commits and update the local branch
+    up = "!git remote update -p; git merge --ff-only @{u}"
+# Apply changes introduced by some existing commits
+    cp = !git cherry-pick
+
