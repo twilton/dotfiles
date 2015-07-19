@@ -1,24 +1,46 @@
-# ncmpcpp config
-
-# connection settings
+###############################################################################
+# => Connection
+###############################################################################
+# {{{
+# MPD server info
 mpd_host = "127.0.0.1"
 mpd_port = "6600"
 mpd_connection_timeout = "5"
+# }}}
 
-# MPD directories
-ncmpcpp_directory = "~/.ncmpcpp"
+###############################################################################
+# => Directories
+###############################################################################
+# {{{
+# MPD music location
 mpd_music_dir = "~/music"
-lyrics_directory = "~/.ncmpcpp/lyrics"
 
-# Visualizer
+# ncmpcpp directories
+ncmpcpp_directory = "~/.ncmpcpp"
+lyrics_directory = "~/.ncmpcpp/lyrics"
+# }}}
+
+###############################################################################
+# => Visualizer
+###############################################################################
+# {{{
+# MPD visualizer info
 visualizer_fifo_path = "/tmp/mpd.fifo"
 visualizer_output_name = "my_fifo"
 visualizer_sync_interval = "15"
+
+# Visualizer type
 visualizer_in_stereo = "no"
 visualizer_type = "spectrum" (frequency/wave)
-visualizer_look = "∙▋"
 
-# 
+# Visualizer character
+visualizer_look = "∙▋"
+# }}}
+
+###############################################################################
+# => Formatting
+###############################################################################
+# {{{
 song_list_format = "$7{ %n}$8 {%t}|{$8%f$9}$R$8{%b}$7{ %a}$0"
 song_status_format = $7%a - %t$0
 now_playing_prefix = $4 >>
@@ -38,8 +60,12 @@ titles_visibility = no
 display_bitrate = yes
 mouse_support = no
 empty_tag_marker = empty
+# }}}
 
-# Colors
+###############################################################################
+# => Colors
+###############################################################################
+# {{{
 colors_enabled = yes
 empty_tag_color = yellow
 header_window_color = default
@@ -58,3 +84,6 @@ active_column_color = yellow
 visualizer_color = yellow
 window_border_color = cyan
 active_window_border = red
+# }}}
+
+# vim:foldmethod=marker:foldlevel=0

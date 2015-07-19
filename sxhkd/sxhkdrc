@@ -1,5 +1,7 @@
-## BSPWM / SXHKD Controls
-
+###############################################################################
+# => System
+###############################################################################
+# {{{
 # quit bspwm
 super + shift + q
     bspc quit
@@ -8,30 +10,40 @@ super + shift + q
 super + shift + r
     pkill -USR1 -x sxhkd
 
-# close window
-super + shift + c
-    bspc window -c
-
 # lock mac
 super + shift + s
     bash $HOME/.dotfiles/bin/lock/lock
 
+# }}}
+
+###############################################################################
+# => Desktop
+###############################################################################
+# {{{
+# nothing to see here
+# }}}
+
+###############################################################################
+# => Workspace
+###############################################################################
+# {{{
+# Change workspaces
+super + {_,shift + }{1-9,0}
+    bspc {desktop -f,window -d} ^{1-9,10}
+
+# }}}
+
+###############################################################################
+# => Window
+###############################################################################
+# {{{
 # change tile method
 super + {f,m}
     bspc window -t {floating,fullscreen}
 
-# change selected window ( -f to focus | -s to swap )
-super + {h,j,k,l}
-    bspc window -f {left,down,up,right}
-
-super + {_,shift + }Tab
-   bspc window -f {prev,next}
-
-super + bracket{left,right}
-   bspc window -f {last,last}
-
-super + {comma,period}
-    bspc desktop -C {backward,forward}
+# close window
+super + shift + c
+    bspc window -c
 
 # resize tiled windows 
 super + shift + {l,h}
@@ -44,11 +56,27 @@ super + shift + {j,k}
     bspc window -e down $\{S\}50 || \
     bspc window -e up $\{S\}50
 
-# Change workspaces 
-super + {_,shift + }{1-9,0}
-    bspc {desktop -f,window -d} ^{1-9,10}
+# change selected window by location
+super + {h,j,k,l}
+    bspc window -f {left,down,up,right}
 
+# change selected window by prev / next
+super + {_,shift + }Tab
+   bspc window -f {prev,next}
 
+# move selected window forward / backward in tile
+super + {comma,period}
+    bspc desktop -C {backward,forward}
+
+# set new window preselection
+super + ctrl + {j,k,h,l}
+    bspc window --presel {down,up,left,right}
+# }}}
+
+###############################################################################
+# => Mouse
+###############################################################################
+# {{{
 ~button1
     bspc pointer -g focus
 
@@ -61,42 +89,45 @@ super + !button{1-3}
 super + @button{1-3}
     bspc pointer -u
 
-super + ctrl + {j,k,h,l}
-    bspc window --presel {down,up,left,right}
+# }}}
 
-# wm independent hotkeys
-
+###############################################################################
+# => Programs
+###############################################################################
+# {{{
+# Open new terminal
 super + shift + Return
     urxvtc
 
+# Open dmenu
 super + p
     dmenu_run -h "70" -w "1000" -l "3" -x "940" -y "690" -fn "Source Code Pro for Powerline:Regular:size=12" -nb "#c5c8c6" -nf "#1d1f21" -sb "#707880" -sf "#DE935F" -dc "#1D1F21" -dim ".65" -q -i
 
+# Open firefox
 super + w
     firefox
 
+# Open ranger in urxvt
 super + r
     urxvtc -e ranger
 
+# Open ncmpcpp in urxvt
 super + n
     urxvtc -e ncmpcpp
 
+# Open weechat in urxvt
 super + i
     urxvtc -e weechat
 
-# alt + backslash
-    # {bspc config right_padding 600; todo show,\
-    # pkill dunst; bspc config right_padding 0; dunst -p}
-    #bash /home/godo/.dotfiles/bspwm/panel/notifications
-    #
+# Close all notifications and sidebar
 super + backslash
     close_sidebar
+# }}}
 
-# alt + d
-    # open_sidebar
-
-# Mac Shortcuts
-
+###############################################################################
+# => Mac specific keys
+###############################################################################
+# {{{
 # Screen Backlight Control
 @XF86MonBrightness{Down,Up}
     xbacklight {-dec,-inc} 5
@@ -104,15 +135,11 @@ super + backslash
 shift + @XF86MonBrightness{Down,Up}
     xbacklight -set {5,100}
 
-# alt + {F1,F2}
-    # {scrot ~/pics/scrots/%b%d::%H%M%S.png -q '100', scrotw}
-
 # Application Control
 XF86Launch{A,B}
     {todo show, todo show}
-
-alt + {F3,F4}
-    {todo show, todo show}
+# alt + {F1,F2}
+    # {scrot ~/pics/scrots/%b%d::%H%M%S.png -q '100', scrotw}
 
 # Keyboard Backlight Control
 XF86KbdBrightness{Down,Up}
@@ -128,7 +155,6 @@ XF86Audio{Prev,Play,Next}
 {_,shift + }Pause
     paswitch {alsa_output.usb-GFEC_ASSP_DigiHug_USB_Audio-01.analog-stereo, \
     alsa_output.pci-0000_00_1b.0.analog-stereo}
-    
 
 super + {Left,Pause,Right}
     mpc {prev,toggle,next}
@@ -144,4 +170,6 @@ super + {shift + Down,Down,Up}
     amixer -q set Master 5%- unmute,\
     amixer -q set Master 5%+ unmute}
 
+# }}}
 
+# vim:foldmethod=marker:foldlevel=0

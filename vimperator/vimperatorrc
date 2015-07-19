@@ -1,49 +1,12 @@
-"=[Settings]====
-
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => General
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" {{{
 " title
 set titlestring="Firefox"
 
-"colors
-colorscheme godo
-
-" animations
-set animations=false
-
-" hide gui stuff
-" set toolbars=noaddons,nobookmarks,nomenu,nonavigation,notabs
-" set toolbars=nomenu,nobookmarks,notabs,noaddons -- umatrix works
-set toolbars=none
-style -name ublick * #nav-bar * { visibility: visible; }
-
-" statusbar
-" set status="input,location,bookmark,history,position"
-
 " set editor
 set editor="urxvt -e vim"
-
-" show link destination in status line
-set showstatuslinks=1
-
-" Autocomplete using Firefox Awesomebar subsystem
-set complete=tlbS
-
-" Hintchar
-set hintchars=hjklasdfgyuiopqwertnmzxcvb
-
-" only show 10 suggestions
-" set maxitems=10
-
-" keep messages around for 2 seconds
-set messagetimeout=2000
-
-" startpage search
-set defsearch=google1
-
-"
-set wildmode="full"
-
-" Select the longest autocomplete match
-set wildmode='list:full'
 
 " Don't beep
 set noerrorbells
@@ -51,8 +14,51 @@ set noerrorbells
 " dont auto focus insert
 set focuscontent
 
-"=[Mappings]=====
+" search
+set defsearch=google1
+" }}}
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Vimperator user interface
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" {{{
+" animations
+set animations=false
+
+" hide gui stuff
+set toolbars=none
+" fix ublock / umatrix
+style -name ublick * #nav-bar * { visibility: visible; }
+
+" Hintchar
+set hintchars=hjklasdfgyuiopqwertnmzxcvb
+
+" Autocomplete using Firefox Awesomebar subsystem
+set complete=tlbS
+" Select the longest autocomplete match
+set wildmode='list:full'
+" only show 10 suggestions
+" set maxitems=10
+
+" keep messages around for 2 seconds
+set messagetimeout=2000
+
+" show link destination in status line
+set showstatuslinks=1
+" }}}
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Colors and Fonts
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" {{{
+" colors
+colorscheme godo
+" }}}
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Edit mappings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" {{{
 " Faster Scrolling
 noremap j 5j
 noremap k 5k
@@ -67,12 +73,16 @@ nnoremap J gt
 
 " Press 'x' to delete current tab
 nnoremap x :tabclose<cr>
+" }}}
 
-" stay in insert mode
-" nnoremap I <S-Esc>
-
-
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Abbreviations
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" {{{
 " Search
 cabbrev yt youtube
 cabbrev gt googletranslate
 cabbrev wi wikipedia
+" }}}
+
+" vim:foldmethod=marker:foldlevel=0: set filetype=vim:
