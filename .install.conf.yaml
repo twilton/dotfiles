@@ -1,26 +1,26 @@
 - clean: ['~']
 
 - link:
-    ~/.gitconfig: gitconfig
-    ~/.gitignore_global: gitignore_global
+    ~/.gitconfig: git/gitconfig
     ~/.bin: bin/
     ~/.config/bspwm: bspwm/
-    ~/.compton.conf: compton/.compton.conf
+    ~/.compton.conf: compton/compton.conf
     ~/.config/mpd: mpd/
     ~/.config/mpv: mpv/
     ~/.ncmpcpp: ncmpcpp/
     ~/.config/ranger: ranger/
+    ~/.stalonetrayrc: stalonetray/stalonetrayrc
     ~/.config/sxhkd: sxhkd/
     ~/.vim: vim/
-    ~/.vimrc: .vimrc
+    ~/.vimrc: vim/vimrc
     ~/.vimperator: vimperator/
-    ~/.vimperatorrc: .vimperatorrc
-    ~/.xinitrc: .xinitrc
-    ~/.Xresources: .Xresources
+    ~/.vimperatorrc: vimperatorrc/vimperatorrc
     ~/.weechat: weechat/
+    ~/.xinitrc: xorg/xinitrc
+    ~/.Xresources: xorg/Xresources
     ~/.config/zathura: zathura/
     ~/.zsh: zsh/
-    ~/.zshrc: .zshrc
+    ~/.zshrc: zsh/zshrc
 
 - shell:
     -
