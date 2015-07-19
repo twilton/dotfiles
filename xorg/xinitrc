@@ -1,8 +1,8 @@
 #!/bin/sh
-#
-# ~/.xinitrc
-#
-
+###############################################################################
+# => Source
+###############################################################################
+# {{{
 if [ -d /etc/X11/xinit/xinitrc.d ]; then
   for f in /etc/X11/xinit/xinitrc.d/*; do
     [ -x "$f" ] && . "$f"
@@ -12,8 +12,12 @@ fi
 
 # xresources 
 [[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources
+# }}}
 
-#fonts
+###############################################################################
+# => Fonts
+###############################################################################
+# {{{
 xset +fp /usr/share/fonts/misc/
 xset +fp /usr/share/fonts/TTF/
 xset +fp /usr/share/fonts/OTF/
@@ -21,7 +25,12 @@ xset +fp /usr/share/fonts/local/
 xset +fp /home/godo/.local/share/fonts/
 xset +fp /home/godo/.local/share/fonts/TTF
 xset fp rehash
+# }}}
 
+###############################################################################
+# => Display
+###############################################################################
+# {{{
 # wallpaper
 nitrogen --restore &
 
@@ -36,20 +45,38 @@ xset dpms 0 0 300
 #calibrate display
 xcalib ~/.dotfiles/colorprofile.icc
 redshift -l 43:80 &
+# }}}
 
+###############################################################################
+# => Input
+###############################################################################
+# {{{
 # keyboard
 kbdlight off
 xset r rate 200 35
-# xmodmap ~/.dotfiles/xmodmap/capsswap
 
 # mouse
 xsetroot -cursor_name left_ptr
 unclutter &
+# }}}
 
+###############################################################################
+# => Sound
+###############################################################################
+# {{{
 # mpd
 mpd &
+# }}}
 
+###############################################################################
+# => WM
+###############################################################################
+# {{{
+# hotkeys
+sxhkd &
 
 # WM
-sxhkd &
 exec bspwm
+# }}}
+
+# vim:foldmethod=marker:foldlevel=0
