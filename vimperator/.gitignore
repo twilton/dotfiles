@@ -1,4 +1,4 @@
-*
+/*
 !.gitignore
-!colors/godo.vimp
+!colors/
 !vimperatorrc
