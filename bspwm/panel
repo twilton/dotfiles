@@ -1,4 +1,4 @@
 #! /bin/sh
-bash ~/.dotfiles/bin/music &
-bash ~/.dotfiles/bin/clock &
-bash ~/.dotfiles/bin/battery &
+bash $HOME/.dotfiles/bin/panels/music &
+bash $HOME/.dotfiles/bin/panels/clock &
+bash $HOME/.dotfiles/bin/panels/battery &

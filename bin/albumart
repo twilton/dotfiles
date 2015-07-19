@@ -1,27 +1,14 @@
 #! /bin/bash
 
-CURRENT=""
-while true; do
-    # Set your musicdb
-    MDB="/home/godo/music/"
+# Set your musicdb
+MDB="$HOME/music/"
 
-    # current dir
-    MDIR="`mpc -f %file% | head -1 | sed 's:[^/]*$::'`"
+# current dir
+MDIR="`mpc -f %file% | head -1 | sed 's:[^/]*$::'`"
 
-    # Search for common album art filenames (folder. , back., front.,)
-    COVRET=$( ls "$MDB$MDIR" | egrep "\.jpg|\.png|\.gif" )
+# Search for common album art filenames (folder. , back., front.,)
+COVRET=$( ls "$MDB$MDIR" | egrep "\.jpg|\.png|\.gif" )
 
-    ALBUMART="$(echo $MDB$MDIR$COVRET)"
+ALBUMART="$(echo $MDB$MDIR$COVRET)"
 
-    if [ "$ALBUMART" != "$CURRENT" ]; then
-        # remove old album art
-        pkill -f "sxiv -N mpd_album_art"
-
-        # display album art
-        sxiv -N "mpd_album_art" -b -s f -g 256x256-100-100 "$ALBUMART" &
-        # timeout -sHUP 5 sxiv -N "mpd_album_art" -b -s f -g 256x256-100-100 "$MDB$MDIR$COVRET" 2> /dev/null & 
-        CURRENT=$ALBUMART
-    fi
-
-    sleep 5
-done
+timeout -sHUP 5 sxiv -N "mpd_album_art" -b -s f -g 256x256-100-100 "$ALBUMART" 2> /dev/null & 

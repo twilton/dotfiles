@@ -3,7 +3,6 @@
 - link:
     ~/.gitconfig: gitconfig
     ~/.gitignore_global: gitignore_global
-    ~/.asoundrc: alsa/.asoundrc
     ~/.bin: bin/
     ~/.config/bspwm: bspwm/
     ~/.compton.conf: compton/.compton.conf
@@ -36,5 +35,3 @@
     -
         - mkdir -p ~/.ncmpcpp/lyrics
         - creating ncmpcpp lyrics directory
-
-# add bin to path

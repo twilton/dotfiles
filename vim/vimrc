@@ -14,6 +14,9 @@ Plug 'nanotech/jellybeans.vim'
 " buffers in tabline
 Plug 'ap/vim-buftabline'
 
+" netrw
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+
 " split width fixer
 Plug 'roman/golden-ratio'
 
@@ -23,9 +26,6 @@ Plug 'Shougo/neocomplete.vim'
 " <Tab> everything
 Plug 'ervandew/supertab'
 
-" fuzzy finder
-Plug 'kien/ctrlp.vim'
-
 " git wrapper
 Plug 'tpope/vim-fugitive'
 
@@ -33,7 +33,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'thinca/vim-quickrun'
 
 " registers!
-Plug 'junegunn/vim-peekaboo'
+Plug 'maxbrunsfeld/vim-yankstack'
 
 " snippet engine and snippet repo 
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
@@ -45,7 +45,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
 
 " extended tpope vimrc
-Plug 'tpope/vim-unimpaired'
+" Plug 'tpope/vim-unimpaired'
 
 " auto closes stuff
 Plug 'jiangmiao/auto-pairs'
@@ -58,6 +58,9 @@ Plug 'tpope/vim-commentary'
 
 " align everything
 Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
+
+" silver surfer
+Plug 'rking/ag.vim'
 
 " racket language support
 Plug 'wlangstroth/vim-racket', { 'for': ['racket'] }
@@ -90,10 +93,9 @@ endif
 " Enable filetype plugins
 filetype plugin indent on
 
-" With a map leader it's possible to do extra key combinations
-" like <leader>w saves the current file
-let mapleader = ","
-let g:mapleader = ","
+" Conflicts when using mapleader so map space to \
+" let mapleader = " "
+map <space> <leader>
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -243,8 +245,7 @@ set foldnestmax=10
 " folds closed by default
 set foldlevelstart=1
 " toggle folds with space
-nnoremap <Space> za
-vnoremap <Space> za
+nnoremap <Enter> za
 
 " Turn on the WiLd menu
 set wildmenu                        " better auto complete
@@ -295,9 +296,6 @@ highlight User5 ctermbg=black ctermfg=red
 highlight User6 ctermbg=black ctermfg=grey
 " buftabline colors
 highlight BufTabLineCurrent ctermbg=black ctermfg=darkmagenta
-    " *BufTabLineActive*         |PmenuSel|
-    " *BufTabLineHidden*         |TabLine|
-    " *BufTabLineFill*           |TabLineFill|
 
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
@@ -306,10 +304,10 @@ set encoding=utf8
 set ffs=unix,dos,mac
 
 " highlight col >= 80
-augroup vimrc_autocmds
-  autocmd BufEnter * highlight OverLength ctermbg=darkred guibg=#592929
-  autocmd BufEnter * match OverLength /\%81v.*/
-augroup END
+" augroup vimrc_autocmds
+  " autocmd BufEnter * highlight OverLength ctermbg=darkred guibg=#592929
+  " autocmd BufEnter * match OverLength /\%81v.*/
+" augroup END
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -374,7 +372,7 @@ set tw=79
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Movement, tabs, windows, and buffers
+" => Movement, tabs, windows, buffers, and registers
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " {{{
 " Treat wrapped lines as normal lines
@@ -384,30 +382,30 @@ nnoremap k gk
 " Working ci(, works for both breaklined, inline and multiple ()
 nnoremap ci( %ci(
 
-" yank/paste/delete to system keyboard
-noremap <leader>y "+y
-noremap <leader>d "+d
-noremap <leader>p "+p
-noremap <leader>P "+P
+" yank/paste/delete to system clipboard
+vmap <Leader>y "+y
+vmap <Leader>d "+d
+nmap <Leader>p "+p
+nmap <Leader>P "+P
+
 
 " Switch CWD to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>:pwd<cr>
+
+" close buffers
+map <leader>q :bd<cr>
+map <leader>Q :bd!<cr>
+
+" quickly switch between buffers
+noremap <leader>b :ls<cr>:b<space>
+noremap <leader>[ :bprevious<cr>
+noremap <leader>] :bnext<cr>
 
 " Smart way to move between windows
 map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
-
-" Useful mappings for managing tabs
-map <leader>tn :tabnew<cr>
-map <leader>to :tabonly<cr>
-map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove 
-map <leader>t<leader> :tabnext<cr>
-" Opens a new tab with the current buffer's path
-" Super useful when editing files in the same directory
-map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
 
 " Visual mode pressing * or # searches for the current selection
 " Super useful! From an idea by Michael Naumann
@@ -467,14 +465,10 @@ map 0 ^
     " }}}
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    " => ctrlp
+    " => NERDTree
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     " {{{
-    let g:ctrlp_max_height = 20
-    let g:ctrlp_match_window = 'bottom,order:ttb'
-    let g:ctrlp_switch_buffer = 0
-    let g:ctrlp_working_path_mode = 0
-    let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
+    map <leader>t :NERDTreeToggle<CR>
     " }}}
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -508,6 +502,24 @@ map 0 ^
     let g:neocomplete#enable_smart_case = 1 " Use smartcase.
     let g:neocomplete#sources#syntax#min_keyword_length = 3 " Set minimum syntax keyword length.
     let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+    " }}}
+
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " => yankstack
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " {{{
+    let g:yankstack_map_keys = 0
+    nmap <C-p> <Plug>yankstack_substitute_older_paste
+    nmap <C-P> <Plug>yankstack_substitute_newer_paste
+    " }}}
+
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " => Ag searching and cope displaying
+    "    requires ag.vim - it's much better than vimgrep/grep
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " {{{
+    " Open Ag and put the cursor in the right position
+    map <leader>a :Ag! 
     " }}}
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

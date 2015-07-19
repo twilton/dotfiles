@@ -17,7 +17,7 @@
 set -eu
 
 # user specific
-overlay="/home/godo/pics/lock.png"
+overlay="$HOME/pics/lock.png"
 pixelize=$(echo pixelize.sh -s 5 -m 2)
 width=2880
 height=1800

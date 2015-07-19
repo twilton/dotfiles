@@ -1,8 +1,10 @@
-## ENVIRONMENT
-
 # startx at login
 [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx
 
+###############################################################################
+# => General
+###############################################################################
+# {{{
 # Set path
 export PATH="$HOME/.bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/bin/core_perl"
 
@@ -11,8 +13,39 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 
-# Hardware
+# Hardware acceleration
 export VDPAU_DRIVER=va_gl
+
+# Allow brace character class list expansion.
+setopt BRACE_CCL
+# Combine zero-length punctuation characters (accents) with the base character.
+setopt COMBINING_CHARS
+# Allow 'Henry''s Garage' instead of 'Henry'\''s Garage'.
+setopt RC_QUOTES
+# Don't error if globbing fails
+setopt NONOMATCH
+# Don't print a warning message if a mail file has been accessed.
+unsetopt MAIL_WARNING
+# List jobs in the long format by default.
+setopt LONG_LIST_JOBS
+# Attempt to resume existing job before creating a new process.
+setopt AUTO_RESUME
+# Report status of background jobs immediately.
+setopt NOTIFY
+# Don't run all background jobs at a lower priority.
+unsetopt BG_NICE
+# Don't kill jobs on shell exit.
+unsetopt HUP
+# Don't report on jobs when shell exit.
+unsetopt CHECK_JOBS
+
+# History
+HISTSIZE=2000
+SAVEHIST=2000
+HISTFILE="$HOME/.dotfiles/zsh/history"
+setopt hist_ignore_dups
+setopt inc_append_history
+setopt share_history
 
 # Default Programs
 export BROWSER='firefox'
@@ -22,7 +55,12 @@ export TERMINAL='urxvtc'
 
 # Less options.
 export LESS='-F -g -i -M -R -S -w -X -z-4'
+# }}}
 
+###############################################################################
+# => Plugins
+###############################################################################
+# {{{
 # Substring Search
 source "$HOME/.dotfiles/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh"
 source "$HOME/.dotfiles/zsh/plugins/search.zsh"
@@ -31,18 +69,48 @@ source "$HOME/.dotfiles/zsh/plugins/search.zsh"
 fpath=($HOME/.dotfiles/zsh/plugins/zsh-completions/src $fpath)
 source "$HOME/.dotfiles/zsh/plugins/completion.zsh"
 
-# enable coloring
-autoload -U colors && colors
-export GCC_COLORS=1
-alias ls='ls --color=auto -hrtF'
-alias lsa='ls --color=auto -oghrtF'
-alias grep='grep --color=auto'
+# Smart URLs
+autoload -Uz url-quote-magic
+zle -N self-insert url-quote-magic
+# }}}
 
+###############################################################################
+# => Keybinds
+###############################################################################
+# {{{
 # vi-like key bindings
 bindkey -v
 export KEYTIMEOUT=1
 
-# set the prompt
+# Fix unmapped keys
+# bindkey '\e[2~' quoted-insert # ins
+bindkey '\e[3~' delete-char # del
+bindkey '\e[7~' beginning-of-line # home
+bindkey '\e[8~' end-of-line # end
+bindkey '\e[5~' beginning-of-history # pg up
+bindkey '\e[6~' end-of-history # pg down
+# }}}
+
+###############################################################################
+# => Colors
+###############################################################################
+# {{{
+# enable coloring
+autoload -U colors && colors
+
+# use gcc colors
+export GCC_COLORS=1
+
+# force colors
+alias ls='ls --color=auto -hrtF'
+alias lsa='ls --color=auto -oghrtF'
+alias grep='grep --color=auto'
+# }}}
+
+###############################################################################
+# => Prompt
+###############################################################################
+# {{{
 PROMPT="%(?.%{$fg[cyan]%}.%{$fg[red]%})[%{$fg[white]%} %~ %(?.%{$fg[cyan]%}.%{$fg[red]%})] %{$reset_color%}"
 RPROMPT=""
 
@@ -67,61 +135,52 @@ function zle-line-init zle-keymap-select {
 
 zle -N zle-line-init
 zle -N zle-keymap-select
+# }}}
 
-# environment
-autoload -Uz url-quote-magic # Smart URLs
-zle -N self-insert url-quote-magic # Smart URLs
-setopt BRACE_CCL          # Allow brace character class list expansion.
-setopt COMBINING_CHARS    # Combine zero-length punctuation characters (accents)
-                          # with the base character.
-setopt RC_QUOTES          # Allow 'Henry''s Garage' instead of 'Henry'\''s Garage'.
-setopt NONOMATCH          # Don't error if globbing fails
-unsetopt MAIL_WARNING     # Don't print a warning message if a mail file has been accessed.
-setopt LONG_LIST_JOBS     # List jobs in the long format by default.
-setopt AUTO_RESUME        # Attempt to resume existing job before creating a new process.
-setopt NOTIFY             # Report status of background jobs immediately.
-unsetopt BG_NICE          # Don't run all background jobs at a lower priority.
-unsetopt HUP              # Don't kill jobs on shell exit.
-unsetopt CHECK_JOBS       # Don't report on jobs when shell exit.
+###############################################################################
+# => Aliases and functions
+###############################################################################
+# {{{
+# Headaches
+alias quit='exit'
+alias :q='quit'
+alias pls='sudo $(fc -ln -1)'
 
-# History
-HISTSIZE=2000
-SAVEHIST=2000
-HISTFILE="$HOME/.dotfiles/zsh/history"
-setopt hist_ignore_dups
-setopt inc_append_history
-setopt share_history
-
-
-## ALIASES 
-
-# change dir
-alias ..='cd ..'
-alias ...='cd ../..'
-    # make dir and cd into it
-function mkcd ()
-{
-    mkdir -p "$@" && eval cd "\"\$$#\"";
-}
-    # auto-ls after changing directory
-cd () {
-    builtin cd $@ && ls -hrtF
-}
-
-# Terminal
+# Shortforms
 alias c='clear'
 alias s='sudo'
-alias syugit='pacaur -Syu --devel --needed'
+
+# make use of systemcl more friendly
+function sstart()   { sudo systemctl start $@;   }
+function srestart() { sudo systemctl restart $@; }
+function senable()  { sudo systemctl enable $@;  }
+function sdisable() { sudo systemctl disable $@; }
+function sstatus()  { sudo systemctl status $@; }
 
 # Add 'protection'
 alias rm='rm -I'
 alias cp='cp -vi'
 alias mv='mv -i'
 
-# Headaches
-alias quit='exit'
-alias :q='quit'
-alias pls='sudo $(fc -ln -1)'
+# Add sudo
+alias mount='sudo mount'
+alias umount='sudo umount'
+
+# Directories
+alias ..='cd ..'
+alias ...='cd ../..'
+# auto-ls after changing directory
+cd () {
+    builtin cd $@ && ls -hrtF
+}
+# make dir and cd into it
+function mkcd ()
+{
+    mkdir -p "$@" && eval cd "\"\$$#\"";
+}
+
+# Pacman / Pacaur
+alias syugit='pacaur -Syu --devel --needed'
 
 # Network
 alias ping="ping -c 3"
@@ -136,29 +195,9 @@ alias -g M='| more'
 alias -g G='| grep'
 alias -g V='| vim -'
 
-# livestreamer
+# Program Specific
 alias livestreamer='livestreamer -p mpv'
-
-# xboard
 alias xboard-stockfish='xboard -fUCI -fcp stockfish -sUCI -scp stockfish'
-# TMUX / DTACH
-# alias t='tmux' forces 256 colors
-# alias d='dtach -A ~/tmp/irssi.sk /usr/bin/irssi'
-
-# BTPD
-# alias btc="btcli -d ~/var/btp"
-
-# make use of systemcl more friendly
-function sstart()   { sudo systemctl start $@;   }
-function srestart() { sudo systemctl restart $@; }
-function senable()  { sudo systemctl enable $@;  }
-function sdisable() { sudo systemctl disable $@; }
-function sstatus()  { sudo systemctl status $@; }
-
-# mounting
-function nicemount() { (echo "DEVICE PATH TYPE FLAGS" && mount | awk '$2="";1') | column -t ; }
-alias mount='sudo mount'
-alias umount='sudo umount'
 
 # passwords
 alias keys='kpcli --kdb /home/godo/docs/pass/cats'
@@ -208,11 +247,6 @@ function imgur() {
         echo "permalink: $folder/permalink.txt"
     fi
 }
+# }}}
 
-# key bindings
-    # bindkey '\e[2~' quoted-insert # ins
-bindkey '\e[3~' delete-char # del
-bindkey '\e[7~' beginning-of-line # home
-bindkey '\e[8~' end-of-line # end
-bindkey '\e[5~' beginning-of-history # pg up
-bindkey '\e[6~' end-of-history # pg down
+# vim:foldmethod=marker:foldlevel=0

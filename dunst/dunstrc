@@ -163,7 +163,7 @@
 
 [espeak]
     summary = "*"
-    script = "/home/godo/.dotfiles/bin/open_sidebar_temp"
+    script = "/home/godo/.dotfiles/bin/sidebar/open_sidebar_temp"
     timeout = 0
 
 [urgency_low]
@@ -192,7 +192,7 @@
     summary = "Todo_nokill:"
     background = "#1d1f21"
     foreground = "#de935f"
-    script = "/home/godo/.dotfiles/bin/open_sidebar"
+    script = "/home/godo/.dotfiles/bin/sidebar/open_sidebar"
 
 [weather]
     summary = "Weather Notification"
@@ -213,7 +213,7 @@
     summary = "Low Battery Warning"
     background = "#cc6666"
     foreground = "#1d1f21"
-    script = "/home/godo/.dotfiles/bin/open_sidebar"
+    script = "/home/godo/.dotfiles/bin/sidebar/open_sidebar"
 
 [irc]
     appname = weechat

@@ -2,7 +2,6 @@
 
 # Define colors
 FG=$(cat $HOME/.Xresources | grep foreground | tail -c 8)
-#BG
 COLOR1=$(cat $HOME/.Xresources | grep color6 | tail -c 8)
 COLOR2=$(cat $HOME/.Xresources | grep color3 | tail -c 8)
 COLOR3=$(cat $HOME/.Xresources | grep color7 | tail -c 8)
@@ -32,13 +31,13 @@ while true; do
     new=$(mpc -f '[[%artist% - ][%title%][ - %album%]]' | head -n 1)
 
     if [[ "$current" != "$new" ]]; then
-        bash ~/.dotfiles/bin/music &
+        bash $HOME/.dotfiles/bin/panels/music &
         exit
     fi
 
     echo "$music"
 
-    mpc idle >/dev/null
+    mpc idle > /dev/null
 done |
 
 # Spawn Music (dzen/bar)

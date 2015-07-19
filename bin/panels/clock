@@ -22,7 +22,7 @@ while true; do
     countnew=$(xftwidth "Source Code Pro:size=7" "$(date +'%A %d %I:%M %p')")
 
     if [[ $count -ne $countnew ]]; then
-        bash ~/.dotfiles/bin/clock &
+        bash ~/.dotfiles/bin/panels/clock &
         exit
     fi
 
