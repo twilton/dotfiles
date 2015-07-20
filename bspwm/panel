@@ -1,4 +1,12 @@
 #! /bin/sh
+
+# -----------------------------------------------------------------------------
+# panel
+# Description: Starts music, clock and battery panels
+# -----------------------------------------------------------------------------
+# Location: $HOME/.config/bspwm/panel
+# -----------------------------------------------------------------------------
+
 bash $HOME/.dotfiles/bin/panels/music &
 bash $HOME/.dotfiles/bin/panels/clock &
 bash $HOME/.dotfiles/bin/panels/battery &

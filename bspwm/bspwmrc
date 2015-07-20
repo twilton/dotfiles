@@ -1,5 +1,12 @@
 #! /bin/sh
 
+# -----------------------------------------------------------------------------
+# bspwmrc
+# Description: Config file for bspwm
+# -----------------------------------------------------------------------------
+# Location: $HOME/.config/bspwm/bspwmrc
+# -----------------------------------------------------------------------------
+
 bspc config border_width         5
 bspc config window_gap           50
 bspc config top_padding          40
