@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# -----------------------------------------------------------------------------
+# sf
+# Description: Displays arch system information
+# -----------------------------------------------------------------------------
+# Source:
+#   onodera-punpun: https://github.com/onodera-punpun/dotfiles
+# -----------------------------------------------------------------------------
+# Useage:      $ sh ./sf
+# -----------------------------------------------------------------------------
+
 # Define colors
 bc=$(tput bold)	    # bold
 c0=$(tput setaf 0)  # black
@@ -27,7 +37,7 @@ UPTIME=$(uptime -p | sed s:"up "::)
 PACKAGES=$(pacman -Q | wc -l)
 # WM= has problems with vim modeline in .xinitrc
 # WM="$(tail -n 1 "$HOME/.xinitrc" | cut -d " " -f 2)"
-WM="bspwm"
+WM="bspwm" # set manually for now
 
 cat << EOF
 

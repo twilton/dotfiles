@@ -1,5 +1,20 @@
 #!/bin/bash
 
+# -----------------------------------------------------------------------------
+# music
+# Description: Displays panel shoing information about mpd server
+# -----------------------------------------------------------------------------
+# Source:
+#   onodera-punpun: https://github.com/onodera-punpun/dotfiles
+# -----------------------------------------------------------------------------
+# Requires:
+#   mpd / mpc
+#   xftwidth
+#   dzen
+# -----------------------------------------------------------------------------
+# Useage:      $ sh ./music
+# -----------------------------------------------------------------------------
+
 # Define colors
 FG=$(cat $HOME/.Xresources | grep foreground | tail -c 8)
 COLOR1=$(cat $HOME/.Xresources | grep color6 | tail -c 8)

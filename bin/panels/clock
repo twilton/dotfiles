@@ -1,5 +1,19 @@
 #!/bin/bash
 
+# -----------------------------------------------------------------------------
+# clock
+# Description: Displays panel shoing information about time
+# -----------------------------------------------------------------------------
+# Source:
+#   onodera-punpun: https://github.com/onodera-punpun/dotfiles
+# -----------------------------------------------------------------------------
+# Requires:
+#   xftwidth
+#   dzen
+# -----------------------------------------------------------------------------
+# Useage:      $ sh ./clock
+# -----------------------------------------------------------------------------
+
 # Define colors
 foreground=$(cat $HOME/.Xresources | grep foreground | tail -c 8)
 COLOR1=$(cat $HOME/.Xresources | grep color6 | tail -c 8)

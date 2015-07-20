@@ -198,6 +198,7 @@ alias -g V='| vim -'
 # Program Specific
 alias livestreamer='livestreamer -p mpv'
 alias xboard-stockfish='xboard -fUCI -fcp stockfish -sUCI -scp stockfish'
+alias sxiv='sxiv -b'
 
 # passwords
 alias keys='kpcli --kdb /home/godo/docs/pass/cats'

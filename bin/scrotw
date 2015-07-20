@@ -1,13 +1,19 @@
 #!/bin/bash
-#
-# Source:      http://blog.bemoko.com/blog/2009/07/01/add-shadow-and-border-to-images-with-imagemagick/
-# Profile:     http://www.ugra.ch/iso-color-profiles.phtml
-#
-# Author:      Twily                                       2014
+
+# -----------------------------------------------------------------------------
+# scrotw
 # Description: Capture a window and add a drop shadow behind it
-# Requires:    scrot, imagemagick, ISOcoated_v2_300_eci.icc
+# -----------------------------------------------------------------------------
+# Source:
+#   Bemoko: http://blog.bemoko.com/blog/2009/07/01/add-shadow-and-border-to-images-with-imagemagick/
+#   Twily: http://twily.info/scrotw#Other
+# -----------------------------------------------------------------------------
+# Requires:
+#   scrot
+#   imagemagick
+# -----------------------------------------------------------------------------
 # Useage:      $ sh ./scrotw filename.png
-#
+# -----------------------------------------------------------------------------
 
 name=$(date +'%b%d::%H%M%S').png
 scrot ~/pics/scrots/scrotw.tmp.png -sbd 1 || exit 1
