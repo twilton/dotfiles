@@ -13,7 +13,7 @@
     editor = /usr/bin/vim
 [user]
     name = godo-
-    email = nix.godo@gmail.com
+    email = github.godo@gmail.com
 # }}}
 
 # -----------------------------------------------------------------------------
