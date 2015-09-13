@@ -24,4 +24,4 @@ COVRET=$( ls "$MDB$MDIR" | egrep "\.jpg|\.png|\.gif" | head -n1 )
 ALBUMART="$(echo $MDB$MDIR$COVRET)"
 
 # display picture for 5s in sxiv
-timeout -sHUP 5 sxiv -N "mpd_album_art" -b -s f -g 256x256-100-100 "$ALBUMART" 2> /dev/null & 
+timeout -sHUP 5 sxiv -N "mpd_album_art" -b -s f -g "$WXH"x"$WXH"-100-100 "$ALBUMART" 2> /dev/null & 

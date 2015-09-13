@@ -1,0 +1,3 @@
+#!/bin/sh
+geometry=$(identify -format '%wx%h' "$@")
+sxiv -g "$geometry" -b "$@"
