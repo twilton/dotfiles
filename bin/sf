@@ -31,7 +31,7 @@ hc=${c5}       # highlight color
 
 # Get info
 HOST=$(hostname)
-OS="arch"
+OS=$(lsb_release -i -s)
 KERNEL=$(uname -sr)
 UPTIME=$(uptime -p | sed s:"up "::)
 PACKAGES=$(pacman -Q | wc -l)
