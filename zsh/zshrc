@@ -5,24 +5,13 @@
 # Location: $HOME/.zshrc
 # -----------------------------------------------------------------------------
 
-# startx at login
-[[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx
+# Skip for non-interactive shells
+[[ -z "$PS1" ]] && return
 
 # -----------------------------------------------------------------------------
-# => General
+# => Environment
 # -----------------------------------------------------------------------------
 # {{{
-# Set path
-export PATH="$HOME/.bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/bin/core_perl"
-
-# Make UTF-8
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-export LANGUAGE=en_US.UTF-8
-
-# Hardware acceleration
-export VDPAU_DRIVER=va_gl
-
 # Allow brace character class list expansion.
 setopt BRACE_CCL
 # Combine zero-length punctuation characters (accents) with the base character.
@@ -50,18 +39,13 @@ unsetopt CHECK_JOBS
 HISTSIZE=2000
 SAVEHIST=2000
 HISTFILE="$HOME/.dotfiles/zsh/history"
-setopt hist_ignore_dups
-setopt inc_append_history
-setopt share_history
+setopt HIST_IGNORE_DUPS
+setopt INC_APPEND_HISTORY
+setopt SHARE_HISTORY
 
-# Default Programs
-export BROWSER='firefox'
-export EDITOR='vim'
-export VISUAL='vim'
-export TERMINAL='urxvtc'
-
-# Less options.
-export LESS='-F -g -i -M -R -S -w -X -z-4'
+# Load OS specific environment settings
+[[ $OSTYPE == darwin*  && -f $HOME/.dotfiles/zsh/darwin/zshenv ]]  && source $HOME/.dotfiles/zsh/darwin/zshenv
+[[ $OSTYPE == linux*   && -f $HOME/.dotfiles/zsh/linux/zshenv ]]  && source $HOME/.dotfiles/zsh/linux/zshenv
 # }}}
 
 # -----------------------------------------------------------------------------
@@ -79,6 +63,9 @@ source "$HOME/.dotfiles/zsh/plugins/completion.zsh"
 # Smart URLs
 autoload -Uz url-quote-magic
 zle -N self-insert url-quote-magic
+
+# enable coloring
+autoload -U colors && colors
 # }}}
 
 # -----------------------------------------------------------------------------
@@ -96,22 +83,6 @@ bindkey '\e[7~' beginning-of-line # home
 bindkey '\e[8~' end-of-line # end
 bindkey '\e[5~' beginning-of-history # pg up
 bindkey '\e[6~' end-of-history # pg down
-# }}}
-
-# -----------------------------------------------------------------------------
-# => Colors
-# -----------------------------------------------------------------------------
-# {{{
-# enable coloring
-autoload -U colors && colors
-
-# use gcc colors
-export GCC_COLORS=1
-
-# force colors
-alias ls='ls --color=auto -hrtF'
-alias lsa='ls --color=auto -oghrtF'
-alias grep='grep --color=auto'
 # }}}
 
 # -----------------------------------------------------------------------------
@@ -157,13 +128,6 @@ alias pls='sudo $(fc -ln -1)'
 alias c='clear'
 alias s='sudo'
 
-# make use of systemcl more friendly
-function sstart()   { sudo systemctl start $@;   }
-function srestart() { sudo systemctl restart $@; }
-function senable()  { sudo systemctl enable $@;  }
-function sdisable() { sudo systemctl disable $@; }
-function sstatus()  { sudo systemctl status $@; }
-
 # Add 'protection'
 alias rm='rm -I'
 alias cp='cp -vi'
@@ -176,89 +140,13 @@ alias umount='sudo umount'
 # Directories
 alias ..='cd ..'
 alias ...='cd ../..'
-# auto-ls after changing directory
-cd () {
-    builtin cd $@ && ls -hrtF
-}
-# make dir and cd into it
-function mkcd ()
-{
-    mkdir -p "$@" && eval cd "\"\$$#\"";
-}
-
-# Pacman / Pacaur
-alias syugit='pacaur -Syu --devel --needed'
 
 # Network
 alias ping="ping -c 3"
-alias vpn='sudo openvpn --config ~/.vpn/AirVPN_Canada_UDP-2018.ovpn'
-alias vpnu='sudo openvpn --config ~/.vpn/AirVPN_United-States_UDP-2018.ovpn'
 
-# Pipes & more
-alias -g BG='& exit'
-alias -g N='> /dev/null'
-alias -g L='| less'
-alias -g M='| more'
-alias -g G='| grep'
-alias -g V='| vim -'
-
-# Program Specific
-alias livestreamer='livestreamer -p mpv'
-alias xboard-stockfish='xboard -fUCI -fcp stockfish -sUCI -scp stockfish'
-# alias sxiv='sxiv -b'
-# sxiv () {
- #    geometry=$(identify -format '%wx%h' "$@")
-  #   command sxiv -g "$geometry" -b "$@"
-# }
-
-# passwords
-alias keys='kpcli --kdb /home/godo/docs/pass/cats'
-
-# easier extraction
-extract () {
-    if [ -f $1 ] ; then
-        case $1 in
-            *.tar.bz2) tar xvjf $1;;
-            *.tar.gz) tar xvzf $1;;
-            *.bz2) bunzip2 $1;;
-            *.rar) unrar x $1;;
-            *.gz) gunzip $1;;
-            *.tar) tar xvf $1;;
-            *.tbz2) tar xvjf $1;;
-            *.tgz) tar xvzf $1;;
-            *.zip) unzip $1;;
-            *.Z) uncompress $1;;
-            *.7z) 7za x $1;;
-            *) echo "'$1' cannot be extracted via >extract<" ;;
-        esac
-    else
-        echo "'$1' is not a valid file"
-    fi
-}
-
-# imgur
-function imgur() {
-    url=$1
-    if [ -z "$url" ]; then
-        echo "imgur requires a valid url"
-        echo "syntax: imgur url (name)?"
-    else
-        user=$2
-        if [ -z "$user" ]; then
-            $user="unknown"
-            echo "no user found, setting user to unknown"
-        fi
-        pictures="/home/godo/pics/imgur"
-        date=`date +%b-%d-%Y`
-        album=`echo $url | sed -r 's/^(http\:\/\/)?imgur\.com(\/a\/)?//'`
-        folder="$pictures/$user/$date - $album"
-
-        python $pictures/imguralbum.py $url $folder
-        echo `touch "$folder/permalink.txt"`
-        echo "$url" >> "$folder/permalink.txt"
-        echo "permalink: $folder/permalink.txt"
-    fi
-}
+# Load OS specific aliases / functions
+[[ $OSTYPE == darwin*  && -f $HOME/.dotfiles/zsh/darwin/aliases ]]  && source $HOME/.dotfiles/zsh/darwin/aliases
+[[ $OSTYPE == linux*   && -f $HOME/.dotfiles/zsh/linux/aliases ]]  && source $HOME/.dotfiles/zsh/linux/aliases
 # }}}
 
 # vim:foldmethod=marker:foldlevel=0
