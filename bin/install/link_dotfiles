@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+
+set -e
+
+# Define colors
+bc=$(tput bold)	    # bold
+c0=$(tput setaf 0)  # black
+c1=$(tput setaf 1)  # red
+c2=$(tput setaf 2)  # green
+c3=$(tput setaf 3)  # yellow
+c4=$(tput setaf 4)  # blue
+c5=$(tput setaf 5)  # magenta
+c6=$(tput setaf 6)  # cyan
+c7=$(tput setaf 7)  # white
+rc=$(tput sgr0)	    # reset
+
+# Define Directories
+dotfiles="${HOME}/.dotfiles"
+config="${HOME}/.config"
+
+link() {
+    echo -n "${c7}Link${rc} ${c6}${1}${rc}${c7}? (y/n)${rc}${c7}:${rc} "
+    read -n 1 response
+    echo ''
+    if [[ "$response" == "y" ]]; then
+        echo -n "${bc}${c5}Symbolically linking${rc} ${c3}${2}${rc} ${c7}to${rc} ${c3}${3}${rc} ${c7}...${rc} "
+        # ln -s "$2" "$3"
+        echo "${bc}${c2}done${rc}"
+    elif [[ "$response" == "n" ]]; then
+        echo "${bc}${c5}Skipping${rc}"
+    else
+        echo "${c1}Error:${rc} ${bc}${c2}y(es)${rc} ${c7}or${rc} ${bc}${c1}n(o)${rc} ${c7}accepted${rc}"
+        link $1 $2 $3
+    fi
+}
+
+# link $name $location $destination
+link 'git' "${dotfiles}/git/gitconfig" "${HOME}/.gitconfig"
+link 'bin' "${dotfiles}/bin/" "${HOME}/.bin"
+link 'bspwm' "${dotfiles}/bspwm/" "${config}/bspwm"
+link 'compton' "${dotfiles}/compton/compton.conf" "${HOME}/.compton.conf"
+link 'mpd' "${dotfiles}/mpd/" "${config}/mpd"
+link 'mpv' "${dotfiles}/mpv/" "${config}/mpv"
+link 'ncmpcpp' "${dotfiles}/ncmpcpp/" "${HOME}/.ncmpcpp"
+link 'ranger' "${dotfiles}/ranger/" "${config}/ranger"
+link 'stalonetray' "${dotfiles}/stalonetray/stalonetrayrc" "${HOME}/.stalonetrayrc"
+link 'sxhkd' "${dotfiles}/sxhkd/" "${config}/sxhkd"
+link 'vim' "${dotfiles}/vim/" "${HOME}/.vim"
+link 'vimrc' "${dotfiles}/vim/vimrc" "${HOME}/.vimrc"
+link 'vimperator' "${dotfiles}/vimperator/" "${HOME}/.vimperator"
+link 'vimperatorrc' "${dotfiles}/vimperator/vimperatorrc" "${HOME}/.vimperatorrc"
+link 'weechat' "${dotfiles}/weechat/" "${HOME}/.weechat"
+link 'xinitrc' "${dotfiles}/xorg/xinitrc" "${HOME}/.xinitrc"
+link 'Xresources' "${dotfiles}/xorg/Xresources" "${HOME}/.Xresources"
+link 'zathura' "${dotfiles}/zathura/" "${config}/zathura"
+link 'zsh' "${dotfiles}/zsh/" "${HOME}/.zsh"
+link 'zshrc' "${dotfiles}/zsh/zshrc" "${HOME}/.zshrc"
+
+echo "${bc}${c3}Install complete!${rc}"
+
+exit 0

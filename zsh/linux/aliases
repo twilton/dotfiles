@@ -24,10 +24,6 @@ alias -g V='| vim -'
 # Pacman / Pacaur
 alias syugit='pacaur -Syu --devel --needed'
 
-# Program Specific
-alias livestreamer='livestreamer -p mpv'
-alias xboard-stockfish='xboard -fUCI -fcp stockfish -sUCI -scp stockfish'
-
 # passwords
 alias keys='kpcli --kdb /home/godo/docs/pass/cats'
 
@@ -68,29 +64,5 @@ extract () {
         esac
     else
         echo "'$1' is not a valid file"
-    fi
-}
-
-# imgur
-function imgur() {
-    url=$1
-    if [ -z "$url" ]; then
-        echo "imgur requires a valid url"
-        echo "syntax: imgur url (name)?"
-    else
-        user=$2
-        if [ -z "$user" ]; then
-            $user="unknown"
-            echo "no user found, setting user to unknown"
-        fi
-        pictures="/home/godo/pics/imgur"
-        date=`date +%b-%d-%Y`
-        album=`echo $url | sed -r 's/^(http\:\/\/)?imgur\.com(\/a\/)?//'`
-        folder="$pictures/$user/$date - $album"
-
-        python $pictures/imguralbum.py $url $folder
-        echo `touch "$folder/permalink.txt"`
-        echo "$url" >> "$folder/permalink.txt"
-        echo "permalink: $folder/permalink.txt"
     fi
 }

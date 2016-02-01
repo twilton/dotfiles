@@ -88,8 +88,8 @@ nnoremap x :tabclose<cr>
 " {{{
 " Search
 cabbrev yt youtube
-cabbrev gt googletranslate
-cabbrev wi wikipedia
+cabbrev translate googletranslate
+cabbrev wiki wikipedia
 " }}}
 
 " vim:foldmethod=marker:foldlevel=0: set filetype=vim:

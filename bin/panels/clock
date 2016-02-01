@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # -----------------------------------------------------------------------------
 # clock
@@ -15,29 +15,30 @@
 # -----------------------------------------------------------------------------
 
 # Define colors
-foreground=$(cat $HOME/.Xresources | grep foreground | tail -c 8)
-COLOR1=$(cat $HOME/.Xresources | grep color6 | tail -c 8)
-COLOR2=$(cat $HOME/.Xresources | grep color3 | tail -c 8)
-COLOR3=$(cat $HOME/.Xresources | grep color7 | tail -c 8)
+color1=$( cat $HOME/.Xresources | grep color6 | tail -c 8 )
+color2=$( cat $HOME/.Xresources | grep color3 | tail -c 8 )
+color3=$( cat $HOME/.Xresources | grep color7 | tail -c 8 )
 
 # Kill old clocks
-pkill -f "dzen2 -title-name clock"*
+pkill -f 'dzen2 -title-name clock'*
 sleep 0.1
 
 # Calculate the width
-count=$(xftwidth "Source Code Pro:size=7" "$(date +'%A %d %I:%M %p')")
-width=$(expr $count + 30)
-margin=$(expr 1440 - $width / 2)
+count=$( xftwidth 'Source Code Pro:size=7' "$(date +'%A %d %I:%M %p')" )
+width=$(( $count + 30 ))
+margin=$(( 1440 - $width / 2 ))
 
-while true; do
-    time=$(date +"^fg($COLOR3)%A ^fg($COLOR1)%d ^fg($COLOR2)%I^fg($COLOR3):^fg($COLOR2)%M ^fg($COLOR3)%p")
+while
+    :
+do
+    time=$( date +"^fg(${color3})%A ^fg(${color1})%d ^fg(${color2})%I^fg(${color3}):^fg(${color2})%M ^fg(${color3})%p" )
 
     # Reload the clock on day change
-    countnew=$(xftwidth "Source Code Pro:size=7" "$(date +'%A %d %I:%M %p')")
+    countnew=$( xftwidth 'Source Code Pro:size=7' "$(date +'%A %d %I:%M %p')" )
 
     if [[ $count -ne $countnew ]]; then
         bash ~/.dotfiles/bin/panels/clock &
-        exit
+        exit 0
     fi
 
     echo "$time"

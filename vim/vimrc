@@ -273,7 +273,7 @@ set foldlevelstart=0
 " hide folding column
 set foldcolumn=0 
 " folds using syntax
-set foldmethod=syntax
+set foldmethod=marker
 " max 10 nested folds
 set foldnestmax=10
 " folds open by default

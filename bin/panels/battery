@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # -----------------------------------------------------------------------------
 # battery
@@ -16,35 +16,37 @@
 # -----------------------------------------------------------------------------
 
 # Define colors
-green=$(cat $HOME/.Xresources | grep color2 | tail -c 8)
-red=$(cat $HOME/.Xresources | grep color9 | tail -c 8)
-grey=$(cat $HOME/.Xresources | grep color7 | tail -c 8)
+color1=$( cat $HOME/.Xresources | grep color2 | tail -c 8 )
+color2=$( cat $HOME/.Xresources | grep color9 | tail -c 8 )
+color3=$( cat $HOME/.Xresources | grep color7 | tail -c 8 )
 
 # Kill old battery
 pkill -f "dzen2 -title-name battery"*
 sleep 0.1
 
 # Calculate the width
-count=$(xftwidth "Source Code Pro:size=7" "[///]")
-width=$(expr $count + 30)
-margin=$(expr $width + 50)
+count=$( xftwidth 'Source Code Pro:size=7' '[///]' )
+width=$(( $count + 30 ))
+margin=$(( $width + 50 ))
 
 # Vars
-threshold="15"
+threshold=15
 
-while true; do
-    batStats=$(acpi --battery | cut -d ' ' -f3 | sed 's/,//')
-    percentage=$(acpi --battery | grep -o '[0-9]*%$' | sed 's/%//g')
+while
+    :
+do
+    battery_state=$( acpi --battery | cut -d ' ' -f3 | sed 's/,//' )
+    percentage=$( acpi --battery | grep -o '[0-9]*%' | sed 's/%//g' )
 
-    if [ "$batStats" == "Charging" ]; then
-        battery="^fg($grey)[^fg($green)++ ^fg($grey)]"
-    elif [ "$percentage" -le "$threshold" ]; then
-        battery="^fg($red)[^fg($red)!!!^fg($red)]"
-        notify-send "Low Battery Warning" "PLUG IN LAPTOP NOW"
-    elif [ "$batStats" == "Discharging" ]; then
-        battery="^fg($grey)[^fg($red)-- ^fg($grey)]"
+    if [[ "$battery_state" == "Charging" ]]; then
+        battery="^fg(${color3})[^fg(${color1})++ ^fg(${color3})]"
+    elif [[ $percentage -le $threshold ]]; then
+        battery="^fg(${color3})[^fg(${color2})!!!^fg(${color3})]"
+        # notify-send 'Low Battery Warning' 'PLUG IN LAPTOP NOW'
+    elif [[ "$battery_state" == "Discharging" ]]; then
+        battery="^fg(${color3})[^fg(${color2})-- ^fg(${color3})]"
     else
-        battery="^fg($grey)[^fg($green)///^fg($grey)]"
+        battery="^fg(${color3})[^fg(${color1})///^fg(${color3})]"
     fi
 
     echo "$battery"

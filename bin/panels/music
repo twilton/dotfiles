@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # -----------------------------------------------------------------------------
 # music
@@ -16,43 +16,44 @@
 # -----------------------------------------------------------------------------
 
 # Define colors
-FG=$(cat $HOME/.Xresources | grep foreground | tail -c 8)
-COLOR1=$(cat $HOME/.Xresources | grep color6 | tail -c 8)
-COLOR2=$(cat $HOME/.Xresources | grep color3 | tail -c 8)
-COLOR3=$(cat $HOME/.Xresources | grep color7 | tail -c 8)
+color1=$( cat $HOME/.Xresources | grep color6 | tail -c 8 )
+color2=$( cat $HOME/.Xresources | grep color3 | tail -c 8 )
+color3=$( cat $HOME/.Xresources | grep color7 | tail -c 8 )
 
 # Kill old music
-pkill -f "dzen2 -title-name music"*
+pkill -f 'dzen2 -title-name music'*
 sleep 0.1
 
 # Calculate the width
-current=$(mpc -f '[[%artist% - ][%title%][ - %album%]]' | head -n 1)
-count=$(xftwidth "Source Code Pro:size=7" "$current")
-width=$(expr $count + 30)
+current=$( mpc -f '[[%artist% - ][%title%][ - %album%]]' | head -n 1 )
+count=$( xftwidth 'Source Code Pro:size=7' "$current" )
+width=$(( $count + 30 ))
 
 # Vars
-artist=$(mpc -f "[%artist% - ]" | head -n 1)
-title=$(mpc -f "[%title%]" | head -n 1)
-album=$(mpc -f "[ - %album%]" | head -n 1)
-music=$(echo "^fg($COLOR1)$artist^fg($COLOR2)$title^fg($COLOR3)$album")
+artist=$( mpc -f '[%artist% - ]' | head -n 1 )
+title=$( mpc -f '[%title%]' | head -n 1 )
+album=$( mpc -f '[ - %album%]' | head -n 1 )
+music="^fg(${color1})${artist}^fg(${color2})${title}^fg(${color3})${album}"
 
-empty="$(mpc current | cut -d $'\n' -f 1)"
-if [[ -z $empty ]]; then
-    music=$(echo "^fg($COLOR3)Playlist Empty")
-    width=$(expr $(xftwidth "Source Code Pro:size=7" "Playlist Empty") + 30)
+empty=$( mpc current | cut -d $'\n' -f 1 )
+if [[ -z "$empty" ]]; then
+    music="^fg(${color3})Playlist Empty"
+    width=$(( $( xftwidth 'Source Code Pro:size=7' 'Playlist Empty' ) + 30 ))
 fi
 
-while true; do
-    new=$(mpc -f '[[%artist% - ][%title%][ - %album%]]' | head -n 1)
+while 
+    :
+do
+    new=$( mpc -f '[[%artist% - ][%title%][ - %album%]]' | head -n 1 )
 
     if [[ "$current" != "$new" ]]; then
         bash $HOME/.dotfiles/bin/panels/music &
-        exit
+        exit 0
     fi
 
     echo "$music"
 
-    mpc idle > /dev/null
+    mpc idle >/dev/null
 done |
 
 # Spawn Music (dzen/bar)
