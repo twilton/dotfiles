@@ -42,7 +42,6 @@ bspc rule -a "mpd_album_art" floating=on border=off manage=false
 # -----------------------------------------------------------------------------
 # {{{
 bspc monitor eDP1 -d 1 2 3 4 5
-bspc monitor HDMI3 -d 6
 # }}}
 
 # -----------------------------------------------------------------------------
@@ -50,7 +49,7 @@ bspc monitor HDMI3 -d 6
 # -----------------------------------------------------------------------------
 # {{{
 # music, clock, and battery
-bash $HOME/.dotfiles/bspwm/panel &
+$HOME/.dotfiles/bspwm/panel &
 # }}}
 
 # vim:foldmethod=marker:foldlevel=0

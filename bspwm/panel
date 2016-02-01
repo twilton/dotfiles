@@ -7,6 +7,6 @@
 # Location: $HOME/.config/bspwm/panel
 # -----------------------------------------------------------------------------
 
-bash $HOME/.dotfiles/bin/panels/music &
-bash $HOME/.dotfiles/bin/panels/clock &
-bash $HOME/.dotfiles/bin/panels/battery &
+$HOME/.dotfiles/bin/panels/music &
+$HOME/.dotfiles/bin/panels/clock &
+$HOME/.dotfiles/bin/panels/battery &
