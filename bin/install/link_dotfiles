@@ -24,7 +24,7 @@ link() {
     echo ''
     if [[ "$response" == "y" ]]; then
         echo -n "${bc}${c5}Symbolically linking${rc} ${c3}${2}${rc} ${c7}to${rc} ${c3}${3}${rc} ${c7}...${rc} "
-        # ln -s "$2" "$3"
+        ln -s "$2" "$3"
         echo "${bc}${c2}done${rc}"
     elif [[ "$response" == "n" ]]; then
         echo "${bc}${c5}Skipping${rc}"
