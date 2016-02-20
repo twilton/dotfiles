@@ -46,8 +46,8 @@ super + {_,shift + }{1-9,0}
 # -----------------------------------------------------------------------------
 # {{{
 # change node tile method
-super + {t,f,m}
-    bspc node -t {tiled,~floating,~fullscreen}
+super + {t,shift + t,f,m}
+    bspc node -t {'tiled','~pseudo_tiled','~floating','~fullscreen'}
 
 # close node
 super + shift + c
@@ -56,13 +56,13 @@ super + shift + c
 # resize tiled node
 super + shift + {l,h}
     S={+,-}; \
-    bspc node @west -r $\{S\}50 || \
-    bspc node @east -r $\{S\}50
+    bspc node @west -r "${S}"50 || \
+    bspc node @east -r "${S}"50
 
 super + shift + {j,k}
     S={+,-}; \
-    bspc node @south -r $\{S\}50 || \
-    bspc node @north -r $\{S\}50
+    bspc node @south -r "${S}"50 || \
+    bspc node @north -r "${S}"50
 
 # change to selected node by location
 super + {h,j,k,l}
@@ -70,15 +70,15 @@ super + {h,j,k,l}
 
 # change to selected node by prev / next
 super + {_,shift + }Tab
-   bspc node -f {prev,next}
+    bspc node -f {prev,next}
 
 # move selected node forward / backward in tile
 super + {comma,period}
-    bspc node -C {backward,forward}
+    bspc node @/ -C {backward,forward}
 
 # set new node preselection
 super + ctrl + {h,j,k,l}
-	bspc node -p {west,south,north,east}
+    bspc node -p {west,south,north,east}
 
 # }}}
 
@@ -160,7 +160,7 @@ XF86Audio{Prev,Play,Next}
     mpc {prev,toggle,next}
 
 {_,shift + }Pause
-    paswitch {alsa_output.usb-Audeze_Audio_Audeze_Audio-00.analog-stereo, \
+    paswitch {alsa_output.usb-iFi__by_AMR__iFi__by_AMR__HD_USB_Audio-00.analog-stereo, \
     alsa_output.pci-0000_00_1b.0.analog-stereo}
 
 super + {Left,Pause,Right}
