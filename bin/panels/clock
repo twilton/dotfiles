@@ -25,8 +25,8 @@ sleep 0.1
 
 # Calculate the width
 count=$( xftwidth 'Source Code Pro:size=7' "$(date +'%A %d %I:%M %p')" )
-width=$(( $count + 30 ))
-margin=$(( 1440 - $width / 2 ))
+width=$((  ${count} + 30 ))
+margin=$(( 1440 - ${width} / 2 ))
 
 while
     :
@@ -36,15 +36,15 @@ do
     # Reload the clock on day change
     countnew=$( xftwidth 'Source Code Pro:size=7' "$(date +'%A %d %I:%M %p')" )
 
-    if [[ $count -ne $countnew ]]; then
-        bash ~/.dotfiles/bin/panels/clock &
+    if [[ ${count} -ne ${countnew} ]]; then
+        ~/.dotfiles/bin/panels/clock &
         exit 0
     fi
 
-    echo "$time"
+    echo "${time}"
 
     sleep 30
 done |
 
 # Spawn clock (dzen/bar)
-dzen2 -title-name clock -p -geometry +$margin+25 -fn 'Source Code Pro:size=7' -ta c -w $width -h 40 -e 'onstart=lower' & disown
+dzen2 -title-name clock -p -geometry +${margin}+25 -fn 'Source Code Pro:size=7' -ta c -w ${width} -h 40 -e 'onstart=lower' & disown

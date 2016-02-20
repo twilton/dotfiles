@@ -19,10 +19,10 @@ MDB="$HOME/music/"
 MDIR="$( mpc -f %file% | head -1 | sed 's:[^/]*$::' )"
 
 # Search for common album art filenames (folder. , back., front.,)
-COVRET=$( ls "$MDB$MDIR" | egrep '(\.jpe?g|\.png|\.gif)' | head -n 1 )
+COVRET=$( ls "${MDB}${MDIR}" | egrep '(\.jpe?g|\.png|\.gif)' | head -n 1 )
 
 # Cat
 ALBUMART="${MDB}${MDIR}${COVRET}"
 
 # display picture for 5s in sxiv
-timeout -sHUP 5 sxiv -N "mpd_album_art" -b -s f -g 256x256-100-100 "$ALBUMART" 2>/dev/null &
+timeout -sHUP 5 sxiv -N "mpd_album_art" -b -s f -g 256x256-100-100 "${ALBUMART}" 2>/dev/null &

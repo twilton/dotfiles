@@ -26,8 +26,8 @@ sleep 0.1
 
 # Calculate the width
 count=$( xftwidth 'Source Code Pro:size=7' '[///]' )
-width=$(( $count + 30 ))
-margin=$(( $width + 50 ))
+width=$((  ${count} + 30 ))
+margin=$(( ${width} + 50 ))
 
 # Vars
 threshold=15
@@ -38,21 +38,20 @@ do
     battery_state=$( acpi --battery | cut -d ' ' -f3 | sed 's/,//' )
     percentage=$( acpi --battery | grep -o '[0-9]*%' | sed 's/%//g' )
 
-    if [[ "$battery_state" == "Charging" ]]; then
+    if [[ "${battery_state}" == "Charging" ]]; then
         battery="^fg(${color3})[^fg(${color1})++ ^fg(${color3})]"
-    elif [[ $percentage -le $threshold ]]; then
+    elif [[ ${percentage} -le ${threshold} ]]; then
         battery="^fg(${color3})[^fg(${color2})!!!^fg(${color3})]"
-        # notify-send 'Low Battery Warning' 'PLUG IN LAPTOP NOW'
-    elif [[ "$battery_state" == "Discharging" ]]; then
+    elif [[ "${battery_state}" == "Discharging" ]]; then
         battery="^fg(${color3})[^fg(${color2})-- ^fg(${color3})]"
     else
         battery="^fg(${color3})[^fg(${color1})///^fg(${color3})]"
     fi
 
-    echo "$battery"
+    echo "${battery}"
 
     sleep 30
 done |
 
 # Spawn Battery (dzen/bar)
-dzen2 -title-name battery -p -geometry -$margin+25 -fn 'Source Code Pro:size=7' -ta c -w $width -h 40 -e 'onstart=lower' & disown
+dzen2 -title-name battery -p -geometry -${margin}+25 -fn 'Source Code Pro:size=7' -ta c -w ${width} -h 40 -e 'onstart=lower' & disown

@@ -26,8 +26,8 @@ sleep 0.1
 
 # Calculate the width
 current=$( mpc -f '[[%artist% - ][%title%][ - %album%]]' | head -n 1 )
-count=$( xftwidth 'Source Code Pro:size=7' "$current" )
-width=$(( $count + 30 ))
+count=$( xftwidth 'Source Code Pro:size=7' "${current}" )
+width=$(( ${count} + 30 ))
 
 # Vars
 artist=$( mpc -f '[%artist% - ]' | head -n 1 )
@@ -36,7 +36,7 @@ album=$( mpc -f '[ - %album%]' | head -n 1 )
 music="^fg(${color1})${artist}^fg(${color2})${title}^fg(${color3})${album}"
 
 empty=$( mpc current | cut -d $'\n' -f 1 )
-if [[ -z "$empty" ]]; then
+if [[ -z "${empty}" ]]; then
     music="^fg(${color3})Playlist Empty"
     width=$(( $( xftwidth 'Source Code Pro:size=7' 'Playlist Empty' ) + 30 ))
 fi
@@ -46,15 +46,15 @@ while
 do
     new=$( mpc -f '[[%artist% - ][%title%][ - %album%]]' | head -n 1 )
 
-    if [[ "$current" != "$new" ]]; then
-        bash $HOME/.dotfiles/bin/panels/music &
+    if [[ "${current}" != "${new}" ]]; then
+        $HOME/.dotfiles/bin/panels/music &
         exit 0
     fi
 
-    echo "$music"
+    echo "${music}"
 
     mpc idle >/dev/null
 done |
 
 # Spawn Music (dzen/bar)
-dzen2 -title-name music -p -geometry +50+25 -fn 'Source Code Pro:size=7' -ta c -w $width -h 40 -e 'onstart=lower' & disown
+dzen2 -title-name music -p -geometry +50+25 -fn 'Source Code Pro:size=7' -ta c -w ${width} -h 40 -e 'onstart=lower' & disown
