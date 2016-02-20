@@ -22,16 +22,17 @@ set -eu
 
 # user specific
 overlay="$HOME/.dotfiles/bin/lock/lock.png"
-pixelize="$HOME/.dotfiles/bin/lock/pixelize.sh -s 5 -m 2"
+pixelize="$HOME/.dotfiles/bin/lock/pixelize.sh"
 width=2880
 height=1800
+overlay_radius=94
 screenshot=$( mktemp --tmpdir i3lock-scrot-XXX.png )
 lock=$( mktemp --tmpdir i3lock-final-XXX.png )
 
-# change last number in radius expression to fit your screen
-center_x=$(( $width / 2 ))
-center_y=$(( $height / 2 ))
-radius=$(( $center_y + 94 ))
+# math
+center_x=$(( ${width} / 2 ))
+center_y=$(( ${height} / 2 ))
+radius=$(( ${center_y} + ${overlay_radius} ))
 
 # colors
 circle_fill='#1d1f21'
@@ -59,23 +60,23 @@ lock() {
 }
 
 # take screenshot
-scrot -d0 "$screenshot"
+scrot -d0 "${screenshot}"
 
 # lock screen immediately with initial screenshot
-lock 0 "$screenshot"
+lock 0 "${screenshot}"
 
 # pixelate screenshot
-bash $pixelize "$screenshot" "$screenshot"
+"${pixelize}" -s 5 -m 2 "${screenshot}" "${screenshot}"
 
 # darken and add lock
-convert "$screenshot" \
+convert "${screenshot}" \
     -scale '20%' -level '-35%' -modulate '40' -scale '500%' \
-    -fill "$circle_fill" -stroke "$circle_stroke" -draw "fill-opacity 80% circle ${center_x},${center_y},${center_x},${radius}" \
-    -gravity 'center' "$overlay" -composite \
+    -fill "${circle_fill}" -stroke "${circle_stroke}" -draw "fill-opacity 80% circle ${center_x},${center_y},${center_x},${radius}" \
+    -gravity 'center' "${overlay}" -composite \
     ${lock}
 
 # kills the old lockscreen adds the new edited one
 kill $( pgrep i3lock )
-lock 1 "$lock"
+lock 1 "${lock}"
 
-trap "rm $screenshot $lock" EXIT
+trap "rm ${screenshot} ${lock}" EXIT
