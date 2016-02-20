@@ -412,7 +412,7 @@ set linebreak
 " autowrap with newline char
 set formatoptions+=t
 " autowrap length is 79 col
-set tw=79
+" set tw=79
 " }}}
 
 " -----------------------------------------------------------------------------
