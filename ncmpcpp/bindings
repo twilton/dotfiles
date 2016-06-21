@@ -220,7 +220,7 @@ def_key "-"
 def_key "tab"
   next_screen
 #
-def_key "shift_tab"
+def_key "shift-tab"
   previous_screen
 #
 #def_key "f1"

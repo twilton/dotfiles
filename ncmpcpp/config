@@ -49,13 +49,13 @@ visualizer_look = "∙▋"
 # -----------------------------------------------------------------------------
 # {{{
 song_list_format = "$7{ %n}$8 {%t}|{$8%f$9}$R$8{%b}$7{ %a}$0"
-song_status_format = $7%a - %t$0
-now_playing_prefix = $4 >>
+song_status_format = "$7%a - %t$0"
+now_playing_prefix = "$4 >>"
 now_playing_suffix =
-browser_playlist_prefix = $4 playlist $9
-selected_item_prefix = $3 >
-selected_item_suffix = $9
-modified_item_prefix = $2
+browser_playlist_prefix = "$4 playlist $9"
+selected_item_prefix = "$3 >"
+selected_item_suffix = "$9"
+modified_item_prefix = "$2"
 playlist_display_mode = classic
 discard_colors_if_item_is_selected = no
 playlist_disable_highlight_delay = "1"

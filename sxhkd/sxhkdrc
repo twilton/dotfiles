@@ -70,7 +70,7 @@ super + {h,j,k,l}
 
 # change to selected node by prev / next
 super + {_,shift + }Tab
-    bspc node -f {prev,next}
+    bspc node -f {prev,next}.local
 
 # move selected node forward / backward in tile
 super + {comma,period}
