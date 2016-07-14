@@ -1,0 +1,188 @@
+" -----------------------------------------------------------------------------
+" vimperatorrc
+" Description: Config file for vimperator
+" -----------------------------------------------------------------------------
+" Location: $HOME/.vimperatorrc
+" -----------------------------------------------------------------------------
+
+" -----------------------------------------------------------------------------
+" => General
+" -----------------------------------------------------------------------------
+" {{{
+" Always start in normal mode
+normal! <Esc>
+set focuscontent
+
+" title
+set titlestring="Firefox"
+
+" set editor
+set editor="urxvt -e vim"
+
+" Don't beep
+set noerrorbells
+
+" search
+set defsearch=google1
+
+" diable url separators
+set urlseparator=
+" }}}
+
+" -----------------------------------------------------------------------------
+" => Vimperator user interface
+" -----------------------------------------------------------------------------
+" {{{
+" animations
+set animations=false
+
+" hide gui stuff
+set toolbars=none
+" fix ublock / umatrix
+style -name ublick * #nav-bar * { visibility: visible; }
+
+" Hintchar
+set hintchars=hjklasdfgyuiopqwertnmzxcvb
+
+" Autocomplete using Firefox Awesomebar subsystem
+set complete=tlbS
+" Select the longest autocomplete match
+set wildmode='list:full'
+" only show 10 suggestions
+" set maxitems=10
+
+" keep messages around for 2 seconds
+set messagetimeout=2000
+
+" show link destination in status line
+set showstatuslinks=1
+" }}}
+
+" -----------------------------------------------------------------------------
+" => Colors and Fonts
+" -----------------------------------------------------------------------------
+" {{{
+" colors
+colorscheme godo
+" }}}
+
+" -----------------------------------------------------------------------------
+" => Edit mappings
+" -----------------------------------------------------------------------------
+" {{{
+" Faster Scrolling
+noremap j 5j
+noremap k 5k
+noremap h 5h
+noremap l 5l
+
+" Press 'K' to go to previous tab
+nnoremap K gT
+
+" Press 'J' to go to next tab
+nnoremap J gt
+
+" Press 'x' to delete current tab
+nnoremap x :tabclose<cr>
+" }}}
+
+" -----------------------------------------------------------------------------
+" => Abbreviations
+" -----------------------------------------------------------------------------
+" {{{
+" Search
+cabbrev yt youtube
+cabbrev translate googletranslate
+cabbrev wiki wikipedia
+" }}}
+
+" -----------------------------------------------------------------------------
+" => Firefox Settings
+" -----------------------------------------------------------------------------
+" {{{
+" Disable default browser check
+set! browser.shell.checkDefaultBrowser=false
+" set startup
+set! browser.startup.homepage=about:blank
+" newtab
+set! browser.newtab.url=about:blank
+" close the window when the last tab is closed
+set! browser.tabs.closeWindowWithLastTab=true
+" Disable warnings
+set! browser.tabs.warnOnClose=false
+set! browser.tabs.warnOnCloseOtherTabs=false
+set! browser.tabs.warnOnOpen=false
+set! general.warnOnAboutConfig=false
+" Disable tab animations
+set! browser.tabs.animate=false
+" Disable DOM storage
+set! dom.storage.enabled=false
+" Disable clipboardevents
+set! dom.event.clipboardevents.enabled=false
+" Disable webgl
+set! webgl.disabled=true
+" Disable child windows/tabs
+set! dom.disable_window_open_feature.resizable=false
+
+" Disable crash reporting
+set! breakpad.reportURL=
+" Disable health report
+set! datareporting.healthreport.uploadEnabled=false
+" Disable location services
+set! geo.wifi.uri=127.0.0.1
+set! geo.enabled=false
+" Disable Google virus checks
+set! browser.safebrowsing.appRepURL=
+set! browser.safebrowsing.downloads.enabled=false
+set! browser.safebrowsing.enabled=false
+set! browser.safebrowsing.gethashURL=
+set! browser.safebrowsing.malware.enabled=false
+set! browser.safebrowsing.malware.reportURL=
+set! browser.safebrowsing.reportErrorURL=
+set! browser.safebrowsing.reportGenericURL=
+set! browser.safebrowsing.reportMalwareErrorURL=
+set! browser.safebrowsing.reportMalwareURL=
+set! browser.safebrowsing.reportPhishURL=
+set! browser.safebrowsing.reportURL=
+set! browser.safebrowsing.updateURL=
+set! services.sync.prefs.sync.browser.safebrowsing.enabled=false
+set! services.sync.prefs.sync.browser.safebrowsing.malware.enabled=false
+" Disable WebRTC
+set! media.peerconnection.enabled=false
+" Disable pings
+set! toolkit.telemetry.enabled=false
+set! browser.send_pings=false
+set! browser.send_pings.require_same_host=true
+set! beacon.enable=false
+" Hide referrer
+set! network.http.sendRefererHeader=1
+set! network.http.sendSecureXSiteReferrer=false
+set! network.http.referer.XOriginPolicy=1
+set! network.http.referer.spoofSource=true
+set! network.http.referer.trimmingPolicy=2
+" 'do no track' header
+set! privacy.donottrackheader.enabled=true
+set! privacy.donottrackheader.value=1
+" Disable RC4 encryption
+set! security.ssl3.ecdhe_ecdsa_rc4_128_sha=false
+set! security.ssl3.ecdhe_rsa_rc4_128_sha=false
+set! security.ssl3.rsa_rc4_128_md5=false
+set! security.ssl3.rsa_rc4_128_sha=false
+" Don't cache
+set! browser.cache.disk.enable=false
+set! browser.cache.offline.enable=false
+set! browser.cache.disk.capacity=0
+set! browser.cache.offline.capacity=0
+set! devtools.cache.disabled=true
+set! network.http.use-cache=false
+" Disable prefetching
+set! network.prefetch-next=false
+set! network.dns.disablePrefetch=false
+" Pipelining
+set! network.http.pipelining=true
+set! network.http.pipelining.ssl=true
+set! network.http.proxy.pipelining=true
+set! network.http.pipelining.maxrequests=10
+" }}}
+
+" vim:foldmethod=marker:foldlevel=0: set filetype=vim:

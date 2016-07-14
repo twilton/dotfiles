@@ -1,0 +1,14 @@
+! -----------------------------------------------------------------------------
+! capsswap
+! Description: swaps escape key with caps lock key
+! -----------------------------------------------------------------------------
+! Requires:
+!   xmodmap
+! -----------------------------------------------------------------------------
+! Useage:      $ xmodmap capsswap
+! -----------------------------------------------------------------------------
+
+remove Lock = Caps_Lock
+keysym Escape = Caps_Lock
+keysym Caps_Lock = Escape
+add Lock = Caps_Lock

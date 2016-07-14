@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+
+# -----------------------------------------------------------------------------
+# close_sidebar
+# Description: close notification sidebar
+# -----------------------------------------------------------------------------
+# Requires:
+#   bspwm
+#   dunst
+# -----------------------------------------------------------------------------
+# Useage:      $ sh ./close_sidebar
+# -----------------------------------------------------------------------------
+
+right_padding=$(bspc config right_padding)
+
+if [[ ${right_padding} -ne 0 ]]; then
+    bspc config right_padding 0
+else
+    bspc config right_padding 600
+fi

@@ -1,0 +1,152 @@
+# -----------------------------------------------------------------------------
+# zshrc
+# Description: Config file for zsh
+# -----------------------------------------------------------------------------
+# Location: $HOME/.zshrc
+# -----------------------------------------------------------------------------
+
+# Skip for non-interactive shells
+[[ -z "$PS1" ]] && return
+
+# -----------------------------------------------------------------------------
+# => Environment
+# -----------------------------------------------------------------------------
+# {{{
+# Allow brace character class list expansion.
+setopt BRACE_CCL
+# Combine zero-length punctuation characters (accents) with the base character.
+setopt COMBINING_CHARS
+# Allow 'Henry''s Garage' instead of 'Henry'\''s Garage'.
+setopt RC_QUOTES
+# Don't error if globbing fails
+setopt NONOMATCH
+# Don't print a warning message if a mail file has been accessed.
+unsetopt MAIL_WARNING
+# List jobs in the long format by default.
+setopt LONG_LIST_JOBS
+# Attempt to resume existing job before creating a new process.
+setopt AUTO_RESUME
+# Report status of background jobs immediately.
+setopt NOTIFY
+# Don't run all background jobs at a lower priority.
+unsetopt BG_NICE
+# Don't kill jobs on shell exit.
+unsetopt HUP
+# Don't report on jobs when shell exit.
+unsetopt CHECK_JOBS
+
+# History
+HISTSIZE=2000
+SAVEHIST=2000
+HISTFILE="$HOME/.dotfiles/zsh/history"
+setopt HIST_IGNORE_DUPS
+setopt INC_APPEND_HISTORY
+setopt SHARE_HISTORY
+
+# Load OS specific environment settings
+[[ $OSTYPE == darwin*  && -f $HOME/.dotfiles/zsh/darwin/zshenv ]]  && source $HOME/.dotfiles/zsh/darwin/zshenv
+[[ $OSTYPE == linux*   && -f $HOME/.dotfiles/zsh/linux/zshenv  ]]  && source $HOME/.dotfiles/zsh/linux/zshenv
+# }}}
+
+# -----------------------------------------------------------------------------
+# => Plugins
+# -----------------------------------------------------------------------------
+# {{{
+# Substring Search
+source "$HOME/.dotfiles/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh"
+source "$HOME/.dotfiles/zsh/plugins/search.zsh"
+
+# enable zsh completion menu
+fpath=($HOME/.dotfiles/zsh/plugins/zsh-completions/src $fpath)
+source "$HOME/.dotfiles/zsh/plugins/completion.zsh"
+
+# Smart URLs
+autoload -Uz url-quote-magic
+zle -N self-insert url-quote-magic
+
+# enable coloring
+autoload -U colors && colors
+# }}}
+
+# -----------------------------------------------------------------------------
+# => Keybinds
+# -----------------------------------------------------------------------------
+# {{{
+# vi-like key bindings
+bindkey -v
+export KEYTIMEOUT=1
+
+# Fix unmapped keys
+# bindkey '\e[2~' quoted-insert # ins
+bindkey '\e[3~' delete-char # del
+bindkey '\e[7~' beginning-of-line # home
+bindkey '\e[8~' end-of-line # end
+bindkey '\e[5~' beginning-of-history # pg up
+bindkey '\e[6~' end-of-history # pg down
+# }}}
+
+# -----------------------------------------------------------------------------
+# => Prompt
+# -----------------------------------------------------------------------------
+# {{{
+PROMPT="%(?.%{$fg[cyan]%}.%{$fg[red]%})[%{$fg[white]%} %~ %(?.%{$fg[cyan]%}.%{$fg[red]%})] %{$reset_color%}"
+RPROMPT=""
+
+function current_branch() {
+  local ref
+  ref=$(git symbolic-ref --quiet HEAD 2> /dev/null)
+  local ret=$?
+  if [[ $ret != 0 ]]; then
+    [[ $ret == 128 ]] && return  # no git repo.
+    ref=$(git rev-parse --short HEAD 2> /dev/null) || return
+  fi
+  echo "%{$fg[white]%} [% %{$fg[magenta]%}${ref#refs/heads/}%{$fg[white]%}]% %{$reset_color%}"
+}
+
+function zle-line-init zle-keymap-select {
+    GIT_PROMPT=$(current_branch)
+    ERROR_REPORT="%{$fg[red]%} ━%{$reset_color%}"
+    VIM_PROMPT="%{$fg[white]%} [% normal]% %{$reset_color%}"
+    RPS1="%(?.${${KEYMAP/(vicmd|opp)/$VIM_PROMPT$GIT_PROMPT}/(main|viins)/$GIT_PROMPT}.${${KEYMAP/(vicmd|opp)/$VIM_PROMPT$GIT_PROMPT$ERROR_REPORT}/(main|viins)/$GIT_PROMPT$ERROR_REPORT})"
+    zle reset-prompt
+}
+
+zle -N zle-line-init
+zle -N zle-keymap-select
+# }}}
+
+# -----------------------------------------------------------------------------
+# => Aliases and functions
+# -----------------------------------------------------------------------------
+# {{{
+# Headaches
+alias quit='exit'
+alias :q='quit'
+alias pls='sudo $(fc -ln -1)'
+
+# Shortforms
+alias c='clear'
+alias s='sudo'
+
+# Add 'protection'
+alias rm='rm -I'
+alias cp='cp -vi'
+alias mv='mv -i'
+
+# Add sudo
+alias mount='sudo mount'
+alias umount='sudo umount'
+
+# Directories
+alias ..='cd ..'
+alias ...='cd ../..'
+
+# Network
+alias ping="ping -c 3"
+
+# Load OS specific aliases / functions
+[[ $OSTYPE == darwin*  && -f $HOME/.dotfiles/zsh/darwin/aliases ]]  && source $HOME/.dotfiles/zsh/darwin/aliases
+[[ $OSTYPE == linux*   && -f $HOME/.dotfiles/zsh/linux/aliases  ]]  && source $HOME/.dotfiles/zsh/linux/aliases
+# }}}
+
+# vim:foldmethod=marker:foldlevel=0

@@ -1,0 +1,43 @@
+# -----------------------------------------------------------------------------
+# zshenv
+# Description: File should contain commands to set the per-user command search
+#   path and other per-user environment vairables; it should not contain
+#   commands the produce output or assume the shell is attached to a tty.
+# -----------------------------------------------------------------------------
+# Location: $HOME/.zshenv
+# -----------------------------------------------------------------------------
+
+# XDG Base Directory Specification
+# http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+
+# Set path
+export PATH="$HOME/.bin:$PATH"
+
+# Make UTF-8
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+
+# Hardware acceleration
+export VDPAU_DRIVER=va_gl
+
+# Default Programs
+if [[ -x $(which firefox 2> /dev/null) ]]; then
+    export BROWSER='firefox'
+fi
+if [[ -x $(which vim 2> /dev/null) ]]; then
+    export EDITOR='vim'
+    export VISUAL=$EDITOR
+fi
+if [[ -x $(which urxvtc 2> /dev/null) ]]; then
+    export TERMINAL='urxvtc'
+fi
+
+# Less options.
+if [[ -x $(which less 2> /dev/null) ]]
+then
+    export LESS='-F -g -i -M -R -S -w -X -z-4'
+fi
+# }}}
