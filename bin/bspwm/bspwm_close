@@ -1,18 +1,17 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # -----------------------------------------------------------------------------
-# close_sidebar
-# Description: close notification sidebar
+# bspwm_close
+# Description: Closes all windows and then quits bspwm
 # -----------------------------------------------------------------------------
 # Requires:
 #   bspwm
-#   dunst
 # -----------------------------------------------------------------------------
-# Useage:      $ sh ./close_sidebar
+# Useage:      $ sh ./bspwm_close
 # -----------------------------------------------------------------------------
 
-killall dunst
-sleep 0.2
-bspc config right_padding 0
-sleep 0.1
-dunst & disown
+for node_id in $(bspc query -N); do
+    bspc node node_id -c
+done
+
+bspc quit

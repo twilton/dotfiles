@@ -13,16 +13,16 @@
 # -----------------------------------------------------------------------------
 
 # Set your musicdb
-MDB="$HOME/music/"
+mdb="$HOME/music/"
+
+# Set timeout time
+to=5
 
 # current dir
-MDIR="$( mpc -f %file% | head -1 | sed 's:[^/]*$::' )"
+mdir="${mdb}$( mpc -f %file% | head -1 | sed 's:[^/]*$::' )"
 
 # Search for common album art filenames (folder. , back., front.,)
-COVRET=$( ls "${MDB}${MDIR}" | egrep '(\.jpe?g|\.png|\.gif)' | head -n 1 )
+cover=$( ls "${mdir}" | egrep '(\.jpe?g|\.png|\.gif)' | head -n 1 )
 
-# Cat
-ALBUMART="${MDB}${MDIR}${COVRET}"
-
-# display picture for 5s in sxiv
-timeout -sHUP 5 sxiv -N "mpd_album_art" -b -s f -g 256x256-100-100 "${ALBUMART}" 2>/dev/null &
+# display picture for ${to} seconds in sxiv
+timeout -sHUP ${to} sxiv -N "mpd_album_art" -b -s f -g 256x256-100-100 "${mdir}${cover}" 2>/dev/null &

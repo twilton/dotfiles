@@ -11,42 +11,44 @@
 # -----------------------------------------------------------------------------
 
 # Define colors
-bc=$(tput bold)	    # bold
-c0=$(tput setaf 0)  # black
-c1=$(tput setaf 1)  # red
-c2=$(tput setaf 2)  # green
 c3=$(tput setaf 3)  # yellow
-c4=$(tput setaf 4)  # blue
 c5=$(tput setaf 5)  # magenta
 c6=$(tput setaf 6)  # cyan
 c7=$(tput setaf 7)  # white
 rc=$(tput sgr0)	    # reset
 
-lc=${c6}       # labels
-tc=${c7}       # text
-fc=${c3}       # first color
-sc=${c6}       # second color
-hc=${c5}       # highlight color
+# common wms
+wms=( "2bwm" "awesome" "blackbox" "bspwm" "cwm" "dwm" "fluxbox" "herbstluftwm" "i3" \
+      "monsterwm" "openbox" "ratpoison" "spectrwm" "tfwm" "twm" "wmfs" "xmonad" )
 
+# finds a running wm in list of common wms
+function find_wm() {
+  for wm in ${wms[@]}; do
+    pid=$(pgrep -x -u $USER $wm)
+    if [[ "$pid" ]]; then
+      echo $wm
+      break
+    fi
+  done
+}
 
 # Get info
-HOST=$(hostname)
-OS=$(lsb_release -i -s)
-KERNEL=$(uname -sr)
-UPTIME=$(uptime -p | sed s:"up "::)
-PACKAGES=$(pacman -Q | wc -l)
-# WM= has problems with vim modeline in .xinitrc
-# WM="$(tail -n 1 "$HOME/.xinitrc" | cut -d " " -f 2)"
-WM="bspwm" # set manually for now
+host="${c5}${USER}${c7}@${c5}$(hostname)${rc}"
+os="${c6}OS:${rc}       ${c7}$(lsb_release -i -s)${rc}"
+kernel="${c6}KERNEL:${rc}   ${c7}$(uname -sr)${rc}"
+uptime="${c6}UPTIME:${rc}   ${c7}$(uptime -p | sed s:'up '::)${rc}"
+packages="${c6}PACKAGES:${rc} ${c7}$(pacman -Q | wc -l)${rc}"
+shell="${c6}SHELL:${rc}    ${c7}${SHELL}${rc}"
+wm="${c6}WM:${rc}       ${c7}$(find_wm)${rc}"
 
 cat << EOF
 
-${fc}        /\\${rc}        ${hc}${USER}${rc}${tc}@${rc}${hc}${HOST}${rc}
-${fc}       /  \\${rc}       ${lc}OS:${rc}       ${tc}${OS}${rc}
-${fc}      /    \\${rc}      ${lc}KERNEL:${rc}   ${tc}${KERNEL}${rc}
-${fc}     /  **  \\${rc}     ${lc}UPTIME:${rc}   ${tc}${UPTIME}${rc}
-${fc}    /${sc}   __   \\${rc}    ${lc}PACKAGES:${rc} ${tc}${PACKAGES}${rc}
-${sc}   / __/  \\__ \\${rc}   ${lc}SHELL:${rc}    ${tc}${SHELL}${rc}
-${sc}  ///        \\\\\\${rc}  ${lc}WM:${rc}       ${tc}${WM}${rc}
+${c3}        /\\${rc}        ${host}
+${c3}       /  \\${rc}       ${os}
+${c3}      /    \\${rc}      ${kernel}
+${c3}     /  **  \\${rc}     ${uptime}
+${c3}    /${c6}   __   \\${rc}    ${packages}
+${c6}   / __/  \\__ \\${rc}   ${shell}
+${c6}  ///        \\\\\\${rc}  ${wm}
 
 EOF

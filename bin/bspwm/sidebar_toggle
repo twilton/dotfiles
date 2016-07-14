@@ -1,20 +1,21 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
 
 # -----------------------------------------------------------------------------
-# open_sidebar_temp
-# Description: open notification sidebar temporarily
+# close_sidebar
+# Description: close notification sidebar
 # -----------------------------------------------------------------------------
 # Requires:
 #   bspwm
 #   dunst
 # -----------------------------------------------------------------------------
-# Useage:      $ sh ./open_sidebar
+# Useage:      $ sh ./close_sidebar
 # -----------------------------------------------------------------------------
 
-bspc config right_padding 600
-sleep 3
-killall dunst
-sleep 0.2
-bspc config right_padding 0
-sleep 0.1
-dunst & disown
+right_padding=$(bspc config right_padding)
+
+if [[ ${right_padding} -ne 0 ]]; then
+    bspc config right_padding 0
+else
+    bspc config right_padding 600
+fi

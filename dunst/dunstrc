@@ -23,7 +23,7 @@
     #   mouse: follow mouse pointer
     #   keyboard: follow window with keyboard focus
     #   none: don't follow anything
-    follow = mouse
+    follow = keyboard
     
     # Keep message if the user is idle for longer than 120
     idle_threshold = 120
@@ -138,8 +138,8 @@
 # {{{
 [espeak]
     summary = "*"
-    script = "/home/godo/.dotfiles/bin/sidebar/open_sidebar_temp"
-    timeout = 0
+    script = "/home/godo/.dotfiles/bin/bspwm/sidebar_flicker"
+    timeout = 3
 
 [urgency_low]
     background = "#1d1f21"
@@ -158,42 +158,6 @@
     background = "#1d1f21"
     foreground = "#c5c8c6"
 
-[todo]
-    summary = "Todo:"
-    background = "#1d1f21"
-    foreground = "#707880"
-
-[todo_show]
-    summary = "Todo_nokill:"
-    background = "#1d1f21"
-    foreground = "#de935f"
-    script = "/home/godo/.dotfiles/bin/sidebar/open_sidebar"
-
-[weather]
-    summary = "Weather Notification"
-    background = "#81a2be"
-    foreground = "#1d1f21"
-
-[charging]
-    summary = "Charging"
-    background = "#1d1f21"
-    foreground = "#8c9440"
-
-[discharging]
-    summary = "Discharging"
-    background = "#1d1f21"
-    foreground = "#85678f"
-
-[lowbattery]
-    summary = "Low Battery Warning"
-    background = "#cc6666"
-    foreground = "#1d1f21"
-    script = "/home/godo/.dotfiles/bin/sidebar/open_sidebar"
-
-[irc]
-    appname = weechat
-    background = "#99FF33"
-    foreground = "#000000"
 # }}}
 
 # vim:foldmethod=marker:foldlevel=0: set filetype=conf:

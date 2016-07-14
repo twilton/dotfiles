@@ -11,7 +11,7 @@
 # {{{
 # quit bspwm
 super + shift + q
-    bspc quit
+    $HOME/.dotfiles/bin/bspwm/bspwm_close
 
 # reload sxhkd 
 super + shift + r
@@ -19,7 +19,7 @@ super + shift + r
 
 # lock
 super + shift + s
-    bash $HOME/.dotfiles/bin/lock/lock
+    $HOME/.dotfiles/bin/lock/lock
 
 # }}}
 
@@ -27,8 +27,8 @@ super + shift + s
 # => Desktop
 # -----------------------------------------------------------------------------
 # {{{
-# nothing to see here
-
+super + m
+    bspc desktop -l next
 # }}}
 
 # -----------------------------------------------------------------------------
@@ -46,8 +46,10 @@ super + {_,shift + }{1-9,0}
 # -----------------------------------------------------------------------------
 # {{{
 # change node tile method
-super + {t,shift + t,f,m}
-    bspc node -t {'tiled','~pseudo_tiled','~floating','~fullscreen'}
+# super + {t,shift + t,f,m}
+    # bspc node -t {'tiled','~pseudo_tiled','~floating','~fullscreen'}
+super + {t,shift + t,f}
+    bspc node -t {'tiled','~pseudo_tiled','~floating'}
 
 # close node
 super + shift + c
@@ -128,9 +130,9 @@ super + n
 super + i
     urxvtc -e weechat
 
-# Close all notifications and sidebar
+# toggle sidebar
 super + backslash
-    close_sidebar
+    $HOME/.dotfiles/bin/bspwm/sidebar_toggle
 
 # }}}
 

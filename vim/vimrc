@@ -370,6 +370,7 @@ augroup FileTypeRules
     autocmd BufNewFile,BufRead *.md set ft=markdown tw=79
     autocmd BufNewFile,BufRead *.tex set ft=tex tw=79
     autocmd BufNewFile,BufRead *.txt set ft=sh tw=79
+    autocmd BufNewFile,BufRead *.py set ts=4 sts=4 sw=4 tw=79 et ai
 augroup END
 
 " Delete trailing white space on save, useful for Python and CoffeeScript ;)

@@ -39,6 +39,9 @@ xset fp rehash
 # => Display
 # -----------------------------------------------------------------------------
 # {{{
+# terminal
+urxvtd -q -f -o
+
 # wallpaper
 nitrogen --restore &
 
