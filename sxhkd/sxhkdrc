@@ -48,8 +48,8 @@ super + {_,shift + }{1-9,0}
 # change node tile method
 # super + {t,shift + t,f,m}
     # bspc node -t {'tiled','~pseudo_tiled','~floating','~fullscreen'}
-super + {t,shift + t,f}
-    bspc node -t {'tiled','~pseudo_tiled','~floating'}
+super + {t,shift + t,f,shift + m}
+    bspc node -t {'tiled','~pseudo_tiled','~floating','~fullscreen'}
 
 # close node
 super + shift + c
