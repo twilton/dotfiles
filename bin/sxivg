@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-geometry=$(identify -format '%wx%h' "$@")
-sxiv -N "sxivg_image" -g "$geometry" -b "$@"
