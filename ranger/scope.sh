@@ -1,23 +1,10 @@
 #!/usr/bin/env sh
-# ranger supports enhanced previews.  If the option "use_preview_script"
-# is set to True and this file exists, this script will be called and its
-# output is displayed in ranger.  ANSI color codes are supported.
-
-# NOTES: This script is considered a configuration file.  If you upgrade
-# ranger, it will be left untouched. (You must update it yourself.)
-# Also, ranger disables STDIN here, so interactive scripts won't work properly
-
-# Meanings of exit codes:
-# code | meaning    | action of ranger
-# -----+------------+-------------------------------------------
-# 0    | success    | success. display stdout as preview
-# 1    | no preview | failure. display no preview at all
-# 2    | plain text | display the plain content of the file
-# 3    | fix width  | success. Don't reload when width changes
-# 4    | fix height | success. Don't reload when height changes
-# 5    | fix both   | success. Don't ever reload
-# 6    | image      | success. display the image $cached points to as an image preview
-# 7    | image      | success. display the file directly as an image
+# -----------------------------------------------------------------------------
+# scope.sh
+# Description: Preview script for ranger
+# -----------------------------------------------------------------------------
+# Location: $HOME/.config/ranger/scope.sh
+# -----------------------------------------------------------------------------
 
 # Meaningful aliases for arguments:
 path="$1"            # Full path of the selected file
@@ -49,66 +36,15 @@ safepipe() { "$@"; test $? = 0 -o $? = 141; }
 # Image previews, if enabled in ranger.
 if [ "$preview_images" = "True" ]; then
     case "$mimetype" in
-        # Image previews for SVG files, disabled by default.
-        ###image/svg+xml)
-        ###   convert "$path" "$cached" && exit 6 || exit 1;;
-        # Image previews for image files. w3mimgdisplay will be called for all
-        # image files (unless overriden as above), but might fail for
-        # unsupported types.
         image/*)
             exit 7;;
-        # Image preview for video, disabled by default.:
-        ###video/*)
-        ###    ffmpegthumbnailer -i "$path" -o "$cached" -s 0 && exit 6 || exit 1;;
     esac
 fi
 
-# case "$extension" in
-    # # Archive extensions:
-    # 7z|a|ace|alz|arc|arj|bz|bz2|cab|cpio|deb|gz|jar|lha|lz|lzh|lzma|lzo|\
-    # rpm|rz|t7z|tar|tbz|tbz2|tgz|tlz|txz|tZ|tzo|war|xpi|xz|Z|zip)
-        # try als "$path" && { dump | trim; exit 0; }
-        # try acat "$path" && { dump | trim; exit 3; }
-        # try bsdtar -lf "$path" && { dump | trim; exit 0; }
-        # exit 1;;
-    # rar)
-        # try unrar -p- lt "$path" && { dump | trim; exit 0; } || exit 1;;
-    # # PDF documents:
-    # pdf)
-        # try pdftotext -l 10 -nopgbrk -q "$path" - && \
-            # { dump | trim | fmt -s -w $width; exit 0; } || exit 1;;
-    # # BitTorrent Files
-    # torrent)
-        # try transmission-show "$path" && { dump | trim; exit 5; } || exit 1;;
-    # # HTML Pages:
-    # htm|html|xhtml)
-        # try w3m    -dump "$path" && { dump | trim | fmt -s -w $width; exit 4; }
-        # try lynx   -dump "$path" && { dump | trim | fmt -s -w $width; exit 4; }
-        # try elinks -dump "$path" && { dump | trim | fmt -s -w $width; exit 4; }
-        # ;; # fall back to highlight/cat if the text browsers fail
-# esac
-
 case "$mimetype" in
-    # Syntax highlight for text files:
-    # text/* | */xml)
-        # if [ "$(tput colors)" -ge 256 ]; then
-            # pygmentize_format=terminal256
-            # highlight_format=xterm256
-        # else
-            # pygmentize_format=terminal
-            # highlight_format=ansi
-        # fi
-        # try safepipe highlight --out-format=${highlight_format} "$path" && { dump | trim; exit 5; }
-        # try safepipe pygmentize -f ${pygmentize_format} "$path" && { dump | trim; exit 5; }
-        # exit 2;;
     # Ascii-previews of images:
     image/*)
         img2txt --gamma=0.6 --width="$width" "$path" && exit 4 || exit 1;;
-    # Display information about media files:
-    # video/* | audio/*)
-        # exiftool "$path" && exit 5
-        # # Use sed to remove spaces so the output fits into the narrow window
-        # try mediainfo "$path" && { dump | trim | sed 's/  \+:/: /;';  exit 5; } || exit 1;;
 esac
 
 exit 1
