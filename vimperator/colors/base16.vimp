@@ -1,6 +1,6 @@
-"" vimperator colorscheme godo
+"" vimperator colorscheme base16
 ""
-"" ~/.vimperator/colors/godo.vimp
+"" ~/.vimperator/colors/base16.vimp
 
 highlight! CmdLine color: #c5c8c6; background: #1d1f21; 
 highlight! CmdLine>* font-family: "Source Code Pro for Powerline"; font-size: 8pt; height: 24px;
