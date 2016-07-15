@@ -30,8 +30,8 @@ xset +fp /usr/share/fonts/misc/
 xset +fp /usr/share/fonts/TTF/
 xset +fp /usr/share/fonts/OTF/
 xset +fp /usr/share/fonts/local/
-xset +fp /home/godo/.local/share/fonts/
-xset +fp /home/godo/.local/share/fonts/TTF
+xset +fp $HOME/.local/share/fonts/
+xset +fp $HOME/.local/share/fonts/TTF
 xset fp rehash
 # }}}
 

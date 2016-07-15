@@ -25,7 +25,7 @@ alias -g V='| vim -'
 alias syugit='pacaur -Syu --devel --needed'
 
 # passwords
-alias keys='kpcli --kdb /home/godo/docs/pass/cats'
+alias keys="kpcli --kdb ${HOME}/docs/pass/cats"
 
 # auto-ls after changing directory
 cd () {
