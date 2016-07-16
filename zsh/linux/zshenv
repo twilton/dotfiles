@@ -20,6 +20,9 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 
+# use gcc colors
+export GCC_COLORS=1
+
 # Hardware acceleration
 export VDPAU_DRIVER=va_gl
 

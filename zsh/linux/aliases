@@ -5,9 +5,6 @@
 # Location: $HOME/.dotfiles/zsh/linux/aliases
 # -----------------------------------------------------------------------------
 
-# use gcc colors
-export GCC_COLORS=1
-
 # force colors
 alias ls='ls --color=auto -hrtF'
 alias lsa='ls --color=auto -oghrtF'
@@ -25,7 +22,7 @@ alias -g V='| vim -'
 alias syugit='pacaur -Syu --devel --needed'
 
 # passwords
-alias keys="kpcli --kdb ${HOME}/docs/pass/cats"
+alias keys="kpcli --kdb ${HOME}/documents/local/cats"
 
 # auto-ls after changing directory
 cd () {
