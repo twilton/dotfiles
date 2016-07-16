@@ -23,9 +23,6 @@ export LANGUAGE=en_US.UTF-8
 # use gcc colors
 export GCC_COLORS=1
 
-# Hardware acceleration
-export VDPAU_DRIVER=va_gl
-
 # Default Programs
 if [[ -x $(which firefox 2> /dev/null) ]]; then
     export BROWSER='firefox'
