@@ -55,7 +55,7 @@ link 'bin' "${dotfiles}/bin/" "${HOME}/.bin"
 link 'bspwm' "${dotfiles}/bspwm/" "${config}/bspwm"
 link 'compton' "${dotfiles}/compton/compton.conf" "${HOME}/.compton.conf"
 link 'gtk' "${dotfiles}/gtk/" "${config}/gtk-3.0"
-# irssi
+link 'gtk' "${dotfiles}/irssi/" "${HOME}/.irssi"
 link 'mpd' "${dotfiles}/mpd/" "${config}/mpd"
 link 'mpv' "${dotfiles}/mpv/" "${config}/mpv"
 link 'ncmpcpp' "${dotfiles}/ncmpcpp/" "${HOME}/.ncmpcpp"
