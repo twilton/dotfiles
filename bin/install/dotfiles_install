@@ -64,7 +64,6 @@ link 'zprofile' "${dotfiles}/zsh/zprofile" "${HOME}/.zprofile"
 link 'zlogin' "${dotfiles}/zsh/zlogin" "${HOME}/.zlogin"
 link 'zlogout' "${dotfiles}/zsh/zlogout" "${HOME}/.zlogout"
 
-
 # git
 echo -n "Updating git submodules ... "
 cd $dotfiles && git submodule update --init --recursive
@@ -89,7 +88,7 @@ if [[ -d "${HOME}/.ncmpcpp" ]]; then
 fi
 
 # Vim Plugin manager
-echo -n "Creating ncmpcpp lyrics directory ... "
+echo -n "Downloading vim-plug ... "
 curl -sfLo ${HOME}/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 echo "done"
