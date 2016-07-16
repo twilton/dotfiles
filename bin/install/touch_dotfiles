@@ -20,19 +20,19 @@ config="${HOME}/.config"
 
 # git
 echo -n "Updating git submodules ... "
-# cd $dotfiles && git update-submodules
-# cd -
+cd $dotfiles && git submodule update --init --recursive
+cd -
 echo "done"
 
 # mpd
 echo -n "Creating mpd playlist directory ... "
-# mkdir -p ${config}/mpd/playlists
+mkdir -p ${config}/mpd/playlists
 echo "done"
 echo -n "Touching mpd files ... "
-# touch ${config}/mpd/{database,log,pid,state,sticker.sql}
+touch ${config}/mpd/{database,log,pid,state,sticker.sql}
 echo "done"
 
 # ncmpcpp
 echo -n "Creating ncmpcpp lyrics directory ... "
-# mkdir -p ${HOME}/.ncmpcpp/lyrics
+mkdir -p ${HOME}/.ncmpcpp/lyrics
 echo "done"

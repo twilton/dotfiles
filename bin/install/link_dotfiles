@@ -34,27 +34,35 @@ link() {
     fi
 }
 
+# make .config directory if does not exist
+if [[ ! -d "${config}" ]]; then
+    mkdir -p ${config}
+fi
+
 # link $name $location $destination
 link 'git' "${dotfiles}/git/gitconfig" "${HOME}/.gitconfig"
 link 'bin' "${dotfiles}/bin/" "${HOME}/.bin"
 link 'bspwm' "${dotfiles}/bspwm/" "${config}/bspwm"
 link 'compton' "${dotfiles}/compton/compton.conf" "${HOME}/.compton.conf"
+# irssi
 link 'mpd' "${dotfiles}/mpd/" "${config}/mpd"
 link 'mpv' "${dotfiles}/mpv/" "${config}/mpv"
 link 'ncmpcpp' "${dotfiles}/ncmpcpp/" "${HOME}/.ncmpcpp"
 link 'ranger' "${dotfiles}/ranger/" "${config}/ranger"
 link 'stalonetray' "${dotfiles}/stalonetray/stalonetrayrc" "${HOME}/.stalonetrayrc"
 link 'sxhkd' "${dotfiles}/sxhkd/" "${config}/sxhkd"
+link 'tmux' "${dotfiles}/tmux/tmux.conf" "${HOME}/.tmux.conf"
 link 'vim' "${dotfiles}/vim/" "${HOME}/.vim"
 link 'vimrc' "${dotfiles}/vim/vimrc" "${HOME}/.vimrc"
 link 'vimperator' "${dotfiles}/vimperator/" "${HOME}/.vimperator"
 link 'vimperatorrc' "${dotfiles}/vimperator/vimperatorrc" "${HOME}/.vimperatorrc"
-link 'weechat' "${dotfiles}/weechat/" "${HOME}/.weechat"
 link 'xinitrc' "${dotfiles}/xorg/xinitrc" "${HOME}/.xinitrc"
 link 'Xresources' "${dotfiles}/xorg/Xresources" "${HOME}/.Xresources"
-link 'zathura' "${dotfiles}/zathura/" "${config}/zathura"
 link 'zsh' "${dotfiles}/zsh/" "${HOME}/.zsh"
 link 'zshrc' "${dotfiles}/zsh/zshrc" "${HOME}/.zshrc"
+link 'zprofile' "${dotfiles}/zsh/zprofile" "${HOME}/.zprofile"
+link 'zlogin' "${dotfiles}/zsh/zlogin" "${HOME}/.zlogin"
+link 'zlogout' "${dotfiles}/zsh/zlogout" "${HOME}/.zlogout"
 
 echo "${bc}${c3}Install complete!${rc}"
 
