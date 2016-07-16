@@ -1,6 +1,9 @@
 /*
 !.gitignore
 !zshrc
+!zprofile
+!zlogin
+!zlogout
 !plugins/
 !linux/
 !darwin/

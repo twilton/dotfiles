@@ -1,0 +1,2 @@
+[[ $OSTYPE == darwin* && -f $HOME/.dotfiles/zsh/darwin/zlogin ]] && source $HOME/.dotfiles/zsh/darwin/zlogin
+[[ $OSTYPE == linux*  && -f $HOME/.dotfiles/zsh/linux/zlogin  ]] && source $HOME/.dotfiles/zsh/linux/zlogin

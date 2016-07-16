@@ -44,8 +44,8 @@ setopt INC_APPEND_HISTORY
 setopt SHARE_HISTORY
 
 # Load OS specific environment settings
-[[ $OSTYPE == darwin*  && -f $HOME/.dotfiles/zsh/darwin/zshenv ]]  && source $HOME/.dotfiles/zsh/darwin/zshenv
-[[ $OSTYPE == linux*   && -f $HOME/.dotfiles/zsh/linux/zshenv  ]]  && source $HOME/.dotfiles/zsh/linux/zshenv
+[[ $OSTYPE == darwin* && -f $HOME/.dotfiles/zsh/darwin/zshenv ]] && source $HOME/.dotfiles/zsh/darwin/zshenv
+[[ $OSTYPE == linux*  && -f $HOME/.dotfiles/zsh/linux/zshenv  ]] && source $HOME/.dotfiles/zsh/linux/zshenv
 # }}}
 
 # -----------------------------------------------------------------------------
@@ -145,8 +145,8 @@ alias ...='cd ../..'
 alias ping="ping -c 3"
 
 # Load OS specific aliases / functions
-[[ $OSTYPE == darwin*  && -f $HOME/.dotfiles/zsh/darwin/aliases ]]  && source $HOME/.dotfiles/zsh/darwin/aliases
-[[ $OSTYPE == linux*   && -f $HOME/.dotfiles/zsh/linux/aliases  ]]  && source $HOME/.dotfiles/zsh/linux/aliases
+[[ $OSTYPE == darwin* && -f $HOME/.dotfiles/zsh/darwin/aliases ]] && source $HOME/.dotfiles/zsh/darwin/aliases
+[[ $OSTYPE == linux*  && -f $HOME/.dotfiles/zsh/linux/aliases  ]] && source $HOME/.dotfiles/zsh/linux/aliases
 # }}}
 
 # vim:foldmethod=marker:foldlevel=0
