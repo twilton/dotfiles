@@ -64,6 +64,47 @@ link 'zprofile' "${dotfiles}/zsh/zprofile" "${HOME}/.zprofile"
 link 'zlogin' "${dotfiles}/zsh/zlogin" "${HOME}/.zlogin"
 link 'zlogout' "${dotfiles}/zsh/zlogout" "${HOME}/.zlogout"
 
+
+# git
+echo -n "Updating git submodules ... "
+cd $dotfiles && git submodule update --init --recursive
+cd -
+echo "done"
+
+# mpd
+if [[ -d "${config}/mpd" ]]; then
+    echo -n "Creating mpd playlist directory ... "
+    mkdir -p ${config}/mpd/playlists
+    echo "done"
+    echo -n "Touching mpd files ... "
+    touch ${config}/mpd/{database,log,pid,state,sticker.sql}
+    echo "done"
+fi
+
+# ncmpcpp
+if [[ -d "${HOME}/.ncmpcpp" ]]; then
+    echo -n "Creating ncmpcpp lyrics directory ... "
+    mkdir -p ${HOME}/.ncmpcpp/lyrics
+    echo "done"
+fi
+
+# Vim Plugin manager
+echo -n "Creating ncmpcpp lyrics directory ... "
+curl -sfLo ${HOME}/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+echo "done"
+
+# user dirs
+echo -n "Creating user home directories ..."
+mkdir -p "${HOME}/documents"
+mkdir -p "${HOME}/downloads"
+mkdir -p "${HOME}/music"
+mkdir -p "${HOME}/pictures"
+mkdir -p "${HOME}/videos"
+echo "done"
+
+echo ""
 echo "${bc}${c3}Install complete!${rc}"
+echo ""
 
 exit 0
