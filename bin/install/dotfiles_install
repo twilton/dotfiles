@@ -106,11 +106,11 @@ echo "done"
 
 # user dirs
 echo -n "Creating user home directories ..."
-mkdir -p "${HOME}/documents"
-mkdir -p "${HOME}/downloads"
-mkdir -p "${HOME}/music"
-mkdir -p "${HOME}/pictures"
-mkdir -p "${HOME}/videos"
+mkdir -p "${HOME}/documents/local"
+mkdir -p "${HOME}/downloads/local"
+mkdir -p "${HOME}/music/local"
+mkdir -p "${HOME}/pictures/local"
+mkdir -p "${HOME}/videos/local"
 echo "done"
 
 echo ""

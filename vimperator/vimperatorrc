@@ -100,89 +100,403 @@ cabbrev wiki wikipedia
 " => Firefox Settings
 " -----------------------------------------------------------------------------
 " {{{
-" Disable default browser check
-set! browser.shell.checkDefaultBrowser=false
-" set startup
-set! browser.startup.homepage=about:blank
-" newtab
-set! browser.newtab.url=about:blank
-" close the window when the last tab is closed
-set! browser.tabs.closeWindowWithLastTab=true
-" Disable warnings
-set! browser.tabs.warnOnClose=false
-set! browser.tabs.warnOnCloseOtherTabs=false
-set! browser.tabs.warnOnOpen=false
-set! general.warnOnAboutConfig=false
-" Disable tab animations
-set! browser.tabs.animate=false
-" Disable DOM storage
-set! dom.storage.enabled=false
-" Disable clipboardevents
-set! dom.event.clipboardevents.enabled=false
-" Disable webgl
-set! webgl.disabled=true
-" Disable child windows/tabs
-set! dom.disable_window_open_feature.resizable=false
+    " -------------------------------------------------------------
+    " => General
+    " -------------------------------------------------------------
+    " {{{
+    " Default browser
+    set! browser.shell.checkDefaultBrowser=false
 
-" Disable crash reporting
-set! breakpad.reportURL=
-" Disable health report
-set! datareporting.healthreport.uploadEnabled=false
-" Disable location services
-set! geo.wifi.uri=127.0.0.1
-set! geo.enabled=false
-" Disable Google virus checks
-set! browser.safebrowsing.appRepURL=
-set! browser.safebrowsing.downloads.enabled=false
-set! browser.safebrowsing.enabled=false
-set! browser.safebrowsing.gethashURL=
-set! browser.safebrowsing.malware.enabled=false
-set! browser.safebrowsing.malware.reportURL=
-set! browser.safebrowsing.reportErrorURL=
-set! browser.safebrowsing.reportGenericURL=
-set! browser.safebrowsing.reportMalwareErrorURL=
-set! browser.safebrowsing.reportMalwareURL=
-set! browser.safebrowsing.reportPhishURL=
-set! browser.safebrowsing.reportURL=
-set! browser.safebrowsing.updateURL=
-set! services.sync.prefs.sync.browser.safebrowsing.enabled=false
-set! services.sync.prefs.sync.browser.safebrowsing.malware.enabled=false
-" Disable WebRTC
-set! media.peerconnection.enabled=false
-" Disable pings
-set! toolkit.telemetry.enabled=false
-set! browser.send_pings=false
-set! browser.send_pings.require_same_host=true
-set! beacon.enable=false
-" Hide referrer
-set! network.http.sendRefererHeader=1
-set! network.http.sendSecureXSiteReferrer=false
-set! network.http.referer.XOriginPolicy=1
-set! network.http.referer.spoofSource=true
-set! network.http.referer.trimmingPolicy=2
-" 'do no track' header
-set! privacy.donottrackheader.enabled=true
-set! privacy.donottrackheader.value=1
-" Disable RC4 encryption
-set! security.ssl3.ecdhe_ecdsa_rc4_128_sha=false
-set! security.ssl3.ecdhe_rsa_rc4_128_sha=false
-set! security.ssl3.rsa_rc4_128_md5=false
-set! security.ssl3.rsa_rc4_128_sha=false
-" Don't cache
-set! browser.cache.disk.enable=false
-set! browser.cache.offline.enable=false
-set! browser.cache.disk.capacity=0
-set! browser.cache.offline.capacity=0
-set! devtools.cache.disabled=true
-set! network.http.use-cache=false
-" Disable prefetching
-set! network.prefetch-next=false
-set! network.dns.disablePrefetch=false
-" Pipelining
-set! network.http.pipelining=true
-set! network.http.pipelining.ssl=true
-set! network.http.proxy.pipelining=true
-set! network.http.pipelining.maxrequests=10
+    " Display on Startup
+    set! browser.startup.page=1
+
+    " Startup
+    set! startup.homepage_welcome_url="about:about"
+
+    " Homepage
+    set! browser.startup.homepage="about:about"
+
+    " Warnings
+    set! browser.tabs.warnOnClose=false
+    set! browser.tabs.warnOnCloseOtherTabs=false
+    set! browser.tabs.warnOnOpen=false
+    set! general.warnOnAboutConfig=false
+    set! browser.slowStartup.notificationDisabled=true
+    set! browser.slowStartup.maxSamples=0
+    set! browser.slowStartup.samples=0
+
+    " close the window when the last tab is closed
+    set! browser.tabs.closeWindowWithLastTab=true
+
+    " animate tabs
+    set! browser.tabs.animate=false
+
+    " Tab history
+    set! browser.sessionhistory.max_entries=5
+
+    " New tab
+    set! browser.newtab.url="about:blank"
+    set! browser.newtab.preload=false
+    set! browser.newtabpage.enabled=false
+    set! browser.newtabpage.enhanced=false
+    set! browser.newtabpage.directory.ping=""
+    set! browser.newtabpage.directory.source="data:text/plain,{}"
+    set! browser.newtabpage.introShown=true
+
+    " New window
+    set! browser.link.open_newwindow=3
+    set! browser.link.open_newwindow.restriction=0
+    set! browser.link.open_newwindow.override.external=3
+    set! browser.tabs.loadDivertedInBackground=true
+
+    " Smooth scrolling
+    set! general.smoothScroll=false
+
+    " Autoscroll
+    set! general.autoScroll=false
+
+    " Submenu delay
+    set! ui.submenuDelay=0
+
+    " Spell Check
+    set! layout.spellcheckDefault=2
+
+    " Selection
+    set! layout.word_select.eat_space_to_next_word=false
+    set! layout.word_select.stop_at_punctuation=true
+
+    " Fullscreen
+    set! browser.fullscreen.animate=false
+    set! browser.fullscreen.animateUp=0
+    set! full-screen-api.warning.delay=0
+    set! full-screen-api.warning.timeout=0
+
+    " Reader
+    set! reader.enabled=false
+    set! reader.parse-on-load.enabled=false
+
+    " Various browser components
+    set! browser.urlbar.unifiedcomplete=false
+    set! browser.aboutHomeSnippets.updateUrl=""
+    set! browser.selfsupport.url=""
+    set! signon.autofillForms=false
+    set! device.sensors.enabled=false
+    " }}}
+
+    " -------------------------------------------------------------
+    " => Network
+    " -------------------------------------------------------------
+    " {{{
+    " DNS
+    set! network.dnsCacheExpiration=0
+    set! network.dns.disablePrefetch=true
+    set! network.dns.disablePrefetchFromHTTPS=true
+    set! network.cookie.cookieBehavior=1
+
+    " Referrer (Managed by uMatrix)
+    set! network.http.referer.XOriginPolicy=1
+    set! network.http.sendSecureXSiteReferrer=true
+    set! network.http.redirection-limit=3
+
+    " Pipelining
+    set! network.http.pipelining=true
+    set! network.http.pipelining.ssl=true
+    set! network.http.proxy.pipelining=true
+    set! network.http.pipelining.maxrequests=10
+
+    " Prefetch
+    set! network.http.speculative-parallel-limit=0
+    set! network.manage-offline-status=false
+    set! network.predictor.enabled=false
+    set! network.prefetch-next=false
+    set! network.proxy.socks_remote_dns=true
+
+    " Google SPDY
+    set! network.http.spdy.enabled=false
+    set! network.http.spdy.enabled.http2=false
+    set! network.http.spdy.enabled.v3=false
+    set! network.http.spdy.enabled.v3-1=false
+
+    " Misc
+    set! browser.casting.enabled=false
+    set! network.allow-experiments=false
+    set! gfx.layerscope.enabled=false
+    set! network.jar.open-unsafe-types=false
+    " }}}
+
+    " -------------------------------------------------------------
+    " => Cache
+    " -------------------------------------------------------------
+    " {{{
+    " pages to store in back/forward (-1 = auto)
+    set! browser.sessionhistory.max_total_viewers=5
+
+    " Disable disk caching
+    set! browser.cache.disk.enable=false
+    set! browser.cache.disk_cache_ssl=false
+
+    " Enable RAM cache
+    set! browser.cache.memory.enable=true
+    set! browser.cache.memory.capacity=256000
+
+    " Cache settings
+    set! browser.sessionstore.privacy_level=2
+    set! browser.sessionstore.privacy_level_deferred=2
+    " set! browser.cache.disk.capacity=0
+    " set! browser.cache.offline.capacity=0
+    " set! browser.cache.offline.enable=false
+    " set! devtools.cache.disabled=true
+    " set! network.http.use-cache=false
+
+    " Clear history dialog preselction
+    set! privacy.cpd.cache=true
+    set! privacy.cpd.cookies=true
+    set! privacy.cpd.downloads=true
+    set! privacy.cpd.formdata=true
+    set! privacy.cpd.history=true
+    set! privacy.cpd.offlineApps=true
+    set! privacy.cpd.passwords=true
+    set! privacy.cpd.sessions=true
+    set! privacy.cpd.siteSettings=true
+
+    " What to store on shutdown
+    set! privacy.clearOnShutdown.cache=true
+    set! privacy.clearOnShutdown.cookies=true
+    set! privacy.clearOnShutdown.downloads=true
+    set! privacy.clearOnShutdown.formdata=true
+    set! privacy.clearOnShutdown.history=true
+    set! privacy.clearOnShutdown.offlineApps=true
+    set! privacy.clearOnShutdown.passwords=true
+    set! privacy.clearOnShutdown.sessions=true
+    set! privacy.clearOnShutdown.siteSettings=true
+    set! browser.helperApps.deleteTempFileOnExit=true
+    " }}}
+
+    " -------------------------------------------------------------
+    " => Security
+    " -------------------------------------------------------------
+    " {{{
+    " SSL
+    set! security.fileuri.strict_origin_policy=true
+    set! security.mixed_content.block_active_content=true
+    set! security.mixed_content.block_display_content=false
+    set! security.OCSP.enabled=1
+    set! security.ssl.errorReporting.automatic=false
+    set! security.ssl.errorReporting.enabled=false
+    set! security.ssl.errorReporting.url=""
+    set! security.ssl3.ecdhe_ecdsa_rc4_128_sha=false
+    set! security.ssl3.ecdhe_rsa_rc4_128_sha=false
+    set! security.ssl3.rsa_rc4_128_md5=false
+    set! security.ssl3.rsa_rc4_128_sha=false
+
+    " Data Reporting
+    set! datareporting.healthreport.about.reportUrl=""
+    set! datareporting.healthreport.about.reportUrlUnified=""
+    set! datareporting.healthreport.documentServerURI=""
+    set! datareporting.healthreport.service.enabled=false
+    set! datareporting.healthreport.uploadEnabled=false
+    set! datareporting.policy.dataSubmissionEnabled=false
+    set! datareporting.policy.dataSubmissionEnabled.v2=false
+    set! breakpad.reportURL=
+    set! beacon.enable=false
+
+    " Safe browsing
+    set! browser.safebrowsing.enabled=false
+    set! browser.safebrowsing.downloads.enabled=false
+    set! browser.safebrowsing.downloads.remote.enabled=false
+    set! browser.safebrowsing.malware.enabled=false
+    set! browser.safebrowsing.remoteLookups=false
+    set! browser.safebrowsing.reportMalwareMistakeURL=""
+    set! browser.safebrowsing.reportPhishMistakeURL=""
+    set! browser.safebrowsing.reportPhishURL=""
+    set! browser.safebrowsing.provider.google.appRepURL=""
+    set! browser.safebrowsing.provider.google.gethashURL=""
+    set! browser.safebrowsing.provider.google.reportURL=""
+    set! browser.safebrowsing.provider.google.updateURL=""
+    set! browser.safebrowsing.provider.mozilla.gethashURL=""
+    set! browser.safebrowsing.provider.mozilla.updateURL=""
+
+    " Telemetry data
+    set! browser.send_pings=false
+    set! browser.send_pings.require_same_host=true
+    set! toolkit.telemetry.archive.enabled=false
+    set! toolkit.telemetry.cachedClientID=""
+    set! toolkit.telemetry.enabled=false
+    set! toolkit.telemetry.prompted=2
+    set! toolkit.telemetry.rejected=true
+    set! toolkit.telemetry.unified=false
+    set! toolkit.telemetry.unifiedIsOptIn=true
+
+    " Geolocation
+    set! browser.search.geoip.url=""
+    set! geo.enabled=false
+    set! geo.wifi.uri="http://127.0.0.1"
+    set! geo.wifi.logging.enabled=false
+
+    " Tracking Header
+    set! privacy.donottrackheader.enabled=false
+    set! privacy.trackingprotection.enabled=false
+    set! browser.trackingprotection.gethashURL=""
+    set! browser.trackingprotection.getupdateURL=""
+    set! privacy.trackingprotection.pbmode.enabled=false
+
+    " WebGL
+    set! pdfjs.enableWebGL=false
+    set! webgl.disabled=true
+    set! webgl.disable-extensions=true
+    set! webgl.min_capability_mode=true
+
+    " WebRTC
+    set! media.gmp-gmpopenh264.enabled=false
+    set! media.gmp-manager.url=""
+    set! media.peerconnection.enabled=false
+    set! media.peerconnection.ice.default_address_only=true
+    set! media.peerconnection.identity.timeout=1
+    set! media.peerconnection.turn.disable=true
+    set! media.peerconnection.video.enabled=false
+
+    " EME (Adobe "Primetime Content Decryption Module" DRM)
+    set! browser.eme.ui.enabled=false
+    set! media.gmp-eme-adobe.enabled=false
+    set! media.eme.enabled=false
+    set! media.eme.apiVisible=false
+
+    " Media
+    set! camera.control.autofocus_moving_callback.enabled=false
+    set! camera.control.face_detection.enabled=false
+    set! media.getusermedia.screensharing.allowed_domains=""
+    set! media.getusermedia.screensharing.enabled=false
+    set! media.navigator.enabled=false
+    set! media.video_stats.enabled=false
+    set! media.webspeech.recognition.enable=false
+    set! media.getusermedia.agc_enabled=true
+
+    " Experiments
+    set! experiments.activeExperiment=false
+    set! experiments.enabled=false
+    set! experiments.manifest.uri=""
+    set! experiments.supported=false
+
+    " History state
+    set! browser.history.allowReplaceState=false
+    " }}}
+
+    " -------------------------------------------------------------
+    " => DOM
+    " -------------------------------------------------------------
+    " {{{
+    " Storage
+    set! dom.storage.enabled=true
+
+    " Browser window
+    set! dom.allow_scripts_to_close_windows=false
+    set! dom.vibrator.enabled=false
+    set! user_pref("dom.popup_maximum", 5);
+    set! dom.disable_window_open_feature.close=true
+    set! dom.disable_window_open_feature.directories=true
+    set! dom.disable_window_open_feature.location=true
+    set! dom.disable_window_open_feature.menubar=true
+    set! dom.disable_window_open_feature.minimizable=true
+    set! dom.disable_window_open_feature.personalbar=true
+    set! dom.disable_window_open_feature.resizable=true
+    set! dom.disable_window_open_feature.scrollbars=true
+    set! dom.disable_window_open_feature.status=true
+    set! dom.disable_window_open_feature.toolbar=true
+    set! dom.disable_window_open_feature.titlebar=true
+    set! dom.disable_window_flip=true
+    set! dom.disable_window_move_resize=true
+    set! dom.disable_window_status_change=true
+
+    " Fingerprinting
+    set! dom.enable_user_timing=false
+    set! dom.enable_resource_timing=false
+    set! dom.battery.enabled=false
+    set! dom.netinfo.enabled=false
+    set! dom.network.enabled=false
+    set! dom.ipc.plugins.enabled=false
+    set! dom.vr.enabled=false
+    set! dom.vr.oculus.enabled=false
+    set! dom.vr.oculus050.enabled=false
+
+    " Clipboard
+    set! dom.allow_cut_copy=false
+    set! dom.event.clipboardevents.enabled=false
+
+    " Events
+    set! dom.disable_beforeunload=true
+    set! dom.server-events.enabled=false
+
+    " Injection
+    set! dom.telephony.enabled=false
+    set! dom.gamepad.enabled=false
+    set! dom.event.contextmenu.enabled=false
+
+    " Reporting
+    set! dom.ipc.plugins.flash.subprocess.crashreporter.enabled=false
+    set! dom.ipc.plugins.reportCrashURL=false
+
+    " Misc
+    set! dom.enable_performance=false
+    set! dom.idle-observers-api.enabled=false
+    set! dom.w3c_touch_events.enabled=0
+    set! javascript.options.asmjs=false
+    " }}}
+
+    " -------------------------------------------------------------
+    " => Addons
+    " -------------------------------------------------------------
+    " {{{
+    " Extensions
+    set! extensions.blocklist.enabled=false
+    set! extensions.getAddons.cache.enabled=false
+    set! extensions.webservice.discoverURL="http://127.0.0.1"
+
+    " Plugins
+    set! plugin.default.state=0
+    set! plugin.defaultXpi.state=0
+    set! plugins.click_to_play=true
+    set! plugin.sessionPermissionNow.intervalInMinutes=0
+    set! media.gmp-gmpopenh264.enabled=false
+    set! media.gmp-provider.enabled=false
+    set! plugins.notifyMissingFlash=false
+    set! security.xpconnect.plugin.unrestricted=false
+
+    " Social
+    set! loop.enabled=false
+    set! loop.logDomains=false
+    set! loop.server=""
+    set! social.directories=""
+    set! social.enabled=false
+    set! social.remote-install.enabled=false
+    set! social.share.activationPanelEnabled=false
+    set! social.shareDirectory=""
+    set! social.toast-notifications.enabled=false
+    set! social.whitelist=""
+
+    " Pocket
+    set! browser.pocket.enabled=false
+    set! browser.pocket.api=""
+    set! browser.pocket.oAuthConsumerKey=""
+    set! browser.pocket.site=""
+
+    " WebIDE
+    set! devtools.devedition.promo.url="https://www.mozilla.org/firefox/developer/"
+    set! devtools.webide.autoinstallADBHelper=false
+    set! devtools.webide.autoinstallFxdtAdapters=false
+    set! devtools.debugger.remote-enabled=false
+    set! devtools.webide.enabled=false
+    " }}}
+
+    " -------------------------------------------------------------
+    " => Web Elements
+    " -------------------------------------------------------------
+    " {{{
+    set! browser.blink_allowed=false
+    set! browser.display.enable_marquee=false
+    set! media.autoplay.enabled=true
+    set! media.block-play-until-visible=true
+    set! gfx.color_management.mode=0
+    " }}}
 " }}}
 
 " vim:foldmethod=marker:foldlevel=0: set filetype=vim:
