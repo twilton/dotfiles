@@ -126,7 +126,7 @@ cabbrev wiki wikipedia
     set! browser.slowStartup.samples=0
 
     " close the window when the last tab is closed
-    set! browser.tabs.closeWindowWithLastTab=true
+    set! browser.tabs.closeWindowWithLastTab=false
 
     " animate tabs
     set! browser.tabs.animate=false

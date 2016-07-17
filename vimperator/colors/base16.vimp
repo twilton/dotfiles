@@ -2,46 +2,90 @@
 ""
 "" ~/.vimperator/colors/base16.vimp
 
+" use :highlight completion to see all supported keywords
+
+" Bell - Vimperator's visual bell
+highlight! Bell border: none; background: #1d1f21;
+" Boolean - A JavaScript Boolean object
+highlight! Boolean color: #707880;
+" CmdLine - The command line
 highlight! CmdLine color: #c5c8c6; background: #1d1f21; 
 highlight! CmdLine>* font-family: "Source Code Pro for Powerline"; font-size: 8pt; height: 24px;
-highlight! Normal color: #707880; background: #1d1f21; font-family: "Source Code Pro for Powerline"; font-size: 8pt;
-highlight! StatusLine color: #707880; background: #1d1f21; font-family: "Source Code Pro for Powerline"; font-size: 8pt;
-
-highlight! Bell border: none; background: #1d1f21;
-highlight! Boolean color: #707880;
+" CmdOutput
+" CompDesc - The description column of the completion list
 highlight! CompDesc width: auto; color: #707880;
-highlight! CompItem>* height: auto; padding: 0 8px;
+" CompGroup
+" CompIcon - The favicon of a completion row
+" CompItem - A row of completion list
 highlight! CompItem background: #1d1f21;
+highlight! CompItem>* height: auto; padding: 0 8px;
+" CompItem[selected] - A selected row of completion list
 highlight! CompItem[selected] color: #1d1f21; background: #de935f;
+" CompMsg
+" CompResult - The result column of the completion list
+" CompTitle - Completion row titles
 highlight! CompTitle background: #1d1f21; font-family: "Source Code Pro for Powerline"; font-size: 8pt;
 highlight! CompTitle>* color: #ebecee; padding: 2px 8px;
+" ErrorMsg - Error messages
+highlight! ErrorMsg color: #cc6666; font-family: "Source Code Pro for Powerline"; font-size: 8pt;
+" Filter - The matching text in a completion list
+highlight! Filter color: #1d1f21; background: #5e8d87;
+" FrameIndicator - The indicator shown when a new frame is selected
+highlight! FrameIndicator background: #707880; opacity: 0.5; z-index: 999; position: fixed; top: 0; bottom: 0; left: 0; right: 0;
+" Function - A JavaScript Function object
+" Hint - A hint indicator. See :help hints
+highlight! Hint font-family: "Source Code Pro for Powerline"; font-size: 10pt; color: #ebecee; background: #85678f; padding: 1px;
+" HintActive - The hint element of link which will be followed by <Return>
+highlight! HintActive color: #707880; background: #1d1f21;
+" HintElem - The hintable element
+highlight! HintElem background: transparent;
+" HintImage - The indicator which floats above hinted images
+highlight! HintImage opacity: 0.5;
+" Indicator
+" InfoMsg - Information messages
+highlight! InfoMsg color: #707880;
+" Keyword - A bookmark keyword for a URL
+highlight! Keyword color: #707880;
+" LineNr - The line number of an error
+highlight! LineNr color: #707880;
+" Message
+" ModeMsg - The mode indicator in the command line
+highlight! ModeMsg color: #707880; background: transparent; padding: 0 8px; font-family: "Source Code Pro for Powerline"; font-size: 8pt;
+" MoreMsg - The indicator that there is more text to view
+highlight! MoreMsg color: #707880; font-family: "Source Code Pro for Powerline"; font-size: 8pt;
+" NonText
+highlight! NonText color: #707880;
+" Normal - Normal text in the command line
+highlight! Normal color: #707880; background: #1d1f21; font-family: "Source Code Pro for Powerline"; font-size: 8pt;
+" Null - A JavaScript Null object
+" Number - A JavaScript Number object
+" Object - A JavaScript Object
+" Preview
+" Question - A prompt for a decision
+highlight! Question color: #707880;
+" StatusLine - The status bar
+highlight! StatusLine color: #707880; background: #1d1f21; font-family: "Source Code Pro for Powerline"; font-size: 8pt;
+" String - A JavaScript String object
+" TabClose - The close button of a browser tab
+" TabIcon - The icon of a browser tab
+" TabIconNumber - The number of a browser tab, over its icon
+" TabNumber - The number of a browser tab, next to its icon
+" TabText - The text of a browser tab
+" Tag - A bookmark tag for a URL
+" Title - The title of a listing, including :pageinfo, :jumps
+highlight! Title color: #c5c8c6;
+" URL - A URL
+" WarningMsg - A warning message
+highlight! WarningMsg color: #707880;
+
 highlight! ContentSeparator display: -moz-box;
 
 highlight! Disabled color: #aaabad;
 highlight! Enabled color: #707880;
-highlight! ErrorMsg color: #cc6666; font-family: "Source Code Pro for Powerline"; font-size: 8pt;
-highlight! Filter color: #1d1f21; background: #5e8d87;
-highlight! FrameIndicator background: #707880; opacity: 0.5; z-index: 999; position: fixed; top: 0; bottom: 0; left: 0; right: 0;
 
 highlight! HelpNote color: #85678f;
 highlight! HelpWarning color: #b294bb;
 
-highlight! Hint font-family: "Source Code Pro for Powerline"; font-size: 10pt; color: #ebecee; background: #85678f; padding: 1px;
-highlight! HintActive color: #707880; background: #1d1f21;
-highlight! HintElem background: transparent;
-highlight! HintImage opacity: 0.5;
-
-highlight! InfoMsg color: #707880;
-highlight! Keyword color: #707880;
-highlight! LineNr color: #707880;
-highlight! NonText color: #707880;
-
-highlight! ModeMsg color: #707880; background: transparent; padding: 0 8px; font-family: "Source Code Pro for Powerline"; font-size: 8pt;
-highlight! MoreMsg color: #707880; font-family: "Source Code Pro for Powerline"; font-size: 8pt;
-
 highlight! PromptText color: #707880; padding-top: 4px;
-highlight! Question color: #707880;
 
-highlight! Title color: #c5c8c6;
-highlight! WarningMsg color: #707880;
-
+" vim:foldmethod=marker:foldlevel=0: set filetype=vim:
