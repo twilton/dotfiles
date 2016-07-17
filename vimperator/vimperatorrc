@@ -23,10 +23,10 @@ set editor="urxvt -e vim"
 set noerrorbells
 
 " search
-set defsearch=google1
+set defsearch=google
 
 " diable url separators
-set urlseparator=
+set urlseparator=""
 " }}}
 
 " -----------------------------------------------------------------------------
@@ -297,7 +297,7 @@ cabbrev wiki wikipedia
     set! datareporting.healthreport.uploadEnabled=false
     set! datareporting.policy.dataSubmissionEnabled=false
     set! datareporting.policy.dataSubmissionEnabled.v2=false
-    set! breakpad.reportURL=
+    set! breakpad.reportURL=""
     set! beacon.enable=false
 
     " Safe browsing
@@ -391,7 +391,7 @@ cabbrev wiki wikipedia
     " Browser window
     set! dom.allow_scripts_to_close_windows=false
     set! dom.vibrator.enabled=false
-    set! user_pref("dom.popup_maximum", 5);
+    set! dom.popup_maximum=5
     set! dom.disable_window_open_feature.close=true
     set! dom.disable_window_open_feature.directories=true
     set! dom.disable_window_open_feature.location=true
