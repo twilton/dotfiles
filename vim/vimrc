@@ -47,20 +47,23 @@ Plug 'ervandew/supertab'
 " snippet engine and snippet repo 
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 
-" repeat everything
-Plug 'tpope/vim-repeat'
-
 " universal set of defaults
 Plug 'tpope/vim-sensible'
 
+" repeat everything
+Plug 'tpope/vim-repeat'
+
 " auto closes stuff
 Plug 'jiangmiao/auto-pairs'
+
+" auto closes stuff
+Plug 'tpope/vim-endwise'
 
 " surroundings
 Plug 'tpope/vim-surround'
 
 " comments!
-Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-commentary', { 'on': '<Plug>Commentary' }
 
 " align everything
 Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
@@ -70,6 +73,9 @@ Plug 'wlangstroth/vim-racket', { 'for': ['racket'] }
 
 " check syntax
 Plug 'scrooloose/syntastic'
+
+" ag
+Plug 'mileszs/ack.vim', {'on': ['Ack', 'AckWindow'] }
 
 call plug#end()
 " }}}
@@ -182,7 +188,7 @@ if has('statusline')
 
     " syntax checking
     set statusline+=%5*
-    set statusline+=%{SyntasticStatuslineFlag()}
+    set statusline+=%{exists('g:loaded_syntastic_plugin')?SyntasticStatuslineFlag():''}
     set statusline+=%*
 
     " Cursor info
@@ -330,12 +336,12 @@ set nowb
 " formating for other filetypes
 augroup FileTypeRules
     autocmd!
-    autocmd BufNewFile,BufRead *.conf set ft=cfg tw=79
-    autocmd BufNewFile,BufRead *.md set ft=markdown tw=72
-    autocmd BufNewFile,BufRead *.tex set ft=tex tw=79
-    autocmd BufNewFile,BufRead *.txt set ft=sh tw=72
-    autocmd BufNewFile,BufRead *.py set ts=4 sts=4 sw=4 tw=79 et ai
-    autocmd Filetype gitcommit setlocal spell tw=72
+    autocmd BufNewFile,BufRead *.txt     setl ft=sh       tw=72
+    autocmd BufNewFile,BufRead *.md      setl ft=markdown tw=72
+    autocmd BufNewFile,BufRead *.conf    setl ft=cfg      tw=79
+    autocmd BufNewFile,BufRead *.tex     setl ft=tex      tw=79
+    autocmd BufNewFile,BufRead *.py      setl et ai       tw=79 ts=4 sts=4 sw=4
+    autocmd Filetype           gitcommit setl spell       tw=72
 augroup END
 
 " Delete trailing white space on save, useful for Python and CoffeeScript ;)
@@ -344,7 +350,7 @@ func! DeleteTrailingWS()
   %s/\s\+$//ge
   exe "normal `z"
 endfunc
-autocmd BufWrite *.py :call DeleteTrailingWS()
+autocmd BufWrite *.py     :call DeleteTrailingWS()
 autocmd BufWrite *.coffee :call DeleteTrailingWS()
 " }}}
 
@@ -394,7 +400,6 @@ autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
 " windows
 map <leader>s <C-W>s
 map <leader>v <C-W>v
-map <leader>c <C-W>c
 map <leader>q <C-W>q
 
 " Move between windows
@@ -402,6 +407,10 @@ map <leader>h <C-W>h
 map <leader>j <C-W>j
 map <leader>k <C-W>k
 map <leader>l <C-W>l
+
+" location
+noremap <leader>l[ :lprevious<cr>
+noremap <leader>l] :lnext<cr>
 
 " Edit Helpers http://vimcasts.org/e/14
 cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
@@ -442,6 +451,9 @@ nnoremap ci( %ci(
 " {{{
 " disable ex mode
 nnoremap Q <nop>
+
+" disable keyword man page
+nnoremap K <nop>
 " }}}
 
 " -----------------------------------------------------------------------------
@@ -474,15 +486,44 @@ nnoremap Q <nop>
     " }}}
 
     " -------------------------------------------------------------
+    " => Commentary
+    " -------------------------------------------------------------
+    " {{{
+    xmap <leader>c  <Plug>Commentary
+    nmap <leader>c  <Plug>Commentary
+    omap <leader>c  <Plug>Commentary
+    nmap <leader>cc <Plug>CommentaryLine
+    nmap c<leader>c <Plug>ChangeCommentary
+    nmap <leader>cu <Plug>Commentary<Plug>Commentary
+    " }}}
+
+    " -------------------------------------------------------------
     " => syntastic
     " -------------------------------------------------------------
     " {{{
+    " Settings
+    let g:syntastic_auto_loc_list = 0
     let g:syntastic_always_populate_loc_list = 1
-    " let g:syntastic_auto_loc_list = 1
-    let g:syntastic_cpp_check_header = 1
-    let g:syntastic_cpp_compiler_options = ' -std=c++0x'
-    let g:syntastic_check_on_open = 1
-    let g:syntastic_check_on_wq = 1
+    let g:syntastic_aggregate_errors = 1
+    let g:syntastic_enable_highlighting = 0
+
+    " Formatting
+    let g:syntastic_loc_list_height = 8
+    let g:syntastic_stl_format = "[%E{Err: %e, line %fe}%B{ / }%W{Warn: %w, line %fw}]"
+
+    " Syntax mode by filetype
+    let g:syntastic_mode_map = {
+        \ 'mode': 'passive',
+        \ 'active_filetypes': ['c', 'javascript', 'coffee', 'cpp', 'rust', 'ruby']}
+
+    " file type settings
+    let g:syntastic_c_check_header          = 0
+    let g:syntastic_c_compiler_options      = ' -Wextra -Wall'
+    let g:syntastic_c_remove_include_errors = 1
+    let g:syntastic_cpp_compiler_options    = ' -Wextra -Wall -std=c++11'
+
+    " mappings
+    nmap <leader>ec :SyntasticCheck<CR>
     " }}}
 
     " -------------------------------------------------------------
@@ -502,6 +543,17 @@ nnoremap Q <nop>
     " {{{
     nmap <leader>a <Plug>(EasyAlign)
     xmap <leader>a <Plug>(EasyAlign)
+    " }}}
+
+    " -------------------------------------------------------------
+    " => ag
+    " -------------------------------------------------------------
+    " {{{
+    if executable('ag')
+        let g:ackprg = 'ag --vimgrep'
+    endif
+    cnoreabbrev ag Ack!
+    cnoreabbrev agw AckWindow!
     " }}}
 
     " -------------------------------------------------------------
