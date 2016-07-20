@@ -97,12 +97,16 @@
     # {{{
     # Default short git log
     lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ar)%Creset' --abbrev-commit --date=relative
+
     # List commits showing changed files
     ll = log --graph --oneline --stat --decorate
+
     # List commits showing changed files
     lc = log @{1}.. --stat --no-merges
+
     # See history of a file
     lf = log -p -M --follow --stat --
+
     # List remotes
     rem = "!git config -l | grep remote.*url | tail -n +2"
     # }}}
@@ -121,12 +125,6 @@
     # {{{
     # Find a file path in codebase
     f = !git ls-files | grep -i
-    # }}}
-
-    # -------------------------------------------------------------
-    # => Other
-    # -------------------------------------------------------------
-    # {{{
     # }}}
 # }}}
 

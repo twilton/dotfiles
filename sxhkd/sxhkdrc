@@ -27,7 +27,7 @@ super + shift + s
 # => Desktop
 # -----------------------------------------------------------------------------
 # {{{
-super + m
+super + shift + m
     bspc desktop -l next
 # }}}
 
@@ -48,7 +48,7 @@ super + {_,shift + }{1-9,0}
 # change node tile method
 # super + {t,shift + t,f,m}
     # bspc node -t {'tiled','~pseudo_tiled','~floating','~fullscreen'}
-super + {t,shift + t,f,shift + m}
+super + {t,shift + t,f,m}
     bspc node -t {'tiled','~pseudo_tiled','~floating','~fullscreen'}
 
 # close node
@@ -126,10 +126,6 @@ super + r
 super + n
     urxvtc -e ncmpcpp
 
-# Open weechat in urxvt
-super + i
-    urxvtc -e weechat
-
 # toggle sidebar
 super + backslash
     $HOME/.dotfiles/bin/bspwm/sidebar_toggle
@@ -178,7 +174,6 @@ super + {shift + Down,Down,Up}
     {amixer -q set Master toggle,\
     amixer -q set Master 5%- unmute,\
     amixer -q set Master 5%+ unmute}
-
 # }}}
 
 # vim:foldmethod=marker:foldlevel=0
