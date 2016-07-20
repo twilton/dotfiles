@@ -80,8 +80,7 @@
     cl = clone
 
     # Record changes to repository
-    ci = commit
-    cm = commit -m
+    cm = commit
 
     # Checkout branch or paths to working tree
     co = checkout
