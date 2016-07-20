@@ -82,7 +82,6 @@
     # Record changes to repository
     ci = commit
     cm = commit -m
-    cma = commit -a -m
 
     # Checkout branch or paths to working tree
     co = checkout
@@ -97,30 +96,14 @@
     # => Lists / Logs
     # -------------------------------------------------------------
     # {{{
-    # Show changes between commits
-    d = diff --word-diff
-    dc = diff --cached
-    diff = diff --word-diff
-    # Show diff of given revision
-    diffr = "!f() { git diff \"$1\"^..\"$1\"; }; f"
-    dr = "!f() { git diff \"$1\"^..\"$1\"; }; f"
-    # Show diff of last commit
-    dlc = !git diff --cached HEAD^
-
     # Default short git log
-    le = log --oneline --decorate
-    # List commits in short form
-    ls = log --pretty=format:"%C(yellow)%h%C(red)%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
-    # List oneline commits showing relative dates
-    ld = log --pretty=format:"%C(yellow)%h\\ %C(green)[%ad]%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative
-    # List oneline commits showing dates
-    lds = log --pretty=format:"%C(yellow)%h\\ %C(green)%ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short --graph
+    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ar)%Creset' --abbrev-commit --date=relative
     # List commits showing changed files
-    ll = log --pretty=format:"%C(yellow)%h%C(red)%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
-    # Show modified files in last commit
-    dl = !git ll -1
-    # List all files being tracked of current branch
-    lf = ls-files
+    ll = log --graph --oneline --stat --decorate
+    # List commits showing changed files
+    lc = log @{1}.. --stat --no-merges
+    # See history of a file
+    lf = log -p -M --follow --stat --
     # List remotes
     rem = "!git config -l | grep remote.*url | tail -n +2"
     # }}}
@@ -139,19 +122,12 @@
     # {{{
     # Find a file path in codebase
     f = !git ls-files | grep -i
-    # Search codebase for a string
-    gr = grep -Ii
-    grep = grep -Ii
     # }}}
 
     # -------------------------------------------------------------
     # => Other
     # -------------------------------------------------------------
     # {{{
-    # Download latest git commits and update the local branch
-    up = "!git remote update -p; git merge --ff-only @{u}"
-    # Apply changes introduced by some existing commits
-    cp = !git cherry-pick
     # }}}
 # }}}
 

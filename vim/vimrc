@@ -162,7 +162,7 @@ if has('statusline')
 
     " display fugitive
     " set statusline+=%4*
-    " set statusline+=%{fugitive#statusline()}
+    " set statusline+=[%{fugitive#head(6)}]
     " set statusline+=%*
 
     " display a warning if fileformat isnt unix
@@ -331,10 +331,11 @@ set nowb
 augroup FileTypeRules
     autocmd!
     autocmd BufNewFile,BufRead *.conf set ft=cfg tw=79
-    autocmd BufNewFile,BufRead *.md set ft=markdown tw=79
+    autocmd BufNewFile,BufRead *.md set ft=markdown tw=72
     autocmd BufNewFile,BufRead *.tex set ft=tex tw=79
-    autocmd BufNewFile,BufRead *.txt set ft=sh tw=79
+    autocmd BufNewFile,BufRead *.txt set ft=sh tw=72
     autocmd BufNewFile,BufRead *.py set ts=4 sts=4 sw=4 tw=79 et ai
+    autocmd Filetype gitcommit setlocal spell tw=72
 augroup END
 
 " Delete trailing white space on save, useful for Python and CoffeeScript ;)
@@ -393,6 +394,7 @@ autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
 " windows
 map <leader>s <C-W>s
 map <leader>v <C-W>v
+map <leader>c <C-W>c
 map <leader>q <C-W>q
 
 " Move between windows
