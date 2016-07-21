@@ -43,9 +43,39 @@ setopt HIST_IGNORE_DUPS
 setopt INC_APPEND_HISTORY
 setopt SHARE_HISTORY
 
-# Load OS specific environment settings
-[[ $OSTYPE == darwin* && -f $HOME/.dotfiles/zsh/darwin/zshenv ]] && source $HOME/.dotfiles/zsh/darwin/zshenv
-[[ $OSTYPE == linux*  && -f $HOME/.dotfiles/zsh/linux/zshenv  ]] && source $HOME/.dotfiles/zsh/linux/zshenv
+# XDG Base Directory Specification
+# http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+
+# Set path
+export PATH="$HOME/.bin:$PATH"
+
+# Make UTF-8
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+
+# use gcc colors
+export GCC_COLORS=1
+
+# Default Programs
+if [[ -x $(which firefox 2> /dev/null) ]]; then
+    export BROWSER='firefox'
+fi
+if [[ -x $(which vim 2> /dev/null) ]]; then
+    export EDITOR='vim'
+    export VISUAL=$EDITOR
+fi
+if [[ -x $(which urxvtc 2> /dev/null) ]]; then
+    export TERMINAL='urxvtc'
+fi
+
+# Less options.
+if [[ -x $(which less 2> /dev/null) ]]
+then
+    export LESS='-F -g -i -M -R -S -w -X -z-4'
+fi
 # }}}
 
 # -----------------------------------------------------------------------------
@@ -144,9 +174,64 @@ alias ...='cd ../..'
 # Network
 alias ping="ping -c 3"
 
-# Load OS specific aliases / functions
-[[ $OSTYPE == darwin* && -f $HOME/.dotfiles/zsh/darwin/aliases ]] && source $HOME/.dotfiles/zsh/darwin/aliases
-[[ $OSTYPE == linux*  && -f $HOME/.dotfiles/zsh/linux/aliases  ]] && source $HOME/.dotfiles/zsh/linux/aliases
+# force colors
+alias ls='ls --color=auto -hrtF'
+alias lsa='ls --color=auto -oghrtF'
+alias grep='grep --color=auto'
+
+# Pipes & more
+alias -g BG='& exit'
+alias -g N='> /dev/null'
+alias -g L='| less'
+alias -g M='| more'
+alias -g G='| grep'
+alias -g V='| vim -'
+
+# Pacman / Pacaur
+alias syugit='pacaur -Syu --devel --needed'
+
+# passwords
+alias keys="kpcli --kdb ${HOME}/documents/local/cats"
+
+# auto-ls after changing directory
+cd () {
+    builtin cd $@ && ls -hrtF
+}
+
+# make dir and cd into it
+function mkcd ()
+{
+    mkdir -p "$@" && eval cd "\"\$$#\"";
+}
+
+# make use of systemcl more friendly
+function sstart()   { sudo systemctl start $@;   }
+function srestart() { sudo systemctl restart $@; }
+function senable()  { sudo systemctl enable $@;  }
+function sdisable() { sudo systemctl disable $@; }
+function sstatus()  { sudo systemctl status $@; }
+
+# easier extraction
+extract () {
+    if [ -f $1 ] ; then
+        case $1 in
+            *.tar.bz2) tar xvjf $1;;
+            *.tar.gz) tar xvzf $1;;
+            *.bz2) bunzip2 $1;;
+            *.rar) unrar x $1;;
+            *.gz) gunzip $1;;
+            *.tar) tar xvf $1;;
+            *.tbz2) tar xvjf $1;;
+            *.tgz) tar xvzf $1;;
+            *.zip) unzip $1;;
+            *.Z) uncompress $1;;
+            *.7z) 7za x $1;;
+            *) echo "'$1' cannot be extracted via >extract<" ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
+}
 # }}}
 
 # vim:foldmethod=marker:foldlevel=0

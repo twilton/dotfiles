@@ -1,4 +1,0 @@
-# force colors
-alias gls='gls --color=auto -hrtF'
-alias glsa='gls --color=auto -oghrtF'
-alias grep='grep --color=auto'
