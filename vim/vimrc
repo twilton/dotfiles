@@ -32,9 +32,6 @@ Plug 'nanotech/jellybeans.vim'
 " buffers in tabline
 Plug 'ap/vim-buftabline'
 
-" netrw
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-
 " split width fixer
 Plug 'roman/golden-ratio'
 
@@ -46,6 +43,9 @@ Plug 'ervandew/supertab'
 
 " snippet engine and snippet repo 
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+
+" ag
+Plug 'mileszs/ack.vim', {'on': ['Ack', 'AckWindow'] }
 
 " universal set of defaults
 Plug 'tpope/vim-sensible'
@@ -68,14 +68,11 @@ Plug 'tpope/vim-commentary', { 'on': '<Plug>Commentary' }
 " align everything
 Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
 
-" racket language support
-Plug 'wlangstroth/vim-racket', { 'for': ['racket'] }
-
 " check syntax
 Plug 'scrooloose/syntastic'
 
-" ag
-Plug 'mileszs/ack.vim', {'on': ['Ack', 'AckWindow'] }
+" racket language support
+Plug 'wlangstroth/vim-racket', { 'for': ['racket'] }
 
 call plug#end()
 " }}}
@@ -89,7 +86,7 @@ set noexrc
 
 " Sets how many lines of history VIM has to remember
 set history=1000
-" Persistent Undo {{{
+" Persistent Undo
 if has('persistent_undo')
     silent !mkdir ~/.vim/backups > /dev/null 2>&1
     set undodir=~/.vim/backups
@@ -97,13 +94,9 @@ if has('persistent_undo')
     set undolevels=500
     set undoreload=10000
 endif
-" }}}
 
 " Enable filetype plugins
 filetype plugin indent on
-
-" Conflicts when using mapleader so map space to \
-map <space> <leader>
 " }}}
 
 " -----------------------------------------------------------------------------
@@ -245,20 +238,14 @@ set splitbelow
 " vsplits go right w/focus
 set splitright
 
-" fix default folding
-set foldlevelstart=0
-" hide folding column
-set foldcolumn=0 
 " folds using syntax
 set foldmethod=marker
-" max 10 nested folds
-set foldnestmax=10
-" folds open by default
-" set foldlevelstart=99
 " folds closed by default
 set foldlevelstart=1
-" toggle folds with enter
-nnoremap <Enter> za
+" hide folding column
+set foldcolumn=0 
+" max 10 nested folds
+set foldnestmax=10
 
 " better auto complete
 set wildmenu
@@ -386,42 +373,48 @@ set formatoptions+=t
 " }}}
 
 " -----------------------------------------------------------------------------
-" => Movement, tabs, windows, buffers, and registers
+" => tabs, windows, buffers, and registers
 " -----------------------------------------------------------------------------
 " {{{
+" Automatically switch to file directory of buffer
+autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
+" }}}
+
+" -----------------------------------------------------------------------------
+" => Edit mappings
+" -----------------------------------------------------------------------------
+" {{{
+" Conflicts when using mapleader so map space to \
+map <space> <leader>
+
+" Treat wrapped lines as normal lines
+nnoremap j gj
+nnoremap k gk
+
+" toggle folds with enter
+nnoremap <Enter> za
+
 " Buffers
 noremap <leader>b :ls<cr>:b<space>
 noremap <leader>[ :bprevious<cr>
 noremap <leader>] :bnext<cr>
 
-" Automatically switch to file directory of buffer
-autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
-
 " windows
-map <leader>s <C-W>s
-map <leader>v <C-W>v
-map <leader>q <C-W>q
+noremap <leader>s <C-W>s
+noremap <leader>v <C-W>v
+noremap <leader>q <C-W>q
 
 " Move between windows
-map <leader>h <C-W>h
-map <leader>j <C-W>j
-map <leader>k <C-W>k
-map <leader>l <C-W>l
+noremap <leader>h <C-W>h
+noremap <leader>j <C-W>j
+noremap <leader>k <C-W>k
+noremap <leader>l <C-W>l
 
-" location
-noremap <leader>l[ :lprevious<cr>
-noremap <leader>l] :lnext<cr>
-
-" Edit Helpers http://vimcasts.org/e/14
-cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
-map <leader>ew :e %%
-map <leader>es :sp %%
-map <leader>ev :vsp %%
-map <leader>et :tabe %%
-
-" Treat wrapped lines as normal lines
-nnoremap j gj
-nnoremap k gk
+" Edit
+noremap <leader>ew :e<space>
+noremap <leader>es :sp<space>
+noremap <leader>ev :vsp<space>
+noremap <leader>et :tabe<space>
 
 " Change Y to be consistent with C and D
 nnoremap Y y$
@@ -443,15 +436,24 @@ vnoremap > >gv
 
 " Working ci(, works for both breaklined, inline and multiple ()
 nnoremap ci( %ci(
-" }}}
 
-" -----------------------------------------------------------------------------
-" => Edit mappings
-" -----------------------------------------------------------------------------
-" {{{
+" Comments
+xmap <leader>c  <Plug>Commentary
+nmap <leader>c  <Plug>Commentary
+omap <leader>c  <Plug>Commentary
+nmap <leader>cc <Plug>CommentaryLine
+nmap c<leader>c <Plug>ChangeCommentary
+nmap <leader>cu <Plug>Commentary<Plug>Commentary
+
+" Syntax
+nmap <leader>ec :SyntasticCheck<CR>
+
+" alignment
+nmap <leader>a <Plug>(EasyAlign)
+xmap <leader>a <Plug>(EasyAlign)
+
 " disable ex mode
 nnoremap Q <nop>
-
 " disable keyword man page
 nnoremap K <nop>
 " }}}
@@ -469,13 +471,6 @@ nnoremap K <nop>
     " }}}
 
     " -------------------------------------------------------------
-    " => NERDTree
-    " -------------------------------------------------------------
-    " {{{
-    map <leader>t :NERDTreeToggle<CR>
-    " }}}
-
-    " -------------------------------------------------------------
     " => ultisnip
     " -------------------------------------------------------------
     " {{{
@@ -483,18 +478,6 @@ nnoremap K <nop>
     let g:UltiSnipsJumpForwardTrigger="<tab>"
     let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
     let g:UltiSnipsEditSplit="vertical"
-    " }}}
-
-    " -------------------------------------------------------------
-    " => Commentary
-    " -------------------------------------------------------------
-    " {{{
-    xmap <leader>c  <Plug>Commentary
-    nmap <leader>c  <Plug>Commentary
-    omap <leader>c  <Plug>Commentary
-    nmap <leader>cc <Plug>CommentaryLine
-    nmap c<leader>c <Plug>ChangeCommentary
-    nmap <leader>cu <Plug>Commentary<Plug>Commentary
     " }}}
 
     " -------------------------------------------------------------
@@ -521,9 +504,6 @@ nnoremap K <nop>
     let g:syntastic_c_compiler_options      = ' -Wextra -Wall'
     let g:syntastic_c_remove_include_errors = 1
     let g:syntastic_cpp_compiler_options    = ' -Wextra -Wall -std=c++11'
-
-    " mappings
-    nmap <leader>ec :SyntasticCheck<CR>
     " }}}
 
     " -------------------------------------------------------------
@@ -535,25 +515,6 @@ nnoremap K <nop>
     let g:neocomplete#enable_smart_case = 1 " Use smartcase.
     let g:neocomplete#sources#syntax#min_keyword_length = 3 " Set minimum syntax keyword length.
     let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-    " }}}
-
-    " -------------------------------------------------------------
-    " => easyalign
-    " -------------------------------------------------------------
-    " {{{
-    nmap <leader>a <Plug>(EasyAlign)
-    xmap <leader>a <Plug>(EasyAlign)
-    " }}}
-
-    " -------------------------------------------------------------
-    " => ag
-    " -------------------------------------------------------------
-    " {{{
-    if executable('ag')
-        let g:ackprg = 'ag --vimgrep'
-    endif
-    cnoreabbrev ag Ack!
-    cnoreabbrev agw AckWindow!
     " }}}
 
     " -------------------------------------------------------------
