@@ -157,11 +157,11 @@ shift + XF86KbdBrightness{Down,Up}
 XF86Audio{Prev,Play,Next}
     mpc {prev,toggle,next}
 
-{_,shift + }Pause
+super + s ; {_,shift + }o
     paswitch {alsa_output.usb-iFi__by_AMR__iFi__by_AMR__HD_USB_Audio-00.analog-stereo, \
     alsa_output.pci-0000_00_1b.0.analog-stereo}
 
-super + {Left,Pause,Right}
+super + s ; {h,p,l}
     mpc {prev,toggle,next}
 
 # Volume Mute / Lower / Raise
@@ -170,7 +170,7 @@ XF86Audio{Mute,LowerVolume,RaiseVolume}
     amixer -q set Master 5%- unmute,\
     amixer -q set Master 5%+ unmute}
 
-super + {shift + Down,Down,Up}
+super + {shift + F11,F11,F12}
     {amixer -q set Master toggle,\
     amixer -q set Master 5%- unmute,\
     amixer -q set Master 5%+ unmute}
