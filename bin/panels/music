@@ -15,46 +15,99 @@
 # Useage:      $ sh ./music
 # -----------------------------------------------------------------------------
 
-# Define colors
+# Define colors from Xresources
 color1=$( cat $HOME/.Xresources | grep color6 | tail -c 8 )
 color2=$( cat $HOME/.Xresources | grep color3 | tail -c 8 )
 color3=$( cat $HOME/.Xresources | grep color7 | tail -c 8 )
 
-# Kill old music
-pkill -f 'dzen2 -title-name music'*
-sleep 0.1
+# Updates the song_info array parameters to have a formatted status and
+#   the correct xft width for displaying
+function update_song_info() {
+    if [[ -z "$(mpc current)" ]]; then
+        song_info["status"]="^fg(${color3})Playlist Empty"
+        song_info["width"]=$( xftwidth 'Source Code Pro:size=7' '-Playlist Empty-' )
+    else
+        # get individual mpc current fields for formatting
+        local artist=$( mpc -f "[%artist%]" | head -n 1 )
+        local title=$( mpc -f "[%title%]" | head -n 1 )
+        local album=$( mpc -f "[%album%]" | head -n 1 )
 
-# Calculate the width
-current=$( mpc -f '[[%artist% - ][%title%][ - %album%]]' | head -n 1 )
-count=$( xftwidth 'Source Code Pro:size=7' "${current}" )
-width=$(( ${count} + 30 ))
+        # has artist, title and album
+        if [[ -n "${artist}" && -n "${title}" && -n "${album}" ]]; then
+            song_info["status"]="^fg(${color1})${artist}^fg(${color3}) - ^fg(${color2})${title}^fg(${color3}) - ^fg(${color3})${album}"
+            song_info["width"]=$( xftwidth 'Source Code Pro:size=7' "-${artist} - ${title} - ${album}-" )
 
-# Vars
-artist=$( mpc -f '[%artist% - ]' | head -n 1 )
-title=$( mpc -f '[%title%]' | head -n 1 )
-album=$( mpc -f '[ - %album%]' | head -n 1 )
-music="^fg(${color1})${artist}^fg(${color2})${title}^fg(${color3})${album}"
+        # has artist and title but not album
+        elif [[ -n "${artist}" && -n "${title}" ]]; then
+            song_info["status"]="^fg(${color1})${artist}^fg(${color3}) - ^fg(${color2})${title}"
+            song_info["width"]=$( xftwidth 'Source Code Pro:size=7' "-${artist} - ${title}-" )
 
-empty=$( mpc current | cut -d $'\n' -f 1 )
-if [[ -z "${empty}" ]]; then
-    music="^fg(${color3})Playlist Empty"
-    width=$(( $( xftwidth 'Source Code Pro:size=7' 'Playlist Empty' ) + 30 ))
-fi
+        # has artist and album but not title
+        elif [[ -n "${artist}" && -n "${album}" ]]; then
+            song_info["status"]="^fg(${color1})${artist}^fg(${color3}) - ^fg(${color3})${album}"
+            song_info["width"]=$( xftwidth 'Source Code Pro:size=7' "-${artist} - ${album}-" )
 
-while 
+        # has title and album but not artist
+        elif [[ -n "${title}" && -n "${album}" ]]; then
+            song_info["status"]="^fg(${color2})${title}^fg(${color3}) - ^fg(${color3})${album}"
+            song_info["width"]=$( xftwidth 'Source Code Pro:size=7' "-${title} - ${album}-" )
+
+        # has only artist
+        elif [[ -n "${artist}" ]]; then
+            song_info["status"]="^fg(${color1})${artist}"
+            song_info["width"]=$( xftwidth 'Source Code Pro:size=7' "-${artist}-" )
+
+        # has only title
+        elif [[ -n "${title}" ]]; then
+            song_info["status"]="^fg(${color2})${title}"
+            song_info["width"]=$( xftwidth 'Source Code Pro:size=7' "-${title}-" )
+
+        # has only album
+        elif [[ -n "${album}" ]]; then
+            song_info["status"]="^fg(${color3})${album}"
+            song_info["width"]=$( xftwidth 'Source Code Pro:size=7' "-${album}-" )
+
+        # no artist title or album
+        else
+            song_info["status"]="^fg(${color3})Unknown"
+            song_info["width"]=$( xftwidth 'Source Code Pro:size=7' '-Unknown-' )
+        fi
+    fi
+}
+
+# associative array song_info
+declare -A song_info
+
+# update song_info array
+update_song_info
+
+# set initial width
+width_init=$(echo ${song_info["width"]})
+
+# pipes updated song_info status to dzen
+while
     :
 do
-    new=$( mpc -f '[[%artist% - ][%title%][ - %album%]]' | head -n 1 )
+    # print statusline
+    echo ${song_info["status"]}
 
-    if [[ "${current}" != "${new}" ]]; then
+    # wait for an mpd event
+    mpc idle >/dev/null
+
+    # update song_info array
+    update_song_info
+
+    # set initial width
+    width_new=$(echo ${song_info["width"]})
+
+    # if the width of the new status doesnt match the width of the
+    #   old status redraw the bar
+    if [[ "${width_new}" -ne "${width_init}" ]]; then
+        pkill -f 'dzen2 -title-name music'*
         $HOME/.dotfiles/bin/panels/music &
         exit 0
     fi
-
-    echo "${music}"
-
-    mpc idle >/dev/null
 done |
 
 # Spawn Music (dzen/bar)
-dzen2 -title-name music -p -geometry +50+25 -fn 'Source Code Pro:size=7' -ta c -w ${width} -h 40 -e 'onstart=lower' & disown
+dzen2 -title-name music -p -geometry +50+25 -fn 'Source Code Pro:size=7' -ta c -w "${width_init}" -h 40 -e 'onstart=lower'
