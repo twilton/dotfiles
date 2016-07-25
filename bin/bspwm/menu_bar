@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# -----------------------------------------------------------------------------
+# panel
+# Description: Starts the menu bar which contains status items
+# -----------------------------------------------------------------------------
+# Location: $HOME/.dotfiles/bin/bspwm/menu_bar
+# -----------------------------------------------------------------------------
+
+unset status_items
+trap 'kill "${status_items[@]}"' EXIT
+
+$HOME/.dotfiles/bin/status_items/mpd_status & status_items+=($!)
+$HOME/.dotfiles/bin/status_items/date_status & status_items+=($!)
+$HOME/.dotfiles/bin/status_items/battery_status & status_items+=($!)
+
+wait

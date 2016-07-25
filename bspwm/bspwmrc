@@ -50,7 +50,7 @@ bspc monitor -d 1 2 3 4 5
 # -----------------------------------------------------------------------------
 # {{{
 # music, clock, and battery
-$HOME/.dotfiles/bspwm/panel &
+$HOME/.dotfiles/bin/bspwm/menu_bar &
 # }}}
 
 # vim:foldmethod=marker:foldlevel=0

@@ -2,7 +2,7 @@
 
 # -----------------------------------------------------------------------------
 # music
-# Description: Displays panel showing information about mpd server
+# Description: Displays status item showing information about mpd server
 # -----------------------------------------------------------------------------
 # Requires:
 #   mpd / mpc
@@ -18,7 +18,7 @@ color2=$( cat $HOME/.Xresources | grep color3 | tail -c 8 )
 color3=$( cat $HOME/.Xresources | grep color7 | tail -c 8 )
 
 # name of the panel
-panel_name='mpd_panel'
+panel_name='mpd_status_item'
 
 # panel font
 panel_font='Source Code Pro:size=7'
