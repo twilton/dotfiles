@@ -138,10 +138,10 @@ super + backslash
 # {{{
 # Screen Backlight Control
 @XF86MonBrightness{Down,Up}
-    xbacklight {-dec,-inc} 5
+    light {-U,-A} 5
 
 shift + @XF86MonBrightness{Down,Up}
-    xbacklight -set {5,100}
+    light -S {5,100}
 
 # Application Control
 # XF86Launch{A,B}
