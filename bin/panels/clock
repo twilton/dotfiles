@@ -14,37 +14,95 @@
 # Useage:      $ sh ./clock
 # -----------------------------------------------------------------------------
 
-# Define colors
+# Define colors from Xresources
 color1=$( cat $HOME/.Xresources | grep color6 | tail -c 8 )
 color2=$( cat $HOME/.Xresources | grep color3 | tail -c 8 )
 color3=$( cat $HOME/.Xresources | grep color7 | tail -c 8 )
 
-# Kill old clocks
-pkill -f 'dzen2 -title-name clock'*
-sleep 0.1
+# name of the panel
+panel_name='date_panel'
 
-# Calculate the width
-count=$( xftwidth 'Source Code Pro:size=7' "$(date +'%A %d %I:%M %p')" )
-width=$((  ${count} + 30 ))
-margin=$(( 1440 - ${width} / 2 ))
+# panel font
+panel_font='Source Code Pro:size=7'
+
+# panel layer
+panel_layer='lower'
+
+# panel height
+panel_height='40'
+
+# fifo
+pipe="/tmp/${panel_name}.fifo"
+
+# associative array with information about current text
+declare -A text
+text=( ["format"]="" ["width"]="" )
+
+# associative array with information about panel
+declare -A panel
+panel=( ["pid"]="" ["width"]="" )
+
+function finish() {
+    # kill the panel
+    kill "${panel['pid']}"
+
+    # remove the fifo
+    rm -f "${pipe}"
+}
+
+# Updates the text array to have a formatted info and the correct xft width
+function update_text() {
+    text["format"]=$( date +"^fg(${color3})%A ^fg(${color1})%d ^fg(${color2})%I^fg(${color3}):^fg(${color2})%M ^fg(${color3})%p" )
+    text["width"]=$( xftwidth 'Source Code Pro:size=7' "$(date +'-%A %d %I:%M %p-')" )
+}
+
+function update_panel() {
+    # parameters for spawned dzen
+    local dzen_args=( -title-name "${panel_name}" -ta c -fn "${panel_font}" -e "onstart=${panel_layer}" -y '25' -h "${panel_height}" )
+
+    # no panel running yet
+    if [[ -z "${panel['pid']}" ]]; then
+        # create new panel with current width
+        tail -f "${pipe}" > >(dzen2 "${dzen_args[@]}" -w "${text['width']}" -x "$(( 1440 - ${text['width']} / 2 ))") &
+
+        # update panel info
+        panel['pid']=$(echo $!)
+        panel['width']=$(echo "${text['width']}")
+
+    # panel is running but doesn't have the correct width
+    elif [[ "${panel['width']}" != "${text['width']}" ]]; then
+        # kill oldpanel
+        kill "${panel['pid']}"
+
+        # create new panelwith current width
+        tail -f "${pipe}" > >(dzen2 "${dzen_args[@]}" -w "${text['width']}" -x "$(( 1440 - ${text['width']} / 2 ))") &
+
+        # update panelinfo
+        panel['pid']=$(echo $!)
+        panel['width']=$(echo "${text['width']}")
+    fi
+}
+
+# cleanup on exit
+trap finish EXIT
 
 while
     :
 do
-    time=$( date +"^fg(${color3})%A ^fg(${color1})%d ^fg(${color2})%I^fg(${color3}):^fg(${color2})%M ^fg(${color3})%p" )
-
-    # Reload the clock on day change
-    countnew=$( xftwidth 'Source Code Pro:size=7' "$(date +'%A %d %I:%M %p')" )
-
-    if [[ ${count} -ne ${countnew} ]]; then
-        ~/.dotfiles/bin/panels/clock &
-        exit 0
+    # make the fifo
+    if [[ ! -p "${pipe}" ]]; then
+        mkfifo "${pipe}"
     fi
 
-    echo "${time}"
+    # update text array
+    update_text
 
-    sleep 30
-done |
+    # update panel array
+    update_panel
 
-# Spawn clock (dzen/bar)
-dzen2 -title-name clock -p -geometry +${margin}+25 -fn 'Source Code Pro:size=7' -ta c -w ${width} -h 40 -e 'onstart=lower' & disown
+    # pipe to fifo
+    echo "${text['format']}" >"${pipe}"
+
+    # wait for 1 minute
+    sleep 60
+done

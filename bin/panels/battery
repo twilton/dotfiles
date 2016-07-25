@@ -15,43 +15,111 @@
 # Useage:      $ sh ./battery
 # -----------------------------------------------------------------------------
 
+# Define colors from Xresources
+color1=$( cat $HOME/.Xresources | grep color7 | tail -c 8 )
+color2=$( cat $HOME/.Xresources | grep color2 | tail -c 8 )
+color3=$( cat $HOME/.Xresources | grep color3 | tail -c 8 )
+color4=$( cat $HOME/.Xresources | grep color1 | tail -c 8 )
+
 # Define colors
-color1=$( cat $HOME/.Xresources | grep color2 | tail -c 8 )
-color2=$( cat $HOME/.Xresources | grep color9 | tail -c 8 )
-color3=$( cat $HOME/.Xresources | grep color7 | tail -c 8 )
+# color1=$( cat $HOME/.Xresources | grep color2 | tail -c 8 )
+# color2=$( cat $HOME/.Xresources | grep color9 | tail -c 8 )
+# color3=$( cat $HOME/.Xresources | grep color7 | tail -c 8 )
 
-# Kill old battery
-pkill -f "dzen2 -title-name battery"*
-sleep 0.1
+# name of the panel
+panel_name='battery_panel'
 
-# Calculate the width
-count=$( xftwidth 'Source Code Pro:size=7' '[///]' )
-width=$((  ${count} + 30 ))
-margin=$(( ${width} + 50 ))
+# panel font
+panel_font='Source Code Pro:size=7'
 
-# Vars
-threshold=15
+# panel layer
+panel_layer='lower'
+
+# panel height
+panel_height='40'
+
+# fifo
+pipe="/tmp/${panel_name}.fifo"
+
+# associative array with information about current text
+declare -A text
+text=( ["format"]="" ["width"]="" )
+
+# associative array with information about panel
+declare -A panel
+panel=( ["pid"]="" ["width"]="" )
+
+function finish() {
+    # kill the panel
+    kill "${panel['pid']}"
+
+    # remove the fifo
+    rm -f "${pipe}"
+}
+
+# Updates the text array to have a formatted info and the correct xft width
+function update_text() {
+    local capacity=$(cat /sys/class/power_supply/BAT0/capacity)
+    local state=$(cat /sys/class/power_supply/BAT0/status)
+
+    if [[ "${capacity}" -gt 70 ]]; then
+        text["format"]="^fg(${color1})${state} ^fg(${color2})${capacity}"
+    elif [[ "${capacity}" -gt 30 ]]; then
+        text["format"]="^fg(${color1})${state} ^fg(${color3})${capacity}"
+    else
+        text["format"]="^fg(${color1})${state} ^fg(${color4})${capacity}"
+    fi
+
+    text["width"]=$( xftwidth 'Source Code Pro:size=7' "-${state} ${capacity}-" )
+}
+
+function update_panel() {
+    # parameters for spawned dzen
+    local dzen_args=( -title-name "${panel_name}" -ta c -fn "${panel_font}" -e "onstart=${panel_layer}" -y '25' -h "${panel_height}" )
+
+    # no panel running yet
+    if [[ -z "${panel['pid']}" ]]; then
+        # create new panel with current width
+        tail -f "${pipe}" > >(dzen2 "${dzen_args[@]}" -w "${text['width']}" -x "$(( 2830 - ${text['width']} ))") &
+
+        # update panel info
+        panel['pid']=$(echo $!)
+        panel['width']=$(echo "${text['width']}")
+
+    # panel is running but doesn't have the correct width
+    elif [[ "${panel['width']}" != "${text['width']}" ]]; then
+        # kill oldpanel
+        kill "${panel['pid']}"
+
+        # create new panelwith current width
+        tail -f "${pipe}" > >(dzen2 "${dzen_args[@]}" -w "${text['width']}" -x "$(( 2830 - ${text['width']} ))") &
+
+        # update panelinfo
+        panel['pid']=$(echo $!)
+        panel['width']=$(echo "${text['width']}")
+    fi
+}
+
+# cleanup on exit
+trap finish EXIT
 
 while
     :
 do
-    battery_state=$( acpi --battery | cut -d ' ' -f3 | sed 's/,//' )
-    percentage=$( acpi --battery | grep -o '[0-9]*%' | sed 's/%//g' )
-
-    if [[ "${battery_state}" == "Charging" ]]; then
-        battery="^fg(${color3})[^fg(${color1})++ ^fg(${color3})]"
-    elif [[ ${percentage} -le ${threshold} ]]; then
-        battery="^fg(${color3})[^fg(${color2})!!!^fg(${color3})]"
-    elif [[ "${battery_state}" == "Discharging" ]]; then
-        battery="^fg(${color3})[^fg(${color2})-- ^fg(${color3})]"
-    else
-        battery="^fg(${color3})[^fg(${color1})///^fg(${color3})]"
+    # make the fifo
+    if [[ ! -p "${pipe}" ]]; then
+        mkfifo "${pipe}"
     fi
 
-    echo "${battery}"
+    # update text array
+    update_text
 
-    sleep 30
-done |
+    # update panel array
+    update_panel
 
-# Spawn Battery (dzen/bar)
-dzen2 -title-name battery -p -geometry -${margin}+25 -fn 'Source Code Pro:size=7' -ta c -w ${width} -h 40 -e 'onstart=lower' & disown
+    # pipe to fifo
+    echo "${text['format']}" >"${pipe}"
+
+    # wait for 1 minute
+    sleep 60
+done
