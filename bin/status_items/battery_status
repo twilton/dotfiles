@@ -12,11 +12,16 @@
 # Useage:      $ ./battery
 # -----------------------------------------------------------------------------
 
-# Define colors from Xresources
-color1=$( cat $HOME/.Xresources | grep color7 | tail -c 8 )
-color2=$( cat $HOME/.Xresources | grep color2 | tail -c 8 )
-color3=$( cat $HOME/.Xresources | grep color3 | tail -c 8 )
-color4=$( cat $HOME/.Xresources | grep color1 | tail -c 8 )
+# Source color theme which defines color_{0-15}
+source "$HOME/.dotfiles/bin/status_items/color_theme"
+
+# set local colors
+color_fg="${color_white}"
+color_bg="${color_black}"
+color_state="${color_lightgrey}"
+color_high="${color_green}"
+color_medium="${color_yellow}"
+color_low="${color_red}"
 
 # name of the panel
 panel_name='battery_status_item'
@@ -55,11 +60,11 @@ function update_text() {
     local state=$(cat /sys/class/power_supply/BAT0/status)
 
     if [[ "${capacity}" -gt 70 ]]; then
-        text["format"]="^fg(${color1})${state} ^fg(${color2})${capacity}"
+        text["format"]="^fg(${color_state})${state} ^fg(${color_high})${capacity}"
     elif [[ "${capacity}" -gt 30 ]]; then
-        text["format"]="^fg(${color1})${state} ^fg(${color3})${capacity}"
+        text["format"]="^fg(${color_state})${state} ^fg(${color_medium})${capacity}"
     else
-        text["format"]="^fg(${color1})${state} ^fg(${color4})${capacity}"
+        text["format"]="^fg(${color_state})${state} ^fg(${color_low})${capacity}"
     fi
 
     text["width"]=$( xftwidth 'Source Code Pro:size=7' "-${state} ${capacity}-" )
@@ -67,7 +72,7 @@ function update_text() {
 
 function update_panel() {
     # parameters for spawned dzen
-    local dzen_args=( -title-name "${panel_name}" -ta c -fn "${panel_font}" -e "onstart=${panel_layer}" -y '25' -h "${panel_height}" )
+    local dzen_args=( -title-name "${panel_name}" -ta c -fn "${panel_font}" -e "onstart=${panel_layer}" -y '25' -h "${panel_height}" -bg "${color_bg}")
 
     # no panel running yet
     if [[ -z "${panel['pid']}" ]]; then

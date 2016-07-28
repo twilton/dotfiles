@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+# black
+color_black='#282828'
+color_darkgrey='#928374'
+
+# red
+color_darkred='#cc241d'
+color_red='#fb4934'
+
+# green
+color_darkgreen='#98971a'
+color_green='#b8bb26'
+
+# yellow
+color_darkyellow='#d79921'
+color_yellow='#fabd2f'
+
+# blue
+color_darkblue='#458588'
+color_blue='#83a598'
+
+# magenta
+color_darkmagenta='#b16286'
+color_magenta='#d3869b'
+
+# cyan
+color_darkcyan='#689d6a'
+color_cyan='#8ec07c'
+
+# white
+color_lightgrey='#a89984'
+color_white='#ebdbb2'

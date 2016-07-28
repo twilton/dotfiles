@@ -30,33 +30,62 @@ Xft.dpi: 220
 ! => Default colors
 ! -----------------------------------------------------------------------------
 ! {{{
-*.foreground:   #c5c8c6
-*.background:   #1d1f21
-*.cursorColor:  #707880
-! black
-*.color0:       #282a2e
-*.color8:       #373b41
-! red
-*.color1:       #a54242
-*.color9:       #cc6666
-! green
-*.color2:       #8c9440
-*.color10:      #b5bd68
-! yellow
-*.color3:       #DE935F
-*.color11:      #F0C674
-! blue
-*.color4:       #5F819D
-*.color12:      #81A2BE
-! magenta
-*.color5:       #85678F
-*.color13:      #B294BB
-! cyan
-*.color6:       #5E8D87
-*.color14:      #8ABEB7
-! white
-*.color7:       #707880
-*.color15:      #c5c8c6
+! *.foreground:  #c1cdc1
+! *.background:  #222222
+! *.cursorColor: #c1cdc1
+! ! black
+! *.color0:      #222222
+! *.color8:      #272822
+! ! red
+! *.color1:      #aa4450
+! *.color9:      #ff6a6a
+! ! green
+! *.color2:      #719611
+! *.color10:     #b1d631
+! ! yellow
+! *.color3:      #cc8800
+! *.color11:     #ff9800
+! ! blue
+! *.color4:      #6688aa
+! *.color12:     #90b0d1
+! ! magenta
+! *.color5:      #8f6f8f
+! *.color13:     #8181a6
+! ! cyan
+! *.color6:      #528b8b
+! *.color14:     #87ceeb
+! ! white
+! *.color7:      #c1cdc1
+! *.color15:     #d3d3d3
+! hard contrast: *background: #1d2021
+! soft contrast: *background: #32302f
+*background:   #282828
+*foreground:   #ebdbb2
+*.cursorColor: #ebdbb2
+! Black + DarkGrey
+*color0:       #282828
+*color8:       #928374
+! DarkRed + Red
+*color1:       #cc241d
+*color9:       #fb4934
+! DarkGreen + Green
+*color2:       #98971a
+*color10:      #b8bb26
+! DarkYellow + Yellow
+*color3:       #d79921
+*color11:      #fabd2f
+! DarkBlue + Blue
+*color4:       #458588
+*color12:      #83a598
+! DarkMagenta + Magenta
+*color5:       #b16286
+*color13:      #d3869b
+! DarkCyan + Cyan
+*color6:       #689d6a
+*color14:      #8ec07c
+! LightGrey + White
+*color7:       #a89984
+*color15:      #ebdbb2
 ! }}}
 
 ! -----------------------------------------------------------------------------

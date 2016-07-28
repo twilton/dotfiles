@@ -27,7 +27,8 @@ set ffs=unix,dos,mac
 call plug#begin('~/.vim/plugged')
 
 " colorscheme
-Plug 'nanotech/jellybeans.vim'
+" Plug 'xero/sourcerer.vim'
+Plug 'morhetz/gruvbox'
 
 " buffers in tabline
 Plug 'ap/vim-buftabline'
@@ -36,34 +37,16 @@ Plug 'ap/vim-buftabline'
 Plug 'roman/golden-ratio'
 
 " completion engine
-Plug 'Shougo/neocomplete.vim'
-
-" <Tab> everything
-Plug 'ervandew/supertab'
+Plug 'ajh17/VimCompletesMe'
 
 " snippet engine and snippet repo 
-Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
-
-" ag
-Plug 'mileszs/ack.vim', {'on': ['Ack', 'AckWindow'] }
+" Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 
 " universal set of defaults
 Plug 'tpope/vim-sensible'
 
-" repeat everything
-Plug 'tpope/vim-repeat'
-
 " auto closes stuff
 Plug 'jiangmiao/auto-pairs'
-
-" auto closes stuff
-Plug 'tpope/vim-endwise'
-
-" surroundings
-Plug 'tpope/vim-surround'
-
-" comments!
-Plug 'tpope/vim-commentary', { 'on': '<Plug>Commentary' }
 
 " align everything
 Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
@@ -73,6 +56,9 @@ Plug 'scrooloose/syntastic'
 
 " racket language support
 Plug 'wlangstroth/vim-racket', { 'for': ['racket'] }
+
+" kick the habit
+Plug 'wikitopian/hardmode'
 
 call plug#end()
 " }}}
@@ -140,7 +126,6 @@ if has('statusline')
 
     " File name
     set statusline+=%1*
-
     set statusline+=\ %<%.99F\ 
     set statusline+=%*
 
@@ -156,7 +141,7 @@ if has('statusline')
 
     " read only flag
     set statusline+=%3*
-    set statusline+=%{&ro?'[≠]':''} " '≠':'±'
+    set statusline+=%{&ro?'[≠]':''}
     set statusline+=%*
 
     " display fugitive
@@ -239,7 +224,7 @@ set splitbelow
 set splitright
 
 " folds using syntax
-set foldmethod=marker
+set foldmethod=manual
 " folds closed by default
 set foldlevelstart=1
 " hide folding column
@@ -291,24 +276,28 @@ syntax on
 " we're using a dark bg
 set background=dark
 
-" jellybeans syntax with my xres colors
-set t_Co=16
-colorscheme jellybeans
-" Jellybeans fixes
-highlight ModeMsg ctermfg=green
-highlight Folded ctermfg=darkcyan
-highlight LineNr ctermfg=darkgrey
-highlight SignColumn ctermbg=NONE
-" Statusline colors
-highlight StatusLine ctermbg=black
-highlight User1 ctermbg=black ctermfg=white
-highlight User2 ctermbg=black ctermfg=cyan
-highlight User3 ctermbg=black ctermfg=darkyellow
-highlight User4 ctermbg=black ctermfg=darkmagenta
-highlight User5 ctermbg=black ctermfg=red
-highlight User6 ctermbg=black ctermfg=grey
-" buftabline colors
-highlight BufTabLineCurrent ctermbg=black ctermfg=darkmagenta
+" use this colorscheme
+colorscheme gruvbox
+
+" StatusLine colors
+" hi StatusLine   cterm=NONE  ctermbg=236
+" hi StatusLineNC cterm=NONE  ctermbg=236
+hi User1        ctermbg=239 ctermfg=white
+hi User2        ctermbg=239 ctermfg=cyan
+hi User3        ctermbg=239 ctermfg=yellow
+hi User4        ctermbg=239 ctermfg=white
+hi User5        ctermbg=239 ctermfg=red
+hi User6        ctermbg=239 ctermfg=grey
+" TabLine colors
+" hi TabLine     cterm=NONE ctermbg=236 ctermfg=grey
+" hi TabLineFill cterm=NONE ctermbg=236 ctermfg=fg
+" hi TabLineSel  cterm=NONE ctermbg=white ctermfg=236
+" Columns
+" hi LineNr       ctermbg=NONE
+" hi CursorLine   ctermbg=236 ctermfg=NONE
+" hi CursorLineNr ctermbg=236
+" hi SignColumn   ctermbg=NONE
+" hi VertSplit    ctermbg=236 ctermfg=236
 " }}}
 
 " -----------------------------------------------------------------------------
@@ -323,22 +312,15 @@ set nowb
 " formating for other filetypes
 augroup FileTypeRules
     autocmd!
-    autocmd BufNewFile,BufRead *.txt     setl ft=sh       tw=72
-    autocmd BufNewFile,BufRead *.md      setl ft=markdown tw=72
-    autocmd BufNewFile,BufRead *.conf    setl ft=cfg      tw=79
-    autocmd BufNewFile,BufRead *.tex     setl ft=tex      tw=79
-    autocmd BufNewFile,BufRead *.py      setl et ai       tw=79 ts=4 sts=4 sw=4
-    autocmd Filetype           gitcommit setl spell       tw=72
+    autocmd BufNewFile,BufRead *.txt                         setl   ft=sh       tw=72
+    autocmd BufNewFile,BufRead *.md                          setl   ft=markdown tw=72
+    autocmd BufNewFile,BufRead *.conf                        setl   ft=cfg      tw=79
+    autocmd BufNewFile,BufRead *.tex                         setl   ft=tex      tw=79
+    autocmd BufNewFile,BufRead *.py                          setl   et ai       tw=79 ts=4 sts=4 sw=4
+    autocmd Filetype           gitcommit                     setl   spell       tw=72
+    autocmd Syntax             c,cpp,vim,xml,html,xhtml      setl   foldmethod=syntax
+    autocmd Syntax             c,cpp,vim,xml,html,xhtml,perl normal zR
 augroup END
-
-" Delete trailing white space on save, useful for Python and CoffeeScript ;)
-func! DeleteTrailingWS()
-  exe "normal mz"
-  %s/\s\+$//ge
-  exe "normal `z"
-endfunc
-autocmd BufWrite *.py     :call DeleteTrailingWS()
-autocmd BufWrite *.coffee :call DeleteTrailingWS()
 " }}}
 
 " -----------------------------------------------------------------------------
@@ -395,20 +377,29 @@ nnoremap k gk
 nnoremap <Enter> za
 
 " Buffers
-noremap <leader>b :ls<cr>:b<space>
-noremap <leader>[ :bprevious<cr>
-noremap <leader>] :bnext<cr>
+nnoremap <leader>b :ls<cr>:b<space>
+nnoremap <leader>[ :bprevious<cr>
+nnoremap <leader>] :bnext<cr>
+" jump to alternate buffer
+nnoremap <Leader><space> <C-^>
 
-" windows
-noremap <leader>s <C-W>s
-noremap <leader>v <C-W>v
-noremap <leader>q <C-W>q
-
+" open horizontal / vertical window
+nnoremap <leader>s <C-W>s
+nnoremap <leader>v <C-W>v
+nnoremap <leader>f :vertical wincmd f<CR>
+" close windows
+nnoremap <leader>c <C-W>c
+nnoremap <leader>q <C-W>q
+nnoremap <Leader>o :only<CR>
 " Move between windows
-noremap <leader>h <C-W>h
-noremap <leader>j <C-W>j
-noremap <leader>k <C-W>k
-noremap <leader>l <C-W>l
+nnoremap <leader>h <C-W>h
+xnoremap <leader>h <C-W>h
+nnoremap <leader>j <C-W>j
+xnoremap <leader>j <C-W>j
+nnoremap <leader>k <C-W>k
+xnoremap <leader>k <C-W>k
+nnoremap <leader>l <C-W>l
+xnoremap <leader>l <C-W>l
 
 " Edit
 noremap <leader>ew :e<space>
@@ -430,27 +421,40 @@ nnoremap <Leader>D "+D
 nnoremap <Leader>p "+p
 nnoremap <Leader>P "+P
 
-" Visual shifting (does not exit Visual mode)
+" select last changed block
+nnoremap <leader>V `[v`]
+
+" don't exit visual mode while shifting
 vnoremap < <gv
 vnoremap > >gv
 
 " Working ci(, works for both breaklined, inline and multiple ()
 nnoremap ci( %ci(
 
-" Comments
-xmap <leader>c  <Plug>Commentary
-nmap <leader>c  <Plug>Commentary
-omap <leader>c  <Plug>Commentary
-nmap <leader>cc <Plug>CommentaryLine
-nmap c<leader>c <Plug>ChangeCommentary
-nmap <leader>cu <Plug>Commentary<Plug>Commentary
-
-" Syntax
+" check syntax
 nmap <leader>ec :SyntasticCheck<CR>
+
+" reformat entire file
+nnoremap <leader>= gg=G``
+" Remove trailing whitespace
+nnoremap <leader>w m`:%s/\s\+$//<CR>:let @/=''<CR>``
 
 " alignment
 nmap <leader>a <Plug>(EasyAlign)
 xmap <leader>a <Plug>(EasyAlign)
+
+" lets enter select items in popupmenu without newline
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" Quicker cgn/cgN
+nnoremap <leader>* *``cgn
+nnoremap <leader># #``cgN
+
+" make single quote act like backtick
+nnoremap ' `
+
+" hardmode :(
+nnoremap <leader>H <Esc>:call ToggleHardMode()<CR>
 
 " disable ex mode
 nnoremap Q <nop>
@@ -468,16 +472,6 @@ nnoremap K <nop>
     " {{{
     let g:buftabline_show = 1
     let g:buftabline_indicators = 1
-    " }}}
-
-    " -------------------------------------------------------------
-    " => ultisnip
-    " -------------------------------------------------------------
-    " {{{
-    let g:UltiSnipsExpandTrigger="<tab>"
-    let g:UltiSnipsJumpForwardTrigger="<tab>"
-    let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-    let g:UltiSnipsEditSplit="vertical"
     " }}}
 
     " -------------------------------------------------------------
@@ -504,17 +498,6 @@ nnoremap K <nop>
     let g:syntastic_c_compiler_options      = ' -Wextra -Wall'
     let g:syntastic_c_remove_include_errors = 1
     let g:syntastic_cpp_compiler_options    = ' -Wextra -Wall -std=c++11'
-    " }}}
-
-    " -------------------------------------------------------------
-    " => neocomplete
-    " -------------------------------------------------------------
-    " {{{
-    let g:acp_enableAtStartup = 0 " Disable AutoComplPop.
-    let g:neocomplete#enable_at_startup = 1 " Use neocomplete.
-    let g:neocomplete#enable_smart_case = 1 " Use smartcase.
-    let g:neocomplete#sources#syntax#min_keyword_length = 3 " Set minimum syntax keyword length.
-    let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
     " }}}
 
     " -------------------------------------------------------------

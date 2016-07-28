@@ -59,6 +59,15 @@ export LANGUAGE=en_US.UTF-8
 # use gcc colors
 export GCC_COLORS=1
 
+# colored man pages
+export LESS_TERMCAP_mb=$'\E[01;31m'
+export LESS_TERMCAP_md=$'\E[01;31m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[01;44;30m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[01;32m'
+
 # Default Programs
 if [[ -x $(which firefox 2> /dev/null) ]]; then
     export BROWSER='firefox'
@@ -90,9 +99,8 @@ source "$HOME/.dotfiles/zsh/plugins/search.zsh"
 fpath=($HOME/.dotfiles/zsh/plugins/zsh-completions/src $fpath)
 source "$HOME/.dotfiles/zsh/plugins/completion.zsh"
 
-# Smart URLs
-autoload -Uz url-quote-magic
-zle -N self-insert url-quote-magic
+# enable visual mode in zle
+source "$HOME/.dotfiles/zsh/plugins/zsh-vimode-visual/zsh-vimode-visual.sh"
 
 # enable coloring
 autoload -U colors && colors
@@ -119,30 +127,56 @@ bindkey '\e[6~' end-of-history # pg down
 # => Prompt
 # -----------------------------------------------------------------------------
 # {{{
-PROMPT="%(?.%{$fg[cyan]%}.%{$fg[red]%})[%{$fg[white]%} %~ %(?.%{$fg[cyan]%}.%{$fg[red]%})] %{$reset_color%}"
-RPROMPT=""
+function zle-keymap-select zle-line-init zle-line-finish {
+    local mode=""
+    local git=""
+    local prefix="%{$reset_color%}%{$fg[white]%}[ %{$reset_color%}"
+    local suffix="%{$reset_color%}%{$fg[white]%} ]%{$reset_color%}"
 
-function current_branch() {
-  local ref
-  ref=$(git symbolic-ref --quiet HEAD 2> /dev/null)
-  local ret=$?
-  if [[ $ret != 0 ]]; then
-    [[ $ret == 128 ]] && return  # no git repo.
-    ref=$(git rev-parse --short HEAD 2> /dev/null) || return
-  fi
-  echo "%{$fg[white]%} [% %{$fg[magenta]%}${ref#refs/heads/}%{$fg[white]%}]% %{$reset_color%}"
-}
+    # get the current branch
+    local branch
+    branch="$(command git symbolic-ref --short --quiet HEAD 2>/dev/null)"
+    if [[ $? -eq 0 ]]; then
+       git="${prefix}%{$fg[magenta]%}${branch}${suffix}"
+    fi
 
-function zle-line-init zle-keymap-select {
-    GIT_PROMPT=$(current_branch)
-    ERROR_REPORT="%{$fg[red]%} ━%{$reset_color%}"
-    VIM_PROMPT="%{$fg[white]%} [% normal]% %{$reset_color%}"
-    RPS1="%(?.${${KEYMAP/(vicmd|opp)/$VIM_PROMPT$GIT_PROMPT}/(main|viins)/$GIT_PROMPT}.${${KEYMAP/(vicmd|opp)/$VIM_PROMPT$GIT_PROMPT$ERROR_REPORT}/(main|viins)/$GIT_PROMPT$ERROR_REPORT})"
+    case $KEYMAP in
+        main|viins)
+            mode="${prefix}%{$fg_bold[green]%}insert${suffix}"
+            ;;
+        vicmd)
+            mode="${prefix}%{$fg_bold[red]%}normal${suffix}"
+            ;;
+        vivis|vivli)
+            mode="${prefix}%{$fg_bold[blue]%}visual${suffix}"
+            ;;
+        # virep)
+            # mode="${prefix}%{$fg_bold[red]%}replace${suffix}"
+            # ;;
+    esac
+
+    RPS1="${mode}${git}"
+    RPS2="${RPS1}"
+
     zle reset-prompt
 }
 
+# remove the useless space in the right prompt
+ZLE_RPROMPT_INDENT=0
+
+# set the color based on last command exit
+prompt_error_check="%(?.%{$fg_bold[blue]%}.%{$fg_bold[red]%})"
+
+# set the prompt init
+PS1="%{$reset_color%}${prompt_error_check}[%{$fg_no_bold[white]%} %~ ${prompt_error_check}]%{$reset_color%} "
+PS2="%{$reset_color%}${prompt_error_check}>%{$reset_color%} "
+RPS1=""
+RPS2=""
+
 zle -N zle-line-init
+zle -N zle-line-finish
 zle -N zle-keymap-select
+zle -N edit-command-line
 # }}}
 
 # -----------------------------------------------------------------------------
@@ -178,14 +212,6 @@ alias ping="ping -c 3"
 alias ls='ls --color=auto -hrtF'
 alias lsa='ls --color=auto -oghrtF'
 alias grep='grep --color=auto'
-
-# Pipes & more
-alias -g BG='& exit'
-alias -g N='> /dev/null'
-alias -g L='| less'
-alias -g M='| more'
-alias -g G='| grep'
-alias -g V='| vim -'
 
 # Pacman / Pacaur
 alias syugit='pacaur -Syu --devel --needed'

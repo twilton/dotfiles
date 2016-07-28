@@ -11,10 +11,16 @@
 # Useage:      $ sh ./clock
 # -----------------------------------------------------------------------------
 
-# Define colors from Xresources
-color1=$( cat $HOME/.Xresources | grep color6 | tail -c 8 )
-color2=$( cat $HOME/.Xresources | grep color3 | tail -c 8 )
-color3=$( cat $HOME/.Xresources | grep color7 | tail -c 8 )
+# Source color theme which defines color_{0-15}
+source "$HOME/.dotfiles/bin/status_items/color_theme"
+
+# set local colors
+color_fg="${color_white}"
+color_bg="${color_black}"
+color_weekday="${color_lightgrey}"
+color_date="${color_blue}"
+color_time="${color_yellow}"
+color_ampm="${color_lightgrey}"
 
 # name of the panel
 panel_name='date_status_item'
@@ -49,13 +55,13 @@ function finish() {
 
 # Updates the text array to have a formatted info and the correct xft width
 function update_text() {
-    text["format"]=$( date +"^fg(${color3})%A ^fg(${color1})%d ^fg(${color2})%I^fg(${color3}):^fg(${color2})%M ^fg(${color3})%p" )
+    text["format"]=$( date +"^fg(${color_weekday})%A ^fg(${color_date})%d ^fg(${color_time})%I^fg(${color_fg}):^fg(${color_time})%M ^fg(${color_ampm})%p" )
     text["width"]=$( xftwidth 'Source Code Pro:size=7' "$(date +'-%A %d %I:%M %p-')" )
 }
 
 function update_panel() {
     # parameters for spawned dzen
-    local dzen_args=( -title-name "${panel_name}" -ta c -fn "${panel_font}" -e "onstart=${panel_layer}" -y '25' -h "${panel_height}" )
+    local dzen_args=( -title-name "${panel_name}" -ta c -fn "${panel_font}" -e "onstart=${panel_layer}" -y '25' -h "${panel_height}" -bg "${color_bg}")
 
     # no panel running yet
     if [[ -z "${panel['pid']}" ]]; then
