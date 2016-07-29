@@ -20,7 +20,6 @@ super + shift + r
 # lock
 super + shift + s
     $HOME/.dotfiles/bin/lock/lock
-
 # }}}
 
 # -----------------------------------------------------------------------------
@@ -38,7 +37,6 @@ super + shift + m
 # Change workspaces
 super + {_,shift + }{1-9,0}
     bspc {desktop -f,node -d} '^{1-9,10}'
-
 # }}}
 
 # -----------------------------------------------------------------------------
@@ -46,8 +44,6 @@ super + {_,shift + }{1-9,0}
 # -----------------------------------------------------------------------------
 # {{{
 # change node tile method
-# super + {t,shift + t,f,m}
-    # bspc node -t {'tiled','~pseudo_tiled','~floating','~fullscreen'}
 super + {t,shift + t,f,m}
     bspc node -t {'tiled','~pseudo_tiled','~floating','~fullscreen'}
 
@@ -81,7 +77,6 @@ super + {comma,period}
 # set new node preselection
 super + ctrl + {h,j,k,l}
     bspc node -p {west,south,north,east}
-
 # }}}
 
 # -----------------------------------------------------------------------------
@@ -99,7 +94,6 @@ super + button{1-3}
 # end move/resize
 super + @button{1-3}
     bspc pointer -u
-
 # }}}
 
 # -----------------------------------------------------------------------------
@@ -112,7 +106,7 @@ super + shift + Return
 
 # Open dmenu
 super + p
-    dmenu_run -h "70" -w "1000" -l "3" -x "940" -y "690" -fn "Source Code Pro for Powerline:Regular:size=12" -nb "#c5c8c6" -nf "#1d1f21" -sb "#707880" -sf "#DE935F" -dc "#1D1F21" -dim ".65" -q -i
+    dmenu_run -h "70" -w "1000" -l "3" -x "940" -y "690" -fn "Source Code Pro for Powerline:Regular:size=12" -nb "#ebdbb2" -nf "#282828" -sb "#a89984" -sf "#fabd2f" -dc "#282828" -dim ".65" -q -i
 
 # Open firefox
 super + w
@@ -125,11 +119,6 @@ super + r
 # Open ncmpcpp in urxvt
 super + n
     urxvtc -e ncmpcpp
-
-# toggle sidebar
-super + backslash
-    $HOME/.dotfiles/bin/bspwm/sidebar_toggle
-
 # }}}
 
 # -----------------------------------------------------------------------------
