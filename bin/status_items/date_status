@@ -15,7 +15,7 @@
 source "$HOME/.dotfiles/bin/status_items/color_theme"
 
 # set local colors
-color_fg="${color_white}"
+color_fg="${color_lightgrey}"
 color_bg="${color_black}"
 color_weekday="${color_lightgrey}"
 color_date="${color_blue}"
@@ -61,7 +61,7 @@ function update_text() {
 
 function update_panel() {
     # parameters for spawned dzen
-    local dzen_args=( -title-name "${panel_name}" -ta c -fn "${panel_font}" -e "onstart=${panel_layer}" -y '25' -h "${panel_height}" -bg "${color_bg}")
+    local dzen_args=( -title-name "${panel_name}" -ta c -fn "${panel_font}" -e "onstart=${panel_layer}" -y '20' -h "${panel_height}" -bg "${color_bg}")
 
     # no panel running yet
     if [[ -z "${panel['pid']}" ]]; then
