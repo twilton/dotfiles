@@ -230,12 +230,9 @@ function mkcd ()
     mkdir -p "$@" && eval cd "\"\$$#\"";
 }
 
-# make use of systemcl more friendly
-function sstart()   { sudo systemctl start $@;   }
-function srestart() { sudo systemctl restart $@; }
-function senable()  { sudo systemctl enable $@;  }
-function sdisable() { sudo systemctl disable $@; }
-function sstatus()  { sudo systemctl status $@; }
+# make systemctl more friendly
+alias ss='sudo systemctl'
+compdef ss='systemctl'
 
 # easier extraction
 extract () {
