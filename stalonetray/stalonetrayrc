@@ -48,7 +48,7 @@ xsync false
 # -----------------------------------------------------------------------------
 # {{{
 # tray's geometry in standard X notation
-geometry 1x1-139+25
+geometry 1x1-0+20
 
 # maximal tray dimensions; 0 means no limit
 max_geometry 40x40
@@ -57,7 +57,7 @@ max_geometry 40x40
 icon_size 40
 
 # tray background color
-background "#1d1f21"
+background "#282828"
 
 # set tinting color
 tint_color white
