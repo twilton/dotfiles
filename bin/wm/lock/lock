@@ -35,8 +35,9 @@ center_y=$(( ${height} / 2 ))
 radius=$(( ${center_y} + ${overlay_radius} ))
 
 # colors
-circle_fill='#1d1f21'
-circle_stroke='#c5c8c6'
+source "$HOME/.dotfiles/bin/wm/colors"
+circle_fill="${color_black}"
+circle_stroke="${color_white}"
 
 lock() {
     if [[ $1 -eq 0 ]]; then
