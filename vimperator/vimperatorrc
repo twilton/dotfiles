@@ -63,13 +63,24 @@ set showstatuslinks=1
 " -----------------------------------------------------------------------------
 " {{{
 " colors
-colorscheme base16
+colorscheme default
 " }}}
 
 " -----------------------------------------------------------------------------
 " => Edit mappings
 " -----------------------------------------------------------------------------
 " {{{
+" switch y and Y
+nnoremap Y y
+nnoremap y Y
+
+" open tab like qutebrowser
+nnoremap O t
+
+" paste 
+nnoremap p o<S-Insert><cr>
+nnoremap P t<S-Insert><cr>
+
 " Faster Scrolling
 noremap j 5j
 noremap k 5k
@@ -81,9 +92,6 @@ nnoremap K gT
 
 " Press 'J' to go to next tab
 nnoremap J gt
-
-" Press 'x' to delete current tab
-nnoremap x :tabclose<cr>
 " }}}
 
 " -----------------------------------------------------------------------------

@@ -1,0 +1,162 @@
+"" vimperator colorscheme gruvbox
+""
+"" ~/.vimperator/colors/gruvbox.vimp
+
+highlight clear
+
+" Bell - Vimperator's visual bell
+highlight! Bell border: none; background-color: #282828;
+" Boolean - A JavaScript Boolean object
+highlight! Boolean color: #fb4934;
+" CmdLine - The command line
+highlight! CmdLine background: #282828; color: #ebdbb2;
+highlight! CmdLine>* font-family: "Source Code Pro for Powerline"; font-size: 8pt; height: 24px;
+" CmdOutput
+highlight! CmdOutput white-space: pre;
+" CompDesc - The description column of the completion list
+highlight! CompDesc width: 500px; max-width: 500px; color: #ebdbb2;
+highlight! CompDesc[selected] color: #282828;
+" CompGroup
+highlight! CompGroup
+highlight! CompGroup:not(:first-of-type) margin-top: 1ex;
+" CompIcon - The favicon of a completion row
+highlight! CompIcon width: 16px; min-width: 16px; display: inline-block; margin-right: .5ex;
+highlight! CompIcon>img max-width: 16px; max-height: 16px; vertical-align: middle;
+" CompItem - A row of completion list
+highlight! CompItem color: #ebdbb2; background: #282828;
+highlight! CompItem>* height: 18px; min-height: 18px; padding: 0 0.5ex;
+" CompItem[selected] - A selected row of completion list
+highlight! CompItem[selected] color: #282828; background: #fabd2f; box-shadow: none;
+" CompMsg
+highlight! CompMsg font-style: italic; margin-left: 16px;
+" CompResult - The result column of the completion list
+highlight! CompResult width: 500px; max-width: 500px; overflow: hidden;
+" CompTitle - Completion row titles
+highlight! CompTitle font-weight: normal; background: #282828;
+highlight! CompTitle>* color: #ebdbb2; border-top: 0px; border-bottom: 0px; padding: 1px 0.5ex; text-shadow: none;
+highlight! ContentSeparator border-top: 1px solid #282828; display: -moz-box;
+highlight! Disabled color: #fb4934;
+highlight! Enabled color: #b8bb26;
+" ErrorMsg - Error messages
+highlight! ErrorMsg color: #fb4934; background: #282828; font-weight: normal;
+" Filter - The matching text in a completion list
+highlight! Filter border-radius: 0px; color: #282828; background: #fabd2f; border: 1px solid #fabd2f;
+
+" FrameIndicator - The indicator shown when a new frame is selected
+highlight! FrameIndicator background-color: red; opacity: 0.5; z-index: 999; position: fixed; top: 0; bottom: 0; left: 0; right: 0;
+
+" Function - A JavaScript Function object
+highlight! Function color: #458588;
+" Hint - A hint indicator. See :help hints
+highlight! Hint font-family: "Source Code Pro for Powerline"; font-size: 10pt; color: #282828; background-color: #fabd2f; padding: 1px;
+highlight! Hint::after content: attr(number);
+" HintActive - The hint element of link which will be followed by <Return>
+highlight! HintActive background-color: none; color: none;
+" HintElem - The hintable element
+highlight! HintElem background-color: none;  color: none;
+" HintImage - The indicator which floats above hinted images
+highlight! HintImage opacity: .5;
+" Indicator
+highlight! Indicator color: #83a598;
+" InfoMsg - Information messages
+highlight! InfoMsg color: #d3869b; background: #282828;
+highlight! Key font-weight: bold;
+" Keyword - A bookmark keyword for a URL
+highlight! Keyword color: #fb4934;
+" LineNr - The line number of an error
+highlight! LineNr color: #d79921; background: #282828;
+highlight! Logo
+highlight! Mapping color: #d3869b;
+" Message
+highlight! Message white-space: normal; min-width: 100%; padding-left: 2em; text-indent: -2em; display: block;
+" ModeMsg - The mode indicator in the command line
+highlight! ModeMsg color: #b8bb26; background: #282828; border-radius: 0px; padding: 0px 5px;
+" MoreMsg - The indicator that there is more text to view
+highlight! MoreMsg color: #b8bb26; background: #282828;
+" NonText
+highlight! NonText color: #83a598; min-height: 16px; padding-left: 2px;
+" Normal - Normal text in the command line
+highlight! Normal color: #ebdbb2; background: #282828;
+" Null - A JavaScript Null object
+highlight! Null color: #83a598;
+" Number - A JavaScript Number object
+highlight! Number color: #83a598;
+" Object - A JavaScript Object
+highlight! Object color: #cc241d;
+" Preview
+highlight! Preview color: #a89984;
+highlight! Prompt color: #ebdbb2; background-color: #282828;
+highlight! PromptText color: #ebdbb2; background-color: #282828; padding-top: 5px;
+
+" Question - A prompt for a decision
+highlight! Question color: #b8bb26; background: #282828; font-weight: bold;
+" StatusLine - The status bar
+highlight! StatusLine color: #a89984; background: transparent; font-weight: normal;
+" String - A JavaScript String object
+highlight! String color: #b8bb26;
+" TabNumber - The number of a browser tab, next to its icon
+highlight! TabNumber font-weight: bold; margin: 0px; padding-right: .3ex;
+" Tag - A bookmark tag for a URL
+highlight! Tag color: #83a598;
+" Title - The title of a listing, including :pageinfo, :jumps
+highlight! Title color: #d3869b; background: #282828; font-weight: bold;
+" URL - A URL
+highlight! URL text-decoration: none; color: #b8bb26;
+highlight! URL:hover text-decoration: underline; cursor: pointer;
+" WarningMsg - A warning message
+highlight! WarningMsg color: #fb4934; background: #282828;
+
+" help
+" highlight! Help font-size: 8pt; line-height: 1.4em; font-family: -moz-fixed;
+" highlight! HelpArg color: #83a598;
+" highlight! HelpBody color: #ebdbb2; background-color: #282828; display: block; margin: 1em auto; max-width: 100ex;
+" highlight! HelpBorder border-color: #282828; border-width: 0px; border-style: solid;
+" 
+" highlight! HelpCode display: block; white-space: pre; margin-left: 2em; font-family: Terminus, Fixed, monospace;
+" 
+" highlight! HelpDefault margin-right: 1ex; white-space: pre;
+" highlight! HelpDescription display: block;
+" highlight! HelpEm font-weight: bold; font-style: normal;
+" highlight! HelpEx display: inline-block; color: #83a598; font-weight: bold;
+" highlight! HelpExample display: block; margin: 1em 0;
+" highlight! HelpExample::before content: "Example: "; font-weight: bold;
+" highlight! HelpHead display: block; margin: 1em 0; padding-bottom: .2ex; border-bottom-width: 1px; font-size: 2em; font-weight: bold; color: #83a598; clear: both;
+" highlight! HelpInfo display: block; width: 20em; margin-left: auto;
+" highlight! HelpInfoLabel display: inline-block; width: 6em;  color: #d3869b; font-weight: bold; vertical-align: text-top;
+" highlight! HelpInfoValue display: inline-block; width: 14em; text-decoration: none; vertical-align: text-top;
+" highlight! HelpItem display: block; margin: 1em 1em 1em 10em; clear: both;
+" highlight! HelpKey color: #458588;
+" highlight! HelpLink color: #83a598; text-decoration: none;
+" highlight! HelpLink[href]:hover text-decoration: underline;
+" highlight! HelpList display: block; list-style: outside disc;
+" highlight! HelpListItem display: list-item;
+" highlight! HelpNote color: fb4934; font-weight: bold;
+" highlight! HelpOpt color: #98971a;
+" highlight! HelpOptInfo display: inline-block; margin-bottom: 1ex;
+" highlight! HelpOptionalArg color: #83a598;
+" highlight! HelpOrderedList display: block; list-style: outside decimal;
+" highlight! HelpParagraph display: block; margin: 1em 0em;
+" highlight! HelpParagraph:first-child margin-top: 0;
+" highlight! HelpSpec display: block; margin-left: -10em; float: left; clear: left; color: #d3869b;
+" highlight! HelpString display: inline-block; color: #b8bb26; font-weight: normal; vertical-align: text-top;
+" highlight! HelpString::after content: '"';
+" highlight! HelpString::before content: '"';
+" highlight! HelpSubhead display: block; margin: 1em 0; padding-bottom: .2ex; border-bottom-width: 1px; font-size: 1.2em; font-weight: bold; color: #83a598; clear: both;
+" highlight! HelpSubsubhead display: block; margin: 1em 0; padding-bottom: .2ex; font-size: 1.1em; font-weight: bold; color: #83a598; clear: both;
+" highlight! HelpTOC
+" highlight! HelpTOC>ol ol margin-left: -1em;
+" highlight! HelpTab display: table; width: 100%; margin: 1em 0; border-bottom-width: 1px; border-top-width: 1px; padding: .5ex 0; table-layout: fixed;
+" highlight! HelpTabColumn display: table-column;
+" highlight! HelpTabColumn:first-child width: 25%;
+" highlight! HelpTabDescription display: table-cell; padding: .1ex 1ex; border-width: 0px;
+" highlight! HelpTabRow display: table-row;
+" highlight! HelpTabTitle display: table-cell; padding: .1ex 1ex; font-weight: bold;
+" 
+" highlight! HelpTag display: inline-block; color: #999; margin-left: 1ex; font-size: 8pt; font-weight: bold;
+" 
+" highlight! HelpTags display: block; float: right; clear: right;
+" highlight! HelpTopic color: #458588;
+" highlight! HelpType margin-right: 2ex;
+" highlight! HelpWarning color: #fb4934; font-weight: bold;
+
+" vim:foldmethod=marker:foldlevel=0: set filetype=vim:
