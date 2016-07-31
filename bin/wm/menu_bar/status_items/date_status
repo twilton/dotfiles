@@ -12,7 +12,7 @@
 # -----------------------------------------------------------------------------
 
 # Source color theme which defines color_{0-15}
-source "$HOME/.dotfiles/bin/status_items/color_theme"
+source "$HOME/.dotfiles/bin/wm/menu_bar/colors"
 
 # set local colors
 color_fg="${color_lightgrey}"

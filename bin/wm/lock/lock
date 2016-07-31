@@ -21,8 +21,8 @@
 set -eu
 
 # user specific
-overlay="$HOME/.dotfiles/bin/lock/lock.png"
-pixelize="$HOME/.dotfiles/bin/lock/pixelize.sh"
+overlay="$HOME/.dotfiles/bin/wm/lock/lock.png"
+pixelize="$HOME/.dotfiles/bin/wm/lock/pixelize.sh"
 width=2880
 height=1800
 overlay_radius=94
