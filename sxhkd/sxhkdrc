@@ -11,7 +11,7 @@
 # {{{
 # quit bspwm
 super + shift + q
-    $HOME/.dotfiles/bin/bspwm/bspwm_close
+    $HOME/.dotfiles/bin/wm/bspwm_close
 
 # reload sxhkd 
 super + shift + r
@@ -19,7 +19,7 @@ super + shift + r
 
 # lock
 super + shift + s
-    $HOME/.dotfiles/bin/lock/lock
+    $HOME/.dotfiles/bin/wm/lock/lock
 # }}}
 
 # -----------------------------------------------------------------------------
