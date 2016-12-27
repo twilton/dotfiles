@@ -156,13 +156,17 @@ super + s ; {h,p,l}
 # Volume Mute / Lower / Raise
 XF86Audio{Mute,LowerVolume,RaiseVolume}
     {amixer -q set Master toggle,\
-    amixer -q set Master 5%- unmute,\
-    amixer -q set Master 5%+ unmute}
+    amixer -q set Master 5%- unmute;\
+    paplay /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga,\
+    amixer -q set Master 5%+ unmute;\
+    paplay /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga}
 
 super + {shift + F11,F11,F12}
     {amixer -q set Master toggle,\
-    amixer -q set Master 5%- unmute,\
-    amixer -q set Master 5%+ unmute}
+    amixer -q set Master 5%- unmute;\
+    paplay /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga,\
+    amixer -q set Master 5%+ unmute;\
+    paplay /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga}
 # }}}
 
 # vim:foldmethod=marker:foldlevel=0
