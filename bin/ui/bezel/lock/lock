@@ -35,7 +35,7 @@ center_y=$(( ${height} / 2 ))
 radius=$(( ${center_y} + ${overlay_radius} ))
 
 # colors
-source "$HOME/.dotfiles/bin/wm/colors"
+source "$HOME/.dotfiles/bin/ui/colors"
 circle_fill="${color_black}"
 circle_stroke="${color_white}"
 

@@ -11,12 +11,12 @@
 # -----------------------------------------------------------------------------
 
 # Source color theme which defines color_{0-15}
-source "$HOME/.dotfiles/bin/wm/colors"
+source "$HOME/.dotfiles/bin/ui/colors"
 
 # set local colors
 color_fg="${color_white}"
 color_bg="${color_darkgrey}"
-color_hl="${color_black}"
+color_ol="${color_black}"
 
 # name of the module
 bezel_name='bezel_volume'
@@ -34,7 +34,7 @@ blip='/usr/share/sounds/freedesktop/stereo/audio-volume-change.oga'
 level_percent='5'
 
 # define some arguments passed to dzen to determine size and color.
-dzen_args=( -title-name "${bezel_name}" -ta c -w 1000 -h 70 -x 940 -y 690 -fg "${color_fg}" -bg "${color_hl}" -e "onstart=${bezel_layer}" )
+dzen_args=( -title-name "${bezel_name}" -ta c -w 1000 -h 70 -x 940 -y 690 -fg "${color_fg}" -bg "${color_ol}" -e "onstart=${bezel_layer}" )
 
 # similarly for gdbar
 gdbar_args=( -w 990 -h 60 -fg "${color_fg}" -bg "${color_bg}" )
@@ -42,7 +42,7 @@ gdbar_args=( -w 990 -h 60 -fg "${color_fg}" -bg "${color_bg}" )
 case $1 in
     !)
         amixer -q set Master toggle
-        exit
+        exit 0
         ;;
     -)
         amixer -q set Master "${level_percent}"%- unmute
@@ -51,7 +51,7 @@ case $1 in
         amixer -q set Master "${level_percent}"%+ unmute
         ;;
     *)
-        exit
+        exit 2
         ;;
 esac
 

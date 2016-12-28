@@ -11,7 +11,7 @@
 # {{{
 # quit bspwm
 super + shift + q
-    $HOME/.dotfiles/bin/wm/bspwm_close
+    $HOME/.dotfiles/bin/ui/window_manager/bspwm_close
 
 # reload sxhkd 
 super + shift + r
@@ -19,7 +19,7 @@ super + shift + r
 
 # lock
 super + shift + s
-    $HOME/.dotfiles/bin/wm/lock/lock
+    $HOME/.dotfiles/bin/ui/bezel/lock/lock
 # }}}
 
 # -----------------------------------------------------------------------------
@@ -106,7 +106,7 @@ super + shift + Return
 
 # Open dmenu
 super + p
-    $HOME/.dotfiles/bin/wm/bezel/spotlight
+    $HOME/.dotfiles/bin/ui/bezel/spotlight/spotlight
 
 # Open firefox
 super + w
@@ -155,14 +155,14 @@ super + s ; {_,shift + }o
 
 # Volume Mute / Lower / Raise
 XF86Audio{Mute,LowerVolume,RaiseVolume}
-    {$HOME/.dotfiles/bin/wm/bezel/volume '!',\
-    $HOME/.dotfiles/bin/wm/bezel/volume '-',\
-    $HOME/.dotfiles/bin/wm/bezel/volume '+'}
+    {$HOME/.dotfiles/bin/ui/bezel/volume/volume '!',\
+    $HOME/.dotfiles/bin/ui/bezel/volume/volume '-',\
+    $HOME/.dotfiles/bin/ui/bezel/volume/volume '+'}
 
 super + {shift + F11,F11,F12}
-    {$HOME/.dotfiles/bin/wm/bezel/volume '!',\
-    $HOME/.dotfiles/bin/wm/bezel/volume '-',\
-    $HOME/.dotfiles/bin/wm/bezel/volume '+'}
+    {$HOME/.dotfiles/bin/ui/bezel/volume/volume '!',\
+    $HOME/.dotfiles/bin/ui/bezel/volume/volume '-',\
+    $HOME/.dotfiles/bin/ui/bezel/volume/volume '+'}
 # }}}
 
 # vim:foldmethod=marker:foldlevel=0
