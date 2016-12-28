@@ -5,25 +5,8 @@
 " Location: $HOME/.vimrc
 " -----------------------------------------------------------------------------
 
-" TABLE OF CONTENTS
-" """""""""""""""""
-" Files and directories ................... dirs
-" Miscellaneous advices ................... advs
-" Options ................................. opts
-" Mappings ................................ maps
-" Variables ............................... vars
-" Commands ................................ cmds
-" Functions ............................... funcs
-" Autocommands ............................ autos
-" Conditionals ............................ ifs
-" Colors (TODO) ........................... cols
-" Plugins (TODO) .......................... plugs
-" Suggested settings for programming ...... sets
-
-
-
 " -----------------------------------------------------------------------------
-" => Environment
+" => Environment (envs)
 " -----------------------------------------------------------------------------
 " {{{
 " vimconf is not vi-compatible
@@ -37,14 +20,13 @@ set ffs=unix,dos,mac
 " }}}
 
 " -----------------------------------------------------------------------------
-" => Plugins
+" => Plugins (plgs)
 " -----------------------------------------------------------------------------
 " {{{
 " vim-plug plugin manager
 call plug#begin('~/.vim/plugged')
 
 " colorscheme
-" Plug 'xero/sourcerer.vim'
 Plug 'morhetz/gruvbox'
 
 " buffers in tabline
@@ -56,20 +38,14 @@ Plug 'roman/golden-ratio'
 " completion engine
 Plug 'ajh17/VimCompletesMe'
 
-" snippet engine and snippet repo 
-" Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
-
-" universal set of defaults
-Plug 'tpope/vim-sensible'
-
-" auto closes stuff
-Plug 'jiangmiao/auto-pairs'
-
 " align everything
 Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
 
 " check syntax
 Plug 'scrooloose/syntastic'
+
+" searching
+Plug 'junegunn/vim-slash'
 
 " racket language support
 Plug 'wlangstroth/vim-racket', { 'for': ['racket'] }
@@ -81,7 +57,7 @@ call plug#end()
 " }}}
 
 " -----------------------------------------------------------------------------
-" => General
+" => General (opts)
 " -----------------------------------------------------------------------------
 " {{{
 " dont use other .*rc(s)
@@ -94,8 +70,8 @@ if has('persistent_undo')
     silent !mkdir ~/.vim/backups > /dev/null 2>&1
     set undodir=~/.vim/backups
     set undofile
-    set undolevels=500
-    set undoreload=10000
+    set undolevels=200
+    set undoreload=5000
 endif
 
 " Enable filetype plugins
@@ -103,13 +79,15 @@ filetype plugin indent on
 " }}}
 
 " -----------------------------------------------------------------------------
-" => VIM user interface
+" => Interface (itrf)
 " -----------------------------------------------------------------------------
 " {{{
 " window title
 set title
 " disable startup message
 set shortmess+=I
+" don't give ins-completion-menu messages
+set shortmess+=c
 " A buffer becomes hidden when it is abandoned
 set hidden
 
@@ -120,12 +98,14 @@ set vb t_vb=
 
 " line numbers are good
 set number
+set ruler
 " 99999 lines
 set numberwidth=5
 " hilight cursor line
 set cursorline
 " keep cursor column pos
 set nostartofline
+
 
 if has('cmdline_info')
     " show cmds being typed
@@ -207,14 +187,14 @@ set sidescroll=1
 " Configure backspace so it acts as it should act
 set backspace=indent,eol,start
 " Highlight problematic whitespace
-set list listchars=tab:▸\ ,trail:•,extends:#,nbsp:.,eol:¬
-
+set list listchars=tab:..,trail:_,extends:>,precedes:<,nbsp:~
+set showbreak=\\
 " Ignore case when searching
 set ignorecase
 " When searching try to be smart about cases
 set smartcase
-" Disables highlighting of search results
-set nohlsearch
+" Enables highlighting of search results (this is modified by vim-slash)
+set hlsearch
 " Makes search act like search in modern browsers
 set incsearch 
 
@@ -225,8 +205,6 @@ set ttyfast
 
 " For regular expressions turn magic on
 set magic
-" Search and replace
-set gdefault
 
 " Show matching brackets when text indicator is over them
 set showmatch
@@ -245,7 +223,7 @@ set foldmethod=manual
 " folds closed by default
 set foldlevelstart=1
 " hide folding column
-set foldcolumn=0 
+set foldcolumn=0
 " max 10 nested folds
 set foldnestmax=10
 
@@ -281,10 +259,12 @@ set wildignore+=*.gem
 set wildignore+=log/**
 set wildignore+=tmp/**
 " }}}
+" scan current and included files for defined name or macro
+set complete+=d
 " }}}
 
 " -----------------------------------------------------------------------------
-" => Colors
+" => Colors (cols)
 " -----------------------------------------------------------------------------
 " {{{
 " Enable syntax highlighting
@@ -297,34 +277,31 @@ set background=dark
 colorscheme gruvbox
 
 " StatusLine colors
-" hi StatusLine   cterm=NONE  ctermbg=236
-" hi StatusLineNC cterm=NONE  ctermbg=236
 hi User1        ctermbg=239 ctermfg=white
 hi User2        ctermbg=239 ctermfg=cyan
 hi User3        ctermbg=239 ctermfg=yellow
 hi User4        ctermbg=239 ctermfg=white
 hi User5        ctermbg=239 ctermfg=red
 hi User6        ctermbg=239 ctermfg=grey
-" TabLine colors
-" hi TabLine     cterm=NONE ctermbg=236 ctermfg=grey
-" hi TabLineFill cterm=NONE ctermbg=236 ctermfg=fg
-" hi TabLineSel  cterm=NONE ctermbg=white ctermfg=236
-" Columns
-" hi LineNr       ctermbg=NONE
-" hi CursorLine   ctermbg=236 ctermfg=NONE
-" hi CursorLineNr ctermbg=236
-" hi SignColumn   ctermbg=NONE
-" hi VertSplit    ctermbg=236 ctermfg=236
+
+" listchar colors
+" hi NonText    ctermfg=red
+hi SpecialKey ctermfg=red
 " }}}
 
 " -----------------------------------------------------------------------------
-" => Files, backups and undo
+" => Files and directories (dirs)
 " -----------------------------------------------------------------------------
 " {{{
 " Set to auto read when a file is changed from the outside
 set autoread
 set nobackup
 set nowb
+
+" files to search
+set path=.,**
+" Automatically switch to file directory of buffer
+autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
 
 " formating for other filetypes
 augroup FileTypeRules
@@ -341,7 +318,7 @@ augroup END
 " }}}
 
 " -----------------------------------------------------------------------------
-" => Text, tab and indent
+" => Formatting (frmt)
 " -----------------------------------------------------------------------------
 " {{{
 " spaces instead of tabs
@@ -369,18 +346,12 @@ set nowrap
 set linebreak
 " autowrap with newline char
 set formatoptions+=t
+" delete comment when joining commented lines
+set formatoptions+=j
 " }}}
 
 " -----------------------------------------------------------------------------
-" => tabs, windows, buffers, and registers
-" -----------------------------------------------------------------------------
-" {{{
-" Automatically switch to file directory of buffer
-autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
-" }}}
-
-" -----------------------------------------------------------------------------
-" => Edit mappings
+" => Mappings (maps)
 " -----------------------------------------------------------------------------
 " {{{
 " Conflicts when using mapleader so map space to \
@@ -398,7 +369,7 @@ nnoremap <leader>b :ls<cr>:b<space>
 nnoremap <leader>[ :bprevious<cr>
 nnoremap <leader>] :bnext<cr>
 " jump to alternate buffer
-nnoremap <Leader><space> <C-^>
+nnoremap <leader><space> <C-^>
 
 " open horizontal / vertical window
 nnoremap <leader>s <C-W>s
@@ -407,7 +378,7 @@ nnoremap <leader>f :vertical wincmd f<CR>
 " close windows
 nnoremap <leader>c <C-W>c
 nnoremap <leader>q <C-W>q
-nnoremap <Leader>o :only<CR>
+nnoremap <leader>o :only<CR>
 " Move between windows
 nnoremap <leader>h <C-W>h
 xnoremap <leader>h <C-W>h
@@ -428,15 +399,15 @@ noremap <leader>et :tabe<space>
 nnoremap Y y$
 
 " yank/paste/delete to system clipboard
-nnoremap <Leader>y "+y
-vnoremap <Leader>y "+y
-nnoremap <Leader>yy "+yy
-nnoremap <Leader>Y "+y$
-nnoremap <Leader>d "+d
-nnoremap <Leader>dd "+dd
-nnoremap <Leader>D "+D
-nnoremap <Leader>p "+p
-nnoremap <Leader>P "+P
+nnoremap <leader>y "+y
+vnoremap <leader>y "+y
+nnoremap <leader>yy "+yy
+nnoremap <leader>Y "+y$
+nnoremap <leader>d "+d
+nnoremap <leader>dd "+dd
+nnoremap <leader>D "+D
+nnoremap <leader>p "+p
+nnoremap <leader>P "+P
 
 " select last changed block
 nnoremap <leader>V `[v`]
@@ -445,6 +416,14 @@ nnoremap <leader>V `[v`]
 vnoremap < <gv
 vnoremap > >gv
 
+" brace expansion on the cheap
+inoremap (<CR> (<CR>)<Esc>O
+inoremap {<CR> {<CR>}<Esc>O
+inoremap {; {<CR>};<Esc>O
+inoremap {, {<CR>},<Esc>O
+inoremap [<CR> [<CR>]<Esc>O
+inoremap [; [<CR>];<Esc>O
+inoremap [, [<CR>],<Esc>O
 " Working ci(, works for both breaklined, inline and multiple ()
 nnoremap ci( %ci(
 
@@ -465,7 +444,6 @@ inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 " make list-like commands more intuitive
 " {{{
-
 function! CCR()
     let cmdline = getcmdline()
     if cmdline =~ '\v\C^(ls|files|buffers)'
@@ -508,6 +486,7 @@ cnoremap <expr> <CR> CCR()
 " Quicker cgn/cgN
 nnoremap <leader>* *``cgn
 nnoremap <leader># #``cgN
+nnoremap <leader>% :%s/\<<C-r>=expand("<cword>")<CR>\>/
 
 " make single quote act like backtick
 nnoremap ' `
@@ -522,7 +501,7 @@ nnoremap K <nop>
 " }}}
 
 " -----------------------------------------------------------------------------
-" => Plugin Settings
+" => Plugin Settings (pset)
 " -----------------------------------------------------------------------------
 " {{{
     " -------------------------------------------------------------
