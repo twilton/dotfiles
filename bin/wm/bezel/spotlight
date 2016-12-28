@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+# -----------------------------------------------------------------------------
+# spotlight
+# Description: Bezel UI software launcher
+# -----------------------------------------------------------------------------
+# Requires:
+#   dmenu
+# -----------------------------------------------------------------------------
+# Useage:      $ ./spotlight
+# -----------------------------------------------------------------------------
+
+# Source color theme which defines color_{0-15}
+source "$HOME/.dotfiles/bin/wm/colors"
+
+# set local colors
+color_nf="${color_black}"
+color_nb="${color_lightgrey}"
+color_sf="${color_darkyellow}"
+color_sb="${color_darkgrey}"
+color_dc="${color_black}"
+
+bezel_font='Source Code Pro for Powerline:Regular:size=12'
+
+# dmenu_run -h "70" -w "1000" -l "3" -x "940" -y "690" -fn "Source Code Pro for Powerline:Regular:size=12" -nb "#ebdbb2" -nf "#282828" -sb "#a89984" -sf "#fabd2f" -dc "#282828" -dim ".65" -q -i
+dmenu_run -h "70" -w "1000" -l "3" -x "940" -y "690" -fn "${bezel_font}" -nb "${color_nb}" -nf "${color_nf}" -sb "${color_sb}" -sf "${color_sf}" -dc "${color_dc}" -dim ".65" -q -i

@@ -106,7 +106,7 @@ super + shift + Return
 
 # Open dmenu
 super + p
-    dmenu_run -h "70" -w "1000" -l "3" -x "940" -y "690" -fn "Source Code Pro for Powerline:Regular:size=12" -nb "#ebdbb2" -nf "#282828" -sb "#a89984" -sf "#fabd2f" -dc "#282828" -dim ".65" -q -i
+    $HOME/.dotfiles/bin/wm/bezel/spotlight
 
 # Open firefox
 super + w
@@ -146,27 +146,23 @@ shift + XF86KbdBrightness{Down,Up}
 XF86Audio{Prev,Play,Next}
     mpc {prev,toggle,next}
 
+super + s ; {h,p,l}
+    mpc {prev,toggle,next}
+
 super + s ; {_,shift + }o
     paswitch {alsa_output.usb-iFi__by_AMR__iFi__by_AMR__HD_USB_Audio-00.analog-stereo, \
     alsa_output.pci-0000_00_1b.0.analog-stereo}
 
-super + s ; {h,p,l}
-    mpc {prev,toggle,next}
-
 # Volume Mute / Lower / Raise
 XF86Audio{Mute,LowerVolume,RaiseVolume}
-    {amixer -q set Master toggle,\
-    amixer -q set Master 5%- unmute;\
-    paplay /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga,\
-    amixer -q set Master 5%+ unmute;\
-    paplay /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga}
+    {$HOME/.dotfiles/bin/wm/bezel/volume '!',\
+    $HOME/.dotfiles/bin/wm/bezel/volume '-',\
+    $HOME/.dotfiles/bin/wm/bezel/volume '+'}
 
 super + {shift + F11,F11,F12}
-    {amixer -q set Master toggle,\
-    amixer -q set Master 5%- unmute;\
-    paplay /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga,\
-    amixer -q set Master 5%+ unmute;\
-    paplay /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga}
+    {$HOME/.dotfiles/bin/wm/bezel/volume '!',\
+    $HOME/.dotfiles/bin/wm/bezel/volume '-',\
+    $HOME/.dotfiles/bin/wm/bezel/volume '+'}
 # }}}
 
 # vim:foldmethod=marker:foldlevel=0

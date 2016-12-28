@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+
+# -----------------------------------------------------------------------------
+# volume
+# Description: Bezel UI module to change volume with feedback audio blip
+# -----------------------------------------------------------------------------
+# Requires:
+#   paplay
+# -----------------------------------------------------------------------------
+# Useage:      $ ./volume
+# -----------------------------------------------------------------------------
+
+# Source color theme which defines color_{0-15}
+source "$HOME/.dotfiles/bin/wm/colors"
+
+# set local colors
+color_fg="${color_white}"
+color_bg="${color_darkgrey}"
+color_hl="${color_black}"
+
+# name of the module
+bezel_name='bezel_volume'
+
+# panel layer
+bezel_layer='raise'
+
+# fifo
+pipe="/tmp/${bezel_name}.fifo"
+
+# blip
+blip='/usr/share/sounds/freedesktop/stereo/audio-volume-change.oga'
+
+# volume level change percentage
+level_percent='5'
+
+# define some arguments passed to dzen to determine size and color.
+dzen_args=( -title-name "${bezel_name}" -ta c -w 1000 -h 70 -x 940 -y 690 -fg "${color_fg}" -bg "${color_hl}" -e "onstart=${bezel_layer}" )
+
+# similarly for gdbar
+gdbar_args=( -w 990 -h 60 -fg "${color_fg}" -bg "${color_bg}" )
+
+case $1 in
+    !)
+        amixer -q set Master toggle
+        exit
+        ;;
+    -)
+        amixer -q set Master "${level_percent}"%- unmute
+        ;;
+    +)
+        amixer -q set Master "${level_percent}"%+ unmute
+        ;;
+    *)
+        exit
+        ;;
+esac
+
+# play volume change blip
+if [[ -e "${blip}" ]]; then
+    paplay "${blip}"
+fi
+
+# make the bezel
+if [[ ! -p "${pipe}" ]]; then
+    mkfifo "${pipe}"
+    (dzen2 "${dzen_args[@]}" < "$pipe"; rm -f "$pipe") &
+fi
+
+# get new volume level
+level="$(amixer get Master | sed -n 's/^.*\[\([0-9]\+\)%.*$/\1/p' | uniq)"
+
+# pipe to fifo and wait for capture
+(echo "${level}" | gdbar "${gdbar_args[@]}"; sleep 1) >> "$pipe"
