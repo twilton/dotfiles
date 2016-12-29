@@ -68,4 +68,4 @@ fi
 level="$(light -G)"
 
 # pipe to fifo and wait for capture
-(echo "${level/.*/}" | gdbar "${gdbar_args[@]}"; sleep 1) >> "$pipe"
+(echo "${level}" | gdbar "${gdbar_args[@]}"; sleep 1) >> "$pipe"
