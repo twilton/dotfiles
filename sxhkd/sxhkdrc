@@ -9,11 +9,11 @@
 # => System
 # -----------------------------------------------------------------------------
 # {{{
-# quit bspwm
+# quit window manager
 super + shift + q
     $HOME/.dotfiles/bin/ui/window_manager/bspwm_close
 
-# reload sxhkd 
+# reload sxhkd
 super + shift + r
     pkill -USR1 -x sxhkd
 
@@ -104,19 +104,19 @@ super + @button{1-3}
 super + shift + Return
     urxvtc
 
-# Open dmenu
+# Open launcher
 super + p
     $HOME/.dotfiles/bin/ui/bezel/spotlight/spotlight
 
-# Open firefox
+# Open web browser
 super + w
     firefox
 
-# Open ranger in urxvt
+# Open file manager
 super + r
     urxvtc -e ranger
 
-# Open ncmpcpp in urxvt
+# Open music player
 super + n
     urxvtc -e ncmpcpp
 # }}}
