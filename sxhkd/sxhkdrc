@@ -127,20 +127,32 @@ super + n
 # {{{
 # Screen Backlight Control
 @XF86MonBrightness{Down,Up}
-    light {-U,-A} 5
+    $HOME/.dotfiles/bin/ui/bezel/backlight/backlight {down,up}
+
+super + {F1,F2}
+    $HOME/.dotfiles/bin/ui/bezel/backlight/backlight {down,up}
 
 shift + @XF86MonBrightness{Down,Up}
-    light -S {5,100}
+    $HOME/.dotfiles/bin/ui/bezel/backlight/backlight {min,max}
+
+super + shift + {F1,F2}
+    $HOME/.dotfiles/bin/ui/bezel/backlight/backlight {min,max}
 
 # Application Control
 # XF86Launch{A,B}
 
 # Keyboard Backlight Control
 XF86KbdBrightness{Down,Up}
-    kbdlight {down,up}
+    $HOME/.dotfiles/bin/ui/bezel/keys/keys {down,up}
+
+super + {F5,F6}
+    $HOME/.dotfiles/bin/ui/bezel/keys/keys {down,up}
 
 shift + XF86KbdBrightness{Down,Up}
-    kbdlight {off,max}
+    $HOME/.dotfiles/bin/ui/bezel/keys/keys {min,max}
+
+super + shift + {F5,F6}
+    $HOME/.dotfiles/bin/ui/bezel/keys/keys {min,max}
 
 # Song Prev / Play / Next
 XF86Audio{Prev,Play,Next}
@@ -155,14 +167,22 @@ super + s ; {_,shift + }o
 
 # Volume Mute / Lower / Raise
 XF86Audio{Mute,LowerVolume,RaiseVolume}
-    {$HOME/.dotfiles/bin/ui/bezel/volume/volume '!',\
-    $HOME/.dotfiles/bin/ui/bezel/volume/volume '-',\
-    $HOME/.dotfiles/bin/ui/bezel/volume/volume '+'}
+    {$HOME/.dotfiles/bin/ui/bezel/volume/volume 'toggle',\
+    $HOME/.dotfiles/bin/ui/bezel/volume/volume 'down',\
+    $HOME/.dotfiles/bin/ui/bezel/volume/volume 'up'}
 
-super + {shift + F11,F11,F12}
-    {$HOME/.dotfiles/bin/ui/bezel/volume/volume '!',\
-    $HOME/.dotfiles/bin/ui/bezel/volume/volume '-',\
-    $HOME/.dotfiles/bin/ui/bezel/volume/volume '+'}
+super + {F10,F11,F12}
+    {$HOME/.dotfiles/bin/ui/bezel/volume/volume 'toggle',\
+    $HOME/.dotfiles/bin/ui/bezel/volume/volume 'down',\
+    $HOME/.dotfiles/bin/ui/bezel/volume/volume 'up'}
+
+shift + XF86Audio{LowerVolume,RaiseVolume}
+    {$HOME/.dotfiles/bin/ui/bezel/volume/volume 'min',\
+    $HOME/.dotfiles/bin/ui/bezel/volume/volume 'max'}
+
+super + shift + {F11,F12}
+    {$HOME/.dotfiles/bin/ui/bezel/volume/volume 'min',\
+    $HOME/.dotfiles/bin/ui/bezel/volume/volume 'max'}
 # }}}
 
 # vim:foldmethod=marker:foldlevel=0

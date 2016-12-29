@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
 # -----------------------------------------------------------------------------
-# volume
-# Description: Bezel UI module to change volume with feedback audio blip
+# backlight
+# Description: Bezel UI module to change keyboard light level
 # -----------------------------------------------------------------------------
 # Requires:
-#   paplay
+#   kbdlight
 # -----------------------------------------------------------------------------
-# Useage:      $ ./volume
+# Useage:      $ ./keys
 # -----------------------------------------------------------------------------
 
 # Source color theme which defines color_{0-15}
@@ -19,7 +19,7 @@ color_bg="${color_darkgrey}"
 color_ol="${color_black}"
 
 # name of the module
-bezel_name='bezel_volume'
+bezel_name='bezel_keys'
 
 # panel layer
 bezel_layer='raise'
@@ -27,11 +27,8 @@ bezel_layer='raise'
 # fifo
 pipe="/tmp/${bezel_name}.fifo"
 
-# blip
-blip='/usr/share/sounds/freedesktop/stereo/audio-volume-change.oga'
-
-# volume level change percentage
-level_percent='5'
+# light level change percentage (kbdlight 0 - 255)
+level_percent='16'
 
 # define some arguments passed to dzen to determine size and color.
 dzen_args=( -title-name "${bezel_name}" -ta c -w 1000 -h 70 -x 940 -y 690 -fg "${color_fg}" -bg "${color_ol}" -e "onstart=${bezel_layer}" )
@@ -40,31 +37,22 @@ dzen_args=( -title-name "${bezel_name}" -ta c -w 1000 -h 70 -x 940 -y 690 -fg "$
 gdbar_args=( -w 990 -h 60 -fg "${color_fg}" -bg "${color_bg}" )
 
 case $1 in
-    toggle)
-        amixer -q set Master toggle
-        exit 0
-        ;;
     down)
-        amixer -q set Master "${level_percent}"%- unmute
+        kbdlight down "${level_percent}"
         ;;
     up)
-        amixer -q set Master "${level_percent}"%+ unmute
+        kbdlight up "${level_percent}"
         ;;
     min)
-        amixer -q set Master 0% unmute
+        kbdlight off
         ;;
     max)
-        amixer -q set Master 100% unmute
+        kbdlight max
         ;;
     *)
         exit 2
         ;;
 esac
-
-# play volume change blip
-if [[ -e "${blip}" ]]; then
-    paplay "${blip}"
-fi
 
 # make the bezel
 if [[ ! -p "${pipe}" ]]; then
@@ -72,8 +60,8 @@ if [[ ! -p "${pipe}" ]]; then
     (dzen2 "${dzen_args[@]}" < "$pipe"; rm -f "$pipe") &
 fi
 
-# get new volume level
-level="$(amixer get Master | sed -n 's/^.*\[\([0-9]\+\)%.*$/\1/p' | uniq)"
+# get new light level
+level="$(kbdlight get)"
 
 # pipe to fifo and wait for capture
-(echo "${level}" | gdbar "${gdbar_args[@]}"; sleep 1) >> "$pipe"
+(echo "${level/.*/}" 255 | gdbar "${gdbar_args[@]}"; sleep 1) >> "$pipe"
