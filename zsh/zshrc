@@ -100,7 +100,7 @@ fpath=($HOME/.dotfiles/zsh/plugins/zsh-completions/src $fpath)
 source "$HOME/.dotfiles/zsh/plugins/completion.zsh"
 
 # enable visual mode in zle
-source "$HOME/.dotfiles/zsh/plugins/zsh-vimode-visual/zsh-vimode-visual.sh"
+source "$HOME/.dotfiles/zsh/plugins/zsh-vimode-visual/zsh-vimode-visual.zsh"
 
 # enable coloring
 autoload -U colors && colors

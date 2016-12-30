@@ -10,3 +10,6 @@
 [submodule "zsh/plugins/zsh-vimode-visual"]
 	path = zsh/plugins/zsh-vimode-visual
 	url = https://github.com/b4b4r07/zsh-vimode-visual.git
+[submodule "irssi/weed"]
+	path = irssi/weed
+	url = https://github.com/ronilaukkarinen/weed
