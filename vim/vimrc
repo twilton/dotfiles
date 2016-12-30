@@ -6,7 +6,7 @@
 " -----------------------------------------------------------------------------
 
 " -----------------------------------------------------------------------------
-" => Environment (envs)
+" => Environment
 " -----------------------------------------------------------------------------
 " {{{
 " vimconf is not vi-compatible
@@ -20,7 +20,7 @@ set ffs=unix,dos,mac
 " }}}
 
 " -----------------------------------------------------------------------------
-" => Plugins (plgs)
+" => Plugins
 " -----------------------------------------------------------------------------
 " {{{
 " vim-plug plugin manager
@@ -51,13 +51,14 @@ Plug 'junegunn/vim-slash'
 Plug 'wlangstroth/vim-racket', { 'for': ['racket'] }
 
 " kick the habit
-Plug 'wikitopian/hardmode'
+" Plug 'wikitopian/hardmode'
+Plug 'takac/vim-hardtime'
 
 call plug#end()
 " }}}
 
 " -----------------------------------------------------------------------------
-" => General (opts)
+" => General
 " -----------------------------------------------------------------------------
 " {{{
 " dont use other .*rc(s)
@@ -79,7 +80,7 @@ filetype plugin indent on
 " }}}
 
 " -----------------------------------------------------------------------------
-" => Interface (itrf)
+" => Interface
 " -----------------------------------------------------------------------------
 " {{{
 " window title
@@ -245,17 +246,19 @@ set wildignore+=*\\tmp\\*,*.exe
 set wildignore+=*.a,*.o,*.so,*.obj
 " python
 set wildignore+=*.pyc
+" ruby
+set wildignore+=*.gem
 " docs
 set wildignore+=*.pdf
 " archives
 set wildignore+=*.zip
 " pictures
 set wildignore+=*.png,*.jpg,*.jpeg,*.gif
+" directories
 set wildignore+=*vim/backups*
 set wildignore+=*sass-cache*
 set wildignore+=vendor/rails/**
 set wildignore+=vendor/cache/**
-set wildignore+=*.gem
 set wildignore+=log/**
 set wildignore+=tmp/**
 " }}}
@@ -264,7 +267,7 @@ set complete+=d
 " }}}
 
 " -----------------------------------------------------------------------------
-" => Colors (cols)
+" => Colors
 " -----------------------------------------------------------------------------
 " {{{
 " Enable syntax highlighting
@@ -290,7 +293,7 @@ hi SpecialKey ctermfg=red
 " }}}
 
 " -----------------------------------------------------------------------------
-" => Files and directories (dirs)
+" => Files and directories
 " -----------------------------------------------------------------------------
 " {{{
 " Set to auto read when a file is changed from the outside
@@ -318,7 +321,7 @@ augroup END
 " }}}
 
 " -----------------------------------------------------------------------------
-" => Formatting (frmt)
+" => Formatting
 " -----------------------------------------------------------------------------
 " {{{
 " spaces instead of tabs
@@ -351,7 +354,7 @@ set formatoptions+=j
 " }}}
 
 " -----------------------------------------------------------------------------
-" => Mappings (maps)
+" => Mappings
 " -----------------------------------------------------------------------------
 " {{{
 " Conflicts when using mapleader so map space to \
@@ -492,7 +495,8 @@ nnoremap <leader>% :%s/\<<C-r>=expand("<cword>")<CR>\>/
 nnoremap ' `
 
 " hardmode :(
-nnoremap <leader>H <Esc>:call ToggleHardMode()<CR>
+" nnoremap <leader>H <Esc>:call ToggleHardMode()<CR>
+let g:hardtime_default_on = 1
 
 " disable ex mode
 nnoremap Q <nop>
@@ -501,7 +505,7 @@ nnoremap K <nop>
 " }}}
 
 " -----------------------------------------------------------------------------
-" => Plugin Settings (pset)
+" => Plugin Settings
 " -----------------------------------------------------------------------------
 " {{{
     " -------------------------------------------------------------
