@@ -11,7 +11,7 @@
 # {{{
 # quit window manager
 super + shift + q
-    $HOME/.dotfiles/bin/ui/window_manager/bspwm_close
+    "$HOME/.dotfiles/bin/ui/window_manager/bspwm_close"
 
 # reload sxhkd
 super + shift + r
@@ -19,7 +19,7 @@ super + shift + r
 
 # lock
 super + shift + s
-    $HOME/.dotfiles/bin/ui/bezel/lock/lock
+    "$HOME/.dotfiles/bin/ui/bezel/lock/lock"
 # }}}
 
 # -----------------------------------------------------------------------------
@@ -54,17 +54,17 @@ super + shift + c
 # resize tiled node
 super + shift + {l,h}
     S={+,-}; \
-    bspc node @west -r "${S}"50 || \
-    bspc node @east -r "${S}"50
+    bspc node '@west' -r "${S}"50 || \
+    bspc node '@east' -r "${S}"50
 
 super + shift + {j,k}
     S={+,-}; \
-    bspc node @south -r "${S}"50 || \
-    bspc node @north -r "${S}"50
+    bspc node '@south' -r "${S}"50 || \
+    bspc node '@north' -r "${S}"50
 
 # change to selected node by location
 super + {h,j,k,l}
-    bspc node -f {west,south,north,east}
+    bspc node -f {'west','south','north','east'}
 
 # change to selected node by prev / next
 super + {_,shift + }Tab
@@ -76,7 +76,7 @@ super + {comma,period}
 
 # set new node preselection
 super + ctrl + {h,j,k,l}
-    bspc node -p {west,south,north,east}
+    bspc node -p {'~west','~south','~north','~east'}
 # }}}
 
 # -----------------------------------------------------------------------------
@@ -106,7 +106,7 @@ super + shift + Return
 
 # Open launcher
 super + p
-    $HOME/.dotfiles/bin/ui/bezel/spotlight/spotlight
+    "$HOME/.dotfiles/bin/ui/bezel/spotlight/spotlight"
 
 # Open web browser
 super + w
@@ -127,32 +127,32 @@ super + n
 # {{{
 # Screen Backlight Control
 @XF86MonBrightness{Down,Up}
-    $HOME/.dotfiles/bin/ui/bezel/backlight/backlight {down,up}
+    "$HOME/.dotfiles/bin/ui/bezel/backlight/backlight" {down,up}
 
 super + {F1,F2}
-    $HOME/.dotfiles/bin/ui/bezel/backlight/backlight {down,up}
+    "$HOME/.dotfiles/bin/ui/bezel/backlight/backlight" {down,up}
 
 shift + @XF86MonBrightness{Down,Up}
-    $HOME/.dotfiles/bin/ui/bezel/backlight/backlight {min,max}
+    "$HOME/.dotfiles/bin/ui/bezel/backlight/backlight" {min,max}
 
 super + shift + {F1,F2}
-    $HOME/.dotfiles/bin/ui/bezel/backlight/backlight {min,max}
+    "$HOME/.dotfiles/bin/ui/bezel/backlight/backlight" {min,max}
 
 # Application Control
 # XF86Launch{A,B}
 
 # Keyboard Backlight Control
 XF86KbdBrightness{Down,Up}
-    $HOME/.dotfiles/bin/ui/bezel/keys/keys {down,up}
+    "$HOME/.dotfiles/bin/ui/bezel/keys/keys" {down,up}
 
 super + {F5,F6}
-    $HOME/.dotfiles/bin/ui/bezel/keys/keys {down,up}
+    "$HOME/.dotfiles/bin/ui/bezel/keys/keys" {down,up}
 
 shift + XF86KbdBrightness{Down,Up}
-    $HOME/.dotfiles/bin/ui/bezel/keys/keys {min,max}
+    "$HOME/.dotfiles/bin/ui/bezel/keys/keys" {min,max}
 
 super + shift + {F5,F6}
-    $HOME/.dotfiles/bin/ui/bezel/keys/keys {min,max}
+    "$HOME/.dotfiles/bin/ui/bezel/keys/keys" {min,max}
 
 # Song Prev / Play / Next
 XF86Audio{Prev,Play,Next}
@@ -167,22 +167,22 @@ super + s ; {_,shift + }o
 
 # Volume Mute / Lower / Raise
 XF86Audio{Mute,LowerVolume,RaiseVolume}
-    {$HOME/.dotfiles/bin/ui/bezel/volume/volume 'toggle',\
-    $HOME/.dotfiles/bin/ui/bezel/volume/volume 'down',\
-    $HOME/.dotfiles/bin/ui/bezel/volume/volume 'up'}
+    {"$HOME/.dotfiles/bin/ui/bezel/volume/volume" 'toggle',\
+    "$HOME/.dotfiles/bin/ui/bezel/volume/volume" 'down',\
+    "$HOME/.dotfiles/bin/ui/bezel/volume/volume" 'up'}
 
 super + {F10,F11,F12}
-    {$HOME/.dotfiles/bin/ui/bezel/volume/volume 'toggle',\
-    $HOME/.dotfiles/bin/ui/bezel/volume/volume 'down',\
-    $HOME/.dotfiles/bin/ui/bezel/volume/volume 'up'}
+    {"$HOME/.dotfiles/bin/ui/bezel/volume/volume" 'toggle',\
+    "$HOME/.dotfiles/bin/ui/bezel/volume/volume" 'down',\
+    "$HOME/.dotfiles/bin/ui/bezel/volume/volume" 'up'}
 
 shift + XF86Audio{LowerVolume,RaiseVolume}
-    {$HOME/.dotfiles/bin/ui/bezel/volume/volume 'min',\
-    $HOME/.dotfiles/bin/ui/bezel/volume/volume 'max'}
+    {"$HOME/.dotfiles/bin/ui/bezel/volume/volume" 'min',\
+    "$HOME/.dotfiles/bin/ui/bezel/volume/volume" 'max'}
 
 super + shift + {F11,F12}
-    {$HOME/.dotfiles/bin/ui/bezel/volume/volume 'min',\
-    $HOME/.dotfiles/bin/ui/bezel/volume/volume 'max'}
+    {"$HOME/.dotfiles/bin/ui/bezel/volume/volume" 'min',\
+    "$HOME/.dotfiles/bin/ui/bezel/volume/volume" 'max'}
 # }}}
 
 # vim:foldmethod=marker:foldlevel=0
