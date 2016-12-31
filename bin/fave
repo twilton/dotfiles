@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+
+# -----------------------------------------------------------------------------
+# fave
+# Description: Adds/removes current song to a favorites file or prints
+#   favorites file to stdout
+# -----------------------------------------------------------------------------
+# Useage:      $ ./fave
+# -----------------------------------------------------------------------------
+
+# where is the favorites file located
+fave_file="$HOME/music/.faves"
+
+if [[ ! -e "${fave_file}" ]]; then
+    touch "${fave_file}" || { echo "Could not create ${fave_file}!" >&2; exit 1; }
+    echo "Tracking favorite songs in ${fave_file}"
+fi
+
+case $1 in
+    # add current song to fave_file
+    "")
+    # get current song
+    current_song=$( mpc current )
+
+    if ! grep -Fq "${current_song}" "${fave_file}" ; then
+        echo "${current_song}" >> "${fave_file}"
+
+        if [[ $? -eq 0 ]]; then
+            echo '+++ '\'"${current_song}"\'' >> '\'"${fave_file}"\'
+
+            # TODO notify-send
+        else
+            echo "Could not add ${current_song} to ${fave_file}!" >&2
+            exit 1
+        fi
+    else
+        echo \'"${current_song}"\'' is already favorited!'
+
+        # TODO notify-send
+    fi
+    ;;
+    # remove current song from fave_file
+    "rm")
+    # get current song
+    current_song=$( mpc current )
+
+    if grep -Fq "${current_song}" "${fave_file}" ; then
+        grep -Fv "${current_song}" "${fave_file}" > "${fave_file}.tmp"
+        mv "${fave_file}.tmp" "${fave_file}"
+
+        if [[ $? -eq 0 ]]; then
+            echo '--- '\'"${current_song}"\'' >> '\'"${fave_file}"\'
+
+            # TODO notify-send
+        else
+            echo "Unable to move ${fave_file}.tmp to ${fave_file}!" >&2
+            rm "${fave_file}.tmp" || echo "Count not remove ${fave_file}.tmp!" >&2
+            exit 1
+        fi
+    else
+        echo \'"${current_song}"\'' is not favorited!'
+
+        # TODO notify-send
+    fi
+    ;;
+    # print fave_file
+    "ls")
+    cat "${fave_file}"
+    ;;
+    # incorrect syntax
+    *)
+    echo 'Incorrect usage: fave [rm,ls]' >&2
+    exit 2
+    ;;
+esac
