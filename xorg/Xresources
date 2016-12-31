@@ -30,8 +30,7 @@ Xft.dpi: 220
 ! => Default colors
 ! -----------------------------------------------------------------------------
 ! {{{
-! hard contrast: *background: #1d2021
-! soft contrast: *background: #32302f
+! https://github.com/morhetz/gruvbox
 *background:   #282828
 *foreground:   #ebdbb2
 *.cursorColor: #ebdbb2

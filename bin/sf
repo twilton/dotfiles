@@ -15,21 +15,21 @@ c3=$(tput setaf 3)  # yellow
 c5=$(tput setaf 5)  # magenta
 c6=$(tput setaf 6)  # cyan
 c7=$(tput setaf 7)  # white
-rc=$(tput sgr0)	    # reset
+rc=$(tput sgr0)     # reset
 
 # common wms
 wms=( "2bwm" "awesome" "blackbox" "bspwm" "cwm" "dwm" "fluxbox" "herbstluftwm" "i3" \
-      "monsterwm" "openbox" "ratpoison" "spectrwm" "tfwm" "twm" "wmfs" "xmonad" )
+    "monsterwm" "openbox" "ratpoison" "spectrwm" "tfwm" "twm" "wmfs" "xmonad" )
 
 # finds a running wm in list of common wms
 function find_wm() {
-  for wm in ${wms[@]}; do
-    pid=$(pgrep -x -u $USER $wm)
-    if [[ "$pid" ]]; then
-      echo $wm
-      break
-    fi
-  done
+    for wm in ${wms[@]}; do
+        pid=$(pgrep -x -u $USER $wm)
+        if [[ "$pid" ]]; then
+            echo $wm
+            break
+        fi
+    done
 }
 
 # Get info
