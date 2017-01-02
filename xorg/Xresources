@@ -9,13 +9,13 @@
 ! => X
 ! -----------------------------------------------------------------------------
 ! {{{
-Xcursor.size: 16
+Xcursor.size:  16
 Xft.antialias: true
-Xft.autohint: false
-Xft.hinting: true
-Xft.rgba: rgb
+Xft.autohint:  false
+Xft.hinting:   true
+Xft.rgba:      rgb
 Xft.hintstyle: hintfull
-Xft.dpi: 220
+Xft.dpi:       220
 ! }}}
 
 ! -----------------------------------------------------------------------------
@@ -23,7 +23,7 @@ Xft.dpi: 220
 ! -----------------------------------------------------------------------------
 ! {{{
 # define fonts \
-	xft:Source Code Pro for Powerline:regular:size=7
+    xft:Source Code Pro for Powerline:regular:size=7
 ! }}}
 
 ! -----------------------------------------------------------------------------
@@ -64,15 +64,15 @@ Xft.dpi: 220
 ! => urxvt
 ! -----------------------------------------------------------------------------
 ! {{{
-urxvt*scrollBar: false
-urxvt*internalBorder: 20
-urxvt*font:		fonts
-urxvt*boldFont:		fonts
-urxvt*italicFont:	fonts
-urxvt*boldItalicFont:	fonts
-urxvt*cursorBlink: false
-urxvt*depth: 24
-urxvt*shading: 15
+urxvt*scrollBar:      false
+urxvt*internalBorder: 13
+urxvt*font:           fonts
+urxvt*boldFont:       fonts
+urxvt*italicFont:     fonts
+urxvt*boldItalicFont: fonts
+urxvt*cursorBlink:    false
+urxvt*depth:          24
+urxvt*shading:        100
 ! }}}
 
 ! vim:foldmethod=marker:foldlevel=0
