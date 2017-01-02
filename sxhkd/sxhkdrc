@@ -53,12 +53,12 @@ super + shift + c
 
 # resize tiled node
 super + shift + {l,h}
-    S={'+50','-50'}; \
+    S={'+40','-40'}; \
     bspc node '@west' -r "${S}" || \
     bspc node '@east' -r "${S}"
 
 super + shift + {j,k}
-    S={'+50','-50'}; \
+    S={'+40','-40'}; \
     bspc node '@south' -r "${S}" || \
     bspc node '@north' -r "${S}"
 
