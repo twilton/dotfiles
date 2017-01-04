@@ -36,7 +36,7 @@ Xft.dpi:       220
 *.cursorColor: #ebdbb2
 ! Black + DarkGrey
 *color0:       #282828
-*color8:       #928374
+*color8:       #504945
 ! DarkRed + Red
 *color1:       #cc241d
 *color9:       #fb4934

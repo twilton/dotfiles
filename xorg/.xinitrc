@@ -52,8 +52,7 @@ xset +dpms
 xset dpms 0 0 300
 
 #calibrate display
-xcalib ~/.dotfiles/colorprofiles/colorprofile.icc
-redshift -c ~/.config/redshift/redshift.conf
+redshift &
 # }}}
 
 # -----------------------------------------------------------------------------

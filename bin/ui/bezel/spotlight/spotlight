@@ -11,7 +11,7 @@
 # -----------------------------------------------------------------------------
 
 # Source color theme which defines color_{0-15}
-source "$HOME/.dotfiles/bin/ui/colors"
+source "$HOME/.bin/ui/colors"
 
 # set local colors
 color_nf="${color_black}"

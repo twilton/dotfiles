@@ -36,7 +36,7 @@ bspc config presel_feedback_color "#928374"
 # -----------------------------------------------------------------------------
 # {{{
 # music, clock, and battery
-$HOME/.dotfiles/bin/ui/menu_bar/menu_bar &
+$HOME/.bin/ui/menu_bar/menu_bar &
 # }}}
 
 # vim:foldmethod=marker:foldlevel=0

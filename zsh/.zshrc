@@ -38,7 +38,7 @@ unsetopt CHECK_JOBS
 # History
 HISTSIZE=2000
 SAVEHIST=2000
-HISTFILE="$HOME/.dotfiles/zsh/history"
+HISTFILE="$HOME/.zsh/history"
 setopt HIST_IGNORE_DUPS
 setopt INC_APPEND_HISTORY
 setopt SHARE_HISTORY
@@ -92,15 +92,15 @@ fi
 # -----------------------------------------------------------------------------
 # {{{
 # Substring Search
-source "$HOME/.dotfiles/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh"
-source "$HOME/.dotfiles/zsh/plugins/search.zsh"
+source "$HOME/.zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh"
+source "$HOME/.zsh/plugins/search.zsh"
 
 # enable zsh completion menu
-fpath=($HOME/.dotfiles/zsh/plugins/zsh-completions/src $fpath)
-source "$HOME/.dotfiles/zsh/plugins/completion.zsh"
+fpath=($HOME/.zsh/plugins/zsh-completions/src $fpath)
+source "$HOME/.zsh/plugins/completion.zsh"
 
 # enable visual mode in zle
-source "$HOME/.dotfiles/zsh/plugins/zsh-vimode-visual/zsh-vimode-visual.zsh"
+source "$HOME/.zsh/plugins/zsh-vimode-visual/zsh-vimode-visual.zsh"
 
 # enable coloring
 autoload -U colors && colors

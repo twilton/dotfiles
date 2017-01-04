@@ -10,8 +10,8 @@
 unset status_items
 trap 'kill "${status_items[@]}"' EXIT
 
-$HOME/.dotfiles/bin/ui/menu_bar/status_items/mpd_status & status_items+=($!)
-$HOME/.dotfiles/bin/ui/menu_bar/status_items/date_status & status_items+=($!)
-$HOME/.dotfiles/bin/ui/menu_bar/status_items/battery_status & status_items+=($!)
+$HOME/.bin/ui/menu_bar/status_items/mpd_status & status_items+=($!)
+$HOME/.bin/ui/menu_bar/status_items/date_status & status_items+=($!)
+$HOME/.bin/ui/menu_bar/status_items/battery_status & status_items+=($!)
 
 wait
