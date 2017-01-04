@@ -1,4 +1,4 @@
 /*
 !.gitignore
-!input.conf
-!mpv.conf
+!.config/mpv/input.conf
+!.config/mpv/mpv.conf

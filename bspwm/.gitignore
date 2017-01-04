@@ -1,4 +1,3 @@
 /*
 !.gitignore
-!bspwmrc
-!panel
+!.config/bspwm/bspwmrc

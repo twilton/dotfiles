@@ -1,4 +1,4 @@
 /*
 !.gitignore
-!rc.conf
-!scope.sh
+!.config/ranger/rc.conf
+!.config/ranger/scope.sh

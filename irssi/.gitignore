@@ -1,6 +1,6 @@
 /*
 !.gitignore
-!scripts/
-!weed/
-!config
-!weed.theme
+!.irssi/scripts/
+!.irssi/weed/
+!.irssi/config
+!.irssi/weed.theme
