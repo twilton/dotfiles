@@ -1,18 +1,19 @@
-dotfiles
-========
-# pic
+# dotfiles
 
-installation
-------------
+## installation
 
 These files are managed with [GNU stow][1]
 
-    git clone git://github.com/twilton/dotfiles ~/.dotfiles
-    cd ~/.dotfiles
-    stow 'package'
+```bash
+git clone git://github.com/twilton/dotfiles ~/.dotfiles
+cd ~/.dotfiles
+stow 'package'
+```
 
-For example, to install the vim settings
+For example,
 
+```bash
     stow vim
+```
 
 [1]: https://www.gnu.org/software/stow/
