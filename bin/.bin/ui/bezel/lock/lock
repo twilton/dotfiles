@@ -18,66 +18,75 @@
 # Useage:      $ sh ./lock
 # -----------------------------------------------------------------------------
 
-set -eu
+# dependencies
+readonly lock_overlay="$(dirname $BASH_SOURCE)/lock.png"
+readonly pixelize_script="$(dirname $BASH_SOURCE)/pixelize.sh"
 
-# user specific
-overlay="$(dirname $BASH_SOURCE)/lock.png"
-pixelize="$(dirname $BASH_SOURCE)/pixelize.sh"
-width=2880
-height=1800
-overlay_radius=94
-screenshot=$( mktemp --tmpdir i3lock-scrot-XXX.png )
-lock=$( mktemp --tmpdir i3lock-final-XXX.png )
+# temporary screenshot
+readonly lock_scrot=$( mktemp --tmpdir i3lock_scrot-XXX.png )
 
-# math
-center_x=$(( ${width} / 2 ))
-center_y=$(( ${height} / 2 ))
-radius=$(( ${center_y} + ${overlay_radius} ))
+# display
+readonly display_width=2880
+readonly display_height=1800
 
 # colors
 source "$HOME/.bin/ui/colors"
-circle_fill="${color_black}"
-circle_stroke="${color_white}"
 
-lock() {
-    if [[ $1 -eq 0 ]]; then
-        # non fancy
-        i3lock \
-            -u \
-            -i "$2"
-    elif [[ $1 -eq 1 ]]; then
-        i3lock \
-            --insidevercolor=c5c8c620 --insidewrongcolor=a5424220 \
-            --insidecolor=00000000 --ringvercolor=c5c8c6FF \
-            --ringvercolor=c5c8c6FF --ringwrongcolor=a54242FF \
-            --ringcolor=00000000 --linecolor=ffffff00 \
-            --textcolor=ffffff00 --keyhlcolor=c5c8c6FF \
-            --bshlcolor=a54242FF \
-            -i "$2"
-    else
-        echo "Error: Something went wrong" >&2
-        exit 1
-    fi
+# run on EXIT
+function finish() {
+    # remove temp file
+    rm -f ${lock_scrot}
 }
 
+# pixelates, darkens, and adds overlay to the middle of an image
+function edit_image() {
+    local img="$1"
+
+    local color_fg="${color_white}"
+    local color_bg="${color_black}"
+
+    local overlay_radius=92
+    local x_center=$(( ${display_width} / 2 ))
+    local y_center=$(( ${display_height} / 2 ))
+    local radius=$(( ${y_center} + ${overlay_radius} ))
+
+    # pixelate screenshot
+    "${pixelize_script}" -s 5 -m 2 "${img}" "${img}"
+
+    # darken and add lock
+    convert "${img}" \
+        -scale '20%' -level '-35%' -modulate '40' -scale '500%' \
+        -fill "${color_bg}" -stroke "${color_fg}" -draw "fill-opacity 80% circle ${x_center},${y_center},${x_center},${radius}" \
+        -gravity 'center' "${lock_overlay}" -composite "${img}"
+}
+
+# invokes i3lock-color with correct ui colors
+function fancy_lock() {
+    local img="$1"
+
+    # need to strip leading '#'
+    local color_fg="${color_white#*\#}"
+    local color_bg="${color_black#*\#}"
+    local color_wrong="${color_red#*\#}"
+
+    i3lock \
+        --insidevercolor="${color_fg}20" --insidewrongcolor="${color_wrong}20" \
+        --insidecolor="${color_bg}00" --ringvercolor="${color_fg}FF" \
+        --ringvercolor="${color_fg}FF" --ringwrongcolor="${color_wrong}FF" \
+        --ringcolor="${color_bg}00" --linecolor="${color_fg}00" \
+        --textcolor="${color_fg}00" --keyhlcolor="${color_fg}FF" \
+        --bshlcolor="${color_wrong}FF" \
+        -i "${img}"
+}
+
+# cleanup on EXIT
+trap finish EXIT
+
 # take screenshot
-scrot -d0 "${screenshot}"
+scrot -d0 "${lock_scrot}"
 
-# lock screen immediately with initial screenshot
-lock 0 "${screenshot}"
+# edit scrot
+edit_image "${lock_scrot}"
 
-# pixelate screenshot
-"${pixelize}" -s 5 -m 2 "${screenshot}" "${screenshot}"
-
-# darken and add lock
-convert "${screenshot}" \
-    -scale '20%' -level '-35%' -modulate '40' -scale '500%' \
-    -fill "${circle_fill}" -stroke "${circle_stroke}" -draw "fill-opacity 80% circle ${center_x},${center_y},${center_x},${radius}" \
-    -gravity 'center' "${overlay}" -composite \
-    ${lock}
-
-# kills the old lockscreen adds the new edited one
-kill $( pgrep i3lock )
-lock 1 "${lock}"
-
-trap "rm ${screenshot} ${lock}" EXIT
+# lock with edited scrot
+fancy_lock "${lock_scrot}"
