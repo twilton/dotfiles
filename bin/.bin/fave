@@ -8,64 +8,133 @@
 # Useage:      $ ./fave
 # -----------------------------------------------------------------------------
 
-# where is the favorites file located
-fave_file="$HOME/music/.faves"
+# favorites file
+readonly FAVE_FILE="$HOME/music/.faves"
 
-if [[ ! -e "${fave_file}" ]]; then
-    touch "${fave_file}" || { echo "Could not create ${fave_file}!" >&2; exit 1; }
-    echo "Tracking favorite songs in ${fave_file}"
+function song_info() {
+    # get individual mpc current fields for formatting
+    local artist=$( mpc -f "[%artist%]" | head -n 1 )
+    local title=$( mpc -f "[%title%]" | head -n 1 )
+    local album=$( mpc -f "[%album%]" | head -n 1 )
+
+    # has artist, title and album
+    if [[ -n "${artist}" && -n "${title}" && -n "${album}" ]]; then
+        echo "${artist} - ${title} - ${album}"
+
+        # has artist and title but not album
+    elif [[ -n "${artist}" && -n "${title}" ]]; then
+        echo "${artist} - ${title}"
+
+        # has artist and album but not title
+    elif [[ -n "${artist}" && -n "${album}" ]]; then
+        echo "${artist} - ${album}"
+
+        # has title and album but not artist
+    elif [[ -n "${title}" && -n "${album}" ]]; then
+        echo "${title} - ${album}"
+
+        # has only artist
+    elif [[ -n "${artist}" ]]; then
+        echo "${artist}"
+
+        # has only title
+    elif [[ -n "${title}" ]]; then
+        echo "${title}"
+
+        # has only album
+    elif [[ -n "${album}" ]]; then
+        echo "${album}"
+    fi
+}
+
+function fave_add() {
+    # file to operate on
+    local target="$1"
+    # get current song
+    local current_song=$( song_info )
+
+    # check for empty current_song
+    if [[ -z "${current_song}" ]]; then
+        echo "All fields of current song empty. Exiting." >&2
+        exit 1
+    fi
+
+    # check if current song is not favorited
+    if ! grep -Fq "${current_song}" "${target}"; then
+        # append current song to target
+        echo "${current_song}" >> "${target}"
+
+        # check if current song was added successfully to target file
+        if [[ $? -eq 0 ]]; then
+            echo "'${current_song}' -> '${target}'"
+        else
+            echo "Could not add '${current_song}' to '${target}'!" >&2
+            exit 1
+        fi
+    else
+        echo "'${current_song}' is already favorited!"
+    fi
+}
+
+function fave_remove() {
+    # file to operate on
+    local target="$1"
+    # get current song
+    local current_song=$( song_info )
+
+    # check for empty current_song
+    if [[ -z "${current_song}" ]]; then
+        echo "All fields of current song empty. Exiting." >&2
+        exit 1
+    fi
+
+    # check if current song is favorited
+    if grep -Fq "${current_song}" "${target}"; then
+        # print all lines except current song to target.tmp
+        grep -Fv "${current_song}" "${target}" > "${target}.tmp"
+        # overwrite target with target.tmp
+        mv "${target}.tmp" "${target}"
+
+        # check if temp file successfuly overwrote target file
+        if [[ $? -eq 0 ]]; then
+            echo "rm '${current_song}'"
+        else
+            echo "Unable to move '${target}.tmp' to '${target}'!" >&2
+            # target was not overwritten so delete the temp file
+            rm "${target}.tmp" || echo "Count not remove '${target}.tmp'!" >&2
+            exit 1
+        fi
+    else
+        echo "'${current_song}' is not favorited!"
+    fi
+}
+
+function fave_list() {
+    # file to operate on
+    local target="$1"
+
+    # print target file to stdout
+    cat "${target}"
+}
+
+# check for favorites file; create if not found
+if [[ ! -e "${FAVE_FILE}" ]]; then
+    touch "${FAVE_FILE}" || { echo "Could not create '${FAVE_FILE}!'" >&2; exit 1; }
+    echo "Tracking favorite songs in '${FAVE_FILE}'"
 fi
 
 case $1 in
-    # add current song to fave_file
+    # add current song to target file
     "")
-    # get current song
-    current_song=$( mpc current )
-
-    if ! grep -Fq "${current_song}" "${fave_file}" ; then
-        echo "${current_song}" >> "${fave_file}"
-
-        if [[ $? -eq 0 ]]; then
-            echo \'"${current_song}"\'' -> '\'"${fave_file}"\'
-
-            # TODO notify-send
-        else
-            echo "Could not add ${current_song} to ${fave_file}!" >&2
-            exit 1
-        fi
-    else
-        echo \'"${current_song}"\'' is already favorited!'
-
-        # TODO notify-send
-    fi
+    fave_add "${FAVE_FILE}"
     ;;
-    # remove current song from fave_file
+    # remove current song from target file
     "rm")
-    # get current song
-    current_song=$( mpc current )
-
-    if grep -Fq "${current_song}" "${fave_file}" ; then
-        grep -Fv "${current_song}" "${fave_file}" > "${fave_file}.tmp"
-        mv "${fave_file}.tmp" "${fave_file}"
-
-        if [[ $? -eq 0 ]]; then
-            echo 'rm '\'"${current_song}"\'
-
-            # TODO notify-send
-        else
-            echo "Unable to move ${fave_file}.tmp to ${fave_file}!" >&2
-            rm "${fave_file}.tmp" || echo "Count not remove ${fave_file}.tmp!" >&2
-            exit 1
-        fi
-    else
-        echo \'"${current_song}"\'' is not favorited!'
-
-        # TODO notify-send
-    fi
+    fave_remove "${FAVE_FILE}"
     ;;
-    # print fave_file
+    # print target file
     "ls")
-    cat "${fave_file}"
+    fave_list "${FAVE_FILE}"
     ;;
     # incorrect syntax
     *)
