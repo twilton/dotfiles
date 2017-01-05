@@ -23,10 +23,10 @@ case $1 in
     current_song=$( mpc current )
 
     if ! grep -Fq "${current_song}" "${fave_file}" ; then
-        echo "${current_song}" >> "${fave_file}"
+        echo "${current_song}" -> "${fave_file}"
 
         if [[ $? -eq 0 ]]; then
-            echo '+++ '\'"${current_song}"\'' >> '\'"${fave_file}"\'
+            echo \'"${current_song}"\'' -> '\'"${fave_file}"\'
 
             # TODO notify-send
         else
@@ -49,7 +49,7 @@ case $1 in
         mv "${fave_file}.tmp" "${fave_file}"
 
         if [[ $? -eq 0 ]]; then
-            echo '--- '\'"${current_song}"\'' >> '\'"${fave_file}"\'
+            echo 'rm '\'"${current_song}"\'
 
             # TODO notify-send
         else
