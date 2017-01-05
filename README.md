@@ -2,7 +2,7 @@
 
 ## installation
 
-These files are managed with [GNU stow][1]
+These files are managed with [GNU stow][stow]
 
 ```bash
 git clone git://github.com/twilton/dotfiles ~/.dotfiles
@@ -16,4 +16,18 @@ For example,
 stow vim
 ```
 
-[1]: https://www.gnu.org/software/stow/
+## What's included?
+
+### zsh + tmux + vim
+> aka _the trifecta_
+
+This setup is intended for use in the [terminal][urxvt]
+
+* [zsh][zsh]
+* [tmux][tmux]
+* [vim][vim]
+
+### But Wait, There's More!
+
+[stow]: https://www.gnu.org/software/stow/
+[urxvt]: http://software.schmorp.de/pkg/rxvt-unicode.html
