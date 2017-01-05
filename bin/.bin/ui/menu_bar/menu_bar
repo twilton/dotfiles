@@ -4,7 +4,7 @@
 # panel
 # Description: Starts the menu bar which contains status items
 # -----------------------------------------------------------------------------
-# Location: $HOME/.dotfiles/bin/bspwm/menu_bar
+# Location: $HOME/.bin/ui/menu_bar/menu_bar
 # -----------------------------------------------------------------------------
 
 unset status_items
