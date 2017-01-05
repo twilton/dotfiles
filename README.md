@@ -14,6 +14,7 @@ This setup is intended for use in the [terminal][urxvt]
 * [vim](vim/.vimrc)
 
 ### "But Wait, There's More!"
+...
 
 ## installation
 
@@ -24,9 +25,7 @@ git clone git://github.com/twilton/dotfiles ~/.dotfiles
 (Or, [fork and keep your fork
 updated](http://robots.thoughtbot.com/keeping-a-github-fork-updated))
 
-These files are managed with [GNU stow][stow]
-
-For example,
+These files are managed with [GNU stow][stow]:
 ```bash
 cd ~/.dotfiles
 stow vim
