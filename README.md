@@ -1,4 +1,6 @@
-# dotfiles
+```
+# twilton's dotfiles
+```
 
 This setup is intended for use in the [terminal][urxvt]
 
@@ -15,17 +17,18 @@ This setup is intended for use in the [terminal][urxvt]
 
 ## installation
 
-These files are managed with [GNU stow][stow]
-
+Clone the repo:
 ```bash
 git clone git://github.com/twilton/dotfiles ~/.dotfiles
-cd ~/.dotfiles
-stow foo
 ```
+(Or, [fork and keep your fork
+updated](http://robots.thoughtbot.com/keeping-a-github-fork-updated))
+
+These files are managed with [GNU stow][stow]
 
 For example,
-
 ```bash
+cd ~/.dotfiles
 stow vim
 ```
 
