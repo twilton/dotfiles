@@ -23,7 +23,7 @@ set editor="urxvt -e vim"
 set noerrorbells
 
 " search
-set defsearch=google
+set defsearch=startpage
 
 " diable url separators
 set urlseparator=""
