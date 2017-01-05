@@ -1,5 +1,6 @@
 *
 !.gitignore
+
 !.config/
 !.config/newsbeuter/
 !.config/newsbeuter/config

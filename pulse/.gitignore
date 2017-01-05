@@ -1,5 +1,6 @@
 *
 !.gitignore
+
 !.config/
 !.config/pulse/
 !.config/pulse/client.conf

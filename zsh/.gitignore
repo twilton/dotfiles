@@ -1,7 +1,11 @@
-/*
+*
 !.gitignore
+
 !.zshrc
 !.zprofile
 !.zlogin
 !.zlogout
+
+!.zsh/
 !.zsh/plugins/
+!.zsh/plugins/**

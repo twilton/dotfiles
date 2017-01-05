@@ -1,3 +1,6 @@
-/*
+*
 !.gitignore
+
+!.config/
+!.config/mpd/
 !.config/mpd/mpd.conf

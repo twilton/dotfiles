@@ -1,4 +1,8 @@
-/*
+*
 !.gitignore
-!.vimperator/colors/
+
 !.vimperatorrc
+
+!.vimperator/
+!.vimperator/colors/
+!.vimperator/colors/**

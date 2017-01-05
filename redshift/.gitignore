@@ -1,3 +1,5 @@
-/*
+*
 !.gitignore
+
+!.config/
 !.config/redshift.conf

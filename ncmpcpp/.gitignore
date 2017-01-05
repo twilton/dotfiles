@@ -1,4 +1,6 @@
-/*
+*
 !.gitignore
+
+!.ncmpcpp/
 !.ncmpcpp/bindings
 !.ncmpcpp/config

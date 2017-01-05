@@ -1,6 +1,13 @@
-/*
+*
 !.gitignore
-!.irssi/scripts/
-!.irssi/weed/
+
+!.irssi/
 !.irssi/config
 !.irssi/weed.theme
+
+!.irssi/scripts/
+!.irssi/scripts/autorun
+!.irssi/scripts/autorun/**
+
+!.irssi/weed/
+!.irssi/weed/**

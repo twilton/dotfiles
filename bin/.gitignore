@@ -1,3 +1,13 @@
-/*
+*
 !.gitignore
+
 !.bin/
+!.bin/fave
+!.bin/sf
+!.bin/colorzip
+
+!.bin/ui/
+!.bin/ui/**
+
+!.bin/keymaps/
+!.bin/keymaps/**
