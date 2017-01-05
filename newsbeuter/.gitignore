@@ -1,0 +1,6 @@
+*
+!.gitignore
+!.config/
+!.config/newsbeuter/
+!.config/newsbeuter/config
+!.config/newsbeuter/urls

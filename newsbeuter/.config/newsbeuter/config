@@ -1,0 +1,67 @@
+# -- general --
+# default programs
+browser firefox -new-tab about:reader?url=%s
+
+# exit
+cleanup-on-quit yes
+confirm-exit no
+
+# -- feeds --
+# sorting method
+feed-sort-order desc
+
+# filter read feeds
+show-read-feeds no
+show-read-articles no
+
+# dont jump to different feeds
+goto-next-feed no
+
+# loading
+prepopulate-query-feeds yes
+auto-reload yes
+reload-time 30
+reload-threads 4
+download-retries 4
+download-timeout 10
+
+# -- display --
+# terminal size
+text-width 72
+
+# colors (following documentation order)
+color background white black
+color listnormal white black
+color listfocus blue default reverse bold
+color listnormal_unread cyan black
+color listfocus_unread blue default reverse bold
+color info white black reverse
+color article white black
+
+# article highlighting
+highlight article "^(Title):.*$" blue default
+highlight article "https?://[^ ]+" red default
+highlight article "\\[image\\ [0-9]+\\]" green default
+
+# -- mappings --
+# navigation
+bind-key h left all
+bind-key j down all
+bind-key j next articlelist
+bind-key k up all
+bind-key k prev articlelist
+bind-key l right all
+
+bind-key H prev-dialog all
+bind-key J next-feed articlelist
+bind-key J next-unread article
+bind-key K prev-feed articlelist
+bind-key K prev-unread article
+bind-key L next-dialog all
+
+# buffer list
+bind-key b view-dialogs
+bind-key d close-dialog
+
+# disable mark all feeds read
+unbind-key C feedlist
