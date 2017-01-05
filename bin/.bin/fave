@@ -9,7 +9,7 @@
 # -----------------------------------------------------------------------------
 
 # favorites file
-readonly FAVE_FILE="$HOME/music/.faves"
+readonly fave_file="$HOME/music/.faves"
 
 function song_info() {
     # get individual mpc current fields for formatting
@@ -118,23 +118,23 @@ function fave_list() {
 }
 
 # check for favorites file; create if not found
-if [[ ! -e "${FAVE_FILE}" ]]; then
-    touch "${FAVE_FILE}" || { echo "Could not create '${FAVE_FILE}!'" >&2; exit 1; }
-    echo "Tracking favorite songs in '${FAVE_FILE}'"
+if [[ ! -e "${fave_file}" ]]; then
+    touch "${fave_file}" || { echo "Could not create '${fave_file}!'" >&2; exit 1; }
+    echo "Tracking favorite songs in '${fave_file}'"
 fi
 
 case $1 in
     # add current song to target file
     "")
-    fave_add "${FAVE_FILE}"
+    fave_add "${fave_file}"
     ;;
     # remove current song from target file
     "rm")
-    fave_remove "${FAVE_FILE}"
+    fave_remove "${fave_file}"
     ;;
     # print target file
     "ls")
-    fave_list "${FAVE_FILE}"
+    fave_list "${fave_file}"
     ;;
     # incorrect syntax
     *)
