@@ -11,10 +11,15 @@
 # -----------------------------------------------------------------------------
 
 # Define colors
+c0=$(tput setaf 0)  # black
+c1=$(tput setaf 1)  # red
+c2=$(tput setaf 2)  # green
 c3=$(tput setaf 3)  # yellow
+c4=$(tput setaf 4)  # blue
 c5=$(tput setaf 5)  # magenta
 c6=$(tput setaf 6)  # cyan
 c7=$(tput setaf 7)  # white
+bc=$(tput bold)     # bold
 rc=$(tput sgr0)     # reset
 
 # common wms
@@ -43,12 +48,12 @@ wm="${c6}WM:${rc}       ${c7}$(find_wm)${rc}"
 
 cat << EOF
 
-${c3}        /\\${rc}        ${host}
-${c3}       /  \\${rc}       ${os}
-${c3}      /    \\${rc}      ${kernel}
-${c3}     /  **  \\${rc}     ${uptime}
-${c3}    /${c6}   __   \\${rc}    ${packages}
-${c6}   / __/  \\__ \\${rc}   ${shell}
-${c6}  ///        \\\\\\${rc}  ${wm}
+${c3}      /\\      ${rc}  ${host}
+${c3}     /  \\     ${rc}  ${os}
+${c3}    /    \\    ${rc}  ${kernel}
+${c3}   /  **  \\   ${rc}  ${uptime}
+${c3}  /   ${c6}__   \\  ${rc}  ${packages}
+${c6} / __/  \\__ \\ ${rc}  ${shell}
+${c6}///        \\\\\\${rc}  ${wm}
 
 EOF
