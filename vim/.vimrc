@@ -142,11 +142,6 @@ if has('statusline')
     set statusline+=%{&ro?'[≠]':''}
     set statusline+=%*
 
-    " display fugitive
-    " set statusline+=%4*
-    " set statusline+=[%{fugitive#head(6)}]
-    " set statusline+=%*
-
     " display a warning if fileformat isnt unix
     set statusline+=%5*
     set statusline+=%{&ff!='unix'?'[ff:\ '.&ff.']':''}
@@ -277,19 +272,25 @@ syntax on
 set background=dark
 
 " use this colorscheme
-colorscheme gruvbox
+colorscheme tester
+" highlight Normal ctermbg=NONE
 
 " StatusLine colors
-hi User1        ctermbg=239 ctermfg=white
-hi User2        ctermbg=239 ctermfg=cyan
-hi User3        ctermbg=239 ctermfg=yellow
-hi User4        ctermbg=239 ctermfg=white
-hi User5        ctermbg=239 ctermfg=red
-hi User6        ctermbg=239 ctermfg=grey
+" buffer name / cursor info (fg)
+hi User1        ctermbg=8 ctermfg=15
+" modified (cyan)
+hi User2        ctermbg=8 ctermfg=6
+" read only (yellow)
+hi User3        ctermbg=8 ctermfg=11
+" buffer number (fg)
+hi User4        ctermbg=8 ctermfg=15
+" warnings (red)
+hi User5        ctermbg=8 ctermfg=1
+" help file flag (gray)
+hi User6        ctermbg=8 ctermfg=7
 
 " listchar colors
-" hi NonText    ctermfg=red
-hi SpecialKey ctermfg=red
+hi SpecialKey   ctermfg=1
 " }}}
 
 " -----------------------------------------------------------------------------
@@ -391,6 +392,15 @@ nnoremap <leader>k <C-W>k
 xnoremap <leader>k <C-W>k
 nnoremap <leader>l <C-W>l
 xnoremap <leader>l <C-W>l
+" resize windows
+nnoremap <leader>H <C-W><
+xnoremap <leader>H <C-W><
+nnoremap <leader>J <C-W>-
+xnoremap <leader>J <C-W>-
+nnoremap <leader>K <C-W>+
+xnoremap <leader>K <C-W>+
+nnoremap <leader>L <C-W>>
+xnoremap <leader>L <C-W>>
 
 " Edit
 noremap <leader>ew :e<space>
@@ -427,6 +437,7 @@ inoremap {, {<CR>},<Esc>O
 inoremap [<CR> [<CR>]<Esc>O
 inoremap [; [<CR>];<Esc>O
 inoremap [, [<CR>],<Esc>O
+
 " Working ci(, works for both breaklined, inline and multiple ()
 nnoremap ci( %ci(
 
@@ -445,8 +456,7 @@ xmap <leader>a <Plug>(EasyAlign)
 " lets enter select items in popupmenu without newline
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
-" make list-like commands more intuitive
-" {{{
+" make list-like commands more intuitive {{{
 function! CCR()
     let cmdline = getcmdline()
     if cmdline =~ '\v\C^(ls|files|buffers)'
@@ -496,7 +506,7 @@ nnoremap ' `
 
 " hardmode :(
 " nnoremap <leader>H <Esc>:call ToggleHardMode()<CR>
-let g:hardtime_default_on = 1
+" let g:hardtime_default_on = 1
 
 " disable ex mode
 nnoremap Q <nop>
