@@ -10,13 +10,65 @@
 " -----------------------------------------------------------------------------
 " {{{
 " vimconf is not vi-compatible
-set nocompatible
+if &compatible
+    set nocompatible
+endif
+
+" setup vimrc autogroup
+augroup vimrc
+  autocmd!
+augroup END
+
+" if encoding is not utf-8 set termencoding
+if &encoding !=? 'utf-8'
+    let &termencoding = &encoding
+endif
 
 " Set utf8 as standard encoding
-set encoding=utf8
+set encoding=utf-8
+set fileencoding=utf-8
 
 " Use unix as the standard file type
-set ffs=unix,dos,mac
+set fileformats=unix,mac,dos
+
+" Enable filetype plugins
+filetype plugin indent on
+" Set to auto read when a file is changed from the outside
+set autoread
+
+" files to search
+set path=.,**
+" Automatically switch to file directory of buffer
+autocmd vimrc BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
+
+" Cache files
+let $VIM_CACHE = expand('~/.vim/cache')
+if !isdirectory($VIM_CACHE)
+    silent! call mkdir($VIM_CACHE, 'p')
+endif
+" Number of command lines to remember
+set history=1000
+" 10 marks, 100 searches, 1000 commands, 10 lines / register, 10 inputs,
+"   10kb max size of item, disable hlsearch on start, viminfo file name
+set viminfo='10,/100,:1000,<10,@10,s10,h,n$VIM_CACHE/.viminfo
+" disable spelling
+set nospell
+set spellfile=$VIM_CACHE/en.utf-8.add
+
+" backup location ~/.vim/cache/backup
+if !isdirectory($VIM_CACHE.'/backup')
+    silent! call mkdir($VIM_CACHE.'/backup', 'p')
+endif
+set nobackup
+set backupdir=$VIM_CACHE/backup,/tmp/vim
+
+" enable undofile in ~/.vim/cache/undo
+if !isdirectory($VIM_CACHE.'/undo')
+    silent! call mkdir($VIM_CACHE.'/undo', 'p')
+endif
+set undofile
+set undodir=$VIM_CACHE/undo,/tmp/vim
+set undolevels=1000
 " }}}
 
 " -----------------------------------------------------------------------------
@@ -28,9 +80,6 @@ call plug#begin('~/.vim/plugged')
 
 " colorscheme
 Plug 'morhetz/gruvbox'
-Plug 'romainl/apprentice'
-Plug 'ajh17/Spacegray.vim'
-Plug 'rakr/vim-one'
 
 " buffers in tabline
 Plug 'ap/vim-buftabline'
@@ -48,38 +97,12 @@ Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
 Plug 'scrooloose/syntastic'
 
 " searching
-Plug 'junegunn/vim-slash'
+" Plug 'romainl/vim-cool'
 
 " racket language support
 Plug 'wlangstroth/vim-racket', { 'for': ['racket'] }
 
-" kick the habit
-" Plug 'wikitopian/hardmode'
-Plug 'takac/vim-hardtime'
-
 call plug#end()
-" }}}
-
-" -----------------------------------------------------------------------------
-" => General
-" -----------------------------------------------------------------------------
-" {{{
-" dont use other .*rc(s)
-set noexrc
-
-" Sets how many lines of history VIM has to remember
-set history=1000
-" Persistent Undo
-if has('persistent_undo')
-    silent !mkdir ~/.vim/backups > /dev/null 2>&1
-    set undodir=~/.vim/backups
-    set undofile
-    set undolevels=200
-    set undoreload=5000
-endif
-
-" Enable filetype plugins
-filetype plugin indent on
 " }}}
 
 " -----------------------------------------------------------------------------
@@ -88,36 +111,27 @@ filetype plugin indent on
 " {{{
 " window title
 set title
-" disable startup message
-set shortmess+=I
-" don't give ins-completion-menu messages
-set shortmess+=c
-" A buffer becomes hidden when it is abandoned
-set hidden
 
 " disable mouse
 set mouse=
 " disable beep and flashing
 set vb t_vb=
 
-" line numbers are good
-set number
-set ruler
-" 99999 lines
-set numberwidth=5
-" hilight cursor line
-set cursorline
-" keep cursor column pos
-set nostartofline
+" Don't redraw while executing macros
+set lazyredraw
+" Faster redraws
+set ttyfast
 
+" A buffer becomes hidden when it is abandoned
+set hidden
 
-if has('cmdline_info')
-    " show cmds being typed
-    set showcmd
-endif
+"splits go below w/focus
+set splitbelow
+" vsplits go right w/focus
+set splitright
 
+" always show statusline if able
 if has('statusline')
-    " always show statusline
     set laststatus=2
     " statusline formatting {{{
     " buffer number
@@ -150,58 +164,36 @@ if has('statusline')
     " }}}
 endif
 
+" show cmds being typed if able
+if has('cmdline_info')
+    set showcmd
+endif
+" disable startup message
+set shortmess+=I
+" don't give ins-completion-menu messages
+set shortmess+=c
 " display the current mode
 set showmode
 " ---more--- like less
 set more
 
+" hilight cursor line
+set cursorline
 " fix scrolling
 set scrolloff=8
 set sidescrolloff=15
 set sidescroll=1
+" keep cursor column pos
+set nostartofline
+
+" line numbers are good
+set number
+set ruler
+" 99999 lines
+set numberwidth=5
 
 " Configure backspace so it acts as it should act
 set backspace=indent,eol,start
-" Highlight problematic whitespace
-set list listchars=tab:>\ ,trail:_,extends:>,precedes:<,nbsp:~
-set showbreak=\\
-" Ignore case when searching
-set ignorecase
-" When searching try to be smart about cases
-set smartcase
-" Enables highlighting of search results (this is modified by vim-slash)
-set hlsearch
-" Makes search act like search in modern browsers
-set incsearch 
-
-" Don't redraw while executing macros (good performance config)
-set lazyredraw 
-" Faster redraws
-set ttyfast
-
-" For regular expressions turn magic on
-set magic
-
-" Show matching brackets when text indicator is over them
-set showmatch
-" How many tenths of a second to blink when matching brackets
-set matchtime=2
-" matching for ci< or ci>
-set matchpairs+=<:>
-
-"splits go below w/focus
-set splitbelow
-" vsplits go right w/focus
-set splitright
-
-" folds using syntax
-set foldmethod=manual
-" folds closed by default
-set foldlevelstart=1
-" hide folding column
-set foldcolumn=0
-" max 10 nested folds
-set foldnestmax=10
 
 " better auto complete
 set wildmenu
@@ -239,6 +231,61 @@ set wildignore+=tmp/**
 " }}}
 " scan current and included files for defined name or macro
 set complete+=d
+
+" Makes search act like modern browsers
+set incsearch
+" Enables highlighting of search results
+set hlsearch
+" turn on hlsearch only when needed {{{
+function! StartHL()
+    if v:hlsearch
+        let pos = match(getline('.'), @/, col('.') - 1) + 1
+        if pos != col('.')
+            call StopHL()
+        endif
+    endif
+endfu
+
+function! StopHL()
+    if !v:hlsearch || mode() isnot 'n'
+        return
+    else
+        silent call feedkeys("\<Plug>(StopHL)", 'm')
+    endif
+endfu
+
+augroup SearchHighlight
+    au!
+    au CursorMoved * call StartHL()
+    au InsertEnter * call StopHL()
+augroup END
+" }}}
+" Ignore case when searching
+set ignorecase
+" When searching try to be smart about cases
+set smartcase
+" For regular expressions turn magic on
+set magic
+
+" Show matching brackets when text indicator is over them
+set showmatch
+" How many tenths of a second to blink when matching brackets
+set matchtime=2
+" matching for ci< or ci>
+set matchpairs+=<:>
+
+" Highlight problematic whitespace
+set list listchars=tab:>\ ,trail:_,extends:>,precedes:<,nbsp:~
+set showbreak=\\
+
+" folds using syntax
+set foldmethod=manual
+" folds closed by default
+set foldlevelstart=1
+" hide folding column
+set foldcolumn=0
+" max 10 nested folds
+set foldnestmax=10
 " }}}
 
 " -----------------------------------------------------------------------------
@@ -253,38 +300,17 @@ set background=dark
 
 " use this colorscheme
 colorscheme gruvbox
-highlight Normal ctermbg=NONE
+" remove weird background color in gruvbox
+highlight Normal ctermbg=NONE ctermfg=white cterm=NONE
 
-" listchar colors
-hi SpecialKey   ctermfg=1
-" }}}
+" Visual like 'romainl/apprentice'
+highlight Visual ctermbg=black ctermfg=blue cterm=reverse
+highlight VisualNOS ctermbg=black ctermfg=white cterm=reverse
+" MatchParen like 'romainl/apprentice'
+highlight MatchParen ctermbg=black ctermfg=yellow cterm=NONE
 
-" -----------------------------------------------------------------------------
-" => Files and directories
-" -----------------------------------------------------------------------------
-" {{{
-" Set to auto read when a file is changed from the outside
-set autoread
-set nobackup
-set nowb
-
-" files to search
-set path=.,**
-" Automatically switch to file directory of buffer
-autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
-
-" formating for other filetypes
-augroup FileTypeRules
-    autocmd!
-    autocmd BufNewFile,BufRead *.txt                         setl   ft=sh       tw=72
-    autocmd BufNewFile,BufRead *.md                          setl   ft=markdown tw=72
-    autocmd BufNewFile,BufRead *.conf                        setl   ft=cfg      tw=79
-    autocmd BufNewFile,BufRead *.tex                         setl   ft=tex      tw=79
-    autocmd BufNewFile,BufRead *.py                          setl   et ai       tw=79 ts=4 sts=4 sw=4
-    autocmd Filetype           gitcommit                     setl   spell       tw=72
-    autocmd Syntax             c,cpp,vim,xml,html,xhtml      setl   foldmethod=syntax
-    autocmd Syntax             c,cpp,vim,xml,html,xhtml,perl normal zR
-augroup END
+" highlight trailing whitespace
+highlight SpecialKey ctermbg=NONE ctermfg=DarkRed cterm=NONE
 " }}}
 
 " -----------------------------------------------------------------------------
@@ -318,6 +344,16 @@ set linebreak
 set formatoptions+=t
 " delete comment when joining commented lines
 set formatoptions+=j
+
+" filetype settings
+autocmd vimrc BufNewFile,BufRead *.txt                         setl   ft=sh       tw=72
+autocmd vimrc BufNewFile,BufRead *.md                          setl   ft=markdown tw=72
+autocmd vimrc BufNewFile,BufRead *.conf                        setl   ft=cfg      tw=79
+autocmd vimrc BufNewFile,BufRead *.tex                         setl   ft=tex      tw=79
+autocmd vimrc BufNewFile,BufRead *.py                          setl   et ai       tw=79 ts=4 sts=4 sw=4
+autocmd vimrc Filetype           gitcommit                     setl   spell       tw=72
+autocmd vimrc Syntax             c,cpp,vim,xml,html,xhtml      setl   foldmethod=syntax
+autocmd vimrc Syntax             c,cpp,vim,xml,html,xhtml,perl normal zR
 " }}}
 
 " -----------------------------------------------------------------------------
@@ -395,18 +431,12 @@ nnoremap <leader>P "+P
 " select last changed block
 nnoremap <leader>V `[v`]
 
+" Go to the starting position after visual modes
+vnoremap <ESC> o<ESC>
+
 " don't exit visual mode while shifting
 vnoremap < <gv
 vnoremap > >gv
-
-" brace expansion on the cheap
-inoremap (<CR> (<CR>)<Esc>O
-inoremap {<CR> {<CR>}<Esc>O
-inoremap {; {<CR>};<Esc>O
-inoremap {, {<CR>},<Esc>O
-inoremap [<CR> [<CR>]<Esc>O
-inoremap [; [<CR>];<Esc>O
-inoremap [, [<CR>],<Esc>O
 
 " Working ci(, works for both breaklined, inline and multiple ()
 nnoremap ci( %ci(
@@ -426,46 +456,6 @@ xmap <leader>a <Plug>(EasyAlign)
 " lets enter select items in popupmenu without newline
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
-" make list-like commands more intuitive {{{
-function! CCR()
-    let cmdline = getcmdline()
-    if cmdline =~ '\v\C^(ls|files|buffers)'
-        " like :ls but prompts for a buffer command
-        return "\<CR>:b"
-    elseif cmdline =~ '\v\C/(#|nu|num|numb|numbe|number)$'
-        " like :g//# but prompts for a command
-        return "\<CR>:"
-    elseif cmdline =~ '\v\C^(dli|il)'
-        " like :dlist or :ilist but prompts for a count for :djump or :ijump
-        return "\<CR>:" . cmdline[0] . "j  " . split(cmdline, " ")[1] . "\<S-Left>\<Left>"
-    elseif cmdline =~ '\v\C^(cli|lli)'
-        " like :clist or :llist but prompts for an error/location number
-        return "\<CR>:sil " . repeat(cmdline[0], 2) . "\<Space>"
-    elseif cmdline =~ '\C^old'
-        " like :oldfiles but prompts for an old file to edit
-        set nomore
-        return "\<CR>:sil se more|e #<"
-    elseif cmdline =~ '\C^changes'
-        " like :changes but prompts for a change to jump to
-        set nomore
-        return "\<CR>:sil se more|norm! g;\<S-Left>"
-    elseif cmdline =~ '\C^ju'
-        " like :jumps but prompts for a position to jump to
-        set nomore
-        return "\<CR>:sil se more|norm! \<C-o>\<S-Left>"
-    elseif cmdline =~ '\C^marks'
-        " like :marks but prompts for a mark to jump to
-        return "\<CR>:norm! `"
-    elseif cmdline =~ '\C^undol'
-        " like :undolist but prompts for a change to undo
-        return "\<CR>:u "
-    else
-        return "\<CR>"
-    endif
-endfunction
-" }}}
-cnoremap <expr> <CR> CCR()
-
 " Quicker cgn/cgN
 nnoremap <leader>* *``cgn
 nnoremap <leader># #``cgN
@@ -474,14 +464,14 @@ nnoremap <leader>% :%s/\<<C-r>=expand("<cword>")<CR>\>/
 " make single quote act like backtick
 nnoremap ' `
 
-" hardmode :(
-" nnoremap <leader>H <Esc>:call ToggleHardMode()<CR>
-" let g:hardtime_default_on = 1
+" solution until vim-cool is fixed
+noremap <expr> <Plug>(StopHL) execute('nohlsearch')[-1]
+noremap! <expr> <Plug>(StopHL) execute('nohlsearch')[-1]
 
 " disable ex mode
-nnoremap Q <nop>
+nnoremap Q  <Nop>
 " disable keyword man page
-nnoremap K <nop>
+nnoremap K  <Nop>
 " }}}
 
 " -----------------------------------------------------------------------------
@@ -493,6 +483,7 @@ nnoremap K <nop>
     " -------------------------------------------------------------
     " {{{
     let g:buftabline_show = 1
+    let g:buftabline_numbers = 1
     let g:buftabline_indicators = 1
     " }}}
 
