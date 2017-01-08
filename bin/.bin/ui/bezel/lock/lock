@@ -23,11 +23,7 @@ readonly lock_overlay="$(dirname $BASH_SOURCE)/lock.png"
 readonly pixelize_script="$(dirname $BASH_SOURCE)/pixelize.sh"
 
 # temporary screenshot
-readonly lock_scrot=$( mktemp --tmpdir i3lock_scrot-XXX.png )
-
-# display
-readonly display_width=2880
-readonly display_height=1800
+readonly lock_scrot=$( mktemp --tmpdir lock_scrot-XXX.png )
 
 # colors
 source "$HOME/.bin/ui/colors"
@@ -45,10 +41,13 @@ function edit_image() {
     local color_fg="${color_white}"
     local color_bg="${color_black}"
 
-    local overlay_radius=92
-    local x_center=$(( ${display_width} / 2 ))
-    local y_center=$(( ${display_height} / 2 ))
-    local radius=$(( ${y_center} + ${overlay_radius} ))
+    # image attributes
+    local img_width="$( identify -format %[w] ${img} )"
+    local img_height="$( identify -format %[h] ${img} )"
+    local x_center=$(( ${img_width} / 2 ))
+    local y_center=$(( ${img_height} / 2 ))
+    local lock_radius=92
+    local circle_radius=$(( ${y_center} + ${lock_radius} ))
 
     # pixelate screenshot
     "${pixelize_script}" -s 5 -m 2 "${img}" "${img}"
@@ -56,7 +55,7 @@ function edit_image() {
     # darken and add lock
     convert "${img}" \
         -scale '20%' -level '-35%' -modulate '40' -scale '500%' \
-        -fill "${color_bg}" -stroke "${color_fg}" -draw "fill-opacity 80% circle ${x_center},${y_center},${x_center},${radius}" \
+        -fill "${color_bg}" -stroke "${color_fg}" -draw "fill-opacity 80% circle ${x_center},${y_center},${x_center},${circle_radius}" \
         -gravity 'center' "${lock_overlay}" -composite "${img}"
 }
 
