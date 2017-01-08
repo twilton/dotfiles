@@ -28,6 +28,9 @@ call plug#begin('~/.vim/plugged')
 
 " colorscheme
 Plug 'morhetz/gruvbox'
+Plug 'romainl/apprentice'
+Plug 'ajh17/Spacegray.vim'
+Plug 'rakr/vim-one'
 
 " buffers in tabline
 Plug 'ap/vim-buftabline'
@@ -118,55 +121,32 @@ if has('statusline')
     set laststatus=2
     " statusline formatting {{{
     " buffer number
-    set statusline =%4*
-    set statusline+=%4.4n
-    set statusline+=%*
+    set statusline+=%4n
 
     " File name
-    set statusline+=%1*
-    set statusline+=\ %<%.99F\ 
-    set statusline+=%*
-
-    " help file flag
-    set statusline+=%6*
-    set statusline+=%h
-    set statusline+=%*
-
-    " modified flag
-    set statusline+=%2*
-    set statusline+=%m
-    set statusline+=%*
+    set statusline+=\ %<%F
 
     " read only flag
-    set statusline+=%3*
-    set statusline+=%{&ro?'[≠]':''}
-    set statusline+=%*
+    set statusline+=%{&ro?'\ [≠]':''}
+
+    " modified flag
+    set statusline+=%{&mod?'\ [+]':''}
 
     " display a warning if fileformat isnt unix
-    set statusline+=%5*
     set statusline+=%{&ff!='unix'?'[ff:\ '.&ff.']':''}
-    set statusline+=%*
 
     " display a warning if file encoding isnt utf-8
-    set statusline+=%5*
     set statusline+=%{(&fenc!='utf-8'&&&fenc!='')?'[ft:\ '.&fenc.']':''}
-    set statusline+=%*
 
     " separate left/right side
-    set statusline+=%1*
     set statusline+=%=
-    set statusline+=%*
 
     " syntax checking
-    set statusline+=%5*
     set statusline+=%{exists('g:loaded_syntastic_plugin')?SyntasticStatuslineFlag():''}
-    set statusline+=%*
 
     " Cursor info
-    set statusline+=%1*
     set statusline+=\ %c:%l
     set statusline+=\ %P\ 
-    set statusline+=%*
     " }}}
 endif
 
@@ -272,22 +252,8 @@ syntax on
 set background=dark
 
 " use this colorscheme
-colorscheme tester
-" highlight Normal ctermbg=NONE
-
-" StatusLine colors
-" buffer name / cursor info (fg)
-hi User1        ctermbg=8 ctermfg=15
-" modified (cyan)
-hi User2        ctermbg=8 ctermfg=6
-" read only (yellow)
-hi User3        ctermbg=8 ctermfg=11
-" buffer number (fg)
-hi User4        ctermbg=8 ctermfg=15
-" warnings (red)
-hi User5        ctermbg=8 ctermfg=1
-" help file flag (gray)
-hi User6        ctermbg=8 ctermfg=7
+colorscheme gruvbox
+highlight Normal ctermbg=NONE
 
 " listchar colors
 hi SpecialKey   ctermfg=1
@@ -401,6 +367,10 @@ nnoremap <leader>K <C-W>+
 xnoremap <leader>K <C-W>+
 nnoremap <leader>L <C-W>>
 xnoremap <leader>L <C-W>>
+nnoremap <leader>- <C-W>\|
+xnoremap <leader>- <C-W>\|
+nnoremap <leader>\| <C-W>_
+xnoremap <leader>\| <C-W>_
 
 " Edit
 noremap <leader>ew :e<space>
