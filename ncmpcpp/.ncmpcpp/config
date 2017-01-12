@@ -41,6 +41,7 @@ discard_colors_if_item_is_selected = no
 header_visibility = no
 titles_visibility = no
 display_bitrate = yes
+display_volume_level = yes
 autocenter_mode = yes
 # }}}
 
