@@ -469,9 +469,9 @@ noremap <expr> <Plug>(StopHL) execute('nohlsearch')[-1]
 noremap! <expr> <Plug>(StopHL) execute('nohlsearch')[-1]
 
 " disable ex mode
-nnoremap Q  <Nop>
+nnoremap Q <Nop>
 " disable keyword man page
-nnoremap K  <Nop>
+nnoremap K <Nop>
 " }}}
 
 " -----------------------------------------------------------------------------
