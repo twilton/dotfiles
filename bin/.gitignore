@@ -5,6 +5,7 @@
 !.bin/fave
 !.bin/sf
 !.bin/colorzip
+!.bin/external_monitor
 
 !.bin/ui/
 !.bin/ui/**
