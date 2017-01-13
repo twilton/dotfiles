@@ -8,10 +8,32 @@
 # -----------------------------------------------------------------------------
 
 unset status_items
-trap 'kill "${status_items[@]}"' EXIT
 
-$HOME/.bin/ui/menu_bar/status_items/mpd_status & status_items+=($!)
-$HOME/.bin/ui/menu_bar/status_items/date_status & status_items+=($!)
-$HOME/.bin/ui/menu_bar/status_items/battery_status & status_items+=($!)
+# temp_dir=$( mktemp -p "${TMPDIR}" -d "menu_bar_${USER}-XXXX" ) || exit 1
 
-wait
+function finish() {
+    # kill all the status items
+    kill "${status_items[@]}"
+
+    # remove menu_bar temp_dir
+    # rmdir "${temp_dir}"
+}
+
+function main() {
+    # set TMPDIR to mktemp -p output
+    # export TMPDIR="${temp_dir}"
+
+    # start status items
+    (source $HOME/.bin/ui/menu_bar/status_items/mpd_status) & status_items+=($!)
+    (source $HOME/.bin/ui/menu_bar/status_items/date_status) & status_items+=($!)
+    (source $HOME/.bin/ui/menu_bar/status_items/battery_status) & status_items+=($!)
+
+    # wait for background process to finish
+    wait
+}
+
+# cleanup on exit
+trap finish EXIT
+
+# main
+main "$@"

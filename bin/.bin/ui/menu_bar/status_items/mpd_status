@@ -15,50 +15,37 @@
 # Source color theme which defines color_{0-15}
 source "$HOME/.bin/ui/colors"
 
-# set local colors
-color_fg="${color_lightgrey}"
-color_bg="${color_black}"
-color_artist="${color_blue}"
-color_title="${color_yellow}"
-color_album="${color_lightgrey}"
-
 # name of the panel
-panel_name='mpd_status_item'
-
+readonly panel_name='mpd_status_item'
 # panel font
-panel_font='Source Code Pro:size=7'
+readonly panel_font='Source Code Pro:size=7'
+# panel fg / bg color
+readonly color_fg="${color_lightgrey}"
+readonly color_bg="${color_black}"
 
-# panel layer
-panel_layer='lower'
-
-# panel height
-panel_height='40'
-
-# fifo
-pipe="/tmp/${panel_name}.fifo"
+# make a temporary directory to store panel fifo
+readonly temp_dir=$( mktemp -p "${TMPDIR}" -d "${panel_name}-XXXX" ) || exit 1
+# name fifo after panel_name
+readonly fifo="${temp_dir}/${panel_name}.fifo"
 
 # associative array with information about current text
 declare -A text
 text=( ["format"]="" ["width"]="" )
-
 # associative array with information about panel
 declare -A panel
 panel=( ["pid"]="" ["width"]="" )
 
-function finish() {
-    # kill the panel
-    kill "${panel['pid']}"
-
-    # remove the fifo
-    rm -f "${pipe}"
-}
-
 # Updates the text array to have a formatted info and the correct xft width
 function update_text() {
+    # set colors
+    local color_artist="${color_blue}"
+    local color_title="${color_yellow}"
+    local color_album="${color_lightgrey}"
+
     # nothing is currently playing or paused
     if [[ -z "$(mpc current)" ]]; then
         text["format"]="^fg(${color_fg})Playlist Empty"
-        text["width"]=$( xftwidth 'Source Code Pro:size=7' '-Playlist Empty-' )
+        text["width"]=$( xftwidth "${panel_font}" '-Playlist Empty-' )
 
     # something is playing or paused
     else
@@ -70,54 +57,69 @@ function update_text() {
         # has artist, title and album
         if [[ -n "${artist}" && -n "${title}" && -n "${album}" ]]; then
             text["format"]="^fg(${color_artist})${artist}^fg(${color_fg}) - ^fg(${color_title})${title}^fg(${color_fg}) - ^fg(${color_album})${album}"
-            text["width"]=$( xftwidth 'Source Code Pro:size=7' "-${artist} - ${title} - ${album}-" )
+            text["width"]=$( xftwidth "${panel_font}" "-${artist} - ${title} - ${album}-" )
 
         # has artist and title but not album
         elif [[ -n "${artist}" && -n "${title}" ]]; then
             text["format"]="^fg(${color_artist})${artist}^fg(${color_fg}) - ^fg(${color_title})${title}"
-            text["width"]=$( xftwidth 'Source Code Pro:size=7' "-${artist} - ${title}-" )
+            text["width"]=$( xftwidth "${panel_font}" "-${artist} - ${title}-" )
 
         # has artist and album but not title
         elif [[ -n "${artist}" && -n "${album}" ]]; then
             text["format"]="^fg(${color_artist})${artist}^fg(${color_fg}) - ^fg(${color_album})${album}"
-            text["width"]=$( xftwidth 'Source Code Pro:size=7' "-${artist} - ${album}-" )
+            text["width"]=$( xftwidth "${panel_font}" "-${artist} - ${album}-" )
 
         # has title and album but not artist
         elif [[ -n "${title}" && -n "${album}" ]]; then
             text["format"]="^fg(${color_title})${title}^fg(${color_fg}) - ^fg(${color_album})${album}"
-            text["width"]=$( xftwidth 'Source Code Pro:size=7' "-${title} - ${album}-" )
+            text["width"]=$( xftwidth "${panel_font}" "-${title} - ${album}-" )
 
         # has only artist
         elif [[ -n "${artist}" ]]; then
             text["format"]="^fg(${color_artist})${artist}"
-            text["width"]=$( xftwidth 'Source Code Pro:size=7' "-${artist}-" )
+            text["width"]=$( xftwidth "${panel_font}" "-${artist}-" )
 
         # has only title
         elif [[ -n "${title}" ]]; then
             text["format"]="^fg(${color_title})${title}"
-            text["width"]=$( xftwidth 'Source Code Pro:size=7' "-${title}-" )
+            text["width"]=$( xftwidth "${panel_font}" "-${title}-" )
 
         # has only album
         elif [[ -n "${album}" ]]; then
             text["format"]="^fg(${color_album})${album}"
-            text["width"]=$( xftwidth 'Source Code Pro:size=7' "-${album}-" )
+            text["width"]=$( xftwidth "${panel_font}" "-${album}-" )
 
         # no artist, title or album
         else
             text["format"]="^fg(${color_fg})Unknown"
-            text["width"]=$( xftwidth 'Source Code Pro:size=7' '-Unknown-' )
+            text["width"]=$( xftwidth "${panel_font}" '-Unknown-' )
         fi
     fi
 }
 
 function update_panel() {
-    # parameters for spawned dzen
-    local dzen_args=( -title-name "${panel_name}" -ta c -fn "${panel_font}" -e "onstart=${panel_layer}" -x '40' -y '20' -h "${panel_height}" -bg "${color_bg}" -xs 1)
+    # panel geometry
+    local panel_x='40'
+    local panel_y='20'
+    local panel_width="${text['width']}"
+    local panel_height='40'
+    # panel x parameters
+    local panel_layer='lower'
+    local panel_monitor='1'
+
+    # dzen title
+    local dzen_args=( '-title-name' "${panel_name}" )
+    # dzen geometry
+    dzen_args+=( '-x' "${panel_x}" '-y' "${panel_y}" '-w' "${panel_width}" '-h' "${panel_height}" )
+    # dzen font
+    dzen_args+=( '-fn' "${panel_font}" '-ta' 'c' '-fg' "${color_fg}" '-bg' "${color_bg}" )
+    # dzen x parameters
+    dzen_args+=( '-e' "onstart=${panel_layer}" '-xs' "${panel_monitor}" )
 
     # no panel running yet
     if [[ -z "${panel['pid']}" ]]; then
         # create new panel with current width
-        tail -f "${pipe}" > >(dzen2 "${dzen_args[@]}" -w "${text['width']}") &
+        tail -f "${fifo}" > >(dzen2 "${dzen_args[@]}") &
 
         # update panel info
         panel['pid']=$(echo $!)
@@ -128,8 +130,8 @@ function update_panel() {
         # kill oldpanel
         kill "${panel['pid']}"
 
-        # create new panelwith current width
-        tail -f "${pipe}" > >(dzen2 "${dzen_args[@]}" -w "${text['width']}") &
+        # create new panel with current width
+        tail -f "${fifo}" > >(dzen2 "${dzen_args[@]}") &
 
         # update panelinfo
         panel['pid']=$(echo $!)
@@ -137,26 +139,42 @@ function update_panel() {
     fi
 }
 
+function finish() {
+    # kill the panel
+    kill "${panel['pid']}"
+
+    # remove the fifo
+    rm "${fifo}"
+
+    # remove temp fifo dir
+    rmdir "${temp_dir}"
+}
+
+function main() {
+    while
+        :
+    do
+        # make the fifo
+        if [[ ! -p "${fifo}" ]]; then
+            mkfifo "${fifo}" || exit 1
+        fi
+
+        # update text array
+        update_text
+
+        # update panel array
+        update_panel
+
+        # pipe to fifo
+        echo "${text['format']}" >"${fifo}"
+
+        # wait for mpd player event
+        mpc idle player >/dev/null
+    done
+}
+
 # cleanup on exit
 trap finish EXIT
 
-while
-    :
-do
-    # make the fifo
-    if [[ ! -p "${pipe}" ]]; then
-        mkfifo "${pipe}"
-    fi
-
-    # update text array
-    update_text
-
-    # update panel array
-    update_panel
-
-    # pipe to fifo
-    echo "${text['format']}" >"${pipe}"
-
-    # wait for mpd player event
-    mpc idle player >/dev/null
-done
+# main
+main "$@"

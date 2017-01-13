@@ -15,69 +15,71 @@
 # Source color theme which defines color_{0-15}
 source "$HOME/.bin/ui/colors"
 
-# set local colors
-color_fg="${color_lightgrey}"
-color_bg="${color_black}"
-color_state="${color_lightgrey}"
-color_high="${color_green}"
-color_medium="${color_yellow}"
-color_low="${color_red}"
-
 # name of the panel
-panel_name='battery_status_item'
-
+readonly panel_name='battery_status_item'
 # panel font
-panel_font='Source Code Pro:size=7'
+readonly panel_font='Source Code Pro:size=7'
+# panel fg / bg color
+readonly color_fg="${color_lightgrey}"
+readonly color_bg="${color_black}"
 
-# panel layer
-panel_layer='lower'
-
-# panel height
-panel_height='40'
-
-# fifo
-pipe="/tmp/${panel_name}.fifo"
+# make a temporary directory to store panel fifo
+readonly temp_dir=$( mktemp -p "${TMPDIR}" -d "${panel_name}-XXXX" ) || exit 1
+# name fifo after panel_name
+readonly fifo="${temp_dir}/${panel_name}.fifo"
 
 # associative array with information about current text
 declare -A text
 text=( ["format"]="" ["width"]="" )
-
 # associative array with information about panel
 declare -A panel
 panel=( ["pid"]="" ["width"]="" )
 
-function finish() {
-    # kill the panel
-    kill "${panel['pid']}"
-
-    # remove the fifo
-    rm -f "${pipe}"
-}
-
 # Updates the text array to have a formatted info and the correct xft width
 function update_text() {
+    # set colors
+    local color_high="${color_green}"
+    local color_medium="${color_yellow}"
+    local color_low="${color_red}"
+
     local capacity=$(cat /sys/class/power_supply/BAT0/capacity)
     local state=$(cat /sys/class/power_supply/BAT0/status)
 
+    # update text array
     if [[ "${capacity}" -gt 70 ]]; then
-        text["format"]="^fg(${color_state})${state} ^fg(${color_high})${capacity}"
+        text["format"]="^fg(${color_fg})${state} ^fg(${color_high})${capacity}"
     elif [[ "${capacity}" -gt 30 ]]; then
-        text["format"]="^fg(${color_state})${state} ^fg(${color_medium})${capacity}"
+        text["format"]="^fg(${color_fg})${state} ^fg(${color_medium})${capacity}"
     else
-        text["format"]="^fg(${color_state})${state} ^fg(${color_low})${capacity}"
+        text["format"]="^fg(${color_fg})${state} ^fg(${color_low})${capacity}"
     fi
 
-    text["width"]=$( xftwidth 'Source Code Pro:size=7' "-${state} ${capacity}-" )
+    text["width"]=$( xftwidth "${panel_font}" "-${state} ${capacity}-" )
 }
 
 function update_panel() {
-    # parameters for spawned dzen
-    local dzen_args=( -title-name "${panel_name}" -ta c -fn "${panel_font}" -e "onstart=${panel_layer}" -y '20' -h "${panel_height}" -bg "${color_bg}" -xs '1')
+    # panel geometry
+    local panel_x="$(( 2840 - ${text['width']} ))"
+    local panel_y='20'
+    local panel_width="${text['width']}"
+    local panel_height='40'
+    # panel x parameters
+    local panel_layer='lower'
+    local panel_monitor='1'
+
+    # dzen title
+    local dzen_args=( '-title-name' "${panel_name}" )
+    # dzen geometry
+    dzen_args+=( '-x' "${panel_x}" '-y' "${panel_y}" '-w' "${panel_width}" '-h' "${panel_height}" )
+    # dzen font
+    dzen_args+=( '-fn' "${panel_font}" '-ta' 'c' '-fg' "${color_fg}" '-bg' "${color_bg}" )
+    # dzen x parameters
+    dzen_args+=( '-e' "onstart=${panel_layer}" '-xs' "${panel_monitor}" )
 
     # no panel running yet
     if [[ -z "${panel['pid']}" ]]; then
         # create new panel with current width
-        tail -f "${pipe}" > >(dzen2 "${dzen_args[@]}" -w "${text['width']}" -x "$(( 2840 - ${text['width']} ))") &
+        tail -f "${fifo}" > >(dzen2 "${dzen_args[@]}") &
 
         # update panel info
         panel['pid']=$(echo $!)
@@ -88,8 +90,8 @@ function update_panel() {
         # kill oldpanel
         kill "${panel['pid']}"
 
-        # create new panelwith current width
-        tail -f "${pipe}" > >(dzen2 "${dzen_args[@]}" -w "${text['width']}" -x "$(( 2840 - ${text['width']} ))") &
+        # create new panel with current width
+        tail -f "${fifo}" > >(dzen2 "${dzen_args[@]}") &
 
         # update panelinfo
         panel['pid']=$(echo $!)
@@ -97,26 +99,42 @@ function update_panel() {
     fi
 }
 
+function finish() {
+    # kill the panel
+    kill "${panel['pid']}"
+
+    # remove the fifo
+    rm "${fifo}"
+
+    # remove temp fifo dir
+    rmdir "${temp_dir}"
+}
+
+function main() {
+    while
+        :
+    do
+        # make the fifo
+        if [[ ! -p "${fifo}" ]]; then
+            mkfifo "${fifo}" || exit 1
+        fi
+
+        # update text array
+        update_text
+
+        # update panel array
+        update_panel
+
+        # pipe to fifo
+        echo "${text['format']}" >"${fifo}"
+
+        # wait for 1 minute
+        sleep 60
+    done
+}
+
 # cleanup on exit
 trap finish EXIT
 
-while
-    :
-do
-    # make the fifo
-    if [[ ! -p "${pipe}" ]]; then
-        mkfifo "${pipe}"
-    fi
-
-    # update text array
-    update_text
-
-    # update panel array
-    update_panel
-
-    # pipe to fifo
-    echo "${text['format']}" >"${pipe}"
-
-    # wait for 1 minute
-    sleep 60
-done
+# main
+main "$@"
