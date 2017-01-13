@@ -125,7 +125,8 @@ super + {F1,F2,shift + F1,shift + F2}
     "$HOME/.bin/ui/bezel/backlight/backlight" {'down','up','min','max'}
 
 # Application Control
-# XF86Launch{A,B}
+XF86Launch{A,B}
+    "$HOME/.bin/external_monitor" {'enable','disable'}
 
 # Keyboard backlight control
 XF86KbdBrightness{Down,Up}
