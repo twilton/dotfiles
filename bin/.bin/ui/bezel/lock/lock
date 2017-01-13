@@ -23,7 +23,7 @@ readonly lock_overlay="$(dirname $BASH_SOURCE)/lock.png"
 readonly pixelize_script="$(dirname $BASH_SOURCE)/pixelize.sh"
 
 # temporary screenshot
-readonly lock_scrot=$( mktemp --tmpdir lock_scrot.png.XXX )
+readonly lock_scrot=$( mktemp -p "${TMPDIR}" --suffix=.png lock_scrot-XXXX )
 
 # colors
 source "$HOME/.bin/ui/colors"
