@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+
+# associative array for status_item properties
+declare -A status_item
+
+# draws a persistent status_item using dzen
+#   name, x, y, width, height, stream, font, color_fg, color_bg --> void
+#   Modifies status_item array
+# TODO: default vars
+function update_status_item() {
+    # given status_item name
+    local name="$1"
+
+    # geometry
+    declare -A geometry
+    geometry['x']="$2"
+    geometry['y']="$3"
+    geometry['width']="$4"
+    geometry['height']="$5"
+
+    # stream supplying content
+    local stream="$6"
+    # font to render given content in
+    local font="$7"
+    # default colors
+    declare -A color
+    color['fg']="$8"
+    color['bg']="$9"
+
+    declare -A xorg
+    # x layer to draw status_item
+    xorg['layer']='lower'
+    # x monitor to draw status_item
+    xorg['monitor']='1'
+
+    # dzen title
+    local dzen_args=( '-title-name' "${name}" )
+    # dzen geometry
+    dzen_args+=( '-x' "${geometry['x']}" '-y' "${geometry['y']}" )
+    dzen_args+=( '-w' "${geometry['width']}" '-h' "${geometry['height']}" )
+    # dzen font
+    dzen_args+=( '-fn' "${font}" '-ta' 'c' )
+    # dzen colors
+    dzen_args+=( '-fg' "${color['fg']}" '-bg' "${color['bg']}" )
+    # dzen x parameters
+    dzen_args+=( '-e' "onstart=${xorg['layer']}" '-xs' "${xorg['monitor']}" )
+
+    # no status_item running yet
+    if [[ -z "${status_item['pid']}" ]]; then
+        # create new status_item with current width
+        tail -f "${stream}" > >(dzen2 "${dzen_args[@]}") &
+
+        # update status item properties
+        status_item['pid']="$!"
+        status_item['name']="${name}"
+        status_item['x']="${geometry['x']}"
+        status_item['y']="${geometry['y']}"
+        status_item['width']="${geometry['width']}"
+        status_item['height']="${geometry['height']}"
+
+    # status_item is running but doesn't have the correct width
+    elif [[ "${geometry['width']}" != "${status_item['width']}" ]]; then
+        # kill old status_item
+        kill "${status_item['pid']}"
+
+        # create new status_item
+        tail -f "${stream}" > >(dzen2 "${dzen_args[@]}") &
+
+        # update status item properties
+        status_item['pid']="$!"
+        status_item['name']="${name}"
+        status_item['x']="${geometry['x']}"
+        status_item['y']="${geometry['y']}"
+        status_item['width']="${geometry['width']}"
+        status_item['height']="${geometry['height']}"
+    fi
+}

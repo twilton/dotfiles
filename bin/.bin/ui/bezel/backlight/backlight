@@ -10,62 +10,42 @@
 # Useage:      $ ./backlight
 # -----------------------------------------------------------------------------
 
-# Source color theme which defines color_{0-15}
-source "$HOME/.bin/ui/colors"
+# Source display_bezel which provides display_bezel() taking $1:module_name and $2:content
+source "$HOME/.bin/ui/bezel/display_bezel"
 
-# set local colors
-color_fg="${color_white}"
-color_bg="${color_darkgrey}"
-color_ol="${color_black}"
+function main() {
+    # name of the bezel module
+    local module_name='bezel_volume'
 
-# name of the module
-bezel_name='bezel_backlight'
+    # change percentage
+    local level_percent='5'
 
-# panel layer
-bezel_layer='raise'
+    case $1 in
+        down)
+            light -U "${level_percent}"
+            display_bezel "${module_name}" "$(light -G)"
+            ;;
+        up)
+            light -A "${level_percent}"
+            display_bezel "${module_name}" "$(light -G)"
+            ;;
+        off)
+            light -S 0
+            exit 0
+            ;;
+        min)
+            light -S 5
+            display_bezel "${module_name}" "$(light -G)"
+            ;;
+        max)
+            light -S 100
+            display_bezel "${module_name}" "$(light -G)"
+            ;;
+        *)
+            exit 2
+            ;;
+    esac
+}
 
-# fifo
-pipe="/tmp/${bezel_name}.fifo"
-
-# backlight level change percentage
-level_percent='5'
-
-# define some arguments passed to dzen to determine size and color.
-dzen_args=( -title-name "${bezel_name}" -ta c -w 1000 -h 70 -x 940 -y 690 -fg "${color_fg}" -bg "${color_ol}" -e "onstart=${bezel_layer}" )
-
-# similarly for gdbar
-gdbar_args=( -w 990 -h 60 -fg "${color_fg}" -bg "${color_bg}" )
-
-case $1 in
-    down)
-        light -U "${level_percent}"
-        ;;
-    up)
-        light -A "${level_percent}"
-        ;;
-    off)
-        light -S 0
-        exit 0
-        ;;
-    min)
-        light -S 5
-        ;;
-    max)
-        light -S 100
-        ;;
-    *)
-        exit 2
-        ;;
-esac
-
-# make the bezel
-if [[ ! -p "${pipe}" ]]; then
-    mkfifo "${pipe}"
-    (dzen2 "${dzen_args[@]}" < "$pipe"; rm -f "$pipe") &
-fi
-
-# get new backlight level
-level="$(light -G)"
-
-# pipe to fifo and wait for capture
-(echo "${level}" | gdbar "${gdbar_args[@]}"; sleep 1) >> "$pipe"
+# main
+main "$@"

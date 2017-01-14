@@ -10,70 +10,66 @@
 # Useage:      $ ./volume
 # -----------------------------------------------------------------------------
 
-# Source color theme which defines color_{0-15}
-source "$HOME/.bin/ui/colors"
+# Source display_bezel which provides display_bezel() taking $1:module_name and $2:content
+source "$HOME/.bin/ui/bezel/display_bezel"
 
-# set local colors
-color_fg="${color_white}"
-color_bg="${color_darkgrey}"
-color_ol="${color_black}"
+function play_audio() {
+    # audio played on volume change
+    local audio="$1"
 
-# name of the module
-bezel_name='bezel_volume'
+    # play volume change blip
+    if [[ -e "${audio}" ]]; then
+        paplay "${audio}"
+    fi
+}
 
-# panel layer
-bezel_layer='raise'
+function main() {
+    # name of the bezel module
+    local module_name='bezel_volume'
 
-# fifo
-pipe="/tmp/${bezel_name}.fifo"
+    # change percentage
+    local level_percent='5'
 
-# blip
-blip='/usr/share/sounds/freedesktop/stereo/audio-volume-change.oga'
+    # audio played on volume change
+    local blip='/usr/share/sounds/freedesktop/stereo/audio-volume-change.oga'
 
-# volume level change percentage
-level_percent='5'
+    case $1 in
+        toggle)
+            amixer -q set Master toggle
+            ;;
+        down)
+            amixer -q set Master "${level_percent}"%- unmute
+            # play blip
+            play_audio "${blip}"
+            # display bezel with new level
+            display_bezel "${module_name}" "$(amixer get Master | sed -n 's/^.*\[\([0-9]\+\)%.*$/\1/p' | uniq)"
+            ;;
+        up)
+            amixer -q set Master "${level_percent}"%+ unmute
+            # play blip
+            play_audio "${blip}"
+            # display bezel with new level
+            display_bezel "${module_name}" "$(amixer get Master | sed -n 's/^.*\[\([0-9]\+\)%.*$/\1/p' | uniq)"
+            ;;
+        min)
+            amixer -q set Master 0% unmute
+            # play blip
+            play_audio "${blip}"
+            # display bezel with new level
+            display_bezel "${module_name}" "$(amixer get Master | sed -n 's/^.*\[\([0-9]\+\)%.*$/\1/p' | uniq)"
+            ;;
+        max)
+            amixer -q set Master 100% unmute
+            # play blip
+            play_audio "${blip}"
+            # display bezel with new level
+            display_bezel "${module_name}" "$(amixer get Master | sed -n 's/^.*\[\([0-9]\+\)%.*$/\1/p' | uniq)"
+            ;;
+        *)
+            exit 2
+            ;;
+    esac
+}
 
-# define some arguments passed to dzen to determine size and color.
-dzen_args=( -title-name "${bezel_name}" -ta c -w 1000 -h 70 -x 940 -y 690 -fg "${color_fg}" -bg "${color_ol}" -e "onstart=${bezel_layer}" )
-
-# similarly for gdbar
-gdbar_args=( -w 990 -h 60 -fg "${color_fg}" -bg "${color_bg}" )
-
-case $1 in
-    toggle)
-        amixer -q set Master toggle
-        exit 0
-        ;;
-    down)
-        amixer -q set Master "${level_percent}"%- unmute
-        ;;
-    up)
-        amixer -q set Master "${level_percent}"%+ unmute
-        ;;
-    min)
-        amixer -q set Master 0% unmute
-        ;;
-    max)
-        amixer -q set Master 100% unmute
-        ;;
-    *)
-        exit 2
-        ;;
-esac
-
-# play volume change blip
-if [[ -e "${blip}" ]]; then
-    paplay "${blip}"
-fi
-
-# make the bezel
-if [[ ! -p "${pipe}" ]]; then
-    mkfifo "${pipe}"
-    (dzen2 "${dzen_args[@]}" < "$pipe"; rm -f "$pipe") &
-fi
-
-# get new volume level
-level="$(amixer get Master | sed -n 's/^.*\[\([0-9]\+\)%.*$/\1/p' | uniq)"
-
-# pipe to fifo and wait for capture
-(echo "${level}" | gdbar "${gdbar_args[@]}"; sleep 1) >> "$pipe"
+# main
+main "$@"

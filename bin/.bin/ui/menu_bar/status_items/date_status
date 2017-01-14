@@ -11,87 +11,48 @@
 # Useage:      $ sh ./clock
 # -----------------------------------------------------------------------------
 
-# Source color theme which defines color_{0-15}
+# type and name the module
+declare -A module
+module['type']='status_item'
+module['name']='date'
+
+# make a directory to store temporary files
+readonly temp_dir=$( mktemp -p "${TMPDIR}" -d "${USER}_${module['type']}_${module['name']}-XXXX" ) || exit 1
+# name fifo after module name and store in temp_dir
+readonly fifo="${temp_dir}/${module['name']}.fifo"
+
+# Source color theme
 source "$HOME/.bin/ui/colors"
 
-# name of the panel
-readonly panel_name='date_status_item'
-# panel font
-readonly panel_font='Source Code Pro:size=7'
-# panel fg / bg color
-readonly color_fg="${color_lightgrey}"
-readonly color_bg="${color_black}"
+# provides function update_status_item that draws a persistent status_item using dzen
+#   name, x, y, width, height, stream, font, color_fg, color_bg --> void
+#   Modifies status_item array
+#   User must kill status_item['pid'] on cleanup
+source "$HOME/.bin/ui/menu_bar/status_items/update_status_item"
 
-# make a temporary directory to store panel fifo
-readonly temp_dir=$( mktemp -p "${TMPDIR}" -d "${panel_name}-XXXX" ) || exit 1
-# name fifo after panel_name
-readonly fifo="${temp_dir}/${panel_name}.fifo"
+# associative array for storing content to be displayed
+declare -A content
 
-# associative array with information about current text
-declare -A text
-text=( ["format"]="" ["width"]="" )
-# associative array with information about panel
-declare -A panel
-panel=( ["pid"]="" ["width"]="" )
-
-# Updates the text array to have a formatted info and the correct xft width
-function update_text() {
+# Updates date
+#   color_fg, color_bg --> void
+#   Modifies content array
+# TODO: add bg formatting
+function update_content() {
     # set colors
+    local color_fg="$1"
     local color_weekday="${color_lightgrey}"
     local color_date="${color_blue}"
     local color_time="${color_yellow}"
     local color_ampm="${color_lightgrey}"
 
     # update text array
-    text["format"]=$( date +"^fg(${color_weekday})%A ^fg(${color_date})%d ^fg(${color_time})%I^fg(${color_fg}):^fg(${color_time})%M ^fg(${color_ampm})%p" )
-    text["width"]=$( xftwidth "${panel_font}" "$(date +'-%A %d %I:%M %p-')" )
-}
-
-function update_panel() {
-    # panel geometry
-    local panel_x="$(( 1440 - ${text['width']} / 2 ))"
-    local panel_y='20'
-    local panel_width="${text['width']}"
-    local panel_height='40'
-    # panel x parameters
-    local panel_layer='lower'
-    local panel_monitor='1'
-
-    # dzen title
-    local dzen_args=( '-title-name' "${panel_name}" )
-    # dzen geometry
-    dzen_args+=( '-x' "${panel_x}" '-y' "${panel_y}" '-w' "${panel_width}" '-h' "${panel_height}" )
-    # dzen font
-    dzen_args+=( '-fn' "${panel_font}" '-ta' 'c' '-fg' "${color_fg}" '-bg' "${color_bg}" )
-    # dzen x parameters
-    dzen_args+=( '-e' "onstart=${panel_layer}" '-xs' "${panel_monitor}" )
-
-    # no panel running yet
-    if [[ -z "${panel['pid']}" ]]; then
-        # create new panel with current width
-        tail -f "${fifo}" > >(dzen2 "${dzen_args[@]}") &
-
-        # update panel info
-        panel['pid']=$(echo $!)
-        panel['width']=$(echo "${text['width']}")
-
-    # panel is running but doesn't have the correct width
-    elif [[ "${panel['width']}" != "${text['width']}" ]]; then
-        # kill oldpanel
-        kill "${panel['pid']}"
-
-        # create new panel with current width
-        tail -f "${fifo}" > >(dzen2 "${dzen_args[@]}") &
-
-        # update panelinfo
-        panel['pid']=$(echo $!)
-        panel['width']=$(echo "${text['width']}")
-    fi
+    content["raw"]="$(date +'%A %d %I:%M %p')"
+    content["formatted"]=$( date +"^fg(${color_weekday})%A ^fg(${color_date})%d ^fg(${color_time})%I^fg(${color_fg}):^fg(${color_time})%M ^fg(${color_ampm})%p" )
 }
 
 function finish() {
-    # kill the panel
-    kill "${panel['pid']}"
+    # kill the status_item
+    kill "${status_item['pid']}"
 
     # remove the fifo
     rm "${fifo}"
@@ -101,6 +62,25 @@ function finish() {
 }
 
 function main() {
+    # monitor settings
+    declare -A monitor
+    monitor['width']='2880'
+    monitor['height']='1800'
+    monitor['padding']='40'
+
+    # default x geometry
+    declare -A geometry
+    geometry['x']='0'
+    geometry['y']='20'
+    geometry['width']='0'
+    geometry['height']='40'
+
+    # default colors and font
+    local font='Source Code Pro:size=7'
+    declare -A color
+    color['fg']="${color_lightgrey}"
+    color['bg']="${color_black}"
+
     while
         :
     do
@@ -109,14 +89,22 @@ function main() {
             mkfifo "${fifo}" || exit 1
         fi
 
-        # update text array
-        update_text
+        # modifies ${content['raw']} and ${content['formatted']}
+        # color_fg, color_bg --> void
+        update_content "${color['fg']}" "${color['bg']}"
+        # update width and x_pos to reflect content
+        geometry['width']=$(xftwidth "${font}" "-${content['raw']}-")
+        geometry['x']="$(( (${monitor['width']} - ${geometry['width']}) / 2 ))"
 
-        # update panel array
-        update_panel
+        # modifies ${status_item[@]}
+        # name, x, y, width, height, stream, font, color_fg, color_bg --> void
+        update_status_item \
+            "${module['type']}_${module['name']}" \
+            "${geometry['x']}" "${geometry['y']}" "${geometry['width']}" "${geometry['height']}" \
+            "${fifo}" "${font}" "${color['fg']}" "${color['bg']}"
 
         # pipe to fifo
-        echo "${text['format']}" >"${fifo}"
+        echo "${content['formatted']}" >"${fifo}"
 
         # wait for 1 minute
         sleep 60

@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+
+# Source color theme which defines color_{0-15}
+source "$HOME/.bin/ui/colors"
+
+function display_bezel() {
+    # declare array for storing monitor properties
+    declare -A monitor
+    # monitor number
+    monitor["id"]="$(bspc query -M -m focused --names)"
+    # set known monitor geometry
+    if [[ "${monitor['id']}" -eq 1 ]]; then
+        # monitor width
+        monitor["width"]='2880'
+        # monitor height
+        monitor["height"]='1800'
+    elif [[ "${monitor['id']}" -eq 2 ]]; then
+        # monitor width
+        monitor["width"]='1080'
+        # monitor height
+        monitor["height"]='1920'
+    else
+        # monitor id is unknown
+        exit 1
+    fi
+
+    # declare array for storing bezel properties
+    declare -A bezel
+    # bezel name
+    bezel["name"]="$1"
+    # bezel width
+    bezel["width"]="$(( ${monitor['width']} / 3 ))"
+    # bezel height
+    bezel["height"]='80'
+    # bezel border
+    bezel["border"]="$(bspc config border_width)"
+    # bezel x location
+    bezel["x"]="$(( ${monitor['width']} / 2 - ${bezel['width']} / 2 ))"
+    # bezel y location
+    bezel["y"]="$(( ${monitor['height']} / 3 - ${bezel['height']} / 2 ))"
+    # bezel xorg layer
+    bezel["layer"]='raise'
+
+    # bezel calculations
+    declare -A content
+    # text to display
+    content["text"]="$2"
+    # text display width
+    content["width"]="$(( ${bezel['width']} - ${bezel['border']} * 2 ))"
+    # text display height
+    content["height"]="$(( ${bezel['height']} - ${bezel['border']} * 2 ))"
+
+    # declare array for storing colors
+    declare -A color=( ["fg"]="" ["bg"]="" ["ol"]="" )
+    # foreground color
+    color["fg"]="${color_white}"
+    # background color
+    color["bg"]="${color_darkgrey}"
+    # outline color
+    color["ol"]="${color_black}"
+
+    # fifo
+    local fifo="${TMPDIR:-/tmp}/${bezel_name}.fifo"
+
+    # define arguments passed to dzen
+    local dzen_args=( '-title-name' "${bezel['name']}" )
+    dzen_args+=( '-x' "${bezel['x']}" '-y' "${bezel['y']}" '-w' "${bezel['width']}" '-h' "${bezel['height']}" )
+    dzen_args+=( '-ta' 'c' '-fg' "${color['fg']}" '-bg' "${color['ol']}" )
+    dzen_args+=( '-e' "onstart=${bezel['layer']}" '-xs' "${monitor['id']}" )
+
+    # similarly for gdbar
+    local gdbar_args=( '-fg' "${color['fg']}" '-bg' "${color['bg']}" )
+    gdbar_args+=( '-w' "${content['width']}" '-h' "${content['height']}" )
+
+    # make the bezel
+    if [[ ! -p "${fifo}" ]]; then
+        mkfifo "${fifo}"
+        (dzen2 "${dzen_args[@]}" < "${fifo}"; rm -f "${fifo}") &
+    fi
+
+    # pipe to fifo
+    (echo "${content['text']}" | gdbar "${gdbar_args[@]}"; sleep 1) >> "${fifo}"
+}
