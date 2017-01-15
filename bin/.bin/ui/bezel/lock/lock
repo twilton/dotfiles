@@ -38,25 +38,27 @@ function finish() {
 function edit_image() {
     local img="$1"
 
-    local color_fg="${color_white}"
-    local color_bg="${color_black}"
+    # local color_fg="${color_white}"
+    # local color_bg="${color_black}"
 
     # image attributes
-    local img_width="$( identify -format %[w] ${img} )"
-    local img_height="$( identify -format %[h] ${img} )"
-    local x_center=$(( ${img_width} / 2 ))
-    local y_center=$(( ${img_height} / 2 ))
-    local lock_radius=92
-    local circle_radius=$(( ${y_center} + ${lock_radius} ))
+    # local img_width="$( identify -format %[w] ${img} )"
+    # local img_height="$( identify -format %[h] ${img} )"
+    # local x_center=$(( ${img_width} / 2 ))
+    # local y_center=$(( ${img_height} / 2 ))
+    # local lock_radius=92
+    # local circle_radius=$(( ${y_center} + ${lock_radius} ))
 
     # pixelate screenshot
     "${pixelize_script}" -s 5 -m 2 "${img}" "${img}"
+    # darken
+    convert "${img}" -scale '20%' -level '-35%' -modulate '40' -scale '500%' "${img}"
 
     # darken and add lock
-    convert "${img}" \
-        -scale '20%' -level '-35%' -modulate '40' -scale '500%' \
-        -fill "${color_bg}" -stroke "${color_fg}" -draw "fill-opacity 80% circle ${x_center},${y_center},${x_center},${circle_radius}" \
-        -gravity 'center' "${lock_overlay}" -composite "${img}"
+    # convert "${img}" \
+        # -scale '20%' -level '-35%' -modulate '40' -scale '500%' \
+        # -fill "${color_bg}" -stroke "${color_fg}" -draw "fill-opacity 80% circle ${x_center},${y_center},${x_center},${circle_radius}" \
+        # -gravity 'center' "${lock_overlay}" -composite "${img}"
 }
 
 # invokes i3lock-color with correct ui colors
@@ -69,13 +71,13 @@ function fancy_lock() {
     local color_wrong="${color_red#*\#}"
 
     i3lock \
-        --insidevercolor="${color_fg}20" --insidewrongcolor="${color_wrong}20" \
-        --insidecolor="${color_bg}00" --ringvercolor="${color_fg}FF" \
-        --ringvercolor="${color_fg}FF" --ringwrongcolor="${color_wrong}FF" \
-        --ringcolor="${color_bg}00" --linecolor="${color_fg}00" \
-        --textcolor="${color_fg}00" --keyhlcolor="${color_fg}FF" \
-        --bshlcolor="${color_wrong}FF" \
-        -i "${img}"
+        -u -i "${img}"
+        # --insidevercolor="${color_fg}20" --insidewrongcolor="${color_wrong}20" \
+        # --insidecolor="${color_bg}00" --ringvercolor="${color_fg}FF" \
+        # --ringvercolor="${color_fg}FF" --ringwrongcolor="${color_wrong}FF" \
+        # --ringcolor="${color_bg}00" --linecolor="${color_fg}00" \
+        # --textcolor="${color_fg}00" --keyhlcolor="${color_fg}FF" \
+        # --bshlcolor="${color_wrong}FF" \
 }
 
 # cleanup on EXIT
