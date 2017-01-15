@@ -13,8 +13,8 @@ Xcursor.size:  16
 Xft.antialias: true
 Xft.autohint:  false
 Xft.hinting:   true
-Xft.rgba:      rgb
 Xft.hintstyle: hintfull
+Xft.rgba:      rgb
 Xft.dpi:       220
 ! }}}
 
@@ -23,7 +23,7 @@ Xft.dpi:       220
 ! -----------------------------------------------------------------------------
 ! {{{
 # define fonts \
-    xft:Source Code Pro for Powerline:regular:size=7
+    xft:Source Code Pro:regular:size=7
 ! }}}
 
 ! -----------------------------------------------------------------------------
