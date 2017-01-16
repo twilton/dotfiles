@@ -35,35 +35,49 @@ function main() {
 
     case $1 in
         toggle)
-            amixer -q set Master toggle
+            # amixer -q set Master toggle
+            pamixer -t
+
             ;;
         down)
-            amixer -q set Master "${level_percent}"%- unmute
+            # amixer -q set Master "${level_percent}"%- unmute
+            pamixer -d "${level_percent}"
+
             # play blip
             play_audio "${blip}"
             # display bezel with new level
-            display_bezel "${module_name}" "$(amixer get Master | sed -n 's/^.*\[\([0-9]\+\)%.*$/\1/p' | uniq)"
+            # display_bezel "${module_name}" "$(amixer get Master | sed -n 's/^.*\[\([0-9]\+\)%.*$/\1/p' | uniq)"
+            display_bezel "${module_name}" "$(pamixer --get-volume)"
             ;;
         up)
-            amixer -q set Master "${level_percent}"%+ unmute
+            # amixer -q set Master "${level_percent}"%+ unmute
+            pamixer -i "${level_percent}"
+
             # play blip
             play_audio "${blip}"
             # display bezel with new level
-            display_bezel "${module_name}" "$(amixer get Master | sed -n 's/^.*\[\([0-9]\+\)%.*$/\1/p' | uniq)"
+            # display_bezel "${module_name}" "$(amixer get Master | sed -n 's/^.*\[\([0-9]\+\)%.*$/\1/p' | uniq)"
+            display_bezel "${module_name}" "$(pamixer --get-volume)"
             ;;
         min)
-            amixer -q set Master 0% unmute
+            # amixer -q set Master 0% unmute
+            pamixer --set-volume 0
+
             # play blip
             play_audio "${blip}"
             # display bezel with new level
-            display_bezel "${module_name}" "$(amixer get Master | sed -n 's/^.*\[\([0-9]\+\)%.*$/\1/p' | uniq)"
+            # display_bezel "${module_name}" "$(amixer get Master | sed -n 's/^.*\[\([0-9]\+\)%.*$/\1/p' | uniq)"
+            display_bezel "${module_name}" "$(pamixer --get-volume)"
             ;;
         max)
-            amixer -q set Master 100% unmute
+            # amixer -q set Master 100% unmute
+            pamixer --set-volume 100
+
             # play blip
             play_audio "${blip}"
             # display bezel with new level
-            display_bezel "${module_name}" "$(amixer get Master | sed -n 's/^.*\[\([0-9]\+\)%.*$/\1/p' | uniq)"
+            # display_bezel "${module_name}" "$(amixer get Master | sed -n 's/^.*\[\([0-9]\+\)%.*$/\1/p' | uniq)"
+            display_bezel "${module_name}" "$(pamixer --get-volume)"
             ;;
         *)
             exit 2

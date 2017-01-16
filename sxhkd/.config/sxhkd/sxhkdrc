@@ -155,7 +155,7 @@ shift + XF86Audio{LowerVolume,RaiseVolume}
 super + {F10,F11,F12,shift + F11,shift + F12}
     "$HOME/.bin/ui/bezel/volume/volume" {'toggle','down','up','min','max'}
 
-super + a
+super {_,shift +} a
     paswitch \
     {'alsa_output.usb-iFi__by_AMR__iFi__by_AMR__HD_USB_Audio-00.analog-stereo', \
     'alsa_output.pci-0000_00_1b.0.analog-stereo'}
