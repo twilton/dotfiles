@@ -12,7 +12,7 @@
 # MPD server info
 mpd_host = "127.0.0.1"
 mpd_port = "6600"
-mpd_connection_timeout = "5"
+mpd_connection_timeout = "60"
 # }}}
 
 # -----------------------------------------------------------------------------
