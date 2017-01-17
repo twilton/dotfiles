@@ -1,8 +1,18 @@
+# Dotfiles
+
 ```
-# twilton's dotfiles
+OS: arch
+Window Manager: bspwm
+Terminal: urxvt
+Terminal Font: source code pro
+Terminal color scheme: gruvbox
+Text Editor: vim
+Music Player: mpd
+File Browser: ranger
+Web Browser: inox
 ```
 
-# installation
+# Installation
 
 Clone the repo:
 ```bash
@@ -17,31 +27,34 @@ cd ~/.dotfiles
 stow vim
 ```
 
-# organization
+# Organization
 
-## directories
+## Directories
 
-Each directory has:
+Each directory contains:
 * Configuration files for a distinct package
 * A structure of subdirectories dictated by [GNU stow][stow]
   compatibility
 * A .gitignore ignoring all files other than tracked files for safe [GNU
   stow][stow] tree folding and unfolding
 
-## formatting
+## Files
 
-Each file has
+Each file contains:
 * A comment section containing a short description and the proper location for the file
 * Configurations categorized by vim folds (closed by default)
 
-# colors and font
+# UI
 
-Where applicable the [gruvbox][gruvbox] colorscheme and the font
-[source code pro][source code pro] are used.
+## Colors and font
 
-# mappings
+* [gruvbox][gruvbox]
+* [source code pro][source code pro]
+* [freetype2][font rendering]
 
-## modifiers
+## Navigation
+
+### Modifiers
 
 ```
 tmux:  <C-space> ;
@@ -49,7 +62,12 @@ vim:   <space> ;
 bspwm: <mod4>
 ```
 
-## navigation
+### window (tmux), buffer (vim), desktop (bspwm)
+
+```
+focus prev: <modifier>[
+focus next: <modifier>]
+```
 
 ### pane (tmux), window (vim), node (bspwm)
 
@@ -69,15 +87,18 @@ increase current width:  <modifier>H
 decrease current height: <modifier>J
 increase current height: <modifier>K
 decrease current width:  <modifier>H
+maximise current:        <modifier>+
 ```
 
-### window (tmux), buffer (vim), desktop (bspwm)
+# Audio
 
 ```
-focus prev: <modifier>[
-focus next: <modifier>]
+Application --> Pulseaudio --> ALSA --> Hardware
+                |-- pamixer
+                |---- paswitch
 ```
 
 [stow]: https://www.gnu.org/software/stow/
 [gruvbox]: https://github.com/morhetz/gruvbox
 [source code pro]: https://github.com/adobe-fonts/source-code-pro
+[font rendering]: https://gist.github.com/cryzed/e002e7057435f02cc7894b9e748c5671
