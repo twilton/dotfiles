@@ -44,8 +44,8 @@ urxvtd -q -f -o
 nitrogen --restore &
 
 #compositing
-compton -b
-export _JAVA_AWT_WM_NONREPARENTING=1
+# compton -b
+# export _JAVA_AWT_WM_NONREPARENTING=1
 
 # screen powersave
 xset +dpms
@@ -60,7 +60,6 @@ redshift &
 # -----------------------------------------------------------------------------
 # {{{
 # keyboard
-kbdlight off
 xset r rate 200 35
 
 # mouse
