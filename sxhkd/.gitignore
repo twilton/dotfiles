@@ -1,6 +1,0 @@
-*
-!.gitignore
-
-!.config/
-!.config/sxhkd/
-!.config/sxhkd/sxhkdrc

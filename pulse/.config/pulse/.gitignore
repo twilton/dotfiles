@@ -1,0 +1,5 @@
+*
+!.gitignore
+
+!client.conf
+!daemon.conf

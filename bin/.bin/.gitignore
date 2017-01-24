@@ -1,0 +1,14 @@
+*
+!.gitignore
+
+!fave
+!sf
+!colorzip
+!external_monitor
+!ipv6
+
+!ui/
+!ui/**
+
+!keymaps/
+!keymaps/**

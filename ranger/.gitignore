@@ -1,7 +1,0 @@
-*
-!.gitignore
-
-!.config/
-!.config/ranger/
-!.config/ranger/rc.conf
-!.config/ranger/scope.sh

@@ -1,0 +1,12 @@
+*
+!.gitignore
+
+!config
+!weed.theme
+
+!scripts/
+!scripts/autorun
+!scripts/autorun/**
+
+!weed/
+!weed/**

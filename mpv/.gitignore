@@ -1,7 +1,0 @@
-*
-!.gitignore
-
-!.config/
-!.config/mpv/
-!.config/mpv/input.conf
-!.config/mpv/mpv.conf

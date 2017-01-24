@@ -1,6 +1,0 @@
-*
-!.gitignore
-
-!.config/
-!.config/gtk-3.0/
-!.config/gtk-3.0/settings.ini

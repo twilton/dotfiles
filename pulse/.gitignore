@@ -1,8 +1,0 @@
-*
-!.gitignore
-
-!.config/
-!.config/pulse/
-!.config/pulse/client.conf
-!.config/pulse/daemon.conf
-!.config/pulse/default.pa

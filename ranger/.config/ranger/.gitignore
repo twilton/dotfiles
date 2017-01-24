@@ -1,0 +1,5 @@
+*
+!.gitignore
+
+!rc.conf
+!scope.sh
