@@ -99,7 +99,8 @@ super + p
 
 # Open web browser
 super + w
-    firefox
+    inox
+    # firefox
 
 # Open file manager
 super + r
