@@ -5,10 +5,8 @@
 # Location: $HOME/.config/sxhkd/sxhkdrc
 # -----------------------------------------------------------------------------
 
+# System {{{
 # -----------------------------------------------------------------------------
-# => System
-# -----------------------------------------------------------------------------
-# {{{
 # restart / quit window manager
 super + shift + q
     "$HOME/.bin/ui/window_manager/bspwm_close"
@@ -20,21 +18,15 @@ super + shift + r
 # lock
 super + shift + s
     "$HOME/.bin/ui/bezel/lock/lock"
+# -----------------------------------------------------------------------------
 # }}}
 
+# Window Manager {{{
 # -----------------------------------------------------------------------------
-# => Monitor
-# -----------------------------------------------------------------------------
-# {{{
 # focus last monitor
 super + Tab
     bspc monitor -f 'last'
-# }}}
 
-# -----------------------------------------------------------------------------
-# => Desktop
-# -----------------------------------------------------------------------------
-# {{{
 # Change to desktop n
 super + {1-9,0}
     bspc desktop -f {1-9,10}
@@ -50,12 +42,7 @@ super + bracket{left,right}
 # Rotate through available layouts
 super + space
     bspc desktop -l 'next'
-# }}}
 
-# -----------------------------------------------------------------------------
-# => Node
-# -----------------------------------------------------------------------------
-# {{{
 # close node
 super + c
     bspc node -c
@@ -79,16 +66,11 @@ super + shift + {h,j,k,l}
 # set node preselection
 super + ctrl + {h,j,k,l}
     bspc node -p {'~west','~south','~north','~east'}
-
-# focus last node on current desktop
-# super + Tab
-    # bspc node -f 'last.local'
+# -----------------------------------------------------------------------------
 # }}}
 
+# Programs {{{
 # -----------------------------------------------------------------------------
-# => Programs
-# -----------------------------------------------------------------------------
-# {{{
 # Open new terminal
 super + Return
     urxvtc
@@ -100,7 +82,6 @@ super + p
 # Open web browser
 super + w
     inox
-    # firefox
 
 # Open file manager
 super + r
@@ -109,12 +90,11 @@ super + r
 # Open music player
 super + n
     urxvtc -e ncmpcpp
+# -----------------------------------------------------------------------------
 # }}}
 
+# Platform specific keys {{{
 # -----------------------------------------------------------------------------
-# => Platform specific keys
-# -----------------------------------------------------------------------------
-# {{{
 # Screen backlight control
 @XF86MonBrightness{Down,Up}
     "$HOME/.bin/ui/bezel/backlight/backlight" {'down','up'}
@@ -160,6 +140,7 @@ super {_,shift +} a
     paswitch \
     {'alsa_output.usb-iFi__by_AMR__iFi__by_AMR__HD_USB_Audio-00.analog-stereo', \
     'alsa_output.pci-0000_00_1b.0.analog-stereo'}
+# -----------------------------------------------------------------------------
 # }}}
 
 # vim:foldmethod=marker:foldlevel=0
