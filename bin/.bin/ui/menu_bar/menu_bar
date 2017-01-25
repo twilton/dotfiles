@@ -9,8 +9,6 @@
 
 unset status_items
 
-# temp_dir=$( mktemp -p "${TMPDIR}" -d "menu_bar_${USER}-XXXX" ) || exit 1
-
 function finish() {
     # kill all the status items
     kill "${status_items[@]}"
@@ -20,13 +18,10 @@ function finish() {
 }
 
 function main() {
-    # set TMPDIR to mktemp -p output
-    # export TMPDIR="${temp_dir}"
-
     # start status items
-    (source $HOME/.bin/ui/menu_bar/status_items/mpd_status) & status_items+=($!)
-    (source $HOME/.bin/ui/menu_bar/status_items/date_status) & status_items+=($!)
-    (source $HOME/.bin/ui/menu_bar/status_items/battery_status) & status_items+=($!)
+    "$HOME/.bin/ui/menu_bar/status_items/mpd_status" & status_items+=($!)
+    "$HOME/.bin/ui/menu_bar/status_items/date_status" & status_items+=($!)
+    "$HOME/.bin/ui/menu_bar/status_items/battery_status" & status_items+=($!)
 
     # wait for background process to finish
     wait
