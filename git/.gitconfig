@@ -58,66 +58,58 @@
 # Aliases {{{
 # -----------------------------------------------------------------------------
 [alias]
-    # General {{{
-    # -------------------------------------------------------------
-    # List git aliases
-    la = !git config -l | grep alias | cut -c 7-
+# General {{{
+# List git aliases
+la = !git config -l | grep alias | cut -c 7-
 
-    # Show working-tree status
-    st = status -s
+# Show working-tree status
+st = status -s
 
-    # Add
-    a = add
-    ai = add --interactive
-    au = add -u
+# Add
+a = add
+ai = add --interactive
+au = add -u
 
-    # Clone repository into new directory
-    cl = clone
+# Clone repository into new directory
+cl = clone
 
-    # Record changes to repository
-    cm = commit
+# Record changes to repository
+cm = commit
 
-    # Checkout branch or paths to working tree
-    co = checkout
+# Checkout branch or paths to working tree
+co = checkout
 
-    # List, create, or delete branches
-    br = branch
-    bra = branch -ra
-    branch = branch -ra
-    # -------------------------------------------------------------
-    # }}}
+# List, create, or delete branches
+br = branch
+bra = branch -ra
+branch = branch -ra
+# }}}
 
-    # Lists / Logs {{{
-    # -------------------------------------------------------------
-    # Default short git log
-    lco = log --pretty=format:'%C(yellow)%h%C(reset) %C(green)%ad%C(red)%d%C(reset) %s [ %C(blue)%cn%C(reset) ]' --date=short
+# Lists / Logs {{{
+# Default short git log
+lco = log --pretty=format:'%C(yellow)%h%C(reset) %C(green)%ad%C(red)%d%C(reset) %s [ %C(blue)%cn%C(reset) ]' --date=short
 
-    # List commits
-    lc = log --pretty=format:'%C(yellow)%h%C(reset) %C(green)%ad%C(red)%d%C(reset) [ %C(blue)%cn%C(reset) :: %C(blue)%cE%C(reset) ]%n%C(reset)%s%n%n%b' --numstat --date=short
+# List commits
+lc = log --pretty=format:'%C(yellow)%h%C(reset) %C(green)%ad%C(red)%d%C(reset) [ %C(blue)%cn%C(reset) :: %C(blue)%cE%C(reset) ]%n%C(reset)%s%n%n%b' --numstat --date=short
 
-    # See history of a file
-    lf = log -p -M --follow --stat --
+# See history of a file
+lf = log -p -M --follow --stat --
 
-    # List remotes
-    rem = "!git config -l | grep remote.*url | tail -n +2"
-    # -------------------------------------------------------------
-    # }}}
+# List remotes
+rem = "!git config -l | grep remote.*url | tail -n +2"
+# }}}
 
-    # Resets {{{
-    # -------------------------------------------------------------
-    # Reset current HEAD to specified state
-    r = reset
-    # -------------------------------------------------------------
-    # }}}
+# Resets {{{
+# Reset current HEAD to specified state
+r = reset
+# }}}
 
-    # Find stuff {{{
-    # -------------------------------------------------------------
-    # find some pattern in tracked files
-    ack = grep --break --heading --line-number --
-    # Find a file path in codebase
-    gre = !git ls-files | grep --color=auto -i
-    # -------------------------------------------------------------
-    # }}}
+# Find stuff {{{
+# find some pattern in tracked files
+ack = grep --break --heading --line-number --
+# Find a file path in codebase
+gre = !git ls-files | grep --color=auto -i
+# }}}
 # -----------------------------------------------------------------------------
 # }}}
 
