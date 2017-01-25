@@ -5,10 +5,8 @@
 " Location: $HOME/.vimrc
 " -----------------------------------------------------------------------------
 
+" Environment {{{
 " -----------------------------------------------------------------------------
-" => Environment
-" -----------------------------------------------------------------------------
-" {{{
 " vimconf is not vi-compatible
 if &compatible
     set nocompatible
@@ -69,12 +67,11 @@ endif
 set undofile
 set undodir=$VIM_CACHE/undo,/tmp/vim
 set undolevels=1000
+" -----------------------------------------------------------------------------
 " }}}
 
+" Plugins {{{
 " -----------------------------------------------------------------------------
-" => Plugins
-" -----------------------------------------------------------------------------
-" {{{
 " vim-plug plugin manager
 call plug#begin('~/.vim/plugged')
 
@@ -96,6 +93,8 @@ Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
 " check syntax
 Plug 'scrooloose/syntastic'
 
+" text objects
+Plug 'wellle/targets.vim'
 " searching
 " Plug 'romainl/vim-cool'
 
@@ -103,12 +102,11 @@ Plug 'scrooloose/syntastic'
 Plug 'wlangstroth/vim-racket', { 'for': ['racket'] }
 
 call plug#end()
+" -----------------------------------------------------------------------------
 " }}}
 
+" Interface {{{
 " -----------------------------------------------------------------------------
-" => Interface
-" -----------------------------------------------------------------------------
-" {{{
 " window title
 set title
 
@@ -222,7 +220,7 @@ set wildignore+=*.zip
 " pictures
 set wildignore+=*.png,*.jpg,*.jpeg,*.gif
 " directories
-set wildignore+=*vim/backups*
+set wildignore+=*vim/cache*
 set wildignore+=*sass-cache*
 set wildignore+=vendor/rails/**
 set wildignore+=vendor/cache/**
@@ -286,12 +284,11 @@ set foldlevelstart=1
 set foldcolumn=0
 " max 10 nested folds
 set foldnestmax=10
+" -----------------------------------------------------------------------------
 " }}}
 
+" Colors {{{
 " -----------------------------------------------------------------------------
-" => Colors
-" -----------------------------------------------------------------------------
-" {{{
 " Enable syntax highlighting
 syntax on
 
@@ -311,12 +308,11 @@ highlight MatchParen ctermbg=black ctermfg=yellow cterm=NONE
 
 " highlight trailing whitespace
 highlight SpecialKey ctermbg=NONE ctermfg=DarkRed cterm=NONE
+" -----------------------------------------------------------------------------
 " }}}
 
+" Formatting {{{
 " -----------------------------------------------------------------------------
-" => Formatting
-" -----------------------------------------------------------------------------
-" {{{
 " spaces instead of tabs
 set expandtab
 " Be smart when using tabs ;)
@@ -354,12 +350,11 @@ autocmd vimrc BufNewFile,BufRead *.py                          setl   et ai     
 autocmd vimrc Filetype           gitcommit                     setl   spell       tw=72
 autocmd vimrc Syntax             c,cpp,vim,xml,html,xhtml      setl   foldmethod=syntax
 autocmd vimrc Syntax             c,cpp,vim,xml,html,xhtml,perl normal zR
+" -----------------------------------------------------------------------------
 " }}}
 
+" Mappings {{{
 " -----------------------------------------------------------------------------
-" => Mappings
-" -----------------------------------------------------------------------------
-" {{{
 " Conflicts when using mapleader so map space to \
 map <space> <leader>
 
@@ -380,6 +375,7 @@ nnoremap <leader><space> <C-^>
 " open horizontal / vertical window
 nnoremap <leader>s <C-W>s
 nnoremap <leader>v <C-W>v
+" open file under cursor in vertal split
 nnoremap <leader>f :vertical wincmd f<CR>
 " close windows
 nnoremap <leader>c <C-W>c
@@ -409,10 +405,9 @@ nnoremap <leader>\| <C-W>_
 xnoremap <leader>\| <C-W>_
 
 " Edit
-noremap <leader>ew :e<space>
+noremap <leader>e :e<space>
 noremap <leader>es :sp<space>
 noremap <leader>ev :vsp<space>
-noremap <leader>et :tabe<space>
 
 " Change Y to be consistent with C and D
 nnoremap Y y$
@@ -430,10 +425,8 @@ nnoremap <leader>P "+P
 
 " select last changed block
 nnoremap <leader>V `[v`]
-
 " Go to the starting position after visual modes
 vnoremap <ESC> o<ESC>
-
 " don't exit visual mode while shifting
 vnoremap < <gv
 vnoremap > >gv
@@ -448,7 +441,6 @@ nmap <leader>ec :SyntasticCheck<CR>
 nnoremap <leader>= gg=G``
 " Remove trailing whitespace
 nnoremap <leader>w m`:%s/\s\+$//<CR>:let @/=''<CR>``
-
 " alignment
 nmap <leader>a <Plug>(EasyAlign)
 xmap <leader>a <Plug>(EasyAlign)
@@ -456,71 +448,61 @@ xmap <leader>a <Plug>(EasyAlign)
 " lets enter select items in popupmenu without newline
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
-" Quicker cgn/cgN
+" Quicker search / replace
 nnoremap <leader>* *``cgn
 nnoremap <leader># #``cgN
 nnoremap <leader>% :%s/\<<C-r>=expand("<cword>")<CR>\>/
+" hlsearch toggle (solution until vim-cool is fixed)
+noremap <expr> <Plug>(StopHL) execute('nohlsearch')[-1]
+noremap! <expr> <Plug>(StopHL) execute('nohlsearch')[-1]
 
 " make single quote act like backtick
 nnoremap ' `
-
-" solution until vim-cool is fixed
-noremap <expr> <Plug>(StopHL) execute('nohlsearch')[-1]
-noremap! <expr> <Plug>(StopHL) execute('nohlsearch')[-1]
 
 " disable ex mode
 nnoremap Q <Nop>
 " disable keyword man page
 nnoremap K <Nop>
+" -----------------------------------------------------------------------------
 " }}}
 
+" Plugin Settings {{{
 " -----------------------------------------------------------------------------
-" => Plugin Settings
+" buftabline {{{
+let g:buftabline_show = 1
+let g:buftabline_numbers = 1
+let g:buftabline_indicators = 1
+" }}}
+
+" syntastic {{{
+" Settings
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_aggregate_errors = 1
+let g:syntastic_enable_highlighting = 0
+
+" Formatting
+let g:syntastic_loc_list_height = 8
+let g:syntastic_stl_format = "[%E{Err: %e, line %fe}%B{ / }%W{Warn: %w, line %fw}]"
+
+" Syntax mode by filetype
+let g:syntastic_mode_map = {
+            \ 'mode': 'passive',
+            \ 'active_filetypes': ['c', 'javascript', 'coffee', 'cpp', 'rust', 'ruby']}
+
+" file type settings
+let g:syntastic_c_check_header          = 0
+let g:syntastic_c_compiler_options      = ' -Wextra -Wall'
+let g:syntastic_c_remove_include_errors = 1
+let g:syntastic_cpp_compiler_options    = ' -Wextra -Wall -std=c++11'
+" }}}
+
+" netrw {{{
+let g:netrw_banner = 0
+let g:netrw_list_hide = '^\.$'
+let g:netrw_liststyle = 3
+" }}}
 " -----------------------------------------------------------------------------
-" {{{
-    " -------------------------------------------------------------
-    " => buftabline
-    " -------------------------------------------------------------
-    " {{{
-    let g:buftabline_show = 1
-    let g:buftabline_numbers = 1
-    let g:buftabline_indicators = 1
-    " }}}
-
-    " -------------------------------------------------------------
-    " => syntastic
-    " -------------------------------------------------------------
-    " {{{
-    " Settings
-    let g:syntastic_auto_loc_list = 0
-    let g:syntastic_always_populate_loc_list = 1
-    let g:syntastic_aggregate_errors = 1
-    let g:syntastic_enable_highlighting = 0
-
-    " Formatting
-    let g:syntastic_loc_list_height = 8
-    let g:syntastic_stl_format = "[%E{Err: %e, line %fe}%B{ / }%W{Warn: %w, line %fw}]"
-
-    " Syntax mode by filetype
-    let g:syntastic_mode_map = {
-        \ 'mode': 'passive',
-        \ 'active_filetypes': ['c', 'javascript', 'coffee', 'cpp', 'rust', 'ruby']}
-
-    " file type settings
-    let g:syntastic_c_check_header          = 0
-    let g:syntastic_c_compiler_options      = ' -Wextra -Wall'
-    let g:syntastic_c_remove_include_errors = 1
-    let g:syntastic_cpp_compiler_options    = ' -Wextra -Wall -std=c++11'
-    " }}}
-
-    " -------------------------------------------------------------
-    " => netrw - bundled file browser
-    " -------------------------------------------------------------
-    " {{{
-    let g:netrw_banner = 0
-    let g:netrw_list_hide = '^\.$'
-    let g:netrw_liststyle = 3
-    " }}}
 " }}}
 
 " vim:foldmethod=marker:foldlevel=0
