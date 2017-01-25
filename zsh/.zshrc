@@ -8,10 +8,8 @@
 # Skip for non-interactive shells
 [[ -z "$PS1" ]] && return
 
+# Environment {{{
 # -----------------------------------------------------------------------------
-# => Environment
-# -----------------------------------------------------------------------------
-# {{{
 # Allow brace character class list expansion.
 setopt BRACE_CCL
 # Combine zero-length punctuation characters (accents) with the base character.
@@ -85,12 +83,11 @@ if [[ -x $(which less 2> /dev/null) ]]
 then
     export LESS='-F -g -i -M -R -S -w -X -z-4'
 fi
+# -----------------------------------------------------------------------------
 # }}}
 
+# Plugins {{{
 # -----------------------------------------------------------------------------
-# => Plugins
-# -----------------------------------------------------------------------------
-# {{{
 # Substring Search
 source "$HOME/.zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh"
 source "$HOME/.zsh/plugins/search.zsh"
@@ -104,12 +101,11 @@ source "$HOME/.zsh/plugins/zsh-vimode-visual/zsh-vimode-visual.zsh"
 
 # enable coloring
 autoload -U colors && colors
+# -----------------------------------------------------------------------------
 # }}}
 
+# Keybinds {{{
 # -----------------------------------------------------------------------------
-# => Keybinds
-# -----------------------------------------------------------------------------
-# {{{
 # vi-like key bindings
 bindkey -v
 export KEYTIMEOUT=1
@@ -121,12 +117,11 @@ bindkey '\e[7~' beginning-of-line # home
 bindkey '\e[8~' end-of-line # end
 bindkey '\e[5~' beginning-of-history # pg up
 bindkey '\e[6~' end-of-history # pg down
+# -----------------------------------------------------------------------------
 # }}}
 
+# Prompt {{{
 # -----------------------------------------------------------------------------
-# => Prompt
-# -----------------------------------------------------------------------------
-# {{{
 function zle-keymap-select zle-line-init zle-line-finish {
     local mode=""
     local git=""
@@ -177,12 +172,11 @@ zle -N zle-line-init
 zle -N zle-line-finish
 zle -N zle-keymap-select
 zle -N edit-command-line
+# -----------------------------------------------------------------------------
 # }}}
 
+# Aliases and functions {{{
 # -----------------------------------------------------------------------------
-# => Aliases and functions
-# -----------------------------------------------------------------------------
-# {{{
 # Headaches
 alias quit='exit'
 alias :q='quit'
@@ -255,6 +249,7 @@ extract () {
         echo "'$1' is not a valid file"
     fi
 }
+# -----------------------------------------------------------------------------
 # }}}
 
 # vim:foldmethod=marker:foldlevel=0
