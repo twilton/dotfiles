@@ -1,12 +1,22 @@
-# -- general --
-# default programs
-browser firefox -new-tab about:reader?url=%s
+# -----------------------------------------------------------------------------
+# config
+# Description: Config file for newsbeuter
+# -----------------------------------------------------------------------------
+# Location: $HOME/.config/newsbeuter/config
+# -----------------------------------------------------------------------------
+
+# General {{{
+# -----------------------------------------------------------------------------
+# terminal size
+text-width 72
 
 # exit
 cleanup-on-quit yes
 confirm-exit no
 
-# -- feeds --
+# default programs
+browser inox
+
 # sorting method
 feed-sort-order desc
 
@@ -24,12 +34,12 @@ reload-time 30
 reload-threads 4
 download-retries 4
 download-timeout 10
+# -----------------------------------------------------------------------------
+# }}}
 
-# -- display --
-# terminal size
-text-width 72
-
-# colors (following documentation order)
+# Colors {{{
+# -----------------------------------------------------------------------------
+# UI
 color background white black
 color listnormal white black
 color listfocus blue default reverse bold
@@ -42,8 +52,11 @@ color article white black
 highlight article "^(Title):.*$" blue default
 highlight article "https?://[^ ]+" red default
 highlight article "\\[image\\ [0-9]+\\]" green default
+# -----------------------------------------------------------------------------
+# }}}
 
-# -- mappings --
+# Mappings {{{
+# -----------------------------------------------------------------------------
 # navigation
 bind-key h left all
 bind-key j down all
@@ -65,3 +78,7 @@ bind-key d close-dialog
 
 # disable mark all feeds read
 unbind-key C feedlist
+# -----------------------------------------------------------------------------
+# }}}
+
+# vim:foldmethod=marker:foldlevel=0
