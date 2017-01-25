@@ -1,4 +1,12 @@
-# Use PulseAudio by default
+# -----------------------------------------------------------------------------
+# .asoundrc
+# Description: Config file for alsa
+# -----------------------------------------------------------------------------
+# Location: $HOME/.asoundrc
+# -----------------------------------------------------------------------------
+
+# Default {{{
+# -----------------------------------------------------------------------------
 pcm.!default {
   type pulse
   fallback "sysdefault"
@@ -12,5 +20,7 @@ ctl.!default {
   type pulse
   fallback "sysdefault"
 }
+# -----------------------------------------------------------------------------
+# }}}
 
-# vim:set ft=alsaconf:
+# vim:foldmethod=marker:foldlevel=0 ft=alsaconf:
