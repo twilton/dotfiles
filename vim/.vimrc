@@ -21,7 +21,6 @@ augroup END
 if &encoding !=? 'utf-8'
     let &termencoding = &encoding
 endif
-
 " Set utf8 as standard encoding
 set encoding=utf-8
 set fileencoding=utf-8
@@ -29,43 +28,51 @@ set fileencoding=utf-8
 " Use unix as the standard file type
 set fileformats=unix,mac,dos
 
-" Enable filetype plugins
-filetype plugin indent on
-" Set to auto read when a file is changed from the outside
-set autoread
-
 " files to search
 set path=.,**
+" Set to auto read when a file is changed from the outside
+set autoread
 " Automatically switch to file directory of buffer
 autocmd vimrc BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
 
-" Cache files
-let $VIM_CACHE = expand('~/.vim/cache')
-if !isdirectory($VIM_CACHE)
-    silent! call mkdir($VIM_CACHE, 'p')
+" Cache files {{{
+let cachedir = expand("~/.vim/cache")
+if !isdirectory(cachedir)
+    call mkdir(cachedir)
 endif
-" Number of command lines to remember
-set history=1000
+
 " 10 marks, 100 searches, 1000 commands, 10 lines / register, 10 inputs,
 "   10kb max size of item, disable hlsearch on start, viminfo file name
-set viminfo='10,/100,:1000,<10,@10,s10,h,n$VIM_CACHE/.viminfo
-" disable spelling
-set nospell
-set spellfile=$VIM_CACHE/en.utf-8.add
+set viminfo='10,/100,:1000,<10,@10,s10,h,n~/.vim/cache/.viminfo
 
-" backup location ~/.vim/cache/backup
-if !isdirectory($VIM_CACHE.'/backup')
-    silent! call mkdir($VIM_CACHE.'/backup', 'p')
+" spellfile
+set spellfile=~/.vim/cache/en.utf-8.add
+
+" create backupdir incase backup is set
+let backupdir = expand("~/.vim/cache/backup")
+if !isdirectory(backupdir)
+    call mkdir(backupdir)
 endif
-set nobackup
-set backupdir=$VIM_CACHE/backup,/tmp/vim
+set backupdir=~/.vim/cache/backup
 
 " enable undofile in ~/.vim/cache/undo
-if !isdirectory($VIM_CACHE.'/undo')
-    silent! call mkdir($VIM_CACHE.'/undo', 'p')
+if has('persistent_undo')
+    let undodir = expand("~/.vim/cache/undo")
+    if !isdirectory(undodir)
+        call mkdir(undodir)
+    endif
+    set undodir=~/.vim/cache/undo
+    set undofile
 endif
-set undofile
-set undodir=$VIM_CACHE/undo,/tmp/vim
+" }}}
+
+" disable spelling by default
+set nospell
+" disable backups by default
+set nobackup
+" Number of command lines to remember
+set history=1000
+" number of undos to keep
 set undolevels=1000
 " -----------------------------------------------------------------------------
 " }}}
@@ -95,13 +102,21 @@ Plug 'scrooloose/syntastic'
 
 " text objects
 Plug 'wellle/targets.vim'
+
+" surroundings
+
 " searching
-" Plug 'romainl/vim-cool'
+Plug 'haya14busa/incsearch.vim'
+Plug 'unblevable/quick-scope'
 
 " racket language support
 Plug 'wlangstroth/vim-racket', { 'for': ['racket'] }
 
+" Automatically executes filetype plugin indent on and syntax enable
 call plug#end()
+
+" Enable filetype plugins
+filetype plugin indent on
 " -----------------------------------------------------------------------------
 " }}}
 
@@ -234,30 +249,6 @@ set complete+=d
 set incsearch
 " Enables highlighting of search results
 set hlsearch
-" turn on hlsearch only when needed {{{
-function! StartHL()
-    if v:hlsearch
-        let pos = match(getline('.'), @/, col('.') - 1) + 1
-        if pos != col('.')
-            call StopHL()
-        endif
-    endif
-endfu
-
-function! StopHL()
-    if !v:hlsearch || mode() isnot 'n'
-        return
-    else
-        silent call feedkeys("\<Plug>(StopHL)", 'm')
-    endif
-endfu
-
-augroup SearchHighlight
-    au!
-    au CursorMoved * call StartHL()
-    au InsertEnter * call StopHL()
-augroup END
-" }}}
 " Ignore case when searching
 set ignorecase
 " When searching try to be smart about cases
@@ -297,8 +288,6 @@ set background=dark
 
 " use this colorscheme
 colorscheme gruvbox
-" remove weird background color in gruvbox
-highlight Normal ctermbg=NONE ctermfg=white cterm=NONE
 
 " Visual like 'romainl/apprentice'
 highlight Visual ctermbg=black ctermfg=blue cterm=reverse
@@ -409,6 +398,21 @@ noremap <leader>e :e<space>
 noremap <leader>es :sp<space>
 noremap <leader>ev :vsp<space>
 
+" better search (auto disables hlsearch)
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
+map n  <Plug>(incsearch-nohl-n)
+map N  <Plug>(incsearch-nohl-N)
+map *  <Plug>(incsearch-nohl-*)
+map #  <Plug>(incsearch-nohl-#)
+map g* <Plug>(incsearch-nohl-g*)
+map g# <Plug>(incsearch-nohl-g#)
+" Quicker search / replace
+nnoremap <leader>* *``cgn
+nnoremap <leader># #``cgN
+nnoremap <leader>% :%s/\<<C-r>=expand("<cword>")<CR>\>/
+
 " Change Y to be consistent with C and D
 nnoremap Y y$
 
@@ -448,14 +452,6 @@ xmap <leader>a <Plug>(EasyAlign)
 " lets enter select items in popupmenu without newline
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
-" Quicker search / replace
-nnoremap <leader>* *``cgn
-nnoremap <leader># #``cgN
-nnoremap <leader>% :%s/\<<C-r>=expand("<cword>")<CR>\>/
-" hlsearch toggle (solution until vim-cool is fixed)
-noremap <expr> <Plug>(StopHL) execute('nohlsearch')[-1]
-noremap! <expr> <Plug>(StopHL) execute('nohlsearch')[-1]
-
 " make single quote act like backtick
 nnoremap ' `
 
@@ -472,6 +468,10 @@ nnoremap K <Nop>
 let g:buftabline_show = 1
 let g:buftabline_numbers = 1
 let g:buftabline_indicators = 1
+" }}}
+
+" incsearch.vim {{{
+let g:incsearch#auto_nohlsearch = 1
 " }}}
 
 " syntastic {{{
