@@ -103,8 +103,6 @@ Plug 'scrooloose/syntastic'
 " text objects
 Plug 'wellle/targets.vim'
 
-" surroundings
-
 " searching
 Plug 'haya14busa/incsearch.vim'
 Plug 'unblevable/quick-scope'
