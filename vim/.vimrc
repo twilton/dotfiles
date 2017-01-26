@@ -396,7 +396,7 @@ noremap <leader>e :e<space>
 noremap <leader>es :sp<space>
 noremap <leader>ev :vsp<space>
 
-" better search (auto disables hlsearch)
+" better search
 map /  <Plug>(incsearch-forward)
 map ?  <Plug>(incsearch-backward)
 map g/ <Plug>(incsearch-stay)
@@ -433,9 +433,6 @@ vnoremap <ESC> o<ESC>
 vnoremap < <gv
 vnoremap > >gv
 
-" Working ci(, works for both breaklined, inline and multiple ()
-nnoremap ci( %ci(
-
 " check syntax
 nmap <leader>ec :SyntasticCheck<CR>
 
@@ -469,6 +466,7 @@ let g:buftabline_indicators = 1
 " }}}
 
 " incsearch.vim {{{
+" auto diable hlsearch on non search movement
 let g:incsearch#auto_nohlsearch = 1
 " }}}
 
