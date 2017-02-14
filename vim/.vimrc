@@ -74,6 +74,13 @@ set nobackup
 set history=1000
 " number of undos to keep
 set undolevels=1000
+
+" fix escape key delay
+"   alternative fix is set noesckeys but disables arrow / fn keys in insert
+"   mode
+set timeout
+set timeoutlen=1000
+set ttimeoutlen=100
 " -----------------------------------------------------------------------------
 " }}}
 
@@ -98,7 +105,8 @@ Plug 'ajh17/VimCompletesMe'
 Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
 
 " check syntax
-Plug 'scrooloose/syntastic'
+" Plug 'scrooloose/syntastic'
+Plug 'w0rp/ale'
 
 " text objects
 Plug 'wellle/targets.vim'
@@ -167,7 +175,8 @@ if has('statusline')
     set statusline+=%=
 
     " syntax checking
-    set statusline+=%{exists('g:loaded_syntastic_plugin')?SyntasticStatuslineFlag():''}
+    "set statusline+=%{exists('g:loaded_syntastic_plugin')?SyntasticStatuslineFlag():''}
+    set statusline+=%{\ ALEGetStatusLine()}
 
     " Cursor info
     set statusline+=\ %c:%l
@@ -433,9 +442,6 @@ vnoremap <ESC> o<ESC>
 vnoremap < <gv
 vnoremap > >gv
 
-" check syntax
-nmap <leader>ec :SyntasticCheck<CR>
-
 " reformat entire file
 nnoremap <leader>= gg=G``
 " Remove trailing whitespace
@@ -459,6 +465,16 @@ nnoremap K <Nop>
 
 " Plugin Settings {{{
 " -----------------------------------------------------------------------------
+" ale {{{
+" linter statusline format
+let g:ale_statusline_format = ['%d error(s)', '%d warning(s)', '']
+
+" messaging
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%severity%: %linter%] %s'
+" }}}
+
 " buftabline {{{
 let g:buftabline_show = 1
 let g:buftabline_numbers = 1
@@ -468,29 +484,6 @@ let g:buftabline_indicators = 1
 " incsearch.vim {{{
 " auto diable hlsearch on non search movement
 let g:incsearch#auto_nohlsearch = 1
-" }}}
-
-" syntastic {{{
-" Settings
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_aggregate_errors = 1
-let g:syntastic_enable_highlighting = 0
-
-" Formatting
-let g:syntastic_loc_list_height = 8
-let g:syntastic_stl_format = "[%E{Err: %e, line %fe}%B{ / }%W{Warn: %w, line %fw}]"
-
-" Syntax mode by filetype
-let g:syntastic_mode_map = {
-            \ 'mode': 'passive',
-            \ 'active_filetypes': ['c', 'javascript', 'coffee', 'cpp', 'rust', 'ruby']}
-
-" file type settings
-let g:syntastic_c_check_header          = 0
-let g:syntastic_c_compiler_options      = ' -Wextra -Wall'
-let g:syntastic_c_remove_include_errors = 1
-let g:syntastic_cpp_compiler_options    = ' -Wextra -Wall -std=c++11'
 " }}}
 
 " netrw {{{
