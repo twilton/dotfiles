@@ -67,8 +67,8 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 
 # Default Programs
-if [[ -x $(which firefox 2> /dev/null) ]]; then
-    export BROWSER='firefox'
+if [[ -x $(which inox 2> /dev/null) ]]; then
+    export BROWSER='inox'
 fi
 if [[ -x $(which vim 2> /dev/null) ]]; then
     export EDITOR='vim'
