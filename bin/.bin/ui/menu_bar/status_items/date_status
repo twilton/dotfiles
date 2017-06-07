@@ -69,7 +69,6 @@ function set_content() {
     local color_time="$(get_color_yellow)"
     local color_ampm="$(get_color_lightgrey)"
     local color_fg="$(get_status_item_color_fg)"
-    local formatted=''
 
     # set content
     set_status_item_unformatted "$(date +'%A %d %I:%M %p')"
