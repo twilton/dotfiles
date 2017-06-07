@@ -1,0 +1,181 @@
+#!/usr/bin/env bash
+
+# associative array for status_item properties
+declare -A status_item
+# pid of spawned status item
+status_item['pid']=''
+# name of status item
+status_item['name']=''
+# stream to read from
+status_item['stream']=''
+# default monitor
+status_item['monitor']=''
+# x positon
+status_item['x']=''
+# y position
+status_item['y']=''
+# width
+status_item['width']=''
+# height
+status_item['height']=''
+# font used to display stream
+status_item['font']=''
+# default foreground color
+status_item['color_fg']=''
+# default background color
+status_item['color_bg']=''
+# default content
+status_item['unformatted']=''
+status_item['formatted']=''
+
+function set_status_item_pid() {
+    status_item['pid']="$1"
+}
+function get_status_item_pid() {
+    echo "${status_item['pid']}"
+}
+
+function set_status_item_name() {
+    status_item['name']="$1"
+}
+function get_status_item_name() {
+    echo "${status_item['name']}"
+}
+
+function set_status_item_stream() {
+    status_item['stream']="$1"
+}
+function get_status_item_stream() {
+    echo "${status_item['stream']}"
+}
+
+function set_status_item_monitor() {
+    status_item['monitor']="$1"
+}
+function get_status_item_monitor() {
+    echo "${status_item['monitor']}"
+}
+
+function set_status_item_x() {
+    status_item['x']="$1"
+}
+function get_status_item_x() {
+    echo "${status_item['x']}"
+}
+
+function set_status_item_y() {
+    status_item['y']="$1"
+}
+function get_status_item_y() {
+    echo "${status_item['y']}"
+}
+
+function set_status_item_width() {
+    status_item['width']="$1"
+}
+function get_status_item_width() {
+    echo "${status_item['width']}"
+}
+
+function set_status_item_height() {
+    status_item['height']="$1"
+}
+function get_status_item_height() {
+    echo "${status_item['height']}"
+}
+
+function set_status_item_font() {
+    status_item['font']="$1"
+}
+function get_status_item_font() {
+    echo "${status_item['font']}"
+}
+
+function set_status_item_color_fg() {
+    status_item['color_fg']="$1"
+}
+function get_status_item_color_fg() {
+    echo "${status_item['color_fg']}"
+}
+
+function set_status_item_color_bg() {
+    status_item['color_bg']="$1"
+}
+function get_status_item_color_bg() {
+    echo "${status_item['color_bg']}"
+}
+
+function set_status_item_unformatted() {
+    status_item['unformatted']="$1"
+}
+function get_status_item_unformatted() {
+    echo "${status_item['unformatted']}"
+}
+
+function set_status_item_formatted() {
+    status_item['formatted']="$1"
+}
+function get_status_item_formatted() {
+    echo "${status_item['formatted']}"
+}
+
+# draws a persistent status_item using dzen
+#   x, y, width, height --> void
+#   Modifies status_item array
+# TODO: default vars
+function update_status_item_geometry() {
+    local new_x="$1"
+    local new_y="$2"
+    local new_width="$3"
+    local new_height="$4"
+
+    # dzen title
+    local dzen_args=( '-title-name' "status_item_$(get_status_item_name)" )
+    # dzen geometry
+    dzen_args+=( '-x' "${new_x}" '-y' "${new_y}" )
+    dzen_args+=( '-w' "${new_width}" '-h' "${new_height}" )
+    # dzen font
+    dzen_args+=( '-fn' "$(get_status_item_font)" '-ta' 'c' )
+    # dzen colors
+    dzen_args+=( '-fg' "$(get_status_item_color_fg)" '-bg' "$(get_status_item_color_bg)" )
+    # dzen x parameters
+    dzen_args+=( '-e' 'onstart=lower' '-xs' "$(get_status_item_monitor)" )
+
+    # no status_item running yet
+    if [[ -z "$(get_status_item_pid)" ]]; then
+        # create new status_item with current width
+        tail -f "$(get_status_item_stream)" > >(dzen2 "${dzen_args[@]}") &
+
+        # update status item properties
+        set_status_item_pid "$!"
+        set_status_item_x "${new_x}"
+        set_status_item_y "${new_y}"
+        set_status_item_width "${new_width}"
+        set_status_item_height "${new_height}"
+
+    # status_item is running but doesn't have the correct width
+    elif [[ "${new_width}" != "$(get_status_item_width)" ]]; then
+        # kill old status_item
+        kill "$(get_status_item_pid)"
+
+        # create new status_item
+        tail -f "$(get_status_item_stream)" > >(dzen2 "${dzen_args[@]}") &
+
+        # update status item properties
+        set_status_item_pid "$!"
+        set_status_item_x "${new_x}"
+        set_status_item_y "${new_y}"
+        set_status_item_width "${new_width}"
+        set_status_item_height "${new_height}"
+    fi
+}
+
+function pipe_content_to_stream() {
+        # pipe to stream
+        echo "$(get_status_item_formatted)" >"$(get_status_item_stream)"
+}
+
+function free_status_item() {
+    # kill the status_item
+    kill "$(get_status_item_pid)"
+}

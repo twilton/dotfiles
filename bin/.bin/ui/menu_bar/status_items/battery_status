@@ -57,7 +57,7 @@ function update_content() {
     fi
 
     content["raw"]="${state} ${capacity}"
-    content["formatted"]="^fg(${color['fg']})${state} ^fg(${color_capacity})${capacity}"
+    content["formatted"]="^fg(${color_state})${state} ^fg(${color_capacity})${capacity}"
 }
 
 function finish() {

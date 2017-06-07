@@ -8,109 +8,117 @@
 #   xftwidth
 #   dzen
 # -----------------------------------------------------------------------------
-# Useage:      $ sh ./clock
+# Useage:      $ ./date_status
 # -----------------------------------------------------------------------------
-
-# type and name the module
-declare -A module
-module['type']='status_item'
-module['name']='date'
-
-# make a directory to store temporary files
-readonly temp_dir=$( mktemp -p "${TMPDIR}" -d "${USER}_${module['type']}_${module['name']}-XXXX" ) || exit 1
-# name fifo after module name and store in temp_dir
-readonly fifo="${temp_dir}/${module['name']}.fifo"
 
 # Source color theme
 source "$HOME/.bin/ui/colors"
 
-# provides function update_status_item that draws a persistent status_item using dzen
+# Source monitors
+source "$HOME/.bin/ui/menu_bar/status_items/monitor"
+
+# provides function new_module(): creates module temp files
+#   module_type, name --> void
+#   Modifies module array, creates module temp files
+# provides function free_module(): User must call on cleanup
+#   void --> void
+#   removes module temp files
+# provides function get_module_type(), get_module_name(), get_module_directory(),
+#   get_module_stream() which return module parameters
+#   void --> string
+source "$HOME/.bin/ui/menu_bar/status_items/module"
+
+# provides function update_status_item: draws a persistent status_item using dzen
 #   name, x, y, width, height, stream, font, color_fg, color_bg --> void
 #   Modifies status_item array
-#   User must kill status_item['pid'] on cleanup
-source "$HOME/.bin/ui/menu_bar/status_items/update_status_item"
+# provides function free_status_item(): User must call on cleanup
+#   void --> void
+#   kills status_item['pid']
+source "$HOME/.bin/ui/menu_bar/status_items/status_item"
 
-# associative array for storing content to be displayed
-declare -A content
+function set_defaults() {
+    # create new module with type 'status_item' and name 'date'
+    new_module 'status_item' 'date'
 
-# Updates date
+    # set status item name and stream
+    set_status_item_name "$(get_module_name)"
+    set_status_item_stream "$(get_module_stream)"
+
+    # set default status item geometry
+    select_monitor 'default'
+    set_status_item_monitor "$(get_monitor_num)"
+    set_status_item_x '0'
+    set_status_item_y '20'
+    set_status_item_width '0'
+    set_status_item_height '40'
+
+    # set status item font and colors
+    set_status_item_font 'Source Code Pro:size=7'
+    set_status_item_color_fg "$(get_color_lightgrey)"
+    set_status_item_color_bg "$(get_color_black)"
+}
+
+# sets content
 #   color_fg, color_bg --> void
 #   Modifies content array
 # TODO: add bg formatting
-function update_content() {
+function set_content() {
     # set colors
-    local color_fg="$1"
-    local color_weekday="${color_lightgrey}"
-    local color_date="${color_blue}"
-    local color_time="${color_yellow}"
-    local color_ampm="${color_lightgrey}"
+    local color_weekday="$(get_color_lightgrey)"
+    local color_date="$(get_color_blue)"
+    local color_time="$(get_color_yellow)"
+    local color_ampm="$(get_color_lightgrey)"
+    local color_fg="$(get_status_item_color_fg)"
+    local formatted=''
 
-    # update text array
-    content["raw"]="$(date +'%A %d %I:%M %p')"
-    content["formatted"]=$( date +"^fg(${color_weekday})%A ^fg(${color_date})%d ^fg(${color_time})%I^fg(${color_fg}):^fg(${color_time})%M ^fg(${color_ampm})%p" )
+    # set content
+    set_status_item_unformatted "$(date +'%A %d %I:%M %p')"
+    set_status_item_formatted "$(date +"^fg(${color_weekday})%A ^fg(${color_date})%d ^fg(${color_time})%I^fg(${color_fg}):^fg(${color_time})%M ^fg(${color_ampm})%p")"
 }
 
+function set_geometry() {
+    # calculate position
+    local monitor_width="$(get_monitor_width)"
+    local font="$(get_status_item_font)"
+    local content="$(get_status_item_unformatted)"
+    local width=$(xftwidth "${font}" "-${content}-")
+    local height="$(get_status_item_height)"
+    local xposition="$(( (${monitor_width} - ${width}) / 2 ))"
+    local yposition="$(get_status_item_y)"
+
+    # update status item geometry
+    update_status_item_geometry "${xposition}" "${yposition}" "${width}" "${height}"
+}
+
+# run on EXIT
 function finish() {
     # kill the status_item
-    kill "${status_item['pid']}"
+    free_status_item
 
-    # remove the fifo
-    rm "${fifo}"
-
-    # remove temp fifo dir
-    rmdir "${temp_dir}"
+    # remove temp files
+    free_module
 }
 
 function main() {
-    # monitor settings
-    declare -A monitor
-    monitor['width']='2880'
-    monitor['height']='1800'
-    monitor['padding']='40'
-
-    # default x geometry
-    declare -A geometry
-    geometry['x']='0'
-    geometry['y']='20'
-    geometry['width']='0'
-    geometry['height']='40'
-
-    # default colors and font
-    local font='Source Code Pro:size=7'
-    declare -A color
-    color['fg']="${color_lightgrey}"
-    color['bg']="${color_black}"
+    # set var defaults
+    set_defaults
 
     while
         :
     do
-        # make the fifo
-        if [[ ! -p "${fifo}" ]]; then
-            mkfifo "${fifo}" || exit 1
-        fi
+        # update content to be displayed
+        set_content
 
-        # modifies ${content['raw']} and ${content['formatted']}
-        # color_fg, color_bg --> void
-        update_content "${color['fg']}" "${color['bg']}"
-        # update width and x_pos to reflect content
-        geometry['width']=$(xftwidth "${font}" "-${content['raw']}-")
-        geometry['x']="$(( (${monitor['width']} - ${geometry['width']}) / 2 ))"
+        # update status item geometry
+        set_geometry
 
-        # modifies ${status_item[@]}
-        # name, x, y, width, height, stream, font, color_fg, color_bg --> void
-        update_status_item \
-            "${module['type']}_${module['name']}" \
-            "${geometry['x']}" "${geometry['y']}" "${geometry['width']}" "${geometry['height']}" \
-            "${fifo}" "${font}" "${color['fg']}" "${color['bg']}"
-
-        # pipe to fifo
-        echo "${content['formatted']}" >"${fifo}"
+        # pipe to stream
+        pipe_content_to_stream
 
         # wait for 1 minute
         sleep 60
     done
 }
-
 # cleanup on exit
 trap finish EXIT
 
