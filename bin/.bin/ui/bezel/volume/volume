@@ -10,80 +10,140 @@
 # Useage:      $ ./volume
 # -----------------------------------------------------------------------------
 
+# Source color theme which defines color_{0-15}
+source "$HOME/.bin/ui/colors"
+
+# Source monitors
+source "$HOME/.bin/ui/monitors"
+
+# source module
+source "$HOME/.bin/ui/module"
+
 # Source display_bezel which provides display_bezel() taking $1:module_name and $2:content
-source "$HOME/.bin/ui/bezel/display_bezel"
+source "$HOME/.bin/ui/bezel/bezel"
 
-function play_audio() {
-    # audio played on volume change
-    local audio="$1"
+function set_defaults() {
+    # create new module with type 'status_item' and name 'date'
+    new_module 'bezel' 'volume'
 
-    # play volume change blip
-    if [[ -e "${audio}" ]]; then
-        paplay "${audio}"
-    fi
+    # set status item name and stream
+    set_bezel_name "$(get_module_name)"
+    set_bezel_stream "$(get_module_stream)"
+
+    # set default status item geometry
+    select_monitor 'default'
+    set_bezel_monitor "$(get_monitor_num)"
+    set_bezel_x '0'
+    set_bezel_y '0'
+    set_bezel_width '0'
+    set_bezel_height '80'
+
+    # set status item font and colors
+    set_bezel_font 'Source Code Pro:size=7'
+    set_bezel_color_fg "$(get_color_lightgrey)"
+    set_bezel_color_bg "$(get_color_black)"
 }
 
-function main() {
-    # name of the bezel module
-    local module_name='bezel_volume'
-
-    # change percentage
-    local level_percent='5'
-
+function play_blip() {
     # audio played on volume change
     local blip='/usr/share/sounds/freedesktop/stereo/audio-volume-change.oga'
 
+    # play volume change blip
+    if [[ -e "${blip}" ]]; then
+        paplay "${blip}"
+    fi
+}
+
+function change_volume() {
+    # change percentage
+    local level_percent='5'
+
     case $1 in
         toggle)
-            # amixer -q set Master toggle
+            # mute / unmute
             pamixer -t
-
             ;;
         down)
-            # amixer -q set Master "${level_percent}"%- unmute
+            # decrease volume by level_percent
             pamixer -d "${level_percent}"
 
-            # play blip
-            play_audio "${blip}"
-            # display bezel with new level
-            # display_bezel "${module_name}" "$(amixer get Master | sed -n 's/^.*\[\([0-9]\+\)%.*$/\1/p' | uniq)"
-            display_bezel "${module_name}" "$(pamixer --get-volume)"
+            # play volume change blip
+            play_blip
             ;;
         up)
-            # amixer -q set Master "${level_percent}"%+ unmute
+            # increase volume by level_percent
             pamixer -i "${level_percent}"
 
-            # play blip
-            play_audio "${blip}"
-            # display bezel with new level
-            # display_bezel "${module_name}" "$(amixer get Master | sed -n 's/^.*\[\([0-9]\+\)%.*$/\1/p' | uniq)"
-            display_bezel "${module_name}" "$(pamixer --get-volume)"
+            # play volume change blip
+            play_blip
             ;;
         min)
             # amixer -q set Master 0% unmute
             pamixer --set-volume 0
-
-            # play blip
-            play_audio "${blip}"
-            # display bezel with new level
-            # display_bezel "${module_name}" "$(amixer get Master | sed -n 's/^.*\[\([0-9]\+\)%.*$/\1/p' | uniq)"
-            display_bezel "${module_name}" "$(pamixer --get-volume)"
             ;;
         max)
             # amixer -q set Master 100% unmute
             pamixer --set-volume 100
-
-            # play blip
-            play_audio "${blip}"
-            # display bezel with new level
-            # display_bezel "${module_name}" "$(amixer get Master | sed -n 's/^.*\[\([0-9]\+\)%.*$/\1/p' | uniq)"
-            display_bezel "${module_name}" "$(pamixer --get-volume)"
             ;;
         *)
             exit 2
             ;;
     esac
 }
+
+function set_content() {
+    # similarly for gdbar
+    local gdbar_args=( '-fg' "$(get_bezel_color_fg)" '-bg' "$(get_bezel_color_bg)" )
+    gdbar_args+=( '-w' "$(get_bezel_width)" '-h' "$(get_bezel_height)" )
+
+    # update content
+    set_bezel_unformatted "$(pamixer --get-volume)"
+    set_bezel_formatted "$(get_bezel_unformatted | gdbar "${gdbar_args[@]}")"
+}
+
+function set_geometry() {
+    local monitor_width="$(get_monitor_width)"
+    local monitor_height="$(get_monitor_height)"
+    local width="$(( ${monitor_width} / 3 ))"
+    local height="$(get_bezel_height)"
+    local xposition="$(( ${monitor_width} / 2 - ${width} / 2 ))"
+    local yposition="$(( ${monitor_height} / 3 - ${height} / 2 ))"
+
+    set_bezel_x "${xposition}"
+    set_bezel_y "${yposition}"
+    set_bezel_width "${width}"
+    set_bezel_height "${height}"
+}
+
+# run on EXIT
+function finish() {
+    # kill the status_item
+    free_bezel
+
+    # remove temp files
+    free_module
+}
+
+function main() {
+    # set var defaults
+    set_defaults
+
+    # change volume
+    change_volume "$1"
+
+    # update content
+    set_content
+
+    # update bezel geometry
+    set_geometry
+
+    # display bezel
+    draw_bezel
+
+    pipe_content_to_stream
+}
+# cleanup on exit
+trap finish EXIT
 
 # main
 main "$@"

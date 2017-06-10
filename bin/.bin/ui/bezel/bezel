@@ -1,83 +1,114 @@
 #!/usr/bin/env bash
 
-# Source color theme which defines color_{0-15}
-source "$HOME/.bin/ui/colors"
+# declare array for storing bezel properties
+declare -A bezel
+# bezel name
+bezel['name']=''
+# stream to read from
+bezel['stream']=''
+# default monitor
+bezel['monitor']=''
+# bezel x location
+bezel['x']=''
+# bezel y location
+bezel['y']=''
+# bezel width
+bezel['width']=''
+# bezel height
+bezel['height']=''
+# font used to display stream
+bezel['font']=''
+# default foreground color
+bezel['color_fg']=''
+# default background color
+bezel['color_bg']=''
 
-function display_bezel() {
-    # declare array for storing monitor properties
-    declare -A monitor
-    # monitor number
-    monitor["id"]="$(bspc query -M -m focused --names)"
-    # set known monitor geometry
-    if [[ "${monitor['id']}" -eq 1 ]]; then
-        # monitor width
-        monitor["width"]='2880'
-        # monitor height
-        monitor["height"]='1800'
-    elif [[ "${monitor['id']}" -eq 2 ]]; then
-        # monitor width
-        monitor["width"]='1080'
-        # monitor height
-        monitor["height"]='1920'
-    else
-        # monitor id is unknown
-        exit 1
-    fi
+function set_bezel_name() {
+    bezel['name']="$1"
+}
+function get_bezel_name() {
+    echo "${bezel['name']}"
+}
 
-    # declare array for storing bezel properties
-    declare -A bezel
-    # bezel name
-    bezel["name"]="$1"
-    # bezel width
-    bezel["width"]="$(( ${monitor['width']} / 3 ))"
-    # bezel height
-    bezel["height"]='80'
-    # bezel border
-    bezel["border"]="$(bspc config border_width)"
-    # bezel x location
-    bezel["x"]="$(( ${monitor['width']} / 2 - ${bezel['width']} / 2 ))"
-    # bezel y location
-    bezel["y"]="$(( ${monitor['height']} / 3 - ${bezel['height']} / 2 ))"
-    # bezel xorg layer
-    bezel["layer"]='raise'
+function set_bezel_stream() {
+    bezel['stream']="$1"
+}
+function get_bezel_stream() {
+    echo "${bezel['stream']}"
+}
 
-    # bezel calculations
-    declare -A content
-    # text to display
-    content["text"]="$2"
-    # text display width
-    content["width"]="$(( ${bezel['width']} - ${bezel['border']} * 2 ))"
-    # text display height
-    content["height"]="$(( ${bezel['height']} - ${bezel['border']} * 2 ))"
+function set_bezel_monitor() {
+    bezel['monitor']="$1"
+}
+function get_bezel_monitor() {
+    echo "${bezel['monitor']}"
+}
 
-    # declare array for storing colors
-    declare -A color=( ["fg"]="" ["bg"]="" ["ol"]="" )
-    # foreground color
-    color["fg"]="${color_white}"
-    # background color
-    color["bg"]="${color_darkgrey}"
-    # outline color
-    color["ol"]="${color_black}"
+function set_bezel_x() {
+    bezel['x']="$1"
+}
+function get_bezel_x() {
+    echo "${bezel['x']}"
+}
 
-    # fifo
-    local fifo="${TMPDIR:-/tmp}/${bezel_name}.fifo"
+function set_bezel_y() {
+    bezel['y']="$1"
+}
+function get_bezel_y() {
+    echo "${bezel['y']}"
+}
 
+function set_bezel_width() {
+    bezel['width']="$1"
+}
+function get_bezel_width() {
+    echo "${bezel['width']}"
+}
+
+function set_bezel_height() {
+    bezel['height']="$1"
+}
+function get_bezel_height() {
+    echo "${bezel['height']}"
+}
+
+function set_bezel_font() {
+    bezel['font']="$1"
+}
+function get_bezel_font() {
+    echo "${bezel['font']}"
+}
+
+function set_bezel_color_fg() {
+    bezel['color_fg']="$1"
+}
+function get_bezel_color_fg() {
+    echo "${bezel['color_fg']}"
+}
+
+function set_bezel_color_bg() {
+    bezel['color_bg']="$1"
+}
+function get_bezel_color_bg() {
+    echo "${bezel['color_bg']}"
+}
+
+function draw_bezel() {
     # define arguments passed to dzen
-    local dzen_args=( '-title-name' "${bezel['name']}" )
-    dzen_args+=( '-x' "${bezel['x']}" '-y' "${bezel['y']}" '-w' "${bezel['width']}" '-h' "${bezel['height']}" )
-    dzen_args+=( '-ta' 'c' '-fg' "${color['fg']}" '-bg' "${color['ol']}" )
-    dzen_args+=( '-e' "onstart=${bezel['layer']}" '-xs' "${monitor['id']}" )
-
-    # similarly for gdbar
-    local gdbar_args=( '-fg' "${color['fg']}" '-bg' "${color['bg']}" )
-    gdbar_args+=( '-w' "${content['width']}" '-h' "${content['height']}" )
+    local dzen_args=( '-title-name' "bezel_$(get_bezel_name)" )
+    dzen_args+=( '-x' "$(get_bezel_x)" '-y' "$(get_bezel_y)" '-w' "$(get_bezel_width)" '-h' "$(get_bezel_height)" )
+    dzen_args+=( '-ta' 'c' '-fg' "$(get_bezel_color_fg)" '-bg' "$(get_bezel_color_bg)" )
+    dzen_args+=( '-e' 'onstart=raise' '-xs' "$(get_bezel_monitor)" )
 
     # make the bezel
-    if [[ ! -p "${fifo}" ]]; then
-        mkfifo "${fifo}"
-        (dzen2 "${dzen_args[@]}" < "${fifo}"; rm -f "${fifo}") &
-    fi
+    tail -f "$(get_bezel_stream)" > >(dzen2 "${dzen_args[@]}") &
+    # (dzen2 "${dzen_args[@]}" < "$(get_bezel_stream)"; rm -f "$(get_bezel_stream)") &
 
     # pipe to fifo
-    (echo "${content['text']}" | gdbar "${gdbar_args[@]}"; sleep 1) >> "${fifo}"
+    # (echo "$(get_bezel_formatted)"; sleep 1) >> "$(get_bezel_stream)"
+}
+
+function pipe_content_to_stream() {
+    # pipe to stream
+    (echo "$(get_bezel_formatted)"; sleep 1) >> "$(get_bezel_stream)"
 }

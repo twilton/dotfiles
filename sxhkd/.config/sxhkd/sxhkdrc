@@ -14,10 +14,6 @@ super + shift + q
 # reload sxhkd
 super + shift + r
     pkill -USR1 -x sxhkd
-
-# lock
-super + shift + s
-    "$HOME/.bin/ui/bezel/lock/lock"
 # -----------------------------------------------------------------------------
 # }}}
 
@@ -96,28 +92,28 @@ super + n
 # Platform specific keys {{{
 # -----------------------------------------------------------------------------
 # Screen backlight control
-@XF86MonBrightness{Down,Up}
-    "$HOME/.bin/ui/bezel/backlight/backlight" {'down','up'}
+# @XF86MonBrightness{Down,Up}
+    # "$HOME/.bin/ui/bezel/backlight/backlight" {'down','up'}
 
-shift + @XF86MonBrightness{Down,Up}
-    "$HOME/.bin/ui/bezel/backlight/backlight" {'min','max'}
+# shift + @XF86MonBrightness{Down,Up}
+    # "$HOME/.bin/ui/bezel/backlight/backlight" {'min','max'}
 
-super + {F1,F2,shift + F1,shift + F2}
-    "$HOME/.bin/ui/bezel/backlight/backlight" {'down','up','min','max'}
+# super + {F1,F2,shift + F1,shift + F2}
+    # "$HOME/.bin/ui/bezel/backlight/backlight" {'down','up','min','max'}
 
 # Application Control
-XF86Launch{A,B}
-    "$HOME/.bin/external_monitor" {'enable','disable'}
+# XF86Launch{A,B}
+    # "$HOME/.bin/external_monitor" {'enable','disable'}
 
 # Keyboard backlight control
-XF86KbdBrightness{Down,Up}
-    "$HOME/.bin/ui/bezel/keys/keys" {'down','up'}
+# XF86KbdBrightness{Down,Up}
+    # "$HOME/.bin/ui/bezel/keys/keys" {'down','up'}
 
-shift + XF86KbdBrightness{Down,Up}
-    "$HOME/.bin/ui/bezel/keys/keys" {'min','max'}
+# shift + XF86KbdBrightness{Down,Up}
+    # "$HOME/.bin/ui/bezel/keys/keys" {'min','max'}
 
-super + {F5,F6,shift + F5,shift + F6}
-    "$HOME/.bin/ui/bezel/keys/keys" {'down','up','min','max'}
+# super + {F5,F6,shift + F5,shift + F6}
+    # "$HOME/.bin/ui/bezel/keys/keys" {'down','up','min','max'}
 
 # Song control
 XF86Audio{Prev,Play,Next}
@@ -127,14 +123,14 @@ super + {F7,F8,F9}
     mpc {'prev','toggle','next'}
 
 # Volume control
-XF86Audio{Mute,LowerVolume,RaiseVolume}
-    "$HOME/.bin/ui/bezel/volume/volume" {'toggle','down','up'}
+# XF86Audio{Mute,LowerVolume,RaiseVolume}
+    # "$HOME/.bin/ui/bezel/volume/volume" {'toggle','down','up'}
 
-shift + XF86Audio{LowerVolume,RaiseVolume}
-    "$HOME/.bin/ui/bezel/volume/volume" {'min','max'}
+# shift + XF86Audio{LowerVolume,RaiseVolume}
+    # "$HOME/.bin/ui/bezel/volume/volume" {'min','max'}
 
-super + {F10,F11,F12,shift + F11,shift + F12}
-    "$HOME/.bin/ui/bezel/volume/volume" {'toggle','down','up','min','max'}
+# super + {F10,F11,F12,shift + F11,shift + F12}
+    # "$HOME/.bin/ui/bezel/volume/volume" {'toggle','down','up','min','max'}
 
 super {_,shift +} a
     paswitch \
