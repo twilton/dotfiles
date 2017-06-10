@@ -14,11 +14,11 @@
 source "$HOME/.bin/ui/colors"
 
 # set local colors
-color_nf="${color_black}"
-color_nb="${color_lightgrey}"
-color_sf="${color_darkyellow}"
-color_sb="${color_darkgrey}"
-color_dc="${color_black}"
+color_nf="$(get_color_black)"
+color_nb="$(get_color_lightgrey)"
+color_sf="$(get_color_darkyellow)"
+color_sb="$(get_color_darkgrey)"
+color_dc="$(get_color_black)"
 
 bezel_font='Source Code Pro:Regular:size=12'
 
