@@ -12,9 +12,6 @@ unset status_items
 function finish() {
     # kill all the status items
     kill "${status_items[@]}"
-
-    # remove menu_bar temp_dir
-    # rmdir "${temp_dir}"
 }
 
 function main() {

@@ -16,7 +16,7 @@
 source "$HOME/.bin/ui/colors"
 
 # Source monitors
-source "$HOME/.bin/ui/menu_bar/status_items/monitor"
+source "$HOME/.bin/ui/monitors"
 
 # provides function new_module(): creates module temp files
 #   module_type, name --> void
@@ -27,7 +27,7 @@ source "$HOME/.bin/ui/menu_bar/status_items/monitor"
 # provides function get_module_type(), get_module_name(), get_module_directory(),
 #   get_module_stream() which return module parameters
 #   void --> string
-source "$HOME/.bin/ui/menu_bar/status_items/module"
+source "$HOME/.bin/ui/module"
 
 # provides function update_status_item: draws a persistent status_item using dzen
 #   name, x, y, width, height, stream, font, color_fg, color_bg --> void
