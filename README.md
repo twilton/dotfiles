@@ -1,16 +1,14 @@
 # Dotfiles
 
-```
-OS: arch
-Window Manager: bspwm
-Terminal: urxvt
-Terminal Font: [source code pro][source code pro] & [freetype2][font rendering]
-Terminal color scheme: [gruvbox][gruvbox]
-Text Editor: vim
-Music Player: mpd
-File Browser: ranger
-Web Browser: firefox
-```
+* OS: arch
+* Window Manager: bspwm
+* Terminal: urxvt
+* Terminal Font: [source code pro][source code pro] & [freetype2][font rendering]
+* Terminal color scheme: [gruvbox][gruvbox]
+* Text Editor: vim
+* Music Player: mpd
+* File Browser: ranger
+* Web Browser: firefox
 
 # Install
 
