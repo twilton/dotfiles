@@ -1,14 +1,13 @@
 # Dotfiles
 
-* OS: arch
-* Window Manager: bspwm
-* Terminal: urxvt
-* Terminal Font: [source code pro][source code pro] & [freetype2][font rendering]
-* Terminal color scheme: [gruvbox][gruvbox]
-* Text Editor: vim
-* Music Player: mpd
-* File Browser: ranger
-* Web Browser: firefox
+* OS: [arch][info_os]
+* Shell: [zsh][info_shell]
+* WM: [bspwm][info_wm]
+* Terminal: [urxvt][info_term]
+* Font: [source code pro][info_font] & [freetype2][font_rendering]
+* Colors: [gruvbox][info_colors]
+* Theme: [arc][info_theme]
+* Icons: [surfn][info_icons]
 
 # Install
 
@@ -24,8 +23,14 @@ cd ~/.dotfiles
 stow vim
 ```
 
+[info_os]: https://www.archlinux.org/
+[info_shell]: http://www.zsh.org/
+[info_wm]: https://github.com/baskerville/bspwm
+[info_term]: http://software.schmorp.de/pkg/rxvt-unicode.html
+[info_font]: https://github.com/adobe-fonts/source-code-pro
+[font_rendering]: https://gist.github.com/cryzed/e002e7057435f02cc7894b9e748c5671
+[info_colors]: https://github.com/morhetz/gruvbox
+[info_theme]: https://github.com/horst3180/Arc-theme
+[info_icons]: https://github.com/erikdubois/Surfn
 [fork]: http://robots.thoughtbot.com/keeping-a-github-fork-updated
 [stow]: https://www.gnu.org/software/stow/
-[gruvbox]: https://github.com/morhetz/gruvbox
-[source code pro]: https://github.com/adobe-fonts/source-code-pro
-[font rendering]: https://gist.github.com/cryzed/e002e7057435f02cc7894b9e748c5671
