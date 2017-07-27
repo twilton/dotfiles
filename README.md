@@ -23,6 +23,10 @@ cd ~/.dotfiles
 stow vim
 ```
 
+# Preview
+
+![Screenshot](https://github.com/twilton/dotfiles/raw/master/preview.png)
+
 [info_os]: https://www.archlinux.org/
 [info_shell]: http://www.zsh.org/
 [info_wm]: https://github.com/baskerville/bspwm
