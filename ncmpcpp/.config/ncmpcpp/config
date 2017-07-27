@@ -1,93 +1,159 @@
 # -----------------------------------------------------------------------------
 # config
 # Description: Config file for ncmpcpp
-# -----------------------------------------------------------------------------
-# Location: $HOME/.ncmpcpp/config
+# Location: $HOME/.config/ncmpcpp/config
 # -----------------------------------------------------------------------------
 
 # Connection {{{
 # -----------------------------------------------------------------------------
-# MPD server info
-mpd_host = "127.0.0.1"
+# Connect to mpd running on a specified host
+mpd_host = "localhost"
+
+# Connect to mpd on the specified port.
 mpd_port = "6600"
+
+# Reconnect after NUM seconds of MPD not responding.
 mpd_connection_timeout = "60"
 # -----------------------------------------------------------------------------
 # }}}
 
-# Directories {{{
+# Paths {{{
 # -----------------------------------------------------------------------------
+# ncmpcpp directories
+ncmpcpp_directory = "~/.config/ncmpcpp"
+lyrics_directory = "~/.config/ncmpcpp/lyrics"
+
 # MPD music location
 mpd_music_dir = "~/music"
-
-# ncmpcpp directories
-ncmpcpp_directory = "~/.ncmpcpp"
-lyrics_directory = "~/.ncmpcpp/lyrics"
 # -----------------------------------------------------------------------------
 # }}}
 
 # Interface {{{
 # -----------------------------------------------------------------------------
-# General {{{
-mouse_support = no
-playlist_display_mode = classic
-playlist_disable_highlight_delay = "1"
-discard_colors_if_item_is_selected = no
-header_visibility = no
-titles_visibility = no
-display_bitrate = yes
-display_volume_level = yes
-autocenter_mode = yes
-# }}}
+# Enable mouse support
+mouse_support = "no"
 
-# Format {{{
-progressbar_look = "───"
-# progressbar_boldness = no
-song_list_format = "$0{$7%n $9}{$8%t $9}|{$8%f $9}$R{$8%b $9}{$7%a $9}$0"
-song_status_format = "$0{$7%a - $9}$b$4%t$9$/b$0"
-now_playing_prefix = "$0$4>> $9$0"
-now_playing_suffix =
-browser_playlist_prefix = "$0$4playlist $9$0"
-selected_item_prefix = "$0$4> $9$0"
-selected_item_suffix =
-modified_item_prefix = "$0$2* $9$0"
-default_tag_editor_pattern = %t
-empty_tag_marker = empty
-# }}}
+# Window {{{
+# display the header window?
+header_visibility = "no"
 
-# Colors {{{
-colors_enabled = yes
-color1 = 8
-color2 = 7
+# display column titles?
+titles_visibility = "no"
 
-# classic ui
-main_window_color = 7
+# use autocenter mode?
+autocenter_mode = "no"
+
+# Delay for displayed messages to remain visible
+message_delay_time = "1"
+
+# use colors?
+colors_enabled = "yes"
+
+# discard colors of tags if selected?
+discard_colors_if_item_is_selected = "no"
+
+# Color of main window
+main_window_color = "7"
+# one of colors used in song info, tag editor and search engine
+color1 = "8"
+# one of colors used in song info, tag editor and search engine
+color2 = "7"
+
 current_item_prefix = "$(4)$r"
 current_item_suffix = "$/r$(end)"
-progressbar_color = 8
-progressbar_elapsed_color = 7
-statusbar_color = 8
+selected_item_prefix = "$0$4> $9$0"
+selected_item_suffix = ""
+modified_item_prefix = "$0$2* $9$0"
+# }}}
 
-# alternative ui
-window_border_color = 1
-active_window_border = 5
-header_window_color = default
-volume_color = default
-state_line_color = default
-state_flags_color = default
-alternative_ui_separator_color = 7
+# Statusbar {{{
+# display the statusbar?
+statusbar_visibility = "yes"
 
-# tags
-# active_column_color = 4
-empty_tag_color = 8
+# show volume level in statusbar?
+display_volume_level = "yes"
 
-# visualizer levels low - high
-visualizer_color = 5, 6, 2, 4, 7, 3
+# show bitrate in statusbar?
+display_bitrate = "yes"
+
+# show time remaining to end of playlist in statusbar?
+playlist_show_remaining_time = "no"
+# playlist time displayed in statusbar use shortened units?
+playlist_shorten_total_times = "yes"
+
+# show remaining time of current song instead of elapsed time in statusbar?
+display_remaining_time = "no"
+
+# Color of statusbar
+statusbar_color = "8"
+
+# color of current track time shown in statusbar
+statusbar_time_color = "8"
+
+# color of player state shown in statusbar
+player_state_color = "8"
+
+# default progressbar color
+progressbar_color = "8"
+# elapsed progressbar color
+progressbar_elapsed_color = "7"
+
+# defines look of progressbar. Must be '2' or '3' char long.
+progressbar_look = "───"
+
+# Song format for statusbar
+song_status_format = "$0{$7%a - $9}$b$4%t$9$/b$0"
 # }}}
 # -----------------------------------------------------------------------------
+# }}}
+
+# Screens {{{
+# -----------------------------------------------------------------------------
+# A list of screens to cycle through
+startup_screen = "playlist"
+screen_switcher_mode = "playlist, browser"
+
+# Playlist {{{
+# Default display mode for playlist
+playlist_display_mode = "classic"
+
+# Delay for highlighting playlist since last key pressed
+playlist_disable_highlight_delay = "1"
+
+# show current MPD host?
+playlist_show_mpd_host = "no"
+
+# separators between albums in playlist?
+playlist_separate_albums = "no"
+
+# ask after clearing playlist?
+ask_before_clearing_playlists = "no"
+
+# Song format for lists of songs
+song_list_format = "$0{$7%n $9}{$8%t $9}|{$8%f $9}$R{$8%b $9}{$7%a $9}$0"
+#
+now_playing_prefix = "$0$4>> $9$0"
+now_playing_suffix = ""
+# }}}
+
+# Browser {{{
+# Default display mode for Browser
+browser_display_mode = "classic"
+
+# Sort mode for browser
+browser_sort_mode = "name"
+
+# show files and directories beginning with '.'?
+show_hidden_files_in_local_browser = "no"
+
+# How to sort songs (browser_sort_mode must be set to "format")
+# browser_sort_format
+
+# Prefix for playlists in browser
+browser_playlist_prefix = "$0$4playlist $9$0"
 # }}}
 
 # Visualizer {{{
-# -----------------------------------------------------------------------------
 # MPD visualizer info
 visualizer_fifo_path = "/tmp/mpd_visualizer.fifo"
 visualizer_output_name = "mpd_visualizer"
@@ -97,8 +163,12 @@ visualizer_sync_interval = "10"
 visualizer_in_stereo = "no"
 visualizer_type = "spectrum"
 
+# Visualizer levels low - high
+visualizer_color = "5, 6, 2, 4, 7, 3"
+
 # Visualizer character
 visualizer_look = "∙▋"
+# }}}
 # -----------------------------------------------------------------------------
 # }}}
 
