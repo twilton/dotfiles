@@ -36,12 +36,11 @@ xset fp rehash
 # terminal
 urxvtd -q -f -o
 
+# menubar
+polybar top &
+
 # wallpaper
 nitrogen --restore &
-
-#compositing
-# compton -b
-# export _JAVA_AWT_WM_NONREPARENTING=1
 
 # screen powersave
 xset +dpms
