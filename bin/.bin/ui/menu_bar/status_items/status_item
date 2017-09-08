@@ -172,7 +172,8 @@ function update_status_item_geometry() {
 
 function pipe_content_to_stream() {
         # pipe to stream
-        echo "$(get_status_item_formatted)" >"$(get_status_item_stream)"
+        echo "$(get_status_item_formatted)"
+        echo "TEST" >>"$(get_status_item_stream)"
 }
 
 function free_status_item() {
