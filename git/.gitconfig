@@ -11,7 +11,8 @@
     editor = /usr/bin/vim
 [user]
     name = twilton
-    email = github.twilton@gmail.com
+    email = git.twilton@gmail.com
+    signingkey = 0x74A1FF66A1AB80F1
 # -----------------------------------------------------------------------------
 # }}}
 
