@@ -27,79 +27,77 @@ Xft.dpi:       220
 ! Default colors {{{
 ! -----------------------------------------------------------------------------
 ! https://github.com/morhetz/gruvbox
-*background:   #282828
-*foreground:   #ebdbb2
-*.cursorColor: #ebdbb2
+*.background:   #282828
+*.foreground:   #ebdbb2
+*.cursorColor:  #ebdbb2
 ! Black + DarkGrey
-*color0:       #282828
-*color8:       #504945
+*.color0:       #282828
+*.color8:       #504945
 ! DarkRed + Red
-*color1:       #cc241d
-*color9:       #fb4934
+*.color1:       #cc241d
+*.color9:       #fb4934
 ! DarkGreen + Green
-*color2:       #98971a
-*color10:      #b8bb26
+*.color2:       #98971a
+*.color10:      #b8bb26
 ! DarkYellow + Yellow
-*color3:       #d79921
-*color11:      #fabd2f
+*.color3:       #d79921
+*.color11:      #fabd2f
 ! DarkBlue + Blue
-*color4:       #458588
-*color12:      #83a598
+*.color4:       #458588
+*.color12:      #83a598
 ! DarkMagenta + Magenta
-*color5:       #b16286
-*color13:      #d3869b
+*.color5:       #b16286
+*.color13:      #d3869b
 ! DarkCyan + Cyan
-*color6:       #689d6a
-*color14:      #8ec07c
+*.color6:       #689d6a
+*.color14:      #8ec07c
 ! LightGrey + White
-*color7:       #a89984
-*color15:      #ebdbb2
-
-! Gruvbox extended palette
-URxvt.color24:  #076678
-URxvt.color66:  #427b58
-URxvt.color88:  #9d0006
-URxvt.color96:  #8f3f71
-URxvt.color100: #79740e
-URxvt.color108: #8ec07c
-URxvt.color109: #83a598
-URxvt.color130: #af3a03
-URxvt.color136: #b57614
-URxvt.color142: #b8bb26
-URxvt.color167: #fb4934
-URxvt.color175: #d3869b
-URxvt.color208: #fe8019
-URxvt.color214: #fabd2f
-URxvt.color223: #ebdbb2
-URxvt.color228: #f2e5bc
-URxvt.color229: #fbf1c7
-URxvt.color230: #f9f5d7
-URxvt.color234: #1d2021
-URxvt.color235: #282828
-URxvt.color236: #32302f
-URxvt.color237: #3c3836
-URxvt.color239: #504945
-URxvt.color241: #665c54
-URxvt.color243: #7c6f64
-URxvt.color244: #928374
-URxvt.color245: #928374
-URxvt.color246: #a89984
-URxvt.color248: #bdae93
-URxvt.color250: #d5c4a1
+*.color7:       #a89984
+*.color15:      #ebdbb2
 ! -----------------------------------------------------------------------------
 ! }}}
 
 ! urxvt {{{
 ! -----------------------------------------------------------------------------
-urxvt*scrollBar:      false
-urxvt*internalBorder: 13
-urxvt*font:           fonts
-urxvt*boldFont:       fonts
-urxvt*italicFont:     fonts
-urxvt*boldItalicFont: fonts
-urxvt*cursorBlink:    false
-urxvt*depth:          24
-urxvt*shading:        100
+urxvt.scrollBar:      false
+urxvt.internalBorder: 10
+urxvt.font:           fonts
+urxvt.boldFont:       fonts
+urxvt.italicFont:     fonts
+urxvt.boldItalicFont: fonts
+urxvt.cursorBlink:    false
+
+! Gruvbox extended palette
+urxvt.color24:  #076678
+urxvt.color66:  #427b58
+urxvt.color88:  #9d0006
+urxvt.color96:  #8f3f71
+urxvt.color100: #79740e
+urxvt.color108: #8ec07c
+urxvt.color109: #83a598
+urxvt.color130: #af3a03
+urxvt.color136: #b57614
+urxvt.color142: #b8bb26
+urxvt.color167: #fb4934
+urxvt.color175: #d3869b
+urxvt.color208: #fe8019
+urxvt.color214: #fabd2f
+urxvt.color223: #ebdbb2
+urxvt.color228: #f2e5bc
+urxvt.color229: #fbf1c7
+urxvt.color230: #f9f5d7
+urxvt.color234: #1d2021
+urxvt.color235: #282828
+urxvt.color236: #32302f
+urxvt.color237: #3c3836
+urxvt.color239: #504945
+urxvt.color241: #665c54
+urxvt.color243: #7c6f64
+urxvt.color244: #928374
+urxvt.color245: #928374
+urxvt.color246: #a89984
+urxvt.color248: #bdae93
+urxvt.color250: #d5c4a1
 ! -----------------------------------------------------------------------------
 ! }}}
 
