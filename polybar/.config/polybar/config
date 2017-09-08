@@ -1,0 +1,235 @@
+[colors]
+; colors read from xrdb; defaults to gruvbox
+background        = ${xrdb:color0:#282828}
+foreground        = ${xrdb:color15:#ebdbb2}
+black       = ${xrdb:color0:#282828}
+darkgray    = ${xrdb:color8:#504945}
+darkgrey    = ${xrdb:color8:#504945}
+darkred     = ${xrdb:color1:#cc241d}
+red         = ${xrdb:color9:#fb4934}
+darkgreen   = ${xrdb:color2:#98971a}
+green       = ${xrdb:color10:#b8bb26}
+darkyellow  = ${xrdb:color3:#d79921}
+yellow      = ${xrdb:color11:#fabd2f}
+darkblue    = ${xrdb:color4:#458588}
+blue        = ${xrdb:color12:#83a598}
+darkmagenta = ${xrdb:color5:#b16286}
+magenta     = ${xrdb:color13:#d3869b}
+darkcyan    = ${xrdb:color6:#689d6a}
+cyan        = ${xrdb:color14:#8ec07c}
+lightgray   = ${xrdb:color7:#a89984}
+lightgrey   = ${xrdb:color7:#a89984}
+white       = ${xrdb:color15:#ebdbb2}
+
+[fonts]
+default = "Source Code Pro:size=7:antialias=true:autohint=true;3"
+icons = "Noto Emoji:size=7;3"
+
+[bar/top]
+wm-restack = bspwm
+dpi = 220
+fixed-center = true
+
+width = 100%
+height = 40
+radius = 0.0
+
+font-0 = ${fonts.default}
+font-1 = ${fonts.icons}
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+padding-left = 0
+padding-right = 1
+module-margin-left = 1
+module-margin-right = 1
+border-bottom-size = 1
+border-color = ${colors.darkgrey}
+line-size = 0
+
+modules-left = bspwm
+modules-center = date
+modules-right = mpd volume battery
+
+tray-position = right
+tray-maxsize = 32
+tray-padding = 1
+
+[module/bspwm]
+type = internal/bspwm
+
+label-focused = %icon%
+label-focused-foreground = ${colors.yellow}
+label-focused-background = ${colors.background}
+label-focused-padding = 1
+
+label-occupied = %icon%
+label-occupied-foreground = ${colors.blue}
+label-occupied-background = ${colors.background}
+label-occupied-padding = 1
+
+label-urgent = %icon%
+label-urgent-foreground = ${colors.red}
+label-urgent-background = ${colors.background}
+label-urgent-padding = 1
+
+label-empty = %icon%
+label-empty-foreground = ${colors.lightgrey}
+label-empty-background = ${colors.background}
+label-empty-padding = 1
+
+; label-empty = %index%
+ws-icon-0 = 1;"💡"
+ws-icon-1 = 2;"🎷"
+ws-icon-2 = 3;"🍀"
+ws-icon-3 = 4;"🍺"
+ws-icon-4 = 5;"🎉"
+
+[module/date]
+type = internal/date
+
+; polling
+interval = 60
+
+; content
+date = "%A %{F#83a598}%d%{F-}"
+time = "%{F#fabd2f}%I:%M%{F-} %p"
+
+; date
+label = %date% %time%
+
+[module/mpd]
+type = internal/mpd
+; TODO: onclick pause
+
+; mpd offline content
+label-offline = mpd offline
+
+; song content
+; label-song = "%{F#83a598}%artist%%{F-}%{F#a89984} - %{F-}%{F#fabd2f}%title%%{F-}"
+label-song = "%artist% - %title%"
+label-song-maxlen = 48
+label-song-ellipsis = true
+
+; mpd offline formatting
+format-offline = <label-offline>
+format-offline-foreground = ${colors.foreground}
+format-offline-padding = 0
+format-offline-prefix = "⚠"
+format-offline-prefix-foreground = ${colors.red}
+
+; song is playing
+format-playing = <label-song>
+format-playing-foreground = ${colors.foreground}
+format-playing-padding = 0
+format-playing-prefix = "🎵 "
+format-playing-prefix-foreground = ${colors.blue}
+
+; song is paused
+format-paused = <label-song>
+format-paused-foreground = ${colors.lightgrey}
+format-paused-padding = 0
+format-paused-prefix = "🎵 "
+format-paused-prefix-foreground = ${colors.yellow}
+
+[module/volume]
+type = internal/volume
+
+; volume content
+label-volume = "Volume %percentage%%"
+label-volume-foreground = ${colors.foreground}
+
+; muted content
+label-muted = "Muted %percentage%%"
+label-muted-foreground = ${colors.lightgrey}
+
+; levels
+ramp-volume-0 = "🔈"
+ramp-volume-0-foreground = ${colors.green}
+ramp-volume-1 = "🔉"
+ramp-volume-1-foreground = ${colors.green}
+ramp-volume-2 = "🔉"
+ramp-volume-2-foreground = ${colors.yellow}
+ramp-volume-3 = "🔊"
+ramp-volume-3-foreground = ${colors.yellow}
+ramp-volume-4 = "🔊"
+ramp-volume-4-foreground = ${colors.red}
+
+; volume
+format-volume = <ramp-volume> <label-volume>
+format-volume-padding = 0
+
+; muted
+format-muted = <label-muted>
+format-muted-prefix = "🔇 "
+format-muted-prefix-foreground = ${colors.lightgrey}
+format-muted-padding = 0
+
+[module/battery]
+type = internal/battery
+; TODO: onclick show remaining
+
+; This is useful in case the battery never reports 100% charge
+full-at = 98
+
+; Use the following command to list batteries and adapters:
+; $ ls -1 /sys/class/power_supply/
+battery = BAT0
+adapter = ADP1
+
+; If an inotify event haven't been reported in this many
+; seconds, manually poll for new values.
+;
+; Needed as a fallback for systems that don't report events
+; on sysfs/procfs.
+;
+; Disable polling by setting the interval to 0.
+;
+; Default: 5
+poll-interval = 5
+
+label-full = Full
+label-full-foreground = ${colors.lightgrey}
+
+label-charging = Charging %percentage%%
+label-charging-foreground = ${colors.foreground}
+
+
+label-discharging = Discharging %percentage%%
+label-discharging-foreground = ${colors.foreground}
+
+time-format = %I:%M
+
+ramp-capacity-0 = "⚠"
+ramp-capacity-0-foreground = ${colors.red}
+ramp-capacity-1 = "⚠"
+ramp-capacity-1-foreground = ${colors.yellow}
+ramp-capacity-2 = "⚡"
+ramp-capacity-2-foreground = ${colors.yellow}
+ramp-capacity-3 = "⚡"
+ramp-capacity-3-foreground = ${colors.green}
+ramp-capacity-4 = "⚡"
+ramp-capacity-4-foreground = ${colors.green}
+
+format-full = <ramp-capacity> <label-full>
+format-full-padding = 0
+
+format-charging = <ramp-capacity> <label-charging>
+format-charging-padding = 0
+
+format-discharging = <ramp-capacity> <label-discharging>
+format-discharging-padding = 0
+
+[settings]
+screenchange-reload = true
+;compositing-background = xor
+;compositing-background = screen
+;compositing-foreground = source
+;compositing-border = over
+
+[global/wm]
+margin-top = 0
+margin-bottom = 0
+
+; vim:ft=dosini
