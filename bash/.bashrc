@@ -13,9 +13,11 @@
 # use extended pattern matching
 shopt -s extglob
 # check window size after each command
-shopt -qs checkwinsize
-# History
+shopt -s checkwinsize
+# don't overwrite history
 shopt -s histappend
+# save multiline cmd as one history entry
+shopt -s cmdhist
 HISTCONTROL=ignoredups
 HISTSIZE=1000
 # -----------------------------------------------------------------------------
