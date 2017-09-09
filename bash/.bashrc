@@ -40,54 +40,20 @@ set -o vi
 
 # Prompt {{{
 # -----------------------------------------------------------------------------
-# Colors {{{
-function set_colors() {
-    readonly COLOR_FG_BLACK="\[$(tput setaf 0)\]"
-    readonly COLOR_FG_DARKGREY="\[$(tput setaf 8)\]"
-
-    readonly COLOR_FG_DARKRED="\[$(tput setaf 1)\]"
-    readonly COLOR_FG_RED="\[$(tput setaf 9)\]"
-
-    readonly COLOR_FG_DARKGREEN="\[$(tput setaf 2)\]"
-    readonly COLOR_FG_GREEN="\[$(tput setaf 10)\]"
-
-    readonly COLOR_FG_DARKYELLOW="\[$(tput setaf 3)\]"
-    readonly COLOR_FG_YELLOW="\[$(tput setaf 11)\]"
-
-    readonly COLOR_FG_DARKBLUE="\[$(tput setaf 4)\]"
-    readonly COLOR_FG_BLUE="\[$(tput setaf 12)\]"
-
-    readonly COLOR_FG_DARKMAGENTA="\[$(tput setaf 5)\]"
-    readonly COLOR_FG_MAGENTA="\[$(tput setaf 13)\]"
-
-    readonly COLOR_FG_DARKCYAN="\[$(tput setaf 6)\]"
-    readonly COLOR_FG_CYAN="\[$(tput setaf 14)\]"
-
-    readonly COLOR_FG_LIGHTGREY="\[$(tput setaf 7)\]"
-    readonly COLOR_FG_WHITE="\[$(tput setaf 15)\]"
-
-    readonly COLOR_FG_DEFAULT="${COLOR_FG_LIGHTGREY}"
-
-    readonly COLOR_RESET="\[$(tput sgr0)\]"
-}
-# }}}
-
 # Hostname {{{
 function prompt_hostname() {
-    # check for ssh
     return
+    local -r user="\[\e[92m\]\\u"
+    local -r host="\[\e[94m\]\\h"
+    local -r separater="\[\e[37m\]@"
 
-    local -r user="${COLOR_RESET}${COLOR_FG_GREEN}\\u${COLOR_RESET}"
-    local -r host="${COLOR_RESET}${COLOR_FG_BLUE}\\h${COLOR_RESET}"
-    local -r delimiter="${COLOR_RESET}${COLOR_FG_DEFAULT}@${COLOR_RESET}"
-
-    echo "${user}${delimiter}${host} "
+    echo "${user}${separater}${host} "
 }
 # }}}
 
 # Directory {{{
 function prompt_directory() {
-    echo "${COLOR_FG_WHITE}\\w${COLOR_RESET}"
+    echo "\[\e[39m\]\\w"
 }
 # }}}
 
@@ -98,43 +64,41 @@ function prompt_git() {
     # check for repo
     git rev-parse --is-inside-work-tree >/dev/null 2>&1 || return
 
-    # colors and symbols
-    local -r branch_color="${COLOR_FG_MAGENTA}"
-
     # force git output in English
     local -r git_eng="env LANG=C git"
     # get current branch name or short SHA1 hash for detached head
-    local -r branch="${COLOR_RESET}${branch_color}$($git_eng symbolic-ref --short HEAD 2>/dev/null ||
-        $git_eng describe --tags --always 2>/dev/null)${COLOR_RESET}"
+    local -r branch="$($git_eng symbolic-ref --short HEAD 2>/dev/null ||
+        $git_eng describe --tags --always 2>/dev/null)"
 
-    echo "${COLOR_RESET}${COLOR_FG_DEFAULT}:${branch}${COLOR_RESET}"
+    # : is lightgrey and branch is magenta
+    echo "\[\e[37m\]:\[\e[95m\]${branch}"
 }
 # }}}
 
 function build_prompt() {
     # Get the exit code of last command
     local -r exit_code="$?"
-    # prompt prefix and suffix
-    local -r prefix="${COLOR_RESET}${COLOR_FG_DEFAULT}[ ${COLOR_RESET}"
-    local -r suffix="${COLOR_RESET}${COLOR_FG_DEFAULT} ]${COLOR_RESET}"
+
     # modules to add to prompt
     local -r modules="$(prompt_hostname)$(prompt_directory)$(prompt_git)"
 
     # Set privilege indicator color by exit code
     local prompt_privilege
     if [[ "${exit_code}" -eq "0" ]]; then
-        prompt_privilege="${COLOR_RESET}${COLOR_FG_DEFAULT}\$${COLOR_RESET}"
+        prompt_privilege="\[\e[39m\]\$"
     else
-        prompt_privilege="${COLOR_RESET}${COLOR_FG_RED}\$${COLOR_RESET}"
+        prompt_privilege="\[\e[91m\]\$"
     fi
 
+    # prompt prefix and suffix
+    local -r prefix="\[\e[0m\]\[\e[37m\][ "
+    local -r suffix="\[\e[37m\] ]${prompt_privilege}\[\e[0m\] "
+
     # Set the prompts
-    PS1="${prefix}${modules}${suffix}${prompt_privilege} "
-    PS2="${prefix}${COLOR_FG_YELLOW}>>>${COLOR_RESET}${suffix}${prompt_privilege} "
+    PS1="${prefix}${modules}${suffix}"
+    PS2="${prefix}\[\e[93m\]>>>${suffix}"
 }
 
-# Export colors to global variables for use in prompt
-set_colors
 # Set the prompts
 PROMPT_COMMAND=build_prompt
 # -----------------------------------------------------------------------------
