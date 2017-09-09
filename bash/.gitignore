@@ -1,0 +1,7 @@
+*
+!.gitignore
+
+!.bash_profile
+!.bashrc
+!.bash_logout
+!.inputrc
