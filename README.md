@@ -1,14 +1,14 @@
 # Dotfiles
-|                |                                                            |
-| -------------- | ---------------------------------------------------------- |
-| **OS:**        | [arch][info_os]                                            |
-| **Shell:**     | [bash][info_shell]                                         |
-| **WM:**        | [bspwm][info_wm]                                           |
-| **Terminal:**  | [urxvt][info_term]                                         |
-| **Font:**      | [source code pro][info_font] & [freetype2][font_rendering] |
-| **Colors:**    | [gruvbox][info_colors]                                     |
-| **Theme:**     | [arc][info_theme]                                          |
-| **Icons:**     | [surfn][info_icons]                                        |
+|               |                                                            |
+| ------------- | ---------------------------------------------------------- |
+| **OS**        | [arch][info_os]                                            |
+| **Shell**     | [bash][info_shell]                                         |
+| **WM**        | [bspwm][info_wm]                                           |
+| **Terminal**  | [urxvt][info_term]                                         |
+| **Font**      | [source code pro][info_font] & [freetype2][font_rendering] |
+| **Colors**    | [gruvbox][info_colors]                                     |
+| **Theme**     | [arc][info_theme]                                          |
+| **Icons**     | [surfn][info_icons]                                        |
 
 # Install
 
