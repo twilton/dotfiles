@@ -1,13 +1,14 @@
 # Dotfiles
-
-* OS: [arch][info_os]
-* Shell: [zsh][info_shell]
-* WM: [bspwm][info_wm]
-* Terminal: [urxvt][info_term]
-* Font: [source code pro][info_font] & [freetype2][font_rendering]
-* Colors: [gruvbox][info_colors]
-* Theme: [arc][info_theme]
-* Icons: [surfn][info_icons]
+|                |                                                            |
+| -------------- | ---------------------------------------------------------- |
+| **OS:**        | [arch][info_os]                                            |
+| **Shell:**     | [bash][info_shell]                                         |
+| **WM:**        | [bspwm][info_wm]                                           |
+| **Terminal:**  | [urxvt][info_term]                                         |
+| **Font:**      | [source code pro][info_font] & [freetype2][font_rendering] |
+| **Colors:**    | [gruvbox][info_colors]                                     |
+| **Theme:**     | [arc][info_theme]                                          |
+| **Icons:**     | [surfn][info_icons]                                        |
 
 # Install
 
@@ -28,7 +29,7 @@ stow vim
 ![Screenshot](https://github.com/twilton/dotfiles/raw/master/preview.png)
 
 [info_os]: https://www.archlinux.org/
-[info_shell]: http://www.zsh.org/
+[info_shell]: https://www.gnu.org/software/bash/
 [info_wm]: https://github.com/baskerville/bspwm
 [info_term]: http://software.schmorp.de/pkg/rxvt-unicode.html
 [info_font]: https://github.com/adobe-fonts/source-code-pro
