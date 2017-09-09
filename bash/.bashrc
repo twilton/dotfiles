@@ -98,37 +98,14 @@ function prompt_git() {
 
     # colors and symbols
     local -r branch_color="${COLOR_FG_MAGENTA}"
-    local -r modified_color="${COLOR_FG_YELLOW}"
-    local -r modified_symbol="*"
-    local -r push_color="${COLOR_FG_WHITE}"
-    local -r push_symbol="⇡"
-    local -r pull_color="${COLOR_FG_WHITE}"
-    local -r pull_symbol="⇣"
 
     # force git output in English
     local -r git_eng="env LANG=C git"
     # get current branch name or short SHA1 hash for detached head
     local -r branch="${COLOR_RESET}${branch_color}$($git_eng symbolic-ref --short HEAD 2>/dev/null ||
         $git_eng describe --tags --always 2>/dev/null)${COLOR_RESET}"
-    # get number of commits local branch is ahead/behind of remote
-    local -r stat="$($git_eng status --porcelain --branch | grep '^##' | grep -o '\[.\+\]$')"
-    local -r ahead="$(echo $stat | grep -o 'ahead [[:digit:]]\+' | grep -o '[[:digit:]]\+')"
-    local -r behind="$(echo $stat | grep -o 'behind [[:digit:]]\+' | grep -o '[[:digit:]]\+')"
 
-    local symbols
-    # if branch modified add symbol
-    if [[ -n "$($git_eng status --porcelain)" ]]; then
-        symbols+=" ${COLOR_RESET}${modified_color}${modified_symbol}${COLOR_RESET}"
-    fi
-    # if commits ahead/behind add symbol and num
-    if [[ -n "$ahead" ]]; then
-        symbols+=" ${COLOR_RESET}${push_color}${push_symbol}${ahead}${COLOR_RESET}"
-    fi
-    if [[ -n "$behind" ]]; then
-        symbols+=" ${COLOR_RESET}${pull_color}${pull_symbol}${behind}${COLOR_RESET}"
-    fi
-
-    echo "${COLOR_RESET}${COLOR_FG_DEFAULT}:${branch}${symbols}${COLOR_RESET}"
+    echo "${COLOR_RESET}${COLOR_FG_DEFAULT}:${branch}${COLOR_RESET}"
 }
 # }}}
 
