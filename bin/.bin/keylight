@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+
+# -----------------------------------------------------------------------------
+# keylight
+# Description: changes keyboard backlight level
+# -----------------------------------------------------------------------------
+# Requires:
+#   kbdlight
+# -----------------------------------------------------------------------------
+# Useage:      $ ./keylight {down|up|off|full}
+# -----------------------------------------------------------------------------
+
+function get_current() {
+    printf "%.0f" "$(light -Gk)"
+}
+
+function main() {
+    # name of module
+    local -r name='Keylight'
+    # change percentage
+    local -r level_amount='15'
+    local -r level_initial="$(get_current)"
+
+    case $1 in
+        down)
+            if [[ "${level_initial}" -gt 0 ]]; then
+                # set new keylight level
+                light -Ukr "${level_amount}"
+
+                # report new keylight level
+                notify-send "${name}" "${name} decreased to $(get_current)"
+            fi
+            ;;
+        up)
+            if [[ "${level_initial}" -lt 100 ]]; then
+                # set new keylight level
+                light -Akr "${level_amount}"
+
+                # report new keylight level
+                notify-send "${name}" "${name} increased to $(get_current)"
+            fi
+            ;;
+        off)
+            if [[ "${level_initial}" -gt 0 ]]; then
+                # set new keylight level
+                light -Skr 0
+
+                # report new keylight level
+                notify-send "${name}" "${name} Off"
+            fi
+            ;;
+        full)
+            if [[ "${level_initial}" -lt 100 ]]; then
+                # set new keylight level
+                light -Skr 255
+
+                # report new keylight level
+                notify-send "${name}" "${name} Full"
+            fi
+            ;;
+        *)
+            exit 2
+            ;;
+    esac
+}
+
+# main
+main "$@"

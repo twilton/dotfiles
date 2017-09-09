@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+# -----------------------------------------------------------------------------
+# audio
+# Description: changes audio output device
+# -----------------------------------------------------------------------------
+# Requires:    paswitch
+# -----------------------------------------------------------------------------
+# Useage:      $ ./audio {builtin|idac}
+# -----------------------------------------------------------------------------
+
+function main() {
+    # name of module
+    local -r name='Audio'
+
+    case $1 in
+        builtin)
+            # switch audio output to builtin dac
+            paswitch 'alsa_output.pci-0000_00_1b.0.analog-stereo'
+
+            # report
+            notify-send "${name}" "${name} switched to builtin"
+            ;;
+        idac)
+            # switch audio output to ifi idac
+            paswitch 'alsa_output.usb-iFi__by_AMR__iFi__by_AMR__HD_USB_Audio-00.analog-stereo'
+
+            # report new output device
+            notify-send "${name}" "${name} switched to idac"
+            ;;
+        *)
+            exit 2
+            ;;
+    esac
+}
+
+main "$@"

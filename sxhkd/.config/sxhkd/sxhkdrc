@@ -73,11 +73,11 @@ super + Return
 
 # Open launcher
 super + p
-    "$HOME/.bin/ui/bezel/spotlight/spotlight"
+    "$HOME/.bin/spotlight"
 
 # Open web browser
 super + w
-    inox
+    firefox
 
 # Open file manager
 super + r
@@ -92,50 +92,26 @@ super + n
 # Platform specific keys {{{
 # -----------------------------------------------------------------------------
 # Screen backlight control
-# @XF86MonBrightness{Down,Up}
-    # "$HOME/.bin/ui/bezel/backlight/backlight" {'down','up'}
-
-# shift + @XF86MonBrightness{Down,Up}
-    # "$HOME/.bin/ui/bezel/backlight/backlight" {'min','max'}
-
-# super + {F1,F2,shift + F1,shift + F2}
-    # "$HOME/.bin/ui/bezel/backlight/backlight" {'down','up','min','max'}
+{_,shift +} @XF86MonBrightness{Down,Up}
+    "$HOME/.bin/backlight" {'down','off','up','full'}
 
 # Application Control
-# XF86Launch{A,B}
-    # "$HOME/.bin/external_monitor" {'enable','disable'}
+{_,shift +} @XF86LaunchA
+    "$HOME/.bin/audio" {'idac','builtin'}
+
+# {_,shift +} @XF86LaunchB
 
 # Keyboard backlight control
-# XF86KbdBrightness{Down,Up}
-    # "$HOME/.bin/ui/bezel/keys/keys" {'down','up'}
-
-# shift + XF86KbdBrightness{Down,Up}
-    # "$HOME/.bin/ui/bezel/keys/keys" {'min','max'}
-
-# super + {F5,F6,shift + F5,shift + F6}
-    # "$HOME/.bin/ui/bezel/keys/keys" {'down','up','min','max'}
+{_,shift +} @XF86KbdBrightness{Down,Up}
+    "$HOME/.bin/keylight" {'down','off','up','full'}
 
 # Song control
-XF86Audio{Prev,Play,Next}
-    mpc {'prev','toggle','next'}
-
-super + {F7,F8,F9}
-    mpc {'prev','toggle','next'}
+@XF86Audio{Prev,Play,Next}
+    "$HOME/.bin/music" {'prev','toggle','next'}
 
 # Volume control
-# XF86Audio{Mute,LowerVolume,RaiseVolume}
-    # "$HOME/.bin/ui/bezel/volume/volume" {'toggle','down','up'}
-
-# shift + XF86Audio{LowerVolume,RaiseVolume}
-    # "$HOME/.bin/ui/bezel/volume/volume" {'min','max'}
-
-# super + {F10,F11,F12,shift + F11,shift + F12}
-    # "$HOME/.bin/ui/bezel/volume/volume" {'toggle','down','up','min','max'}
-
-super {_,shift +} a
-    paswitch \
-    {'alsa_output.usb-iFi__by_AMR__iFi__by_AMR__HD_USB_Audio-00.analog-stereo', \
-    'alsa_output.pci-0000_00_1b.0.analog-stereo'}
+{_,shift +} @XF86Audio{Mute,LowerVolume,RaiseVolume}
+    "$HOME/.bin/volume" {'toggle','toggle','down','off','up','full'}
 # -----------------------------------------------------------------------------
 # }}}
 

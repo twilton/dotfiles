@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+# -----------------------------------------------------------------------------
+# music
+# Description: changes music
+# -----------------------------------------------------------------------------
+# Requires:    mpc
+# -----------------------------------------------------------------------------
+# Useage:      $ ./music {toggle|prev|next|stop|play}
+# -----------------------------------------------------------------------------
+
+function main() {
+    # name of module
+    local -r name='Music'
+
+    case $1 in
+        toggle)
+            mpc -q toggle
+
+            # report
+            notify-send "${name}" "Playback toggled"
+            ;;
+        prev)
+            mpc -q prev
+
+            # report
+            notify-send "${name}" "Now playing $(mpc current)"
+            ;;
+        next)
+            mpc -q next
+
+            # report
+            notify-send "${name}" "Now playing $(mpc current)"
+            ;;
+        stop)
+            mpc -q stop
+
+            # report
+            notify-send "${name}" "Playback stopped"
+            ;;
+        pause)
+            mpc -q pause
+
+            # report
+            notify-send "${name}" "Playback paused"
+            ;;
+        play)
+            mpc -q play
+
+            # report
+            notify-send "${name}" "Now playing $(mpc current)"
+            ;;
+        *)
+            exit 2
+            ;;
+    esac
+}
+
+main "$@"

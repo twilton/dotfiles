@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+
+# -----------------------------------------------------------------------------
+# volume
+# Description: changes volume level via pulse
+# -----------------------------------------------------------------------------
+# Requires:    pamixer
+# -----------------------------------------------------------------------------
+# Useage:      $ ./volume {toggle|down|up|off|full}
+# -----------------------------------------------------------------------------
+
+function get_current() {
+    pamixer --get-volume
+}
+
+function play_blip() {
+    # audio played on volume change
+    local blip='/usr/share/sounds/freedesktop/stereo/audio-volume-change.oga'
+
+    # play volume change blip
+    if [[ -e "${blip}" ]]; then
+        paplay "${blip}"
+    fi
+}
+
+function main() {
+    # name of module
+    local -r name='Volume'
+    # change percentage
+    local -r level_percent='5'
+    # current light level
+    local -r level_initial="$(get_current)"
+
+    case $1 in
+        toggle)
+            # mute / unmute
+            pamixer -t
+
+            # report new volume level
+            if [[ "$(pamixer --get-mute)" == "true" ]]; then
+                notify-send "${name}" "${name} muted"
+            else
+                notify-send "${name}" "${name} unmuted"
+            fi
+
+            ;;
+        down)
+            if [[ "${level_initial}" -gt 0 ]]; then
+                # decrease volume by level_percent
+                pamixer -d "${level_percent}"
+
+                # play volume change blip
+                play_blip
+
+                # report new volume level
+                notify-send "${name}" "${name} decreased to $(get_current)%"
+            fi
+            ;;
+        up)
+            if [[ "${level_initial}" -lt 100 ]]; then
+                # increase volume by level_percent
+                pamixer -i "${level_percent}"
+
+                # play volume change blip
+                play_blip
+
+                # report new volume level
+                notify-send "${name}" "${name} increased to $(get_current)%"
+            fi
+            ;;
+        off)
+            if [[ "${level_initial}" -gt 0 ]]; then
+                # amixer -q set Master 0% unmute
+                pamixer --set-volume 0
+
+                # report new volume level
+                notify-send "${name}" "${name} decreased to 0%"
+            fi
+            ;;
+        full)
+            if [[ "${level_initial}" -lt 100 ]]; then
+                # amixer -q set Master 100% unmute
+                pamixer --set-volume 100
+
+                # report new volume level
+                notify-send "${name}" "${name} increased to 100%"
+            fi
+            ;;
+        *)
+            exit 2
+            ;;
+    esac
+}
+
+main "$@"

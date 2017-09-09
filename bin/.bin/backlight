@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+# -----------------------------------------------------------------------------
+# backlight
+# Description: changes backlight level
+# -----------------------------------------------------------------------------
+# Requires:
+#   light
+# -----------------------------------------------------------------------------
+# Useage:      $ ./backlight {down|up|off|full}
+# -----------------------------------------------------------------------------
+
+function get_current() {
+    printf "%.0f" "$(light -G)"
+}
+
+function main() {
+    # name of module
+    local -r name='Backlight'
+    # change percentage
+    local -r level_percent='5'
+    # current light level
+    local -r level_initial="$(get_current)"
+
+    case $1 in
+        down)
+            if [[ "${level_initial}" -gt 0 ]]; then
+                # set new backlight level
+                light -U "${level_percent}"
+
+                # report new backlight level
+                notify-send "${name}" "${name} decreased to $(get_current)"
+            fi
+            ;;
+        up)
+            if [[ "${level_initial}" -lt 100 ]]; then
+                # set new backlight level
+                light -A "${level_percent}"
+
+                # report new backlight level
+                notify-send "${name}" "${name} increased to $(get_current)"
+            fi
+            ;;
+        off)
+            if [[ "${level_initial}" -gt 0 ]]; then
+                # set new backlight level
+                light -S 0
+
+                # report new backlight level
+                notify-send "${name}" "${name} Off"
+            fi
+            ;;
+        full)
+            if [[ "${level_initial}" -lt 100 ]]; then
+                # set new backlight level
+                light -S 100
+
+                # report new backlight level
+                notify-send "${name}" "${name} Full"
+            fi
+            ;;
+        *)
+            exit 2
+            ;;
+    esac
+}
+
+# main
+main "$@"
