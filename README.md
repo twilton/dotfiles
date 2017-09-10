@@ -10,8 +10,7 @@
 
 # Install
 
-This repo is managed with [GNU stow][stow].
-**Warning:** _Backup_ your dotfiles!
+This repo is managed with [GNU stow][stow]. **Backup** your dotfiles!
 
 ```bash
 git clone git://github.com/twilton/dotfiles ~/.dotfiles
