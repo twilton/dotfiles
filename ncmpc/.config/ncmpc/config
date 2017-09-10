@@ -1,0 +1,169 @@
+# -----------------------------------------------------------------------------
+# config
+# Description: Config file for ncmpc
+# Location: $HOME/.config/ncmpc/config
+# -----------------------------------------------------------------------------
+
+# Connection {{{
+# -----------------------------------------------------------------------------
+# Connect to mpd running on a specified host
+host = localhost
+
+# Connect to mpd on the specified port.
+port = 6600
+
+# Reconnect after NUM seconds of MPD not responding.
+timeout = 60
+# -----------------------------------------------------------------------------
+# }}}
+
+# Interface {{{
+# -----------------------------------------------------------------------------
+# enable mouse support
+enable-mouse = no
+
+# list of screens to cycle through with tab/TAB
+screen-list = playlist browse
+
+# default search mode for the search screen
+#   0 - title, 1 - artist, 2 - album, 3 - filename, 4 - artist+title
+search-mode = 4
+
+# center the current track in playlist window?
+auto-center = no
+
+# Keep at least NUM lines above/below cursor
+# scroll offset = NUM
+
+# Show most recent query instead of blank line for find
+find-show-last = no
+
+# wrapped find mode
+find-wrap = yes
+
+# wraped cursor movement
+wrap-around = no
+
+# ring bell when find wraps around
+bell-on-wrap = no
+
+# bell on alerts?
+audible-bell = no
+
+# visual bell on alerts?
+visible-bell = no
+
+# default crossfade time in seconds
+crossfade-time = 0
+
+# seek by NUM seconds
+seek-time = 5
+
+# stops lyric download after timeout of NUM seconds
+lyrics-timeout = 30
+
+# jump searches only for prefix of entry
+jump-prefix-only = yes
+
+# save lyrics after retrieving them?
+lyrics-autosave = no
+
+# show name of plugin used to retrieve lyrics?
+lyrics-show-plugin = no
+
+# text editor used to edit lyrics
+text-editor = $EDITOR
+
+# ask before starting editor?
+text-editor-ask = yes
+# -----------------------------------------------------------------------------
+# }}}
+
+# Display {{{
+# -----------------------------------------------------------------------------
+# show list of screens on startup?
+welcome-screen-list = no
+
+# make cursor as wide as screen?
+wide-cursor = yes
+
+# use terminal cursor instead of inverse colors
+hardware-cursor = no
+
+# hide playlist cursor after NUM seconds of inactivity
+hide-cursor = 0
+
+# scroll title if too long
+scroll = yes
+
+# separator to show at end of scrolling title
+scroll-sep = " *** "
+
+# format used to display songs in main window
+list-format = "[[%artist% ── ]%title%]|%shortfile%"
+
+# format used to display songs in search window
+search-format = "[[%artist%[ (%album%)] ── ]%title%]|%shortfile%"
+
+# format used to display songs on status line
+status-format = "[[%artist%[ (%album%)] ── ]%title%]|%shortfile%"
+
+# time in NUM seconds that status messages display
+status-message-time = 2
+
+# display remaining or elapsed time in status window
+timedisplay-type = elapsed
+
+# show bitrate in status bar
+visible-bitrate = no
+
+# change xterm title?
+set-xterm-title = no
+
+# format used to display xterm title
+# xterm-title-format = ""
+# -----------------------------------------------------------------------------
+# }}}
+
+# Colors {{{
+# -----------------------------------------------------------------------------
+# enable colors?
+enable-colors = yes
+
+# don't change background
+color background = none
+
+# text color in title row
+color title = 15
+color title-bold = 15
+
+# line color in second row
+color line = 8
+# mpd flag color in second row
+color line-flags = 12
+
+# text color in main area
+color list = 7
+# text color of current song in main area
+color list-bold = 11
+
+# text color of directories in browser
+color browser-directory = 12
+# text color of playlists in browser
+color browser-playlist = 14
+
+# text color of progressbar
+color progressbar = 0
+
+# text color of playing / paused / ... in status window
+color status-state = 15
+# text color of current song in status window
+color status-song = 11
+# text color of time elapsed/remaining in status window
+color status-time = 15
+# text color of alerts in status window
+color alert = 13
+# -----------------------------------------------------------------------------
+# }}}
+
+# vim:foldmethod=marker:foldlevel=0

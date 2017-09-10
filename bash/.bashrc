@@ -139,6 +139,8 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 
+# ncmpc
+alias ncmpc="ncmpc -f $XDG_CONFIG_HOME/ncmpc/config"
 # Pacman / Pacaur
 alias syugit='pacaur -Syu --devel --needed'
 # }}}
