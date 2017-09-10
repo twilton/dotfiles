@@ -143,8 +143,9 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 
-# ncmpc
+# respect xdg standards
 alias ncmpc="ncmpc -f $XDG_CONFIG_HOME/ncmpc/config"
+alias tmux="tmux -f $XDG_CONFIG_HOME/tmux/tmux.conf"
 # Pacman / Pacaur
 alias syugit='pacaur -Syu --devel --needed'
 # }}}
