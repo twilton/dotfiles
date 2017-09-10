@@ -1,7 +1,6 @@
 # -----------------------------------------------------------------------------
-# zshrc
+# Name: zshrc
 # Description: Config file for zsh
-# -----------------------------------------------------------------------------
 # Location: $HOME/.zshrc
 # -----------------------------------------------------------------------------
 
@@ -10,6 +9,69 @@
 
 # Environment {{{
 # -----------------------------------------------------------------------------
+# Paths {{{
+# XDG Base Directory Specification
+# http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+
+# Set path
+export PATH="$HOME/.bin:$PATH"
+
+# History file
+HISTFILE="$HOME/.zsh/history"
+HISTSIZE=2000
+SAVEHIST=2000
+# }}}
+
+# Encoding {{{
+# Make UTF-8
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+# }}}
+
+# Programs {{{
+# Default Browser
+if [[ -x $(which firefox 2> /dev/null) ]]; then
+    export BROWSER='firefox'
+fi
+
+# Default Editor
+if [[ -x $(which vim 2> /dev/null) ]]; then
+    export EDITOR='vim'
+    export VISUAL=$EDITOR
+fi
+
+# Default Terminal
+if [[ -x $(which urxvtc 2> /dev/null) ]]; then
+    export TERMINAL='urxvtc'
+fi
+
+# Less options.
+if [[ -x $(which less 2> /dev/null) ]]
+then
+    export LESS='-F -g -i -M -R -S -w -X -z-4'
+fi
+
+# use gcc colors
+export GCC_COLORS=1
+
+# colored man pages
+export LESS_TERMCAP_mb=$'\E[01;31m'
+export LESS_TERMCAP_md=$'\E[01;31m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[01;34;07m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[01;32m'
+# }}}
+
+# Options {{{
+# History options
+setopt HIST_IGNORE_DUPS
+setopt INC_APPEND_HISTORY
+setopt SHARE_HISTORY
 # Allow brace character class list expansion.
 setopt BRACE_CCL
 # Combine zero-length punctuation characters (accents) with the base character.
@@ -32,57 +94,7 @@ unsetopt BG_NICE
 unsetopt HUP
 # Don't report on jobs when shell exit.
 unsetopt CHECK_JOBS
-
-# History
-HISTSIZE=2000
-SAVEHIST=2000
-HISTFILE="$HOME/.zsh/history"
-setopt HIST_IGNORE_DUPS
-setopt INC_APPEND_HISTORY
-setopt SHARE_HISTORY
-
-# XDG Base Directory Specification
-# http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_CACHE_HOME="$HOME/.cache"
-
-# Set path
-export PATH="$HOME/.bin:$PATH"
-
-# Make UTF-8
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-export LANGUAGE=en_US.UTF-8
-
-# use gcc colors
-export GCC_COLORS=1
-
-# colored man pages
-export LESS_TERMCAP_mb=$'\E[01;31m'
-export LESS_TERMCAP_md=$'\E[01;31m'
-export LESS_TERMCAP_me=$'\E[0m'
-export LESS_TERMCAP_se=$'\E[0m'
-export LESS_TERMCAP_so=$'\E[01;34;07m'
-export LESS_TERMCAP_ue=$'\E[0m'
-export LESS_TERMCAP_us=$'\E[01;32m'
-
-# Default Programs
-if [[ -x $(which inox 2> /dev/null) ]]; then
-    export BROWSER='inox'
-fi
-if [[ -x $(which vim 2> /dev/null) ]]; then
-    export EDITOR='vim'
-    export VISUAL=$EDITOR
-fi
-if [[ -x $(which urxvtc 2> /dev/null) ]]; then
-    export TERMINAL='urxvtc'
-fi
-
-# Less options.
-if [[ -x $(which less 2> /dev/null) ]]
-then
-    export LESS='-F -g -i -M -R -S -w -X -z-4'
-fi
+# }}}
 # -----------------------------------------------------------------------------
 # }}}
 
@@ -122,56 +134,112 @@ bindkey '\e[6~' end-of-history # pg down
 
 # Prompt {{{
 # -----------------------------------------------------------------------------
-function zle-keymap-select zle-line-init zle-line-finish {
-    local mode=""
-    local git=""
+# Update prompt info {{{
+# current directory
+function update_prompt_dir_info() {
+    prompt_dir_info="%{$fg_no_bold[white]%}%~"
+}
+
+# current git branch
+function update_prompt_git_info() {
     local prefix="%{$reset_color%}%{$fg[white]%}[ %{$reset_color%}"
     local suffix="%{$reset_color%}%{$fg[white]%} ]%{$reset_color%}"
 
     # get the current branch
-    local branch
-    branch="$(command git symbolic-ref --short --quiet HEAD 2>/dev/null)"
-    if [[ $? -eq 0 ]]; then
-       git="${prefix}%{$fg[magenta]%}${branch}${suffix}"
+    if [[ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" == "true" ]]; then
+        local branch="${prefix}%{$fg[magenta]%}$(git symbolic-ref --short --quiet HEAD 2>/dev/null)${suffix}"
     fi
 
+    prompt_git_info="${branch}"
+}
+
+# current keymap
+function update_prompt_keymap_info() {
+    local prefix="%{$reset_color%}%{$fg[white]%}[ %{$reset_color%}"
+    local suffix="%{$reset_color%}%{$fg[white]%} ]%{$reset_color%}"
+
+    # get the current keymap
     case $KEYMAP in
         main|viins)
-            mode="${prefix}%{$fg_bold[green]%}insert${suffix}"
+            local mode="${prefix}%{$fg_bold[green]%}insert${suffix}"
             ;;
         vicmd)
-            mode="${prefix}%{$fg_bold[red]%}normal${suffix}"
+            local mode="${prefix}%{$fg_bold[red]%}normal${suffix}"
             ;;
         vivis|vivli)
-            mode="${prefix}%{$fg_bold[blue]%}visual${suffix}"
+            local mode="${prefix}%{$fg_bold[blue]%}visual${suffix}"
             ;;
         # virep)
-            # mode="${prefix}%{$fg_bold[red]%}replace${suffix}"
+            # local mode="${prefix}%{$fg_bold[red]%}replace${suffix}"
             # ;;
+        *)
+            local mode="${prefix}%{$fg_bold[red]%}unknown${suffix}"
+            ;;
     esac
 
-    RPS1="${mode}${git}"
-    RPS2="${RPS1}"
+    prompt_keymap_info="${mode}"
+}
+# }}}
 
+# PROMPT {{{
+function left_prompt {
+    # set the color based on last command exit
+    local prompt_error_check="%(?.%{$fg_bold[blue]%}.%{$fg_bold[red]%})"
+    local prefix="%{$reset_color%}${prompt_error_check}[ %{$reset_color%}"
+    local suffix="%{$reset_color%}${prompt_error_check} ] %{$reset_color%}"
+
+    # set the left prompt
+    PS1="${prefix}${prompt_dir_info}${suffix}"
+    PS2="%{$reset_color%}${prompt_error_check}>%{$reset_color%}"
+}
+# }}}
+
+# RPROMPT {{{
+function right_prompt {
+    # set the right prompt
+    RPS1="${prompt_keymap_info}${prompt_git_info}"
+    RPS2="${RPS1}"
+}
+# }}}
+
+# reset prompts {{{
+function reset_prompts {
+    PS1=""
+    PS2=""
+    RPS1=""
+    RPS2=""
+}
+# }}}
+
+# special widgets {{{
+# Executed every time the line eitor is started to read a new line of input
+function zle-line-init {
+    update_prompt_dir_info
+    update_prompt_keymap_info
+    update_prompt_git_info
+    left_prompt
+    right_prompt
     zle reset-prompt
 }
+
+# Executed every time the keymap changes
+function zle-keymap-select {
+    update_prompt_keymap_info
+    right_prompt
+    zle reset-prompt
+}
+
+# declare special widgets
+zle -N zle-line-init
+zle -N zle-keymap-select
+zle -N edit-command-line
+# }}}
 
 # remove the useless space in the right prompt
 ZLE_RPROMPT_INDENT=0
 
-# set the color based on last command exit
-prompt_error_check="%(?.%{$fg_bold[blue]%}.%{$fg_bold[red]%})"
-
-# set the prompt init
-PS1="%{$reset_color%}${prompt_error_check}[%{$fg_no_bold[white]%} %~ ${prompt_error_check}]%{$reset_color%} "
-PS2="%{$reset_color%}${prompt_error_check}>%{$reset_color%} "
-RPS1=""
-RPS2=""
-
-zle -N zle-line-init
-zle -N zle-line-finish
-zle -N zle-keymap-select
-zle -N edit-command-line
+# clear prompt presets
+reset_prompts
 # -----------------------------------------------------------------------------
 # }}}
 
@@ -181,10 +249,6 @@ zle -N edit-command-line
 alias quit='exit'
 alias :q='quit'
 alias pls='sudo $(fc -ln -1)'
-
-# Shortforms
-alias c='clear'
-alias s='sudo'
 
 # Add 'protection'
 alias rm='rm -I'
@@ -198,6 +262,7 @@ alias umount='sudo umount'
 # Directories
 alias ..='cd ..'
 alias ...='cd ../..'
+alias ....='cd ../../..'
 
 # Network
 alias ping="ping -c 3"
@@ -210,8 +275,14 @@ alias grep='grep --color=auto'
 # Pacman / Pacaur
 alias syugit='pacaur -Syu --devel --needed'
 
-# passwords
-alias keys="kpcli --kdb ${HOME}/documents/local/cats"
+function sync_drive () {
+    grive -p "${HOME}/google_drive/"
+}
+
+function keys () {
+    kpcli --kdb "${HOME}/google_drive/Pass/cats.kdbx"
+    echo "Don't forget to sync changes!"
+}
 
 # auto-ls after changing directory
 cd () {
@@ -221,7 +292,7 @@ cd () {
 # make dir and cd into it
 function mkcd ()
 {
-    mkdir -p "$@" && eval cd "\"\$$#\"";
+    mkdir -p "$@" && eval cd "\"\$$#\""
 }
 
 # make systemctl more friendly
