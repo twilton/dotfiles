@@ -18,7 +18,7 @@ shopt -s checkwinsize
 shopt -s histappend
 # save multiline cmd as one history entry
 shopt -s cmdhist
-HISTCONTROL=ignoredups
+# increase history size
 HISTSIZE=1000
 # -----------------------------------------------------------------------------
 # }}}
@@ -78,6 +78,10 @@ function prompt_git() {
 function build_prompt() {
     # Get the exit code of last command
     local -r exit_code="$?"
+
+    # hack to have persistent history
+    #   run in subshell to avoid triggering DEBUG
+    (history -a)
 
     # modules to add to prompt
     local -r modules="$(prompt_hostname)$(prompt_directory)$(prompt_git)"
