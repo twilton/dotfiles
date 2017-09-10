@@ -47,7 +47,7 @@ xset +dpms
 xset dpms 0 0 300
 
 #calibrate display
-redshift &
+redshift -c "$XDG_CONFIG_HOME/redshift/redshift.conf" &
 # -----------------------------------------------------------------------------
 # }}}
 
