@@ -33,7 +33,7 @@ search-mode = 4
 auto-center = no
 
 # Keep at least NUM lines above/below cursor
-# scroll offset = NUM
+# scroll offset = 10
 
 # Show most recent query instead of blank line for find
 find-show-last = no
@@ -138,7 +138,7 @@ color title = 15
 color title-bold = 15
 
 # line color in second row
-color line = 8
+color line = 0
 # mpd flag color in second row
 color line-flags = 12
 
