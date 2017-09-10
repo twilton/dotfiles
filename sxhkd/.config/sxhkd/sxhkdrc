@@ -81,11 +81,11 @@ super + w
 
 # Open file manager
 super + r
-    urxvtc -e ranger
+    urxvtc -e 'ranger'
 
 # Open music player
 super + n
-    urxvtc -e ncmpcpp
+    urxvtc -e 'ncmpc' -f "$XDG_CONFIG_HOME/ncmpc/config"
 # -----------------------------------------------------------------------------
 # }}}
 
