@@ -9,7 +9,7 @@
 # -----------------------------------------------------------------------------
 # restart / quit window manager
 super + shift + q
-    "$HOME/.bin/ui/window_manager/bspwm_close"
+    bspc quit
 
 # reload sxhkd
 super + shift + r
