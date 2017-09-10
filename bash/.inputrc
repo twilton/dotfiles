@@ -39,8 +39,8 @@ set show-all-if-ambiguous on
 # show editing mode in readline prompt
 set show-mode-in-prompt on
 # [ insert ] : [ normal ]
-set vi-ins-mode-string "\1\e[0m\2\1\e[37m\2\[ \1\e[0m\2\1\e[92m\2insert\1\e[0m\2\1\e[37m\2 \]\1\e[0m\2"
-set vi-cmd-mode-string "\1\e[0m\2\1\e[37m\2\[ \1\e[0m\2\1\e[91m\2normal\1\e[0m\2\1\e[37m\2 \]\1\e[0m\2"
+set vi-ins-mode-string "\1\e[0m\2\1\e[37m\2\[ \1\e[92m\2insert\1\e[37m\2 \]\1\e[0m\2"
+set vi-cmd-mode-string "\1\e[0m\2\1\e[37m\2\[ \1\e[91m\2normal\1\e[37m\2 \]\1\e[0m\2"
 
 # Color files by types
 set colored-stats On
