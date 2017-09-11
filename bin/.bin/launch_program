@@ -1,0 +1,153 @@
+#!/usr/bin/env bash
+
+# -----------------------------------------------------------------------------
+# spotlight
+# Description: App launcher
+# -----------------------------------------------------------------------------
+# Requires:
+#   dmenu
+# -----------------------------------------------------------------------------
+# Useage:      $ ./spotlight
+# -----------------------------------------------------------------------------
+
+# open the file_manager
+#   programs are prioritized in this order:
+#   1. ranger
+function open_file_manager() {
+    # check for ranger
+    if [[ -x "$(which ranger 2> /dev/null)" ]] && [[ -x "$(which urxvtc 2> /dev/null)" ]] && [[ -n "$(pidof urxvtd 2> /dev/null)" ]]; then
+        urxvtc -e 'ranger'
+
+    # didn't find anything
+    else
+        notify-send "Error" "Could not find a file manager"
+        exit 2
+    fi
+}
+
+# open the music_player
+#   programs are prioritized in this order:
+#   1. ncmpc
+function open_music_player() {
+    # check for ncmpc
+    if [[ -x "$(which ncmpc 2> /dev/null)" ]] && [[ -x "$(which urxvtc 2> /dev/null)" ]] && [[ -n "$(pidof urxvtd 2> /dev/null)" ]]; then
+        # ncmpc doesn't follow xdg standards so specify config file that does
+        if [[ -n "$XDG_CONFIG_HOME" ]]; then
+            local -r config="$XDG_CONFIG_HOME/ncmpc/config"
+        else
+            local -r config="$HOME/.config/ncmpc/config"
+        fi
+
+        # check if config is readable; use it if true
+        if [[ -r "$config" ]]; then
+            urxvtc -e 'ncmpc' -f "$config"
+        else
+            urxvtc -e 'ncmpc'
+        fi
+
+    # didn't find anything
+    else
+        notify-send "Error" "Could not find a music player"
+        exit 2
+    fi
+}
+
+# open the spotlight
+#   programs are prioritized in this order:
+#   1. dmenu
+function open_spotlight() {
+    # spotlight size
+    local -r spotlight_width="1000"
+    local -r spotlight_height="70"
+    # monitor size
+    local -r monitor_width="2880"
+    local -r monitor_height="1800"
+
+    # spotlight font
+    local -r font="Source Code Pro:regular:size=12"
+    # spotlight normal colors
+    local -r color_nf="#282828"
+    local -r color_nb="#a89984"
+    # spotlight selected colors
+    local -r color_sf="#fabd2f"
+    local -r color_sb="#504945"
+
+    # spotlight screen position
+    local -r x_pos="$(( (${monitor_width} - ${spotlight_width}) / 2 ))"
+    local -r y_pos="$(( ${monitor_height} / 3 ))"
+
+    # check for dmenu
+    if [[ -x "$(which dmenu_run 2> /dev/null)" ]]; then
+        dmenu_run -h "${spotlight_height}" -w "${spotlight_width}" -l "3" -x "${x_pos}" -y "${y_pos}" -fn "${font}" -nb "${color_nb}" -nf "${color_nf}" -sb "${color_sb}" -sf "${color_sf}" -q -i
+
+    # didn't find anything
+    else
+        notify-send "Error" "Could not find a spotlight"
+        exit 2
+    fi
+}
+
+# open the terminal
+#   programs are prioritized in this order:
+#   1. urxvtc
+function open_terminal() {
+    # check for ranger
+    if [[ -x "$(which urxvtc 2> /dev/null)" ]] && [[ -n "$(pidof urxvtd 2> /dev/null)" ]]; then
+        urxvtc
+
+    # didn't find anything
+    else
+        notify-send "Error" "Could not find a terminal"
+        exit 2
+    fi
+}
+
+# open the web_browser
+#   programs are prioritized in this order:
+#   1. $BRWOSER
+#   2. firefox
+#   3. chromium
+function open_web_browser() {
+    # check for $BROWSER
+    if [[ -n "$BROWSER" ]] && [[ -x "$(which $BROWSER 2> /dev/null)" ]]; then
+        "$BROWSER"
+
+    # check for firefox
+    elif [[ -x "$(which firefox 2> /dev/null)" ]]; then
+        firefox
+
+    # check for chromium
+    elif [[ -x "$(which chromium 2> /dev/null)" ]]; then
+        chromium
+
+    # didn't find anything
+    else
+        notify-send "Error" "Could not find a web browser"
+        exit 2
+    fi
+}
+
+function main() {
+    case "$1" in
+        file_manager)
+            open_file_manager
+            ;;
+        music_player)
+            open_music_player
+            ;;
+        spotlight)
+            open_spotlight
+            ;;
+        terminal)
+            open_terminal
+            ;;
+        web_browser)
+            open_web_browser
+            ;;
+        *)
+            exit 2
+            ;;
+    esac
+}
+
+main "$@"

@@ -19,10 +19,6 @@ super + shift + r
 
 # Window Manager {{{
 # -----------------------------------------------------------------------------
-# focus last monitor
-super + Tab
-    bspc monitor -f 'last'
-
 # Change to desktop n
 super + {1-9,0}
     bspc desktop -f {1-9,10}
@@ -36,7 +32,7 @@ super + bracket{left,right}
     bspc desktop -f {'prev','next'}'.local'
 
 # Rotate through available layouts
-super + space
+super + shift + m
     bspc desktop -l 'next'
 
 # close node
@@ -44,12 +40,16 @@ super + c
     bspc node -c
 
 # change node tile method
-super + {t,f,m}
-    bspc node -t {'tiled','~floating','~fullscreen'}
+super + {t,shift + t,f,m}
+    bspc node -t {'tiled','~pseudo_tiled','~floating','~fullscreen'}
 
 # change to selected node by location
 super + {h,j,k,l}
     bspc node -f {'west','south','north','east'}'.local'
+
+# focus next/previous node in current desktop
+super + {_,shift + }Tab
+    bspc node -f {next,prev}.local
 
 # resize focused node
 super + shift + {h,j,k,l}
@@ -69,23 +69,24 @@ super + ctrl + {h,j,k,l}
 # -----------------------------------------------------------------------------
 # Open new terminal
 super + Return
-    urxvtc
+    "$HOME/.bin/launch_program" 'terminal'
 
 # Open launcher
 super + p
-    "$HOME/.bin/spotlight"
+    "$HOME/.bin/launch_program" 'spotlight'
 
 # Open web browser
 super + w
-    firefox
+    "$HOME/.bin/launch_program" 'web_browser'
+
 
 # Open file manager
 super + r
-    urxvtc -e 'ranger'
+    "$HOME/.bin/launch_program" 'file_manager'
 
 # Open music player
 super + n
-    urxvtc -e 'ncmpc' -f "$XDG_CONFIG_HOME/ncmpc/config"
+    "$HOME/.bin/launch_program" 'music_player'
 # -----------------------------------------------------------------------------
 # }}}
 

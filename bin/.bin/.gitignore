@@ -1,10 +1,11 @@
 *
 !.gitignore
 
+!audio
+!backlight
 !colorzip
 !ipv6
-!backlight
-!audio
 !keylight
+!launch_program
 !music
 !volume
