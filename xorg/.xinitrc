@@ -17,7 +17,7 @@ if [ -d /etc/X11/xinit/xinitrc.d ]; then
 fi
 
 # xresources
-[[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
+[ -r "$HOME/.Xresources" ] && xrdb -merge -I"$HOME" "$HOME/.Xresources"
 # -----------------------------------------------------------------------------
 # }}}
 
@@ -34,27 +34,37 @@ xset fp rehash
 # Display {{{
 # -----------------------------------------------------------------------------
 # terminal
-urxvtd -q -f -o
+if [ -x "$(which urxvtd 2> /dev/null)" ]; then
+    urxvtd -q -f -o
+fi
 
 # menubar
-polybar top &
+if [ -x "$(which polybar 2> /dev/null)" ]; then
+    polybar top &
+fi
 
 # wallpaper
-nitrogen --restore &
+if [ -x "$(which nitrogen 2> /dev/null)" ]; then
+    nitrogen --restore &
+fi
 
 # screen powersave
 xset +dpms
 xset dpms 0 0 300
 
 #calibrate display
-redshift -c "$XDG_CONFIG_HOME/redshift/redshift.conf" &
+if [ -x "$(which redshift 2> /dev/null)" ] && [ -n "$XDG_CONFIG_HOME" ] && [ -r "$XDG_CONFIG_HOME/.config/redshift/redshift.conf" ]; then
+    redshift -c "$XDG_CONFIG_HOME/redshift/redshift.conf" &
+fi
 # -----------------------------------------------------------------------------
 # }}}
 
 # Sound {{{
 # -----------------------------------------------------------------------------
 # mpd
-mpd &
+if [ -x "$(which mpd 2> /dev/null)" ]; then
+    mpd &
+fi
 # -----------------------------------------------------------------------------
 # }}}
 
@@ -64,17 +74,23 @@ mpd &
 xset r rate 200 35
 
 # mouse
-xsetroot -cursor_name left_ptr
-unclutter &
+xsetroot -cursor_name 'left_ptr'
+if [ -x "$(which unclutter 2> /dev/null)" ]; then
+    unclutter &
+fi
 
 # hotkeys
-sxhkd &
+if [ -x "$(which sxhkd 2> /dev/null)" ]; then
+    sxhkd &
+fi
 # -----------------------------------------------------------------------------
 # }}}
 
 # Window Manager {{{
 # -----------------------------------------------------------------------------
-exec bspwm
+if [ -x "$(which bspwm 2> /dev/null)" ]; then
+    exec bspwm
+fi
 # -----------------------------------------------------------------------------
 # }}}
 

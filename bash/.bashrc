@@ -14,6 +14,7 @@
 shopt -s extglob
 # check window size after each command
 shopt -s checkwinsize
+
 # don't overwrite history
 shopt -s histappend
 # save multiline cmd as one history entry
@@ -129,8 +130,6 @@ alias ping="ping -c 3"
 alias quit='exit'
 alias :q='exit'
 alias pls='sudo $(fc -ln -1)'
-alias mount='sudo mount'
-alias umount='sudo umount'
 
 # Directories
 alias ..='cd ..'
@@ -138,22 +137,45 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 
 # Respect XDG Standards
-alias ncmpc="ncmpc -f $XDG_CONFIG_HOME/ncmpc/config"
-alias tmux="tmux -f $XDG_CONFIG_HOME/tmux/tmux.conf"
+if [[ -n "$XDG_CONFIG_HOME" ]]; then
+    # ncmpc
+    if [[ -x "$(which ncmpc 2> /dev/null)" ]] && [[ -r "$XDG_CONFIG_HOME/ncmpc/config" ]]; then
+        alias ncmpc="ncmpc -f $XDG_CONFIG_HOME/ncmpc/config"
+    fi
+
+    # tmux
+    if [[ -x "$(which tmux 2> /dev/null)" ]] && [[ -r "$XDG_CONFIG_HOME/.config/tmux/tmux.conf" ]]; then
+        alias tmux="tmux -f $XDG_CONFIG_HOME/tmux/tmux.conf"
+    fi
+
+    # redshift
+    if [[ -x "$(which redshift 2> /dev/null)" ]] && [[ -r "$XDG_CONFIG_HOME/redshift/redshift.conf" ]]; then
+        alias redshift="redshift -c $XDG_CONFIG_HOME/redshift/redshift.conf"
+    fi
+fi
 
 # Pacman / Pacaur
-alias syugit='pacaur -Syu --devel --needed'
+if [[ -x "$(which pacaur 2> /dev/null)" ]]; then
+    alias syugit='pacaur -Syu --devel --needed'
+fi
 # }}}
 
 # Functions {{{
 # google drive
 function sync_drive () {
-    grive -p "${HOME}/google_drive/"
+    if [[ -x "$(which grive 2> /dev/null)" ]]; then
+        grive -p "$HOME/google_drive/"
+    fi
 }
 
 # keepasscli
 function keys () {
-    kpcli --kdb "${HOME}/google_drive/Pass/cats.kdbx"
+    if [[ -x "$(which kpcli 2> /dev/null)" ]]; then
+        kpcli --kdb "$HOME/google_drive/Pass/cats.kdbx"
+
+        # reset terminal
+        reset
+    fi
 }
 
 # make dir and cd into it
@@ -164,7 +186,7 @@ function mkcd ()
 
 # easier extraction
 extract () {
-    if [ -f $1 ] ; then
+    if [[ -f "$1" ]]; then
         case $1 in
             *.tar.bz2) tar xvjf $1;;
             *.tar.gz) tar xvzf $1;;
@@ -190,17 +212,17 @@ extract () {
 # Plugins {{{
 # -----------------------------------------------------------------------------
 # use bash completion if available
-if [[ -n "$PS1" ]] && [[ -f '/usr/share/bash-completion/bash_completion' ]]; then
+if [[ -n "$PS1" ]] && [[ -r '/usr/share/bash-completion/bash_completion' ]]; then
     . '/usr/share/bash-completion/bash_completion'
 fi
 
 # use fzf fuzzy finder if available
-if [[ -n "$PS1" ]] && [[ -f '/usr/share/fzf/completion.bash' ]]; then
+if [[ -n "$PS1" ]] && [[ -r '/usr/share/fzf/completion.bash' ]]; then
     . '/usr/share/fzf/completion.bash'
 
     # use provided keybinds in available
     #   need to be below `set -o vi` to preserve bindings
-    if [[ -f '/usr/share/fzf/key-bindings.bash' ]]; then
+    if [[ -r '/usr/share/fzf/key-bindings.bash' ]]; then
         . '/usr/share/fzf/key-bindings.bash'
     fi
 
@@ -211,6 +233,7 @@ if [[ -n "$PS1" ]] && [[ -f '/usr/share/fzf/completion.bash' ]]; then
     #   prioritize ripgrep, ag, find
     if [[ -x "$(which rg 2> /dev/null)" ]]; then
         FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git}" 2> /dev/null'
+        FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
     elif [[ -x "$(which ag 2> /dev/null)" ]]; then
         FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
     fi
