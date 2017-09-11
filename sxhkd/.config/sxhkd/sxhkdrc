@@ -69,24 +69,24 @@ super + ctrl + {h,j,k,l}
 # -----------------------------------------------------------------------------
 # Open new terminal
 super + Return
-    "$HOME/.bin/launch_program" 'terminal'
+    "$HOME/.bin/open_program" 'terminal'
 
 # Open launcher
 super + p
-    "$HOME/.bin/launch_program" 'spotlight'
+    "$HOME/.bin/open_program" 'spotlight'
 
 # Open web browser
 super + w
-    "$HOME/.bin/launch_program" 'web_browser'
+    "$HOME/.bin/open_program" 'web_browser'
 
 
 # Open file manager
 super + r
-    "$HOME/.bin/launch_program" 'file_manager'
+    "$HOME/.bin/open_program" 'file_manager'
 
 # Open music player
 super + n
-    "$HOME/.bin/launch_program" 'music_player'
+    "$HOME/.bin/open_program" 'music_player'
 # -----------------------------------------------------------------------------
 # }}}
 
