@@ -20,14 +20,8 @@ shopt -s histappend
 shopt -s cmdhist
 # increase history size
 HISTSIZE=1000
-# -----------------------------------------------------------------------------
-# }}}
-
-# Plugins {{{
-# -----------------------------------------------------------------------------
-# use bash completion if available
-[[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && \
-    . /usr/share/bash-completion/bash_completion
+# delete duplicate entries
+HISTCONTROL=erasedups
 # -----------------------------------------------------------------------------
 # }}}
 
@@ -190,6 +184,37 @@ extract () {
     fi
 }
 # }}}
+# -----------------------------------------------------------------------------
+# }}}
+
+# Plugins {{{
+# -----------------------------------------------------------------------------
+# use bash completion if available
+if [[ -n "$PS1" ]] && [[ -f '/usr/share/bash-completion/bash_completion' ]]; then
+    . '/usr/share/bash-completion/bash_completion'
+fi
+
+# use fzf fuzzy finder if available
+if [[ -n "$PS1" ]] && [[ -f '/usr/share/fzf/completion.bash' ]]; then
+    . '/usr/share/fzf/completion.bash'
+
+    # use provided keybinds in available
+    #   need to be below `set -o vi` to preserve bindings
+    if [[ -f '/usr/share/fzf/key-bindings.bash' ]]; then
+        . '/usr/share/fzf/key-bindings.bash'
+    fi
+
+    # disable mouse and use 16 colors in fzf
+    FZF_DEFAULT_OPTS='--no-mouse --color=16'
+
+    # find hidden files, don't search .git
+    #   prioritize ripgrep, ag, find
+    if [[ -x "$(which rg 2> /dev/null)" ]]; then
+        FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git}" 2> /dev/null'
+    elif [[ -x "$(which ag 2> /dev/null)" ]]; then
+        FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
+    fi
+fi
 # -----------------------------------------------------------------------------
 # }}}
 
