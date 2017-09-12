@@ -18,7 +18,7 @@ servers = (
 );
 
 chatnets = {
-  Rizon = {
+  Rizon = { 
     type = "IRC";
     max_kicks = "1";
     max_msgs = "3";
@@ -27,14 +27,6 @@ chatnets = {
   freenode = { type = "IRC"; };
 };
 
-settings = {
-  core = {
-    real_name = "twilton";
-    user_name = "twilton";
-    nick = "twilton";
-  };
-  "fe-text" = { actlist_sort = "refnum"; };
-};
 statusbar = {
   default = {
     window = {
@@ -51,3 +43,19 @@ statusbar = {
     };
   };
 };
+
+settings = {
+  core = { 
+    real_name = "twilton";
+    user_name = "twilton";
+    nick = "twilton";
+  };
+  "fe-common/core" = { theme = "clean-default"; };
+  "fe-text" = { actlist_sort = "refnum"; };
+};
+
+hilights = ( { text = "twilton"; nick = "yes"; word = "yes"; } );
+
+windows = { };
+logs = { };
+ignores = ( );
