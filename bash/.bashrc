@@ -144,7 +144,7 @@ if [[ -n "$XDG_CONFIG_HOME" ]]; then
     fi
 
     # tmux
-    if [[ -x "$(which tmux 2> /dev/null)" ]] && [[ -r "$XDG_CONFIG_HOME/.config/tmux/tmux.conf" ]]; then
+    if [[ -x "$(which tmux 2> /dev/null)" ]] && [[ -r "$XDG_CONFIG_HOME/tmux/tmux.conf" ]]; then
         alias tmux="tmux -f $XDG_CONFIG_HOME/tmux/tmux.conf"
     fi
 
