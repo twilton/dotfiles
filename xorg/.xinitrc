@@ -53,7 +53,7 @@ xset +dpms
 xset dpms 0 0 300
 
 #calibrate display
-if [ -x "$(which redshift 2> /dev/null)" ] && [ -n "$XDG_CONFIG_HOME" ] && [ -r "$XDG_CONFIG_HOME/.config/redshift/redshift.conf" ]; then
+if [ -x "$(which redshift 2> /dev/null)" ] && [ -n "$XDG_CONFIG_HOME" ] && [ -r "$XDG_CONFIG_HOME/redshift/redshift.conf" ]; then
     redshift -c "$XDG_CONFIG_HOME/redshift/redshift.conf" &
 fi
 # -----------------------------------------------------------------------------
