@@ -75,7 +75,7 @@ function open_spotlight() {
 
     # check for dmenu
     if [[ -x "$(which dmenu_run 2> /dev/null)" ]]; then
-        dmenu_run -h "${spotlight_height}" -w "${spotlight_width}" -l "3" -x "${x_pos}" -y "${y_pos}" -fn "${font}" -nb "${color_nb}" -nf "${color_nf}" -sb "${color_sb}" -sf "${color_sf}" -q -i
+        networkmanager_dmenu -h "${spotlight_height}" -w "${spotlight_width}" -l "3" -x "${x_pos}" -y "${y_pos}" -fn "${font}" -nb "${color_nb}" -nf "${color_nf}" -sb "${color_sb}" -sf "${color_sf}" -q -i
 
     # didn't find anything
     else

@@ -10,11 +10,11 @@
 # Useage:      $ ./keylight {down|up|off|full}
 # -----------------------------------------------------------------------------
 
-function get_current() {
+get_current() {
     printf "%.0f" "$(light -Gk)"
 }
 
-function main() {
+main() {
     # name of module
     local -r name='Keylight'
     # change percentage
@@ -57,6 +57,9 @@ function main() {
                 # report new keylight level
                 notify-send "${name}" "${name} Full"
             fi
+            ;;
+        "")
+            echo -e "\e[37mKeylight:\e[39m ${level_initial}%"
             ;;
         *)
             exit 2

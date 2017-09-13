@@ -9,7 +9,58 @@
 # Useage:      $ ./music {toggle|prev|next|stop|play}
 # -----------------------------------------------------------------------------
 
-function main() {
+get_current() {
+    # set colors
+    local -r color_fg="\e[37m"
+    local -r color_reset="\e[39m"
+
+    # nothing is currently playing or paused
+    if [[ -z "$(mpc current)" ]]; then
+        echo -e "${color_fg}Playlist Empty${color_reset}"
+
+    # something is playing or paused
+    else
+        # get individual mpc current fields for formatting
+        local -r artist=$( mpc -f "[%artist%]" | head -n 1 )
+        local -r title=$( mpc -f "[%title%]" | head -n 1 )
+        local -r album=$( mpc -f "[%album%]" | head -n 1 )
+        local -r file=$( mpc -f "[%file%]" | head -n 1 )
+        # set the colors to use for fields
+        local -r color_artist="\e[94m"
+        local -r color_title="\e[93m"
+        local -r color_album="\e[36m"
+
+        # has artist, title and album
+        if [[ -n "${artist}" ]] && [[ -n "${title}" ]] && [[ -n "${album}" ]]; then
+            echo -e "${color_artist}${artist}${color_fg} (${color_album}${album}${color_fg}) - ${color_title}${title}${color_reset}"
+
+            # has artist and title but not album
+        elif [[ -n "${artist}" ]] && [[ -n "${title}" ]]; then
+            echo -e "${color_artist}${artist}${color_fg} - ${color_title}${title}${color_reset}"
+
+            # has artist and album but not title
+        elif [[ -n "${artist}" ]] && [[ -n "${album}" ]]; then
+            echo -e "${color_artist}${artist}${color_fg} (${color_album}${album}${color_fg}) - ${color_title}Unknown Title${color_reset}"
+
+            # has title and album but not artist
+        elif [[ -n "${title}" ]] && [[ -n "${album}" ]]; then
+            echo -e "${color_artist}Unknown Artist${color_fg} (${color_album}${album}${color_fg}) - ${color_title}${title}${color_reset}"
+
+            # has only title
+        elif [[ -n "${title}" ]]; then
+            echo -e "${color_title}${title}${color_reset}"
+
+            # has only artist or album
+        elif [[ -n "${artist}" ]] || [[ -n "${album}" ]]; then
+            echo -e "${color_artist}${artist}${color_reset}"
+            # no artist, title or album
+        else
+            echo -e "${color_fg}${file}${color_reset}"
+        fi
+    fi
+}
+
+main() {
     # name of module
     local -r name='Music'
 
@@ -49,6 +100,9 @@ function main() {
 
             # report
             notify-send "${name}" "Now playing $(mpc current)"
+            ;;
+        "")
+            echo -e "\e[37mMusic: \e[39m$(get_current)"
             ;;
         *)
             exit 2

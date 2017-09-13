@@ -10,11 +10,11 @@
 # Useage:      $ ./backlight {down|up|off|full}
 # -----------------------------------------------------------------------------
 
-function get_current() {
+get_current() {
     printf "%.0f" "$(light -G)"
 }
 
-function main() {
+main() {
     # name of module
     local -r name='Backlight'
     # change percentage
@@ -59,6 +59,10 @@ function main() {
                 notify-send "${name}" "${name} Full"
             fi
             ;;
+        "")
+            echo -e "\e[37mBacklight:\e[39m ${level_initial}%"
+            ;;
+
         *)
             exit 2
             ;;

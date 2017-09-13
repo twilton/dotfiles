@@ -9,11 +9,11 @@
 # Useage:      $ ./volume {toggle|down|up|off|full}
 # -----------------------------------------------------------------------------
 
-function get_current() {
+get_current() {
     pamixer --get-volume
 }
 
-function play_blip() {
+play_blip() {
     # audio played on volume change
     local blip='/usr/share/sounds/freedesktop/stereo/audio-volume-change.oga'
 
@@ -23,7 +23,7 @@ function play_blip() {
     fi
 }
 
-function main() {
+main() {
     # name of module
     local -r name='Volume'
     # change percentage
@@ -84,6 +84,13 @@ function main() {
 
                 # report new volume level
                 notify-send "${name}" "${name} increased to 100%"
+            fi
+            ;;
+        "")
+            if [[ "$(pamixer --get-mute)" == "true" ]]; then
+                echo -e "\e[37mVolume:\e[39m Muted"
+            else
+                echo -e "\e[37mVolume:\e[39m ${level_initial}%"
             fi
             ;;
         *)

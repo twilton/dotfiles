@@ -9,7 +9,7 @@
 # Useage:      $ ./audio {builtin|idac}
 # -----------------------------------------------------------------------------
 
-function main() {
+main() {
     # name of module
     local -r name='Audio'
 
