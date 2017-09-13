@@ -107,9 +107,6 @@ set fileformats=unix,mac,dos
 " vim-plug plugin manager
 call plug#begin($XDG_CONFIG_HOME . "/vim/plugged")
 
-" colorscheme
-" Plug 'morhetz/gruvbox'
-
 " buffers in tabline
 Plug 'ap/vim-buftabline'
 
