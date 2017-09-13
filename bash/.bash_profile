@@ -26,6 +26,8 @@ export LANGUAGE='en_US.UTF-8'
 # Default Browser
 if [[ -x "$(which firefox 2> /dev/null)" ]]; then
     export BROWSER='firefox'
+elif [[ -x "$(which chromium 2> /dev/null)" ]]; then
+    export BROWSER='chromium'
 fi
 
 # Default Editor
