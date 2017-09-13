@@ -38,11 +38,6 @@ if [ -x "$(which urxvtd 2> /dev/null)" ]; then
     urxvtd -q -f -o
 fi
 
-# menubar
-if [ -x "$(which polybar 2> /dev/null)" ]; then
-    polybar top &
-fi
-
 # wallpaper
 if [ -x "$(which nitrogen 2> /dev/null)" ]; then
     nitrogen --restore &
