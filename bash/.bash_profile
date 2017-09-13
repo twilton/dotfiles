@@ -7,9 +7,15 @@
 
 # Paths {{{
 # XDG Base Directory Specification
-# http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
+#   http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
+# user directories
+#   XDG_RUNTIME_DIR is set by pam_systemd
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_DATA_HOME="$HOME/.local/share"
+# system directories
+export XDG_DATA_DIRS="/usr/local/share:/usr/share"
+export XDG_CONFIG_DIRS="/etc/xdg"
 
 # Add local bin to path
 export PATH="$HOME/.bin:$PATH"
@@ -32,6 +38,12 @@ fi
 
 # Default Editor
 if [[ -x "$(which vim 2> /dev/null)" ]]; then
+
+    # make vim respect XDG
+    if [[ -n "$XDG_CONFIG_HOME" ]] && [[ -r "$XDG_CONFIG_HOME/vim/vimrc" ]]; then
+        export VIMINIT="$XDG_CONFIG_HOME/vim/vimrc"
+    fi
+
     export EDITOR='vim'
     export VISUAL="$EDITOR"
 fi

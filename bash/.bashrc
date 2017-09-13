@@ -146,6 +146,11 @@ if [[ -n "$XDG_CONFIG_HOME" ]]; then
     # tmux
     if [[ -x "$(which tmux 2> /dev/null)" ]] && [[ -r "$XDG_CONFIG_HOME/tmux/tmux.conf" ]]; then
         alias tmux="tmux -f $XDG_CONFIG_HOME/tmux/tmux.conf"
+
+        # use $XDG_RUNTIME_DIR instead of /tmp
+        if [[ -n "$XDG_RUNTIME_DIR" ]]; then
+            TMUX_TMPDIR="$XDG_RUNTIME_DIR"
+        fi
     fi
 
     # redshift
