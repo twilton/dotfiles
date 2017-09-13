@@ -36,7 +36,7 @@ set -o vi
 # Prompt {{{
 # -----------------------------------------------------------------------------
 # Hostname {{{
-function prompt_hostname() {
+prompt_hostname() {
     return
     local -r user="\[\e[92m\]\\u"
     local -r host="\[\e[94m\]\\h"
@@ -47,13 +47,13 @@ function prompt_hostname() {
 # }}}
 
 # Directory {{{
-function prompt_directory() {
+prompt_directory() {
     echo "\[\e[39m\]\\w"
 }
 # }}}
 
 # Git {{{
-function prompt_git() {
+prompt_git() {
     # check for git
     [[ -x "$(which git 2>/dev/null)" ]] || return
     # check for repo
@@ -70,7 +70,7 @@ function prompt_git() {
 }
 # }}}
 
-function build_prompt() {
+build_prompt() {
     # Get the exit code of last command
     local -r exit_code="$?"
 
@@ -107,7 +107,7 @@ PROMPT_COMMAND=build_prompt
 # -----------------------------------------------------------------------------
 # Builtins {{{
 # auto-ls after changing directory
-cd () {
+cd() {
     builtin cd "$@" && ls --color=auto -hrtF
 }
 # }}}
@@ -161,31 +161,37 @@ fi
 # }}}
 
 # Functions {{{
-# google drive
-function sync_drive () {
-    if [[ -x "$(which grive 2> /dev/null)" ]]; then
-        grive -p "$HOME/google_drive/"
-    fi
+# got the time?
+the_time() {
+    local -r current=$(date +'\e[39m%A \e[94m%d \e[93m%I:%M \e[39m%p')
+
+    echo -e "$current"
 }
 
+# google drive
+if [[ -x "$(which grive 2> /dev/null)" ]]; then
+    sync_drive() {
+        grive -p "$HOME/google_drive/"
+    }
+fi
+
 # keepasscli
-function keys () {
-    if [[ -x "$(which kpcli 2> /dev/null)" ]]; then
+if [[ -x "$(which kpcli 2> /dev/null)" ]]; then
+    keys() {
         kpcli --kdb "$HOME/google_drive/Pass/cats.kdbx"
 
         # reset terminal
         reset
-    fi
-}
+    }
+fi
 
 # make dir and cd into it
-function mkcd ()
-{
+mkcd() {
     mkdir -p "$@" && eval cd "\"\$$#\""
 }
 
 # easier extraction
-extract () {
+extract() {
     if [[ -f "$1" ]]; then
         case $1 in
             *.tar.bz2) tar xvjf $1;;
