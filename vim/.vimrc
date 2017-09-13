@@ -11,22 +11,96 @@ if &compatible
     set nocompatible
 endif
 
-" Paths {{{
-" If XDG_CONFIG_HOME has not been set, set to '$HOME/.config'
-if empty($XDG_CONFIG_HOME)
-  let $XDG_CONFIG_HOME = $HOME . '/.config'
+" XDG_CONFIG_HOME {{{
+" If $XDG_CONFIG_HOME has not been set use default
+let s:xdg_config_home = $XDG_CONFIG_HOME
+if empty(s:xdg_config_home)
+  let s:xdg_config_home = $HOME . '/.config'
 endif
 
 " Create vim config directory
-if !isdirectory($XDG_CONFIG_HOME . "/vim")
-  call mkdir($XDG_CONFIG_HOME . "/vim", "p")
+let s:vim_config_home = s:xdg_config_home . '/vim'
+unlet s:xdg_config_home
+if !isdirectory(s:vim_config_home)
+  call mkdir(s:vim_config_home, 'p')
 endif
 
-" Make vim respect XDG standards
-set runtimepath-=$HOME/.vim
-set runtimepath^=$XDG_CONFIG_HOME/vim
-set runtimepath-=$HOME/.vim/after
-set runtimepath+=$XDG_CONFIG_HOME/vim/after
+" change runtime to respect xdg
+"   see h: runtime for default string
+let &runtimepath = s:vim_config_home . ','
+let &runtimepath .= $VIM . '/vimfiles,' . $VIMRUNTIME . ',' . $VIM . '/vimfiles/after,'
+let &runtimepath .= s:vim_config_home . 'after'
+
+" don't unlet s:vim_config_home because vim-plug needs it to specify plugin
+"   directory
+" }}}
+
+" XDG_CACHE_HOME {{{
+" If $XDG_CACHE_HOME has not been set use default
+let s:xdg_cache_home = $XDG_CACHE_HOME
+if empty(s:xdg_cache_home)
+  let s:xdg_cache_home = $HOME . '/.cache'
+endif
+
+" Create vim cache directory
+let s:vim_cache_home = s:xdg_cache_home . '/vim'
+unlet s:xdg_cache_home
+if !isdirectory(s:vim_cache_home)
+  call mkdir(s:vim_cache_home, 'p')
+endif
+
+" Create vim swap location
+let s:vim_swap_home = s:vim_cache_home . '/swap'
+if !isdirectory(s:vim_swap_home)
+  call mkdir(s:vim_swap_home)
+endif
+let &directory = s:vim_swap_home . '//,/var/tmp//,/tmp//'
+unlet s:vim_swap_home
+
+" create backupdir incase backup is set
+let s:vim_backup_home = s:vim_cache_home . '/backup'
+if !isdirectory(s:vim_backup_home)
+  call mkdir(s:vim_backup_home)
+endif
+let &backupdir = s:vim_backup_home . '//,/var/tmp//,/tmp//'
+unlet s:vim_backup_home
+
+" marks for 10 files, 100 lines per register, 100 commands, 50 searches,
+"   10 inputs, viminfo file name
+let &viminfo = "'10,f1,<100,:100,/50,@10,n" . s:vim_cache_home . '/viminfo'
+
+unlet s:vim_cache_home
+" }}}
+
+" XDG_DATA_HOME {{{
+" If $XDG_DATA_HOME has not been set use default
+let s:xdg_data_home = $XDG_DATA_HOME
+if empty(s:xdg_data_home)
+  let s:xdg_data_home = $HOME . '/.local/share'
+endif
+
+" Create vim data directory
+let s:vim_data_home = s:xdg_data_home . '/vim'
+unlet s:xdg_data_home
+if !isdirectory(s:vim_data_home)
+  call mkdir(s:vim_data_home, 'p')
+endif
+
+" enable undofile
+if has('persistent_undo')
+    let s:vim_undo_home = s:vim_data_home . '/undo'
+    if !isdirectory(s:vim_undo_home)
+        call mkdir(s:vim_undo_home)
+    endif
+    let &undodir = s:vim_undo_home . '//,/var/tmp//,/tmp//'
+    unlet s:vim_undo_home
+endif
+
+" spellfile
+let &spellfile = s:vim_data_home . '/en.utf-8.add'
+
+unlet s:vim_data_home
+" }}}
 
 " files to search
 set path=.,**
@@ -35,77 +109,40 @@ set path=.,**
 set autoread
 " Automatically switch to file directory of buffer
 set autochdir
-" }}}
 
-" Cache {{{
-" If XDG_CACHE_HOME has not been set, set to '$HOME/.cache'
-if empty($XDG_CACHE_HOME)
-  let $XDG_CACHE_HOME = $HOME . "/.cache"
-endif
-
-" Create vim cache directory
-if !isdirectory($XDG_CACHE_HOME . "/vim")
-  call mkdir($XDG_CACHE_HOME . "/vim", "p")
-endif
-
-" Create vim swap location
-if !isdirectory($XDG_CACHE_HOME . "/vim/swap")
-  call mkdir($XDG_CACHE_HOME . "/vim/swap")
-endif
-set directory=$XDG_CACHE_HOME/vim/swap//,/var/tmp//,/tmp//
-
-" create backupdir incase backup is set
-if !isdirectory($XDG_CACHE_HOME . "/vim/backup")
-  call mkdir($XDG_CACHE_HOME . "/vim/backup")
-endif
-set backupdir=$XDG_CACHE_HOME/vim/backup//,/var/tmp//,/tmp//
 " disable backups by default
 set nobackup
 
 " enable undofile
 if has('persistent_undo')
-    if !isdirectory($XDG_CACHE_HOME . "/vim/undo")
-        call mkdir($XDG_CACHE_HOME . "/vim/undo")
-    endif
-    set undodir=$XDG_CACHE_HOME/vim/undo//,/var/tmp//,/tmp//
     set undofile
 endif
 " number of undos to keep
 set undolevels=1000
 
-" 10 marks, 100 searches, 1000 commands, 10 lines / register, 10 inputs,
-"   10kb max size of item, disable hlsearch on start, viminfo file name
-set viminfo='10,/100,:1000,<10,@10,s10,h,n$XDG_CACHE_HOME/vim/.viminfo
 " Number of command lines to remember
 set history=1000
 
-" spellfile
-set spellfile=$XDG_CACHE_HOME/en.utf-8.add
 " disable spelling by default
 set nospell
-" }}}
 
-" Encoding {{{
 " if encoding is not utf-8 set termencoding
 if &encoding !=? 'utf-8'
     let &termencoding = &encoding
 endif
-
 " Set utf8 as standard encoding
 set encoding=utf-8
 set fileencoding=utf-8
 
 " Use unix as the standard file type
 set fileformats=unix,mac,dos
-" }}}
-
 " -----------------------------------------------------------------------------
 " }}}
 
 " Plugins {{{
 " -----------------------------------------------------------------------------
-" vim-plug plugin manager
-call plug#begin($XDG_CONFIG_HOME . "/vim/plugged")
+" vim-plug plugin manager (takes plugin directory as argument)
+call plug#begin(s:vim_config_home . '/plugged')
 
 " buffers in tabline
 Plug 'ap/vim-buftabline'
@@ -132,11 +169,15 @@ Plug 'unblevable/quick-scope'
 " racket language support
 Plug 'wlangstroth/vim-racket', { 'for': ['racket'] }
 
-" Automatically executes filetype plugin indent on and syntax enable
+" update &runtimepath and initialize plugins
+"   Automatically executes filetype plugin indent on and syntax enable
 call plug#end()
 
 " Enable filetype plugins
 filetype plugin indent on
+
+" s:vim_config_home is no longer used
+unlet s:vim_config_home
 
 " ale {{{
 " linter statusline format
