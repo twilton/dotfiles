@@ -70,6 +70,11 @@ fi
 
 # use gcc colors
 export GCC_COLORS=1
+
+# readline
+if [[ -n "$XDG_CONFIG_HOME ]] && [[ -r "$XDG_CONFIG_HOME/readline/inputrc" ]]; then
+    export INPUTRC="$XDG_CONFIG_HOME/readline/inputrc"
+fi
 # }}}
 
 # source .bashrc
