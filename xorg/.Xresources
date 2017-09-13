@@ -9,10 +9,11 @@
 ! -----------------------------------------------------------------------------
 Xcursor.size:  16
 Xft.antialias: true
-Xft.autohint:  false
 Xft.hinting:   true
-Xft.hintstyle: hintfull
+Xft.autohint:  false
+Xft.hintstyle: hintslight
 Xft.rgba:      rgb
+Xft.lcdfilter: lcddefault
 Xft.dpi:       220
 ! -----------------------------------------------------------------------------
 ! }}}
@@ -60,7 +61,8 @@ Xft.dpi:       220
 ! urxvt {{{
 ! -----------------------------------------------------------------------------
 urxvt.scrollBar:      false
-urxvt.internalBorder: 10
+! reason for 11 is bspwm border is 5 * dpi: 2.2
+urxvt.internalBorder: 11
 urxvt.font:           fonts
 urxvt.boldFont:       fonts
 urxvt.italicFont:     fonts
