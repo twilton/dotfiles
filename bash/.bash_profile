@@ -41,7 +41,8 @@ if [[ -x "$(which vim 2> /dev/null)" ]]; then
 
     # make vim respect XDG
     if [[ -n "$XDG_CONFIG_HOME" ]] && [[ -r "$XDG_CONFIG_HOME/vim/vimrc" ]]; then
-        export VIMINIT="$XDG_CONFIG_HOME/vim/vimrc"
+	# in EX command format
+        export VIMINIT=":source $XDG_CONFIG_HOME/vim/vimrc"
     fi
 
     export EDITOR='vim'
