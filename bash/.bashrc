@@ -19,6 +19,14 @@ shopt -s checkwinsize
 shopt -s histappend
 # save multiline cmd as one history entry
 shopt -s cmdhist
+# Only set histfile if XDG_DATA_HOME is defined
+if [[ -n "$XDG_DATA_HOME" ]]; then
+    if [[ -w "$XDG_DATA_HOME" ]] && [[ ! -d "$XDG_DATA_HOME/bash" ]]; then
+        mkdir "$XDG_DATA_HOME/bash"
+    fi
+
+    HISTFILE="$XDG_DATA_HOME/bash/history"
+fi
 # increase history size
 HISTSIZE=1000
 # delete duplicate entries
@@ -136,25 +144,21 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 
-# Respect XDG Standards
+# XDG for programs that don't follow XDG and don't have environment
+#   variables to set config file
 if [[ -n "$XDG_CONFIG_HOME" ]]; then
     # ncmpc
-    if [[ -x "$(which ncmpc 2> /dev/null)" ]] && [[ -r "$XDG_CONFIG_HOME/ncmpc/config" ]]; then
+    if [[ -x "$(which ncmpc 2> /dev/null)" ]]; then
         alias ncmpc="ncmpc -f $XDG_CONFIG_HOME/ncmpc/config"
     fi
 
     # tmux
-    if [[ -x "$(which tmux 2> /dev/null)" ]] && [[ -r "$XDG_CONFIG_HOME/tmux/tmux.conf" ]]; then
+    if [[ -x "$(which tmux 2> /dev/null)" ]]; then
         alias tmux="tmux -f $XDG_CONFIG_HOME/tmux/tmux.conf"
-
-        # use $XDG_RUNTIME_DIR instead of /tmp
-        if [[ -n "$XDG_RUNTIME_DIR" ]]; then
-            TMUX_TMPDIR="$XDG_RUNTIME_DIR"
-        fi
     fi
 
     # redshift
-    if [[ -x "$(which redshift 2> /dev/null)" ]] && [[ -r "$XDG_CONFIG_HOME/redshift/redshift.conf" ]]; then
+    if [[ -x "$(which redshift 2> /dev/null)" ]]; then
         alias redshift="redshift -c $XDG_CONFIG_HOME/redshift/redshift.conf"
     fi
 fi
@@ -170,7 +174,7 @@ fi
 the_time() {
     local -r current=$(date +'\e[39m%A \e[94m%d \e[93m%I:%M \e[39m%p')
 
-    echo -e "$current"
+    echo -e "\e[37mDate:\e[39m $current"
 }
 
 # google drive
