@@ -148,17 +148,17 @@ alias ....='cd ../../..'
 #   variables to set config file
 if [[ -n "$XDG_CONFIG_HOME" ]]; then
     # ncmpc
-    if [[ -x "$(which ncmpc 2> /dev/null)" ]]; then
+    if [[ -x "$(which ncmpc 2> /dev/null)" ]] && [[ -r "$XDG_CONFIG_HOME/ncmpc/config" ]]; then
         alias ncmpc="ncmpc -f $XDG_CONFIG_HOME/ncmpc/config"
     fi
 
     # tmux
-    if [[ -x "$(which tmux 2> /dev/null)" ]]; then
+    if [[ -x "$(which tmux 2> /dev/null)" ]] && [[ -r "$XDG_CONFIG_HOME/tmux/tmux.conf" ]]; then
         alias tmux="tmux -f $XDG_CONFIG_HOME/tmux/tmux.conf"
     fi
 
     # redshift
-    if [[ -x "$(which redshift 2> /dev/null)" ]]; then
+    if [[ -x "$(which redshift 2> /dev/null)" ]] && [[ -r "$XDG_CONFIG_HOME/redshift/redshift.conf" ]]; then
         alias redshift="redshift -c $XDG_CONFIG_HOME/redshift/redshift.conf"
     fi
 fi
