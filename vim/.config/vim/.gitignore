@@ -1,0 +1,8 @@
+*
+!.gitignore
+
+!colors/
+colors/**
+
+!vimrc
+!colors/krul.vim
