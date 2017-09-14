@@ -86,10 +86,14 @@ function open_spotlight() {
 
 # open the terminal
 #   programs are prioritized in this order:
-#   1. urxvtc
+#   1. $TERMINAL
+#   2. urxvtc
 function open_terminal() {
-    # check for ranger
-    if [[ -x "$(which urxvtc 2> /dev/null)" ]] && [[ -n "$(pidof urxvtd 2> /dev/null)" ]]; then
+    if [[ -n "$TERMINAL" ]] && [[ -x "$(which $TERMINAL 2> /dev/null)" ]]; then
+        "$TERMINAL"
+
+    # check for urxvtc and running urxvtd
+    elif [[ -x "$(which urxvtc 2> /dev/null)" ]] && [[ -n "$(pidof urxvtd 2> /dev/null)" ]]; then
         urxvtc
 
     # didn't find anything
