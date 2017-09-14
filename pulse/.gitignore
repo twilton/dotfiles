@@ -1,6 +1,9 @@
 *
 !.gitignore
 
+!.config/pulse/
+.config/pulse/**
+
 !.asoundrc
 !.config/pulse/client.conf
 !.config/pulse/default.pa
