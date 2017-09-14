@@ -1,6 +1,0 @@
-*
-!.gitignore
-
-!client.conf
-!default.pa
-!daemon.conf
