@@ -69,24 +69,23 @@ super + ctrl + {h,j,k,l}
 # -----------------------------------------------------------------------------
 # Open new terminal
 super + Return
-    "$HOME/.bin/open_program" 'terminal'
+    open_program terminal
 
 # Open launcher
 super + p
-    "$HOME/.bin/open_program" 'spotlight'
+    open_program spotlight
 
 # Open web browser
 super + w
-    "$HOME/.bin/open_program" 'web_browser'
-
+    open_program web_browser
 
 # Open file manager
 super + r
-    "$HOME/.bin/open_program" 'file_manager'
+    open_program file_manager
 
 # Open music player
 super + n
-    "$HOME/.bin/open_program" 'music_player'
+    open_program music_player
 # -----------------------------------------------------------------------------
 # }}}
 
@@ -94,25 +93,25 @@ super + n
 # -----------------------------------------------------------------------------
 # Screen backlight control
 {_,shift +} @XF86MonBrightness{Down,Up}
-    "$HOME/.bin/backlight" {'down','off','up','full'}
+    backlight {'down','off','up','full'}
 
 # Application Control
 {_,shift +} @XF86LaunchA
-    "$HOME/.bin/audio" {'idac','builtin'}
+    audio {'idac','builtin'}
 
 # {_,shift +} @XF86LaunchB
 
 # Keyboard backlight control
 {_,shift +} @XF86KbdBrightness{Down,Up}
-    "$HOME/.bin/keylight" {'down','off','up','full'}
+    keylight {'down','off','up','full'}
 
 # Song control
 @XF86Audio{Prev,Play,Next}
-    "$HOME/.bin/music" {'prev','toggle','next'}
+    music {'prev','toggle','next'}
 
 # Volume control
 {_,shift +} @XF86Audio{Mute,LowerVolume,RaiseVolume}
-    "$HOME/.bin/volume" {'toggle','toggle','down','off','up','full'}
+    volume {'toggle','toggle','down','off','up','full'}
 # -----------------------------------------------------------------------------
 # }}}
 
