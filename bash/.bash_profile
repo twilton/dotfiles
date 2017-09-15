@@ -71,6 +71,12 @@ if [[ -n "$XDG_CONFIG_HOME" ]]; then
     if [[ -x "$(which vim 2> /dev/null)" ]]; then
         export WGETRC="$XDG_CONFIG_HOME/wgetrc"
     fi
+
+    # X
+    if [[ -x "$(which X 2> /dev/null)" ]]; then
+        export XINITRC="$XDG_CONFIG_HOME/X11/xinitrc"
+        export XSERVERRC="$XDG_CONFIG_HOME/X11/xserverrc"
+    fi
 fi
 # }}}
 
@@ -161,14 +167,62 @@ fi
 # }}}
 # }}}
 
+# Autostart {{{
 # source .bashrc
 if [[ -n "$BASH" ]] && [[ -r "$HOME/.bashrc" ]]; then
     . "$HOME/.bashrc"
 fi
 
-# start X at login
-if [[ -z "$DISPLAY" ]] && [[ -n "$XDG_VTNR" ]] && [[ "$XDG_VTNR" -eq 1 ]]; then
-  exec startx
+# X {{{
+if [[ -z "$DISPLAY" ]] && [[ -n "$XDG_VTNR" ]]; then
+    # unset SESSION_MANAGER
+    unset SESSION_MANAGER
+    # set display
+    export DISPLAY=":$XDG_VTNR"
+
+    # X clients
+    defaultclient='xterm'
+    userclientrc="${XINITRC:-$HOME/.xinitrc}"
+    sysclientrc='/etc/X11/xinit/xinitrc'
+
+    # X servers
+    defaultserver='/usr/bin/X'
+    userserverrc="${XSERVERRC:-$HOME/.xserverrc}"
+    sysserverrc='/etc/X11/xinit/xserverrc'
+
+    # set client
+    if [[ -f "$userclientrc" ]]; then
+        client="$userclientrc"
+    elif [[ -f "$sysclientrc" ]]; then
+        client="$sysclientrc"
+    else
+        client="$defaultclient"
+    fi
+    unset defaultclient userclientrc sysclientrc
+
+    # set server
+    if [[ -f "$userserverrc" ]]; then
+        server="$userserverrc"
+    elif [[ -f "$sysserverrc" ]]; then
+        server="$sysserverrc"
+    else
+        server="$defaultserver"
+    fi
+    unset defaultserver userserverrc sysserverrc
+
+    # xinit
+    exec xinit "$client" -- "$server"
+
+    # store xinit return value
+    retval="$?"
+    # free unused virtual terminals
+    if [[ -x "$(which deallocvt 2> /dev/null)" ]]; then
+        deallocvt
+    fi
+    # exit with xinit return value
+    exit "$retval"
 fi
+# }}}
+# }}}
 
 # vim:foldmethod=marker:foldlevel=0
