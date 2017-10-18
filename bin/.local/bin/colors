@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+# -----------------------------------------------------------------------------
+# colors
+# Description: Set colors
+# -----------------------------------------------------------------------------
+# Useage:      $ ./colors
+# -----------------------------------------------------------------------------
+
+main() {
+    # Black
+    readonly color0="#050505"
+    readonly color8="#7d8073"
+    # Red
+    readonly color1="#de3612"
+    readonly color9="#de3612"
+    # Green
+    readonly color2="#267d2f"
+    readonly color10="#267d2f"
+    # Yellow
+    readonly color3="#fde11e"
+    readonly color11="#fde11e"
+    # Blue
+    readonly color4="#004fb9"
+    readonly color12="#004fb9"
+    # Magenta
+    readonly color5="#6c3c9d"
+    readonly color13="#6c3c9d"
+    # Cyan + Cyan
+    readonly color6="#097493"
+    readonly color14="#097493"
+    # White
+    readonly color7="#7d8073"
+    readonly color15="#bcb9ad"
+
+    readonly background="${color15}"
+    readonly foreground="${color0}"
+}
+
+main "$@"
