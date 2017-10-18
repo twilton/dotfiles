@@ -115,3 +115,5 @@ gre = !git ls-files | grep --color=auto -i
 # }}}
 
 # vim:foldmethod=marker:foldlevel=0: set filetype=conf:
+[commit]
+	gpgsign = true
