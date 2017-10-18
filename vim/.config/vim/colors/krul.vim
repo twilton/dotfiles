@@ -153,7 +153,7 @@ hi link diffAdded                String
 " Plugins {{{
 " -----------------------------------------------------------------------------
 " BufTabLine {{{
-hi BufTabLineActive ctermbg=gray ctermfg=NONE    cterm=NONE
+hi BufTabLineActive ctermbg=cyan ctermfg=NONE    cterm=NONE
 " }}}
 " -----------------------------------------------------------------------------
 " }}}
