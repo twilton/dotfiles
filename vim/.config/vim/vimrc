@@ -164,7 +164,6 @@ Plug 'wellle/targets.vim'
 
 " searching
 Plug 'haya14busa/incsearch.vim'
-Plug 'unblevable/quick-scope'
 
 " racket language support
 Plug 'wlangstroth/vim-racket', { 'for': ['racket'] }
@@ -357,7 +356,7 @@ set foldnestmax=10
 
 " Cursor {{{
 " hilight cursor line
-set cursorline
+set nocursorline
 
 " keep cursor column pos
 set nostartofline
