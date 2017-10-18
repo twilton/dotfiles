@@ -88,6 +88,7 @@ build_prompt() {
 
     # modules to add to prompt
     local -r modules="$(prompt_hostname)$(prompt_directory)$(prompt_git)"
+    local -r split="\[\e[93m\]>>>"
 
     # Set privilege indicator color by exit code
     local prompt_privilege
@@ -98,12 +99,12 @@ build_prompt() {
     fi
 
     # prompt prefix and suffix
-    local -r prefix="\[\e[0m\]\[\e[37m\][ "
-    local -r suffix="\[\e[37m\] ]${prompt_privilege}\[\e[0m\] "
+    local -r prefix="\[\e[0m\][ \[\e[0m\]"
+    local -r suffix="\[\e[0m\] ]${prompt_privilege}\[\e[0m\] "
 
     # Set the prompts
     PS1="${prefix}${modules}${suffix}"
-    PS2="${prefix}\[\e[93m\]>>>${suffix}"
+    PS2="${prefix}${split}${suffix}"
 }
 
 # Set the prompts
