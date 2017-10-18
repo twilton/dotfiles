@@ -53,29 +53,21 @@ function open_music_player() {
 #   programs are prioritized in this order:
 #   1. dmenu
 function open_spotlight() {
-    # spotlight size
-    local -r spotlight_width="1000"
-    local -r spotlight_height="70"
-    # monitor size
-    local -r monitor_width="2880"
-    local -r monitor_height="1800"
+    # Source colors
+    . "$HOME/.local/bin/colors"
 
-    # spotlight font
-    local -r font="Source Code Pro:regular:size=12"
-    # spotlight normal colors
-    local -r color_nf="#282828"
-    local -r color_nb="#a89984"
-    # spotlight selected colors
-    local -r color_sf="#fabd2f"
-    local -r color_sb="#504945"
-
-    # spotlight screen position
-    local -r x_pos="$(( (${monitor_width} - ${spotlight_width}) / 2 ))"
-    local -r y_pos="$(( ${monitor_height} / 3 ))"
-
-    # check for dmenu
-    if [[ -x "$(which dmenu_run 2> /dev/null)" ]]; then
-        networkmanager_dmenu -h "${spotlight_height}" -w "${spotlight_width}" -l "3" -x "${x_pos}" -y "${y_pos}" -fn "${font}" -nb "${color_nb}" -nf "${color_nf}" -sb "${color_sb}" -sf "${color_sf}" -q -i
+    # check for rofi
+    if [[ -x "$(which rofi 2> /dev/null)" ]]; then
+        # color "bg,fg,bgalt,hlbg,hlfg"
+        rofi -show run \
+            -no-show-match \
+            -hide-scrollbar \
+            -separator-style 'none' \
+            -font 'Source code pro 10' \
+            -color-window "${background},${color7},${background}" \
+            -color-normal "${background},${foreground},${background},${color7},${foreground}" \
+            -color-urgent "${background},${foreground},${background},${color7},${foreground}" \
+            -color-active "${background},${foreground},${background},${color7},${foreground}"
 
     # didn't find anything
     else
