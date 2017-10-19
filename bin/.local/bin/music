@@ -11,7 +11,7 @@
 
 get_current() {
     # set colors
-    local -r color_fg="\e[37m"
+    local -r color_fg="\e[39m"
     local -r color_reset="\e[39m"
 
     # nothing is currently playing or paused
