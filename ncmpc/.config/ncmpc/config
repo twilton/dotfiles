@@ -1,7 +1,6 @@
 # -----------------------------------------------------------------------------
-# config
 # Description: Config file for ncmpc
-# Location: $HOME/.config/ncmpc/config
+# Location: $XDG_CONFIG_HOME/ncmpc/config
 # -----------------------------------------------------------------------------
 
 # Connection {{{

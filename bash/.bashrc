@@ -1,8 +1,6 @@
 # -----------------------------------------------------------------------------
-# .bashrc
-# Description: non-login bash shell config file
-# -----------------------------------------------------------------------------
-# Location: $HOME/.inputrc
+# Description: Config file for non-login bash shell
+# Location: $HOME/.bashrc
 # -----------------------------------------------------------------------------
 
 # If not running interactively, don't do anything

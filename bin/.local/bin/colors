@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 
 # -----------------------------------------------------------------------------
-# colors
-# Description: Set colors
-# -----------------------------------------------------------------------------
-# Useage:      $ ./colors
+# Description: Defines colorscheme for use with other shell scripts
+# Location: $HOME/.local/bin/colors
 # -----------------------------------------------------------------------------
 
 main() {

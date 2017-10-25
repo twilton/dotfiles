@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 
 # -----------------------------------------------------------------------------
-# open_program
-# Description: App launcher
-# -----------------------------------------------------------------------------
-# Useage:      $ ./open_program
+# Description: Default app launcher
+# Location: $HOME/.local/bin/open_program
 # -----------------------------------------------------------------------------
 
 # open the file_manager

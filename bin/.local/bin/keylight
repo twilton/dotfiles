@@ -1,13 +1,8 @@
 #!/usr/bin/env bash
 
 # -----------------------------------------------------------------------------
-# keylight
-# Description: changes keyboard backlight level
-# -----------------------------------------------------------------------------
-# Requires:
-#   kbdlight
-# -----------------------------------------------------------------------------
-# Useage:      $ ./keylight {down|up|off|full}
+# Description: Changes keyboard backlight level
+# Location: $HOME/.local/bin/keylight
 # -----------------------------------------------------------------------------
 
 get_current() {

@@ -1,10 +1,8 @@
 #!/bin/sh
 
 # -----------------------------------------------------------------------------
-# xinitrc
-# Description: Config file for startx
-# -----------------------------------------------------------------------------
-# Location: $HOME/.xinitrc
+# Description: Config file for default xclient
+# Location: $XDG_CONFIG_HOME/X11/xinitrc
 # -----------------------------------------------------------------------------
 
 # Source {{{

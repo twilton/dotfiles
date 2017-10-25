@@ -1,12 +1,8 @@
 #!/usr/bin/env bash
 
 # -----------------------------------------------------------------------------
-# volume
-# Description: changes volume level via pulse
-# -----------------------------------------------------------------------------
-# Requires:    pamixer
-# -----------------------------------------------------------------------------
-# Useage:      $ ./volume {toggle|down|up|off|full}
+# Description: Changes volume level via pulse
+# Location: $HOME/.local/bin/volume
 # -----------------------------------------------------------------------------
 
 get_current() {

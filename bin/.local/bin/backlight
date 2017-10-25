@@ -1,13 +1,8 @@
 #!/usr/bin/env bash
 
 # -----------------------------------------------------------------------------
-# backlight
-# Description: changes backlight level
-# -----------------------------------------------------------------------------
-# Requires:
-#   light
-# -----------------------------------------------------------------------------
-# Useage:      $ ./backlight {down|up|off|full}
+# Description: Changes screen backlight level
+# Location: $HOME/.local/bin/backlight
 # -----------------------------------------------------------------------------
 
 get_current() {

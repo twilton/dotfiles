@@ -1,12 +1,8 @@
 #!/usr/bin/env bash
 
 # -----------------------------------------------------------------------------
-# audio
-# Description: changes audio output device
-# -----------------------------------------------------------------------------
-# Requires:    paswitch
-# -----------------------------------------------------------------------------
-# Useage:      $ ./audio {builtin|idac}
+# Description: Changes default pulseaudio sink and adds audio outputs
+# Location: $HOME/.local/bin/audio
 # -----------------------------------------------------------------------------
 
 main() {

@@ -1,8 +1,6 @@
 # -----------------------------------------------------------------------------
-# gitconfig
-# Description: Config file for git
-# -----------------------------------------------------------------------------
-# Location: $HOME/.gitconfig
+# Description: Global config file for git
+# Location: $XDG_CONFIG_HOME/git/config
 # -----------------------------------------------------------------------------
 
 # General Settings {{{
@@ -13,6 +11,8 @@
     name = twilton
     email = git.twilton@gmail.com
     signingkey = 0x74A1FF66A1AB80F1
+[commit]
+    gpgsign = true
 # -----------------------------------------------------------------------------
 # }}}
 
@@ -115,5 +115,3 @@ gre = !git ls-files | grep --color=auto -i
 # }}}
 
 # vim:foldmethod=marker:foldlevel=0: set filetype=conf:
-[commit]
-	gpgsign = true

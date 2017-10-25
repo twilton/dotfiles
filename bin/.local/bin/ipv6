@@ -1,9 +1,16 @@
 #!/usr/bin/env bash
 
+# -----------------------------------------------------------------------------
+# Description: Enables / Disables ipv6 function via sysctl
+# Location: $HOME/.local/bin/ipv6
+# -----------------------------------------------------------------------------
+
+# Enable ipv6
 function enable_ipv6() {
     sysctl -w net.ipv6.conf.all.disable_ipv6=0
 }
 
+# Disable ipv6
 function disable_ipv6() {
     sysctl -w net.ipv6.conf.all.disable_ipv6=1
 }

@@ -1,3 +1,8 @@
 #!/bin/sh
 
+# -----------------------------------------------------------------------------
+# Description: Config file for default xserver
+# Location: $XDG_CONFIG_HOME/X11/xserverrc
+# -----------------------------------------------------------------------------
+
 exec /usr/bin/X "$DISPLAY" vt"$XDG_VTNR" -keeptty "$@"

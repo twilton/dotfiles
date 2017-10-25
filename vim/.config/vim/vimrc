@@ -1,7 +1,6 @@
 " -----------------------------------------------------------------------------
-" Name: vimrc
 " Description: Config file for vim
-" Location: $HOME/.vimrc
+" Location: $XDG_CONFIG_HOME/vim/vimrc
 " -----------------------------------------------------------------------------
 
 " Environment {{{

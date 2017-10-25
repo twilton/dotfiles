@@ -1,8 +1,6 @@
 # -----------------------------------------------------------------------------
-# .inputrc
-# Description: readline config file
-# -----------------------------------------------------------------------------
-# Location: $HOME/.inputrc
+# Description: Config file for readline
+# Location: $XDG_CONFIG_HOME/readline/inputrc
 # -----------------------------------------------------------------------------
 
 # fixes weird errors
