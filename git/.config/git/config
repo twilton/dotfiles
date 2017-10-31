@@ -19,23 +19,9 @@
 # Colors {{{
 # -----------------------------------------------------------------------------
 [color]
-    branch = auto
-    diff = auto
-    status = auto
-[color "branch"]
-    current = red reverse
-    local = blue
-    remote = green
+    ui = auto
 [color "diff"]
-    meta = yellow
-    frag = magenta
-    old = red bold
-    new = green
-    plain = white
-[color "status"]
-    added = yellow
-    changed = green
-    untracked = cyan
+    commit = magenta
 # -----------------------------------------------------------------------------
 # }}}
 
@@ -46,7 +32,10 @@
 [pull]
     default = current
 [diff]
+    tool = vimdiff
     mnemonicprefix = true
+[difftool]
+    prompt = false
 [branch]
     autosetuprebase = always
 [apply]
@@ -80,21 +69,19 @@ cm = commit
 # Checkout branch or paths to working tree
 co = checkout
 
-# List, create, or delete branches
+# List branches
 br = branch
 bra = branch -ra
-branch = branch -ra
 # }}}
 
 # Lists / Logs {{{
-# Default short git log
-lco = log --pretty=format:'%C(yellow)%h%C(reset) %C(green)%ad%C(red)%d%C(reset) %s [ %C(blue)%cn%C(reset) ]' --date=short
+# Use vimdiff
+d = difftool
 
-# List commits
-lc = log --pretty=format:'%C(yellow)%h%C(reset) %C(green)%ad%C(red)%d%C(reset) [ %C(blue)%cn%C(reset) :: %C(blue)%cE%C(reset) ]%n%C(reset)%s%n%n%b' --numstat --date=short
+l = "!git log $@ | tig"
 
 # See history of a file
-lf = log -p -M --follow --stat --
+history = "!git log -p -M --follow --stat --"
 
 # List remotes
 rem = "!git config -l | grep remote.*url | tail -n +2"
