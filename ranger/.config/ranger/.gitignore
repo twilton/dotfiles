@@ -1,4 +1,8 @@
 *
 !.gitignore
 
+!colorschemes/
+colorschemes/**
+
 !rc.conf
+!colorschemes/munsell.py
