@@ -93,7 +93,7 @@ hardware-cursor = yes
 hide-cursor = 0
 
 # scroll title if too long
-scroll = yes
+scroll = no
 
 # separator to show at end of scrolling title
 scroll-sep = " *** "
@@ -139,29 +139,29 @@ color title-bold = none
 # line color in second row
 color line = white,bold
 # mpd flag color in second row
-color line-flags = green
+color line-flags = cyan
 
 # text color in main area
 color list = none
 # text color of current song in main area
-color list-bold = blue
+color list-bold = magenta
 
 # text color of directories in browser
 color browser-directory = blue
 # text color of playlists in browser
-color browser-playlist = magenta
+color browser-playlist = none
 
 # text color of progressbar
 color progressbar = white,bold
 
 # text color of playing / paused / ... in status window
-color status-state = none
+color status-state = black,bold
 # text color of current song in status window
-color status-song = blue
+color status-song = none
 # text color of time elapsed/remaining in status window
 color status-time = none
 # text color of alerts in status window
-color alert = red
+color alert = none
 # -----------------------------------------------------------------------------
 # }}}
 
