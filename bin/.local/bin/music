@@ -6,52 +6,47 @@
 # -----------------------------------------------------------------------------
 
 get_current() {
-    # set colors
-    local -r color_fg="\e[39m"
-    local -r color_reset="\e[39m"
-
     # nothing is currently playing or paused
     if [[ -z "$(mpc current)" ]]; then
-        echo -e "${color_fg}Playlist Empty${color_reset}"
+        echo -e "Playlist Empty"
 
     # something is playing or paused
     else
-        # get individual mpc current fields for formatting
-        local -r artist=$( mpc -f "[%artist%]" | head -n 1 )
-        local -r title=$( mpc -f "[%title%]" | head -n 1 )
-        local -r album=$( mpc -f "[%album%]" | head -n 1 )
-        local -r file=$( mpc -f "[%file%]" | head -n 1 )
-        # set the colors to use for fields
-        local -r color_artist="\e[94m"
-        local -r color_title="\e[93m"
-        local -r color_album="\e[36m"
+        # get individual mpc current fields
+        local artist=$( mpc -f "[%artist%]" | head -n 1 )
+        local title=$( mpc -f "[%title%]" | head -n 1 )
+        local album=$( mpc -f "[%album%]" | head -n 1 )
+        local file=$( mpc -f "[%file%]" | head -n 1 )
 
-        # has artist, title and album
-        if [[ -n "${artist}" ]] && [[ -n "${title}" ]] && [[ -n "${album}" ]]; then
-            echo -e "${color_artist}${artist}${color_fg} (${color_album}${album}${color_fg}) - ${color_title}${title}${color_reset}"
+        # add colors to fields if terminal is color capable
+        local -r colors="$(tput colors 2>/dev/null)"
+        if [[ -n "${colors}" ]] && [[ "${colors}" -gt 2 ]]; then
+            local -r color_reset="\e[39m"
+            if [[ -n "${artist}" ]]; then
+                artist="\e[34m${artist}${color_reset}"
+            fi
+            if [[ -n "${title}" ]]; then
+                title="\e[39m${title}${color_reset}"
+            fi
+            if [[ -n "${album}" ]]; then
+                album="\e[34m${album}${color_reset}"
+            fi
+            if [[ -n "${file}" ]]; then
+                file="\e[39m${file}${color_reset}"
+            fi
+        fi
 
-            # has artist and title but not album
-        elif [[ -n "${artist}" ]] && [[ -n "${title}" ]]; then
-            echo -e "${color_artist}${artist}${color_fg} - ${color_title}${title}${color_reset}"
-
-            # has artist and album but not title
+        # output
+        if [[ -z "${title}" ]]; then
+            echo -e "${file}"
         elif [[ -n "${artist}" ]] && [[ -n "${album}" ]]; then
-            echo -e "${color_artist}${artist}${color_fg} (${color_album}${album}${color_fg}) - ${color_title}Unknown Title${color_reset}"
-
-            # has title and album but not artist
-        elif [[ -n "${title}" ]] && [[ -n "${album}" ]]; then
-            echo -e "${color_artist}Unknown Artist${color_fg} (${color_album}${album}${color_fg}) - ${color_title}${title}${color_reset}"
-
-            # has only title
-        elif [[ -n "${title}" ]]; then
-            echo -e "${color_title}${title}${color_reset}"
-
-            # has only artist or album
-        elif [[ -n "${artist}" ]] || [[ -n "${album}" ]]; then
-            echo -e "${color_artist}${artist}${color_reset}"
-            # no artist, title or album
+            echo -e "${artist} (${album}) - ${title}"
+        elif [[ -n "${artist}" ]]; then
+            echo -e "${artist} - ${title}"
+        elif [[ -n "${album}" ]]; then
+            echo -e "Unknown Artist (${album}) - ${title}"
         else
-            echo -e "${color_fg}${file}${color_reset}"
+            echo -e "${title}"
         fi
     fi
 }
@@ -65,40 +60,40 @@ main() {
             mpc -q toggle
 
             # report
-            notify-send "${name}" "Playback toggled"
+            notify-send "${name}" "Playback toggled."
             ;;
         prev)
             mpc -q prev
 
             # report
-            notify-send "${name}" "Now playing $(mpc current)"
+            notify-send "${name}" "Now playing: $(get_current)"
             ;;
         next)
             mpc -q next
 
             # report
-            notify-send "${name}" "Now playing $(mpc current)"
+            notify-send "${name}" "Now playing: $(get_current)"
             ;;
         stop)
             mpc -q stop
 
             # report
-            notify-send "${name}" "Playback stopped"
+            notify-send "${name}" "Playback stopped."
             ;;
         pause)
             mpc -q pause
 
             # report
-            notify-send "${name}" "Playback paused"
+            notify-send "${name}" "Playback paused."
             ;;
         play)
             mpc -q play
 
             # report
-            notify-send "${name}" "Now playing $(mpc current)"
+            notify-send "${name}" "Now playing: $(get_current)"
             ;;
         "")
-            echo -e "\e[37mMusic: \e[39m$(get_current)"
+            echo -e "Music: $(get_current)"
             ;;
         *)
             exit 2

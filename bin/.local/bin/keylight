@@ -54,7 +54,7 @@ main() {
             fi
             ;;
         "")
-            echo -e "\e[37mKeylight:\e[39m ${level_initial}%"
+            echo -e "Keylight: ${level_initial}"
             ;;
         *)
             exit 2

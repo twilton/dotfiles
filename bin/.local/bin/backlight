@@ -55,7 +55,7 @@ main() {
             fi
             ;;
         "")
-            echo -e "\e[37mBacklight:\e[39m ${level_initial}%"
+            echo -e "Backlight: ${level_initial}"
             ;;
 
         *)

@@ -7,29 +7,29 @@
 
 main() {
     # Black
-    readonly color0="#050505"
-    readonly color8="#7d8073"
+    readonly color0="#09050c"
+    readonly color8="#7d7c6a"
     # Red
-    readonly color1="#de3612"
-    readonly color9="#de3612"
+    readonly color1="#bd2024"
+    readonly color9="#bd2024"
     # Green
-    readonly color2="#267d2f"
-    readonly color10="#267d2f"
+    readonly color2="#00721b"
+    readonly color10="#00721b"
     # Yellow
-    readonly color3="#fde11e"
-    readonly color11="#fde11e"
+    readonly color3="#e9c761"
+    readonly color11="#e9c761"
     # Blue
-    readonly color4="#004fb9"
-    readonly color12="#004fb9"
+    readonly color4="#2661ac"
+    readonly color12="#2661ac"
     # Magenta
-    readonly color5="#6c3c9d"
-    readonly color13="#6c3c9d"
-    # Cyan + Cyan
-    readonly color6="#097493"
-    readonly color14="#097493"
+    readonly color5="#682599"
+    readonly color13="#682599"
+    # Cyan
+    readonly color6="#338880"
+    readonly color14="#338880"
     # White
-    readonly color7="#7d8073"
-    readonly color15="#bcb9ad"
+    readonly color7="#7d7c6a"
+    readonly color15="#cfcbb4"
 
     readonly background="${color15}"
     readonly foreground="${color0}"

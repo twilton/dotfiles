@@ -28,7 +28,7 @@ main() {
     local -r level_initial="$(get_current)"
 
     case $1 in
-        toggle)
+        mute|toggle)
             # mute / unmute
             pamixer -t
 
@@ -64,7 +64,7 @@ main() {
                 notify-send "${name}" "${name} increased to $(get_current)%"
             fi
             ;;
-        off)
+        min|off)
             if [[ "${level_initial}" -gt 0 ]]; then
                 # amixer -q set Master 0% unmute
                 pamixer --set-volume 0
@@ -73,7 +73,7 @@ main() {
                 notify-send "${name}" "${name} decreased to 0%"
             fi
             ;;
-        full)
+        full|max)
             if [[ "${level_initial}" -lt 100 ]]; then
                 # amixer -q set Master 100% unmute
                 pamixer --set-volume 100
@@ -84,9 +84,9 @@ main() {
             ;;
         "")
             if [[ "$(pamixer --get-mute)" == "true" ]]; then
-                echo -e "\e[37mVolume:\e[39m Muted"
+                echo -e "Volume: Muted"
             else
-                echo -e "\e[37mVolume:\e[39m ${level_initial}%"
+                echo -e "Volume: ${level_initial}%"
             fi
             ;;
         *)
