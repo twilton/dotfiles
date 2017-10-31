@@ -171,7 +171,7 @@ fi
 # Functions {{{
 # got the time?
 the_time() {
-    local -r current=$(date +'\e[39m%A \e[94m%d \e[93m%I:%M \e[39m%p')
+    local -r current=$(date +'\e[39m%A \e[91m%d \e[94m%I:%M \e[39m%p')
 
     echo -e "\e[37mDate:\e[39m $current"
 }
@@ -241,7 +241,11 @@ if [[ -n "$PS1" ]] && [[ -r '/usr/share/fzf/completion.bash' ]]; then
     fi
 
     # disable mouse and use 16 colors in fzf
-    FZF_DEFAULT_OPTS='--no-mouse --color=16'
+    FZF_DEFAULT_OPTS='
+        --no-mouse
+        --color=fg:-1,bg:-1,hl:4,fg+:-1,bg+:-1,hl+:4
+        --color=info:-1,prompt:-1,pointer:-1,marker:2,spinner:1,header:-1
+        '
 
     # find hidden files, don't search .git
     #   prioritize ripgrep, ag, find

@@ -154,13 +154,26 @@ if [[ -x "$(which less 2> /dev/null)" ]]; then
     export LESS='-F -g -i -M -R -S -w -X -z-4'
 
     # colored man pages
-    export LESS_TERMCAP_mb=$'\E[01;31m'
-    export LESS_TERMCAP_md=$'\E[01;31m'
+    # begin bold
+    export LESS_TERMCAP_mb=$'\E[39m'
+    # begin blink
+    export LESS_TERMCAP_md=$'\E[35m'
+    # begin reverse video
+    export LESS_TERMCAP_so=$'\E[47;39m'
+    # begin underline
+    export LESS_TERMCAP_us=$'\E[32m'
+    # reset bold/blink
     export LESS_TERMCAP_me=$'\E[0m'
+    # reset reverse video
     export LESS_TERMCAP_se=$'\E[0m'
-    export LESS_TERMCAP_so=$'\E[01;34;07m'
+    # reset underline
     export LESS_TERMCAP_ue=$'\E[0m'
-    export LESS_TERMCAP_us=$'\E[01;32m'
+fi
+
+# ls
+if [[ -x "$(which ls 2> /dev/null)" ]]; then
+    # dir:file:ln:fifo:socket:block:char:ln:ln:execute
+    export LS_COLORS='di=34:fi=0:ln=36:pi=35:so=35:bd=0:cd=0:or=36:mi=36:ex=32'
 fi
 # }}}
 # }}}
