@@ -6,7 +6,6 @@
 | **WM**        | [bspwm][info_wm]                                           |
 | **Terminal**  | [urxvt][info_term]                                         |
 | **Font**      | [source code pro][info_font] & [freetype2][font_rendering] |
-| **Colors**    | [gruvbox][info_colors]                                     |
 
 # Install
 
@@ -43,5 +42,4 @@ Some people I have shamelessly stolen from:
 [info_term]: http://software.schmorp.de/pkg/rxvt-unicode.html
 [info_font]: https://github.com/adobe-fonts/source-code-pro
 [font_rendering]: https://gist.github.com/cryzed/e002e7057435f02cc7894b9e748c5671
-[info_colors]: https://github.com/morhetz/gruvbox
 [stow]: https://www.gnu.org/software/stow/
