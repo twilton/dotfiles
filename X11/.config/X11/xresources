@@ -1,105 +1,69 @@
 ! -----------------------------------------------------------------------------
-! Xresources
 ! Description: X resource file
-! -----------------------------------------------------------------------------
-! Location: $HOME/.Xresources
+! Location: $XDG_CONFIG_HOME/X11/xresources
 ! -----------------------------------------------------------------------------
 
-! X {{{
+! Theme {{{
 ! -----------------------------------------------------------------------------
-Xcursor.size:  16
-Xft.antialias: true
-Xft.hinting:   true
-Xft.autohint:  false
-Xft.hintstyle: hintslight
-Xft.rgba:      rgb
-Xft.lcdfilter: lcddefault
-Xft.dpi:       220
-! -----------------------------------------------------------------------------
-! }}}
+! font
+#define fonts \
+    xft:Source Code Pro:regular:size=10, \
+    xft:Noto Emoji:regular:size=10, \
+    xft:Ubuntu Mono:regular:size=11, \
+    xft:DejaVu Sans Mono:regular:size=10
+#define padding   11
 
-! Fonts {{{
-! -----------------------------------------------------------------------------
-# define fonts \
-    xft:Source Code Pro:regular:size=7
-! -----------------------------------------------------------------------------
-! }}}
+! Color Definitions
+#define Black     #09050c
+#define DarkGray  #626251
+#define Red       #bd2024
+#define Green     #00721b
+#define Yellow    #e9c761
+#define Blue      #2661ac
+#define Magenta   #682599
+#define Cyan      #338880
+#define LightGray #989682
+#define White     #cfcbb4
 
-! Default colors {{{
-! -----------------------------------------------------------------------------
-! https://github.com/morhetz/gruvbox
-*.background:   #282828
-*.foreground:   #ebdbb2
-*.cursorColor:  #ebdbb2
-! Black + DarkGrey
-*.color0:       #282828
-*.color8:       #504945
-! DarkRed + Red
-*.color1:       #cc241d
-*.color9:       #fb4934
-! DarkGreen + Green
-*.color2:       #98971a
-*.color10:      #b8bb26
-! DarkYellow + Yellow
-*.color3:       #d79921
-*.color11:      #fabd2f
-! DarkBlue + Blue
-*.color4:       #458588
-*.color12:      #83a598
-! DarkMagenta + Magenta
-*.color5:       #b16286
-*.color13:      #d3869b
-! DarkCyan + Cyan
-*.color6:       #689d6a
-*.color14:      #8ec07c
-! LightGrey + White
-*.color7:       #a89984
-*.color15:      #ebdbb2
+! Default
+*.background:     White
+*.foreground:     Black
+*.cursorColor:    DarkGray
+*.color0:         Black
+*.color8:         DarkGray
+! Red
+*.color1:         Red
+*.color9:         Red
+! Green
+*.color2:         Green
+*.color10:        Green
+! Yellow
+*.color3:         Yellow
+*.color11:        Yellow
+! Blue
+*.color4:         Blue
+*.color12:        Blue
+! Magenta
+*.color5:         Magenta
+*.color13:        Magenta
+! Cyan
+*.color6:         Cyan
+*.color14:        Cyan
+! White
+*.color7:         LightGray
+*.color15:        White
 ! -----------------------------------------------------------------------------
 ! }}}
 
 ! urxvt {{{
 ! -----------------------------------------------------------------------------
 urxvt.scrollBar:      false
-! reason for 11 is bspwm border is 5 * dpi: 2.2
-urxvt.internalBorder: 11
+urxvt.internalBorder: padding
 urxvt.font:           fonts
 urxvt.boldFont:       fonts
 urxvt.italicFont:     fonts
 urxvt.boldItalicFont: fonts
 urxvt.cursorBlink:    false
-
-! Gruvbox extended palette
-urxvt.color24:  #076678
-urxvt.color66:  #427b58
-urxvt.color88:  #9d0006
-urxvt.color96:  #8f3f71
-urxvt.color100: #79740e
-urxvt.color108: #8ec07c
-urxvt.color109: #83a598
-urxvt.color130: #af3a03
-urxvt.color136: #b57614
-urxvt.color142: #b8bb26
-urxvt.color167: #fb4934
-urxvt.color175: #d3869b
-urxvt.color208: #fe8019
-urxvt.color214: #fabd2f
-urxvt.color223: #ebdbb2
-urxvt.color228: #f2e5bc
-urxvt.color229: #fbf1c7
-urxvt.color230: #f9f5d7
-urxvt.color234: #1d2021
-urxvt.color235: #282828
-urxvt.color236: #32302f
-urxvt.color237: #3c3836
-urxvt.color239: #504945
-urxvt.color241: #665c54
-urxvt.color243: #7c6f64
-urxvt.color244: #928374
-urxvt.color245: #928374
-urxvt.color246: #a89984
-urxvt.color248: #bdae93
-urxvt.color250: #d5c4a1
 ! -----------------------------------------------------------------------------
 ! }}}
 
