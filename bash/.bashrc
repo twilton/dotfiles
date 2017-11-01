@@ -173,7 +173,7 @@ fi
 the_time() {
     local -r current=$(date +'\e[39m%A \e[91m%d \e[94m%I:%M \e[39m%p')
 
-    echo -e "\e[37mDate:\e[39m $current"
+    echo -e "Date: $current"
 }
 
 # google drive
