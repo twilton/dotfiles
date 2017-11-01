@@ -1,6 +1,6 @@
 # -----------------------------------------------------------------------------
-# Description: Config file for newsbeuter
-# Location: $XDG_CONFIG_HOME/newsbeuter/config
+# Description: Config file for newsboat
+# Location: $XDG_CONFIG_HOME/newsboat/config
 # -----------------------------------------------------------------------------
 
 # General {{{
@@ -13,14 +13,14 @@ cleanup-on-quit yes
 confirm-exit no
 
 # default programs
-browser inox
+browser $BROWSER
 
 # sorting method
 feed-sort-order desc
 
 # filter read feeds
-show-read-feeds no
-show-read-articles no
+show-read-feeds yes
+show-read-articles yes
 
 # dont jump to different feeds
 goto-next-feed no
@@ -35,21 +35,31 @@ download-timeout 10
 # -----------------------------------------------------------------------------
 # }}}
 
-# Colors {{{
+# UI {{{
 # -----------------------------------------------------------------------------
-# UI
-color background white black
-color listnormal white black
-color listfocus blue default reverse bold
-color listnormal_unread cyan black
-color listfocus_unread blue default reverse bold
-color info white black reverse
-color article white black
+# format
+articlelist-format "%4i %f %D %?T?|%-17T| ?%t"
 
-# article highlighting
-highlight article "^(Title):.*$" blue default
-highlight article "https?://[^ ]+" red default
-highlight article "\\[image\\ [0-9]+\\]" green default
+# colors
+color background        default default
+color listnormal        default default
+color listfocus         default white
+color listnormal_unread magenta default
+color listfocus_unread  magenta white
+color info              default white
+color article           default default
+
+# highlighting
+highlight article "^(Feed|Title|Author|Link|Date|Linux):" black   default bold
+highlight article "^Podcast Download URL:"                black   default bold
+highlight article "^Links:"                               black   default bold
+highlight article "\\[image\\ [0-9][0-9]*\\]"             blue    default
+highlight article "\\[[0-9][0-9]*\\]"                     blue    default
+highlight article "\\[embedded flash:\\ [0-9]*\\]"        blue    default
+highlight article ":.*\\(link\\)$"                        default default
+highlight article ":.*\\(image\\)$"                       default default
+highlight article ":.*\\(embedded flash\\)$"              default default
+highlight article "https?://[^ ]+"                        green   default underline
 # -----------------------------------------------------------------------------
 # }}}
 
