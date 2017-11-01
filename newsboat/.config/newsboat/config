@@ -19,8 +19,8 @@ browser $BROWSER
 feed-sort-order desc
 
 # filter read feeds
-show-read-feeds no
-show-read-articles no
+show-read-feeds yes
+show-read-articles yes
 
 # dont jump to different feeds
 goto-next-feed no
@@ -35,22 +35,31 @@ download-timeout 10
 # -----------------------------------------------------------------------------
 # }}}
 
-# Colors {{{
+# UI {{{
 # -----------------------------------------------------------------------------
-# UI
-color background          default default
-color listnormal          default default
-color listfocus           default white
-color listnormal_unread   magenta default
-color listfocus_unread    magenta white
-color info                default white
-color article             default default
+# format
+articlelist-format "%4i %f %D %?T?|%-17T| ?%t"
 
+# colors
+color background        default default
+color listnormal        default default
+color listfocus         default white
+color listnormal_unread magenta default
+color listfocus_unread  magenta white
+color info              default white
+color article           default default
 
-# article highlighting
-highlight article "^(Title):.*$" blue default
-highlight article "https?://[^ ]+" red default
-highlight article "\\[image\\ [0-9]+\\]" green default
+# highlighting
+highlight article "^(Feed|Title|Author|Link|Date|Linux):" black   default bold
+highlight article "^Podcast Download URL:"                black   default bold
+highlight article "^Links:"                               black   default bold
+highlight article "\\[image\\ [0-9][0-9]*\\]"             blue    default
+highlight article "\\[[0-9][0-9]*\\]"                     blue    default
+highlight article "\\[embedded flash:\\ [0-9]*\\]"        blue    default
+highlight article ":.*\\(link\\)$"                        default default
+highlight article ":.*\\(image\\)$"                       default default
+highlight article ":.*\\(embedded flash\\)$"              default default
+highlight article "https?://[^ ]+"                        green   default underline
 # -----------------------------------------------------------------------------
 # }}}
 
