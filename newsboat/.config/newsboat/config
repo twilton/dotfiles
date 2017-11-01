@@ -38,13 +38,14 @@ download-timeout 10
 # Colors {{{
 # -----------------------------------------------------------------------------
 # UI
-color background white black
-color listnormal white black
-color listfocus blue default reverse bold
-color listnormal_unread cyan black
-color listfocus_unread blue default reverse bold
-color info white black reverse
-color article white black
+color background          default default
+color listnormal          default default
+color listfocus           default white
+color listnormal_unread   magenta default
+color listfocus_unread    magenta white
+color info                default white
+color article             default default
+
 
 # article highlighting
 highlight article "^(Title):.*$" blue default
