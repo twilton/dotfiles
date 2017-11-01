@@ -163,6 +163,7 @@ Plug 'wellle/targets.vim'
 
 " searching
 Plug 'haya14busa/incsearch.vim'
+" Plug 'haya14busa/is.vim'
 
 " racket language support
 Plug 'wlangstroth/vim-racket', { 'for': ['racket'] }
@@ -196,6 +197,11 @@ let g:buftabline_indicators = 1
 " incsearch.vim {{{
 " auto diable hlsearch on non search movement
 let g:incsearch#auto_nohlsearch = 1
+" }}}
+
+" is.vim {{{
+" disable default mappings
+" let g:is#do_default_mappings = 0
 " }}}
 
 " netrw {{{
@@ -397,9 +403,6 @@ augroup syntax_trail
     au InsertEnter * :set listchars-=trail:_
     au InsertLeave * :set listchars+=trail:_
 augroup END
-
-" highlight trailing whitespace
-highlight SpecialKey ctermbg=NONE ctermfg=DarkRed cterm=NONE
 " }}}
 " -----------------------------------------------------------------------------
 " }}}
@@ -547,6 +550,15 @@ map *  <Plug>(incsearch-nohl-*)
 map #  <Plug>(incsearch-nohl-#)
 map g* <Plug>(incsearch-nohl-g*)
 map g# <Plug>(incsearch-nohl-g#)
+" for use when incsearch.vim is replaced with is.vim
+"map ?  <Plug>(is-scroll-b)
+"map n  <Plug>(is-n)
+"map N  <Plug>(is-N)
+"map *  <Plug>(is-star)
+"map #  <Plug>(is-#)
+"map g* <Plug>(is-g*)
+"map g# <Plug>(is-g#)
+
 " Quicker search / replace
 nnoremap <leader>* *``cgn
 nnoremap <leader># #``cgN
