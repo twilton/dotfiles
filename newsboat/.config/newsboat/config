@@ -1,6 +1,6 @@
 # -----------------------------------------------------------------------------
-# Description: Config file for newsbeuter
-# Location: $XDG_CONFIG_HOME/newsbeuter/config
+# Description: Config file for newsboat
+# Location: $XDG_CONFIG_HOME/newsboat/config
 # -----------------------------------------------------------------------------
 
 # General {{{
@@ -13,7 +13,7 @@ cleanup-on-quit yes
 confirm-exit no
 
 # default programs
-browser inox
+browser $BROWSER
 
 # sorting method
 feed-sort-order desc
