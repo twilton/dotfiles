@@ -292,54 +292,81 @@ set splitright
 
 " Statusline {{{
 if has('statusline')
-    " always show statusline if able
-    set laststatus=2
-    " buffer number
-    set statusline+=%4n
+    " File Flags
+    function! FileFlags() abort
+        let l:flags=''
 
-    " File name
-    set statusline+=\ %<%F
+        if &readonly
+            let l:flags.=' [≠]'
+        endif
 
-    " read only flag
-    set statusline+=%{&ro?'\ [≠]':''}
+        if &modified
+            let l:flags.=' [+]'
+        endif
 
-    " modified flag
-    set statusline+=%{&mod?'\ [+]':''}
+        if &fileformat != 'unix'
+            let l:flags.=' [ff: &fileformat]'
+        endif
 
-    " display a warning if fileformat isnt unix
-    set statusline+=%{&ff!='unix'?'[ff:\ '.&ff.']':''}
+        if &fileencoding != 'utf-8'
+            let l:flags.=' [ft: &fileencoding]'
+        endif
 
-    " display a warning if file encoding isnt utf-8
-    set statusline+=%{(&fenc!='utf-8'&&&fenc!='')?'[ft:\ '.&fenc.']':''}
+        return l:flags
+    endfunction
 
-    " separate left/right side
-    set statusline+=%=
-
-    " Ale
+    " Linter Status
     function! LinterStatus() abort
+        " count linter info
         let l:counts = ale#statusline#Count(bufnr(''))
+        " if no info return
+        if l:counts.total == 0
+            return ''
+        endif
 
+        " sort linter info
         let l:all_errors = l:counts.error + l:counts.style_error
         let l:all_non_errors = l:counts.total - l:all_errors
 
-        if l:counts.total == 0
-            return ''
-        elseif l:all_errors >= 1 && l:all_non_errors >=1
-            return printf('%d warning(s) %d error(s) ', l:all_non_errors, l:all_errors)
-        elseif l:all_errors >= 1
-            return printf('%d error(s) ', l:all_errors)
-        elseif l:all_non_errors >= 1
-            return printf('%d warning(s) ', l:all_non_errors)
+        " format linter info
+        let l:linter=''
+        " Add linter errors
+        if l:all_errors >= 1
+            let l:linter.=printf('%d error(s) ', l:all_errors)
         endif
+        " Add linter warnings
+        if l:all_non_errors >= 1
+            let l:linter.=printf('%d warning(s) ', l:all_non_errors)
+        endif
+
+        return l:linter
     endfunction
-    set statusline+=%{LinterStatus()}
 
-    " Cursor info
-    set statusline+=%c:%l\ 
-    set statusline+=%P\ 
+    function! StatusLine() abort
+        " Buffer number
+        let l:status='%4n'
 
+        " File name
+        let l:status.=' %<%F'
 
-    " set statusline=%{LinterStatus()}
+        " Flags
+        let l:status.='%{FileFlags()}'
+
+        " separate left/right side
+        let l:status.='%='
+
+        " Linter status
+        let l:status.='%{LinterStatus()}'
+
+        " Cursor info
+        let l:status.='%l:%c '
+
+        return l:status
+    endfunction
+
+    " always show statusline if able
+    set laststatus=2
+    set statusline=%!StatusLine()
 endif
 " }}}
 
