@@ -237,9 +237,6 @@ let g:loaded_zipPlugin = 1
 " }}}
 
 " ale {{{
-" linter statusline format
-let g:ale_statusline_format = ['%d error(s)', '%d warning(s)', '']
-
 " messaging
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
@@ -249,7 +246,7 @@ let g:ale_echo_msg_format = '[%severity%: %linter%] %s'
 " buftabline {{{
 let g:buftabline_show = 1
 let g:buftabline_numbers = 1
-let g:buftabline_indicators = 1
+" let g:buftabline_indicators = 0
 " }}}
 
 " incsearch.vim {{{
@@ -295,36 +292,85 @@ set splitright
 
 " Statusline {{{
 if has('statusline')
+    " File Flags
+    function! FileFlags() abort
+        let l:flags=''
+
+        if &readonly
+            let l:flags.=' [≠]'
+        endif
+
+        if &modified
+            let l:flags.=' [+]'
+        endif
+
+        if &fileformat != 'unix'
+            let l:flags.=' [ff: &fileformat]'
+        endif
+
+        if &fileencoding != 'utf-8'
+            let l:flags.=' [fe: &fileencoding]'
+        endif
+
+        return l:flags
+    endfunction
+
+    " Linter Status
+    function! LinterStatus() abort
+        " count linter info
+        let l:counts = ale#statusline#Count(bufnr(''))
+        " if no info return
+        if l:counts.total == 0
+            return ''
+        endif
+
+        " sort linter info
+        let l:all_errors = l:counts.error + l:counts.style_error
+        let l:all_non_errors = l:counts.total - l:all_errors
+
+        " format linter info
+        let l:linter=''
+        " Add linter errors
+        if l:all_errors >= 1
+            let l:linter.=printf('%d error(s) ', l:all_errors)
+        endif
+        " Add linter warnings
+        if l:all_non_errors >= 1
+            let l:linter.=printf('%d warning(s) ', l:all_non_errors)
+        endif
+
+        return l:linter
+    endfunction
+
+    function! StatusLine() abort
+        " Buffer number
+        let l:status=' %n'
+
+        " File name
+        let l:status.=' %<%F'
+
+        " Flags
+        let l:status.='%{FileFlags()}'
+
+        " separate left/right side
+        let l:status.='%='
+
+        " Linter status
+        let l:status.='%{LinterStatus()}'
+
+        " Cursor info
+        if &number
+            let l:status.='%l:%c '
+        else
+            let l:status.='%l(%L):%c '
+        endif
+
+        return l:status
+    endfunction
+
     " always show statusline if able
     set laststatus=2
-    " buffer number
-    set statusline+=%4n
-
-    " File name
-    set statusline+=\ %<%F
-
-    " read only flag
-    set statusline+=%{&ro?'\ [≠]':''}
-
-    " modified flag
-    set statusline+=%{&mod?'\ [+]':''}
-
-    " display a warning if fileformat isnt unix
-    set statusline+=%{&ff!='unix'?'[ff:\ '.&ff.']':''}
-
-    " display a warning if file encoding isnt utf-8
-    set statusline+=%{(&fenc!='utf-8'&&&fenc!='')?'[ft:\ '.&fenc.']':''}
-
-    " separate left/right side
-    set statusline+=%=
-
-    " syntax checking
-    "set statusline+=%{exists('g:loaded_syntastic_plugin')?SyntasticStatuslineFlag():''}
-    set statusline+=%{\ ALEGetStatusLine()}
-
-    " Cursor info
-    set statusline+=\ %c:%l
-    set statusline+=\ %P\ 
+    set statusline=%!StatusLine()
 endif
 " }}}
 
@@ -426,8 +472,6 @@ set nostartofline
 
 " line numbers
 set number
-" 99999 lines
-set numberwidth=5
 
 " fix scrolling
 set scrolloff=8
