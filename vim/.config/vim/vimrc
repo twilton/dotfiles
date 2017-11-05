@@ -246,7 +246,7 @@ let g:ale_echo_msg_format = '[%severity%: %linter%] %s'
 " buftabline {{{
 let g:buftabline_show = 1
 let g:buftabline_numbers = 1
-let g:buftabline_indicators = 1
+" let g:buftabline_indicators = 0
 " }}}
 
 " incsearch.vim {{{
@@ -309,7 +309,7 @@ if has('statusline')
         endif
 
         if &fileencoding != 'utf-8'
-            let l:flags.=' [ft: &fileencoding]'
+            let l:flags.=' [fe: &fileencoding]'
         endif
 
         return l:flags
@@ -344,7 +344,7 @@ if has('statusline')
 
     function! StatusLine() abort
         " Buffer number
-        let l:status='%4n'
+        let l:status=' %n'
 
         " File name
         let l:status.=' %<%F'
@@ -359,7 +359,11 @@ if has('statusline')
         let l:status.='%{LinterStatus()}'
 
         " Cursor info
-        let l:status.='%l:%c '
+        if &number
+            let l:status.='%l:%c '
+        else
+            let l:status.='%l(%L):%c '
+        endif
 
         return l:status
     endfunction
@@ -468,8 +472,6 @@ set nostartofline
 
 " line numbers
 set number
-" 99999 lines
-set numberwidth=5
 
 " fix scrolling
 set scrolloff=8
