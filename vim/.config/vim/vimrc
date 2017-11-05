@@ -237,9 +237,6 @@ let g:loaded_zipPlugin = 1
 " }}}
 
 " ale {{{
-" linter statusline format
-let g:ale_statusline_format = ['%d error(s)', '%d warning(s)', '']
-
 " messaging
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
@@ -318,13 +315,31 @@ if has('statusline')
     " separate left/right side
     set statusline+=%=
 
-    " syntax checking
-    "set statusline+=%{exists('g:loaded_syntastic_plugin')?SyntasticStatuslineFlag():''}
-    set statusline+=%{\ ALEGetStatusLine()}
+    " Ale
+    function! LinterStatus() abort
+        let l:counts = ale#statusline#Count(bufnr(''))
+
+        let l:all_errors = l:counts.error + l:counts.style_error
+        let l:all_non_errors = l:counts.total - l:all_errors
+
+        if l:counts.total == 0
+            return ''
+        elseif l:all_errors >= 1 && l:all_non_errors >=1
+            return printf('%d warning(s) %d error(s) ', l:all_non_errors, l:all_errors)
+        elseif l:all_errors >= 1
+            return printf('%d error(s) ', l:all_errors)
+        elseif l:all_non_errors >= 1
+            return printf('%d warning(s) ', l:all_non_errors)
+        endif
+    endfunction
+    set statusline+=%{LinterStatus()}
 
     " Cursor info
-    set statusline+=\ %c:%l
-    set statusline+=\ %P\ 
+    set statusline+=%c:%l\ 
+    set statusline+=%P\ 
+
+
+    " set statusline=%{LinterStatus()}
 endif
 " }}}
 
