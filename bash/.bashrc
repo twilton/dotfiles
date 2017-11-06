@@ -250,7 +250,7 @@ if [[ -n "$PS1" ]] && [[ -r '/usr/share/fzf/completion.bash' ]]; then
     # find hidden files, don't search .git
     #   prioritize ripgrep, ag, find
     if [[ -x "$(which rg 2> /dev/null)" ]]; then
-        FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git}" 2> /dev/null'
+        FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!{.git}" 2> /dev/null'
         FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
     elif [[ -x "$(which ag 2> /dev/null)" ]]; then
         FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
