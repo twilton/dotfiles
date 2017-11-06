@@ -258,12 +258,6 @@ let g:incsearch#auto_nohlsearch = 1
 " disable default mappings
 " let g:is#do_default_mappings = 0
 " }}}
-
-" netrw {{{
-let g:netrw_banner = 0
-let g:netrw_list_hide = '^\.$'
-let g:netrw_liststyle = 3
-" }}}
 " -----------------------------------------------------------------------------
 " }}}
 
@@ -304,11 +298,11 @@ if has('statusline')
             let l:flags.=' [+]'
         endif
 
-        if &fileformat != 'unix'
+        if &fileformat !=? 'unix'
             let l:flags.=' [ff: &fileformat]'
         endif
 
-        if &fileencoding != 'utf-8'
+        if &fileencoding !=? 'utf-8'
             let l:flags.=' [fe: &fileencoding]'
         endif
 
