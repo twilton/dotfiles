@@ -243,6 +243,7 @@ if [[ -n "$PS1" ]] && [[ -r '/usr/share/fzf/completion.bash' ]]; then
     # disable mouse and use 16 colors in fzf
     FZF_DEFAULT_OPTS='
         --no-mouse
+        --bind=tab:toggle,btab:deselect-all
         --color=fg:-1,bg:-1,hl:4,fg+:-1,bg+:-1,hl+:4
         --color=info:-1,prompt:-1,pointer:-1,marker:2,spinner:1,header:-1
         '
