@@ -50,38 +50,38 @@
 [alias]
 # General {{{
 # List git aliases
-la = !git config -l | grep alias | cut -c 7-
+la = "!git config -l | grep alias | cut -c 7-"
 
 # Show working-tree status
-st = status -s
+st = "status -s"
 
 # Add
-a = add
-ai = add --interactive
-au = add -u
+a = "add"
+ai = "add --interactive"
+au = "add -u"
 
 # Clone repository into new directory
-cl = clone
+cl = "clone"
 
 # Record changes to repository
-cm = commit
+cm = "commit"
 
 # Checkout branch or paths to working tree
-co = checkout
+co = "checkout"
 
 # List branches
-br = branch
-bra = branch -ra
+br = "branch"
+bra = "branch -ra"
 # }}}
 
 # Lists / Logs {{{
 # Use vimdiff
-d = difftool
+d = "difftool"
 
 l = "!git log $@ | tig"
 
 # See history of a file
-history = "!git log -p -M --follow --stat --"
+history = "log -p -M --follow --stat"
 
 # List remotes
 rem = "!git config -l | grep remote.*url | tail -n +2"
@@ -89,14 +89,14 @@ rem = "!git config -l | grep remote.*url | tail -n +2"
 
 # Resets {{{
 # Reset current HEAD to specified state
-r = reset
+r = "reset"
 # }}}
 
 # Find stuff {{{
 # find some pattern in tracked files
-ack = grep --break --heading --line-number --
+ack = "!rg --heading --hidden --glob '!{.git}'"
 # Find a file path in codebase
-gre = !git ls-files | grep --color=auto -i
+find = "!git ls-files | rg -e 2>/dev/null"
 # }}}
 # -----------------------------------------------------------------------------
 # }}}
