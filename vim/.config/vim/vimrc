@@ -162,8 +162,7 @@ Plug 'w0rp/ale'
 Plug 'wellle/targets.vim'
 
 " searching
-Plug 'haya14busa/incsearch.vim'
-" Plug 'haya14busa/is.vim'
+Plug 'haya14busa/is.vim'
 
 " racket language support
 Plug 'wlangstroth/vim-racket', { 'for': ['racket'] }
@@ -178,10 +177,65 @@ filetype plugin indent on
 " s:vim_config_home is no longer used
 unlet s:vim_config_home
 
-" ale {{{
-" linter statusline format
-let g:ale_statusline_format = ['%d error(s)', '%d warning(s)', '']
+" builtin {{{
+" vim-gloaded
+"   https://github.com/rbtnn/vim-gloaded
+" 2html provides function to transform file into HTML
+"   $VIMRUNTIME/plugin/tohtml.vim
+let g:loaded_2html_plugin = 1
 
+" Getscript simplifies retrieval of latest versions of scripts
+"   $VIMRUNTIME/autoload/getscript.vim
+"   $VIMRUNTIME/plugin/getscriptPlugin.vim
+let g:loaded_getscript = 1
+let g:loaded_getscriptPlugin = 1
+
+" LogiPat takes Boolean logic and produces regex to search
+"   $VIMRUNTIME/plugin/logiPat.vim
+"   $VIMRUNTIME/plugin/logiPat.vim
+let g:loaded_logipat = 1
+let g:loaded_logiPat = 1
+
+" Vim file explorer
+"   $VIMRUNTIME/autoload/netrw.vim
+"   $VIMRUNTIME/autoload/netrwFileHandlers.vim
+"   $VIMRUNTIME/plugin/netrwPlugin.vim
+"   $VIMRUNTIME/autoload/netrwSettings.vim
+let g:loaded_netrw = 1
+let g:loaded_netrwFileHandlers = 1
+let g:loaded_netrwPlugin = 1
+let g:loaded_netrwSettings = 1
+
+" rrhelepr provides helper function(s) for --remote-wait
+"   $VIMRUNTIME/plugin/rrhelper.vim
+let g:loaded_rrhelper = 1
+
+" spellfile provides function for downloading spell file
+"   $VIMRUNTIME/plugin/spellfile.vim
+let g:loaded_spellfile_plugin = 1
+
+" tar provides function for browsing tarfiles
+"   $VIMRUNTIME/autoload/tar.vim
+"   $VIMRUNTIME/plugin/tarPlugin.vim
+let g:loaded_tar = 1
+let g:loaded_tarPlugin = 1
+
+" vimball provides function for Vim based archiver
+"   $VIMRUNTIME/autoload/vimball.vim
+"   $VIMRUNTIME/plugin/vimballPlugin.vim
+let g:loaded_vimball = 1
+let g:loaded_vimballPlugin = 1
+
+" zip provides function for browsing zipfiles
+"   $VIMRUNTIME/plugin/gzip.vim
+"   $VIMRUNTIME/autoload/zip.vim
+"   $VIMRUNTIME/plugin/zipPlugin.vim
+let g:loaded_gzip = 1
+let g:loaded_zip = 1
+let g:loaded_zipPlugin = 1
+" }}}
+
+" ale {{{
 " messaging
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
@@ -191,23 +245,7 @@ let g:ale_echo_msg_format = '[%severity%: %linter%] %s'
 " buftabline {{{
 let g:buftabline_show = 1
 let g:buftabline_numbers = 1
-let g:buftabline_indicators = 1
-" }}}
-
-" incsearch.vim {{{
-" auto diable hlsearch on non search movement
-let g:incsearch#auto_nohlsearch = 1
-" }}}
-
-" is.vim {{{
-" disable default mappings
-" let g:is#do_default_mappings = 0
-" }}}
-
-" netrw {{{
-let g:netrw_banner = 0
-let g:netrw_list_hide = '^\.$'
-let g:netrw_liststyle = 3
+" let g:buftabline_indicators = 0
 " }}}
 " -----------------------------------------------------------------------------
 " }}}
@@ -237,36 +275,85 @@ set splitright
 
 " Statusline {{{
 if has('statusline')
+    " File Flags
+    function! FileFlags() abort
+        let l:flags=''
+
+        if &readonly
+            let l:flags.=' [≠]'
+        endif
+
+        if &modified
+            let l:flags.=' [+]'
+        endif
+
+        if &fileformat !=? 'unix'
+            let l:flags.=' [ff: &fileformat]'
+        endif
+
+        if &fileencoding !=? 'utf-8'
+            let l:flags.=' [fe: &fileencoding]'
+        endif
+
+        return l:flags
+    endfunction
+
+    " Linter Status
+    function! LinterStatus() abort
+        " count linter info
+        let l:counts = ale#statusline#Count(bufnr(''))
+        " if no info return
+        if l:counts.total == 0
+            return ''
+        endif
+
+        " sort linter info
+        let l:all_errors = l:counts.error + l:counts.style_error
+        let l:all_non_errors = l:counts.total - l:all_errors
+
+        " format linter info
+        let l:linter=''
+        " Add linter errors
+        if l:all_errors >= 1
+            let l:linter.=printf('%d error(s) ', l:all_errors)
+        endif
+        " Add linter warnings
+        if l:all_non_errors >= 1
+            let l:linter.=printf('%d warning(s) ', l:all_non_errors)
+        endif
+
+        return l:linter
+    endfunction
+
+    function! StatusLine() abort
+        " Buffer number
+        let l:status=' %n'
+
+        " File name
+        let l:status.=' %<%F'
+
+        " Flags
+        let l:status.='%{FileFlags()}'
+
+        " separate left/right side
+        let l:status.='%='
+
+        " Linter status
+        let l:status.='%{LinterStatus()}'
+
+        " Cursor info
+        if &number
+            let l:status.='%l:%c '
+        else
+            let l:status.='%l(%L):%c '
+        endif
+
+        return l:status
+    endfunction
+
     " always show statusline if able
     set laststatus=2
-    " buffer number
-    set statusline+=%4n
-
-    " File name
-    set statusline+=\ %<%F
-
-    " read only flag
-    set statusline+=%{&ro?'\ [≠]':''}
-
-    " modified flag
-    set statusline+=%{&mod?'\ [+]':''}
-
-    " display a warning if fileformat isnt unix
-    set statusline+=%{&ff!='unix'?'[ff:\ '.&ff.']':''}
-
-    " display a warning if file encoding isnt utf-8
-    set statusline+=%{(&fenc!='utf-8'&&&fenc!='')?'[ft:\ '.&fenc.']':''}
-
-    " separate left/right side
-    set statusline+=%=
-
-    " syntax checking
-    "set statusline+=%{exists('g:loaded_syntastic_plugin')?SyntasticStatuslineFlag():''}
-    set statusline+=%{\ ALEGetStatusLine()}
-
-    " Cursor info
-    set statusline+=\ %c:%l
-    set statusline+=\ %P\ 
+    set statusline=%!StatusLine()
 endif
 " }}}
 
@@ -368,8 +455,6 @@ set nostartofline
 
 " line numbers
 set number
-" 99999 lines
-set numberwidth=5
 
 " fix scrolling
 set scrolloff=8
@@ -539,25 +624,6 @@ xnoremap <leader>\| <C-W>_
 noremap <leader>e :e<space>
 noremap <leader>es :sp<space>
 noremap <leader>ev :vsp<space>
-
-" better search
-map /  <Plug>(incsearch-forward)
-map ?  <Plug>(incsearch-backward)
-map g/ <Plug>(incsearch-stay)
-map n  <Plug>(incsearch-nohl-n)
-map N  <Plug>(incsearch-nohl-N)
-map *  <Plug>(incsearch-nohl-*)
-map #  <Plug>(incsearch-nohl-#)
-map g* <Plug>(incsearch-nohl-g*)
-map g# <Plug>(incsearch-nohl-g#)
-" for use when incsearch.vim is replaced with is.vim
-"map ?  <Plug>(is-scroll-b)
-"map n  <Plug>(is-n)
-"map N  <Plug>(is-N)
-"map *  <Plug>(is-star)
-"map #  <Plug>(is-#)
-"map g* <Plug>(is-g*)
-"map g# <Plug>(is-g#)
 
 " Quicker search / replace
 nnoremap <leader>* *``cgn

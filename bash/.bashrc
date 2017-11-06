@@ -243,6 +243,7 @@ if [[ -n "$PS1" ]] && [[ -r '/usr/share/fzf/completion.bash' ]]; then
     # disable mouse and use 16 colors in fzf
     FZF_DEFAULT_OPTS='
         --no-mouse
+        --bind=tab:toggle,btab:deselect-all
         --color=fg:-1,bg:-1,hl:4,fg+:-1,bg+:-1,hl+:4
         --color=info:-1,prompt:-1,pointer:-1,marker:2,spinner:1,header:-1
         '
@@ -250,7 +251,7 @@ if [[ -n "$PS1" ]] && [[ -r '/usr/share/fzf/completion.bash' ]]; then
     # find hidden files, don't search .git
     #   prioritize ripgrep, ag, find
     if [[ -x "$(which rg 2> /dev/null)" ]]; then
-        FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git}" 2> /dev/null'
+        FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!{.git}" 2> /dev/null'
         FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
     elif [[ -x "$(which ag 2> /dev/null)" ]]; then
         FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
