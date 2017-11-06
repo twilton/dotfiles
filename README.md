@@ -8,6 +8,7 @@
 | **Font**      | [source code pro][info_font] & [freetype2][font_rendering] |
 
 # Install
+*current release: `2017-11-06`*
 
 This repo is managed with [GNU stow][stow]. **Backup** your dotfiles!
 
