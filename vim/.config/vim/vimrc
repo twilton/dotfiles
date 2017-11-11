@@ -436,18 +436,15 @@ set magic
 " fold using syntax
 set foldmethod=manual
 
-" folds closed by default
-set foldlevelstart=1
-
 " hide folding column
 set foldcolumn=0
 
 " max 10 nested folds
-set foldnestmax=10
+set foldnestmax=4
 " }}}
 
 " Cursor {{{
-" hilight cursor line
+" don't highlight cursor line
 set nocursorline
 
 " keep cursor column pos
@@ -472,9 +469,6 @@ set matchpairs+=<:>
 " Syntax {{{
 " Enable syntax highlighting
 syntax on
-
-" we're using a dark bg
-set background=dark
 
 " use this colorscheme
 colorscheme krul
