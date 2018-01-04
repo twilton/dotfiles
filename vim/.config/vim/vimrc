@@ -101,14 +101,6 @@ let &spellfile = s:vim_data_home . '/en.utf-8.add'
 unlet s:vim_data_home
 " }}}
 
-" files to search
-set path=.,**
-
-" Set to auto read when a file is changed from the outside
-set autoread
-" Automatically switch to file directory of buffer
-set autochdir
-
 " disable backups by default
 set nobackup
 
@@ -135,6 +127,9 @@ set fileencoding=utf-8
 
 " Use unix as the standard file type
 set fileformats=unix,mac,dos
+
+" Automatically switch to file directory of buffer
+set autochdir
 " -----------------------------------------------------------------------------
 " }}}
 
@@ -497,10 +492,10 @@ set smarttab
 set autoindent
 set shiftround
 
-" 1 tab == 4 spaces
-set shiftwidth=4
-set tabstop=4
+" 1 tab == 8 spaces
+set tabstop=8
 set softtabstop=4
+set shiftwidth=4
 set nojoinspaces
 
 " not word dividers
@@ -538,7 +533,7 @@ augroup END
 augroup ft_python
     autocmd!
     autocmd FileType python setlocal foldmethod=syntax foldlevel=1
-    autocmd FileType python setlocal nospell tw=79 ts=4 sts=4 sw=4 expandtab
+    autocmd FileType python setlocal nospell tw=79 ts=8 sts=4 sw=4 expandtab
 augroup END
 " }}}
 
