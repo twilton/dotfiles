@@ -478,9 +478,9 @@ set list listchars=tab:>\ ,trail:_,extends:>,precedes:<,nbsp:~
 set showbreak=\\
 
 augroup syntax_trail
-    au!
-    au InsertEnter * :set listchars-=trail:_
-    au InsertLeave * :set listchars+=trail:_
+    autocmd!
+    autocmd InsertEnter * :set listchars-=trail:_
+    autocmd InsertLeave * :set listchars+=trail:_
 augroup END
 " }}}
 " -----------------------------------------------------------------------------
@@ -495,7 +495,6 @@ set smarttab
 
 " indent stuff
 set autoindent
-set smartindent
 set shiftround
 
 " 1 tab == 4 spaces
@@ -521,32 +520,32 @@ set cpoptions+=J
 
 " git {{{
 augroup ft_git
-    au!
-    au FileType git,gitcommit setlocal foldmethod=syntax foldlevel=1
-    au Filetype git,gitcommit setlocal spell tw=72
+    autocmd!
+    autocmd FileType git,gitcommit setlocal foldmethod=syntax foldlevel=1
+    autocmd Filetype git,gitcommit setlocal spell tw=72
 augroup END
 " }}}
 
 " C {{{
 augroup ft_c
-    au!
-    au FileType c,cpp setlocal foldmethod=marker foldmarker={,}
-    au FileType c,cpp setlocal nospell tw=79 ts=8 sts=8 sw=8 expandtab
+    autocmd!
+    autocmd FileType c,cpp setlocal foldmethod=marker foldmarker={,}
+    autocmd FileType c,cpp setlocal nospell tw=79 ts=8 sts=8 sw=8 expandtab
 augroup END
 " }}}
 
 " Python {{{
 augroup ft_python
-    au!
-    au FileType python setlocal foldmethod=syntax foldlevel=1
-    au FileType python setlocal nospell tw=79 ts=4 sts=4 sw=4 expandtab
+    autocmd!
+    autocmd FileType python setlocal foldmethod=syntax foldlevel=1
+    autocmd FileType python setlocal nospell tw=79 ts=4 sts=4 sw=4 expandtab
 augroup END
 " }}}
 
 " Text {{{
 augroup ft_text
-    au!
-    au FileType markdown,text,txt setlocal spell tw=72 ts=4 sts=4 sw=4 noexpandtab
+    autocmd!
+    autocmd FileType markdown,text,txt setlocal spell tw=72 ts=4 sts=4 sw=4 noexpandtab
 augroup END
 " }}}
 " -----------------------------------------------------------------------------
