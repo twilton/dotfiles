@@ -163,9 +163,8 @@ if [[ -n "$XDG_CONFIG_HOME" ]]; then
     fi
 fi
 
-# Pacman / Pacaur
-if [[ -x "$(which pacaur 2> /dev/null)" ]]; then
-    alias syugit='pacaur -Syu --devel --needed'
+if [[ -x "$(which rsync 2> /dev/null)" ]]; then
+    alias copy='rsync -avh --partial --info=progress2'
 fi
 # }}}
 
