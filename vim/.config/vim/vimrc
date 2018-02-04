@@ -101,14 +101,6 @@ let &spellfile = s:vim_data_home . '/en.utf-8.add'
 unlet s:vim_data_home
 " }}}
 
-" files to search
-set path=.,**
-
-" Set to auto read when a file is changed from the outside
-set autoread
-" Automatically switch to file directory of buffer
-set autochdir
-
 " disable backups by default
 set nobackup
 
@@ -135,6 +127,9 @@ set fileencoding=utf-8
 
 " Use unix as the standard file type
 set fileformats=unix,mac,dos
+
+" Automatically switch to file directory of buffer
+set autochdir
 " -----------------------------------------------------------------------------
 " }}}
 
@@ -436,18 +431,15 @@ set magic
 " fold using syntax
 set foldmethod=manual
 
-" folds closed by default
-set foldlevelstart=1
-
 " hide folding column
 set foldcolumn=0
 
 " max 10 nested folds
-set foldnestmax=10
+set foldnestmax=4
 " }}}
 
 " Cursor {{{
-" hilight cursor line
+" don't highlight cursor line
 set nocursorline
 
 " keep cursor column pos
@@ -473,9 +465,6 @@ set matchpairs+=<:>
 " Enable syntax highlighting
 syntax on
 
-" we're using a dark bg
-set background=dark
-
 " use this colorscheme
 colorscheme krul
 
@@ -484,9 +473,9 @@ set list listchars=tab:>\ ,trail:_,extends:>,precedes:<,nbsp:~
 set showbreak=\\
 
 augroup syntax_trail
-    au!
-    au InsertEnter * :set listchars-=trail:_
-    au InsertLeave * :set listchars+=trail:_
+    autocmd!
+    autocmd InsertEnter * :set listchars-=trail:_
+    autocmd InsertLeave * :set listchars+=trail:_
 augroup END
 " }}}
 " -----------------------------------------------------------------------------
@@ -501,13 +490,12 @@ set smarttab
 
 " indent stuff
 set autoindent
-set smartindent
 set shiftround
 
-" 1 tab == 4 spaces
-set shiftwidth=4
-set tabstop=4
+" 1 tab == 8 spaces
+set tabstop=8
 set softtabstop=4
+set shiftwidth=4
 set nojoinspaces
 
 " not word dividers
@@ -527,32 +515,32 @@ set cpoptions+=J
 
 " git {{{
 augroup ft_git
-    au!
-    au FileType git,gitcommit setlocal foldmethod=syntax foldlevel=1
-    au Filetype git,gitcommit setlocal spell tw=72
+    autocmd!
+    autocmd FileType git,gitcommit setlocal foldmethod=syntax foldlevel=1
+    autocmd Filetype git,gitcommit setlocal spell tw=72
 augroup END
 " }}}
 
 " C {{{
 augroup ft_c
-    au!
-    au FileType c,cpp setlocal foldmethod=marker foldmarker={,}
-    au FileType c,cpp setlocal nospell tw=79 ts=8 sts=8 sw=8 expandtab
+    autocmd!
+    autocmd FileType c,cpp setlocal foldmethod=marker foldmarker={,}
+    autocmd FileType c,cpp setlocal nospell tw=79 ts=8 sts=8 sw=8 expandtab
 augroup END
 " }}}
 
 " Python {{{
 augroup ft_python
-    au!
-    au FileType python setlocal foldmethod=syntax foldlevel=1
-    au FileType python setlocal nospell tw=79 ts=4 sts=4 sw=4 expandtab
+    autocmd!
+    autocmd FileType python setlocal foldmethod=syntax foldlevel=1
+    autocmd FileType python setlocal nospell tw=79 ts=8 sts=4 sw=4 expandtab
 augroup END
 " }}}
 
 " Text {{{
 augroup ft_text
-    au!
-    au FileType markdown,text,txt setlocal spell tw=72 ts=4 sts=4 sw=4 noexpandtab
+    autocmd!
+    autocmd FileType markdown,text,txt setlocal spell tw=72 ts=4 sts=4 sw=4 noexpandtab
 augroup END
 " }}}
 " -----------------------------------------------------------------------------

@@ -28,7 +28,8 @@ fi
 # increase history size
 HISTSIZE=1000
 # delete duplicate entries
-HISTCONTROL=erasedups
+HISTCONTROL=ignoreboth:erasedups
+HISTIGNORE='ls:[bf]g:exit:pwd:clear:mount:umount'
 # -----------------------------------------------------------------------------
 # }}}
 
@@ -80,9 +81,9 @@ build_prompt() {
     # Get the exit code of last command
     local -r exit_code="$?"
 
-    # hack to have persistent history
-    #   run in subshell to avoid triggering DEBUG
-    (history -a)
+    # Solution to sync history between terminals with ignoredups
+    #   https://unix.stackexchange.com/a/18443
+    history -n; history -w; history -c; history -r;
 
     # modules to add to prompt
     local -r modules="$(prompt_hostname)$(prompt_directory)$(prompt_git)"
@@ -162,9 +163,8 @@ if [[ -n "$XDG_CONFIG_HOME" ]]; then
     fi
 fi
 
-# Pacman / Pacaur
-if [[ -x "$(which pacaur 2> /dev/null)" ]]; then
-    alias syugit='pacaur -Syu --devel --needed'
+if [[ -x "$(which rsync 2> /dev/null)" ]]; then
+    alias copy='rsync -avh --partial --info=progress2'
 fi
 # }}}
 
