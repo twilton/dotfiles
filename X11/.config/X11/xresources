@@ -29,6 +29,7 @@
 *.background:     White
 *.foreground:     Black
 *.cursorColor:    DarkGray
+! Black
 *.color0:         Black
 *.color8:         DarkGray
 ! Red
