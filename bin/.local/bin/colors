@@ -7,8 +7,8 @@
 
 main() {
     # Black
-    readonly color0="#09050c"
-    readonly color8="#7d7c6a"
+    readonly color0="#000000"
+    readonly color8="#686049"
     # Red
     readonly color1="#bd2024"
     readonly color9="#bd2024"
@@ -28,8 +28,8 @@ main() {
     readonly color6="#338880"
     readonly color14="#338880"
     # White
-    readonly color7="#7d7c6a"
-    readonly color15="#cfcbb4"
+    readonly color7="#b6ad92"
+    readonly color15="#ece3c3"
 
     readonly background="${color15}"
     readonly foreground="${color0}"

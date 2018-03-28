@@ -9,8 +9,8 @@
     editor = /usr/bin/vim
 [user]
     name = twilton
-    email = git.twilton@gmail.com
-    signingkey = 0x74A1FF66A1AB80F1
+    email = git@twilton.me
+    signingkey = 0x6D31B7DCA90CFA8A
 [commit]
     gpgsign = true
 # -----------------------------------------------------------------------------

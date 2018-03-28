@@ -556,9 +556,6 @@ set ttimeoutlen=100
 " disable mouse
 set mouse=
 
-" Configure backspace so it acts as it should act
-set backspace=indent,eol,start
-
 " Conflicts when using mapleader so map space to \
 map <space> <leader>
 
@@ -569,21 +566,22 @@ nnoremap k gk
 " toggle folds with enter
 nnoremap <Enter> za
 
+"nnoremap <leader><space> <C-^>
+
 " Buffers
 nnoremap <leader>b :ls<cr>:b<space>
 nnoremap <leader>[ :bprevious<cr>
 nnoremap <leader>] :bnext<cr>
 " jump to alternate buffer
-nnoremap <leader><space> <C-^>
+nnoremap <BS> <C-^>
+" buffer delete
+nnoremap <leader><BS> :bd<cr>
 
 " open horizontal / vertical window
 nnoremap <leader>s <C-W>s
 nnoremap <leader>v <C-W>v
-" open file under cursor in vertal split
-nnoremap <leader>f :vertical wincmd f<CR>
 " close windows
 nnoremap <leader>c <C-W>c
-nnoremap <leader>q <C-W>q
 nnoremap <leader>o :only<CR>
 " Move between windows
 nnoremap <leader>h <C-W>h
@@ -609,9 +607,10 @@ nnoremap <leader>\| <C-W>_
 xnoremap <leader>\| <C-W>_
 
 " Edit
-noremap <leader>e :e<space>
 noremap <leader>es :sp<space>
 noremap <leader>ev :vsp<space>
+" Open file under cursor in vertal split
+nnoremap <leader>f :vertical wincmd f<CR>
 
 " Quicker search / replace
 nnoremap <leader>* *``cgn
@@ -620,7 +619,6 @@ nnoremap <leader>% :%s/\<<C-r>=expand("<cword>")<CR>\>/
 
 " Change Y to be consistent with C and D
 nnoremap Y y$
-
 " yank/paste/delete to system clipboard
 nnoremap <leader>y "+y
 vnoremap <leader>y "+y
@@ -632,8 +630,6 @@ nnoremap <leader>D "+D
 nnoremap <leader>p "+p
 nnoremap <leader>P "+P
 
-" select last changed block
-nnoremap <leader>V `[v`]
 " Go to the starting position after visual modes
 vnoremap <ESC> o<ESC>
 " don't exit visual mode while shifting

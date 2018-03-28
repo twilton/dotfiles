@@ -5,18 +5,61 @@
 # Location: $HOME/.local/bin/open_program
 # -----------------------------------------------------------------------------
 
+# open the terminal
+#   programs are prioritized in this order:
+#   1. $TERMINAL
+#   2. urxvtc
+#   3. urxvt
+#   4. st
+#   5. xterm
+function open_terminal() {
+    # check if $TERMINAL is set
+    if [[ -n "$TERMINAL" ]] && [[ -x "$(which $TERMINAL 2> /dev/null)" ]]; then
+        local -r terminal="$TERMINAL"
+
+    # check for urxvtc and running urxvtd
+    elif [[ -x "$(which urxvtc 2> /dev/null)" ]] && [[ -n "$(pidof urxvtd 2> /dev/null)" ]]; then
+        local -r terminal='urxvtc'
+
+    # check for urxvt
+    elif [[ -x "$(which urxvt 2> /dev/null)" ]]; then
+        local -r terminal='urxvt'
+
+    # check for st
+    elif [[ -x "$(which st 2> /dev/null)" ]]; then
+        local -r terminal='st'
+
+    # check for xterm
+    elif [[ -x "$(which xterm 2> /dev/null)" ]]; then
+        local -r terminal='xterm'
+
+    # didn't find anything
+    else
+        notify-send "Error" "Could not find a terminal"
+        exit 1
+    fi
+
+    if [[ $# -gt 0 ]]; then
+        "$terminal" $@ ||
+            { notify-send "Error" "$terminal could not be started with arguments '$@'"; exit 1; }
+    else
+        "$terminal" ||
+            { notify-send "Error" "$terminal could not be started"; exit2; }
+    fi
+}
+
 # open the file_manager
 #   programs are prioritized in this order:
 #   1. ranger
 function open_file_manager() {
     # check for ranger
-    if [[ -x "$(which ranger 2> /dev/null)" ]] && [[ -x "$(which urxvtc 2> /dev/null)" ]] && [[ -n "$(pidof urxvtd 2> /dev/null)" ]]; then
-        urxvtc -e 'ranger'
+    if [[ -x "$(which ranger 2> /dev/null)" ]]; then
+        open_terminal '-e ranger'
 
     # didn't find anything
     else
         notify-send "Error" "Could not find a file manager"
-        exit 2
+        exit 1
     fi
 }
 
@@ -25,7 +68,7 @@ function open_file_manager() {
 #   1. ncmpc
 function open_music_player() {
     # check for ncmpc
-    if [[ -x "$(which ncmpc 2> /dev/null)" ]] && [[ -x "$(which urxvtc 2> /dev/null)" ]] && [[ -n "$(pidof urxvtd 2> /dev/null)" ]]; then
+    if [[ -x "$(which ncmpc 2> /dev/null)" ]]; then
         # ncmpc doesn't follow xdg standards so specify config file that does
         if [[ -n "$XDG_CONFIG_HOME" ]]; then
             local -r config="$XDG_CONFIG_HOME/ncmpc/config"
@@ -35,15 +78,15 @@ function open_music_player() {
 
         # check if config is readable; use it if true
         if [[ -r "$config" ]]; then
-            urxvtc -e 'ncmpc' -f "$config"
+            open_terminal "-e ncmpc -c -f $config"
         else
-            urxvtc -e 'ncmpc'
+            open_terminal '-e ncmpc'
         fi
 
     # didn't find anything
     else
         notify-send "Error" "Could not find a music player"
-        exit 2
+        exit 1
     fi
 }
 
@@ -70,26 +113,7 @@ function open_spotlight() {
     # didn't find anything
     else
         notify-send "Error" "Could not find a spotlight"
-        exit 2
-    fi
-}
-
-# open the terminal
-#   programs are prioritized in this order:
-#   1. $TERMINAL
-#   2. urxvtc
-function open_terminal() {
-    if [[ -n "$TERMINAL" ]] && [[ -x "$(which $TERMINAL 2> /dev/null)" ]]; then
-        "$TERMINAL"
-
-    # check for urxvtc and running urxvtd
-    elif [[ -x "$(which urxvtc 2> /dev/null)" ]] && [[ -n "$(pidof urxvtd 2> /dev/null)" ]]; then
-        urxvtc
-
-    # didn't find anything
-    else
-        notify-send "Error" "Could not find a terminal"
-        exit 2
+        exit 1
     fi
 }
 
@@ -114,7 +138,7 @@ function open_web_browser() {
     # didn't find anything
     else
         notify-send "Error" "Could not find a web browser"
-        exit 2
+        exit 1
     fi
 }
 
@@ -136,7 +160,7 @@ function main() {
             open_web_browser
             ;;
         *)
-            exit 2
+            exit 1
             ;;
     esac
 }

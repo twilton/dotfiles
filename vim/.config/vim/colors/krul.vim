@@ -89,7 +89,7 @@ hi DiffChange    ctermbg=NONE   ctermfg=magenta  cterm=reverse
 hi DiffDelete    ctermbg=NONE   ctermfg=red      cterm=reverse
 hi DiffText      ctermbg=NONE   ctermfg=red      cterm=reverse
 
-hi IncSearch     ctermbg=cyan   ctermfg=red      cterm=NONE
+hi IncSearch     ctermbg=yellow ctermfg=red      cterm=NONE
 hi Search        ctermbg=yellow ctermfg=NONE     cterm=NONE
 
 hi Directory     ctermbg=NONE   ctermfg=cyan     cterm=NONE
@@ -138,7 +138,7 @@ hi link Debug          Special
 " Plugins {{{
 " -----------------------------------------------------------------------------
 " BufTabLine {{{
-hi BufTabLineActive ctermbg=cyan ctermfg=NONE    cterm=NONE
+hi BufTabLineActive ctermbg=yellow ctermfg=darkgray cterm=NONE
 " }}}
 " -----------------------------------------------------------------------------
 " }}}

@@ -28,7 +28,7 @@ fi
 # increase history size
 HISTSIZE=1000
 # delete duplicate entries
-HISTCONTROL=ignoreboth:erasedups
+HISTCONTROL=erasedups
 HISTIGNORE='ls:[bf]g:exit:pwd:clear:mount:umount'
 # -----------------------------------------------------------------------------
 # }}}
@@ -81,13 +81,13 @@ build_prompt() {
     # Get the exit code of last command
     local -r exit_code="$?"
 
-    # Solution to sync history between terminals with ignoredups
+    # Solution to sync history between terminals
     #   https://unix.stackexchange.com/a/18443
     history -n; history -w; history -c; history -r;
 
     # modules to add to prompt
     local -r modules="$(prompt_hostname)$(prompt_directory)$(prompt_git)"
-    local -r split="\[\e[93m\]>>>"
+    local -r split="\[\e[96m\]>>>"
 
     # Set privilege indicator color by exit code
     local prompt_privilege
