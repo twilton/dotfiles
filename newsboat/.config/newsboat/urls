@@ -29,8 +29,12 @@ http://www.economist.com/sections/science-technology/rss.xml "The_Economist" "Sc
 http://www.economist.com/sections/culture/rss.xml "The_Economist" "Culture" "Arts" "~The Economist: Arts" "!The Economist: Arts"
 "query:The Economist:tags # \"The_Economist\""
 
-http://www.cbc.ca/cmlink/rss-canada "CBC" "Canada" "~CBC"
+https://www.wired.com/feed/category/science/latest/rss "Wired" "Science" "~Wired: Science" "!Wired: Science"
+https://www.wired.com/feed/category/culture/latest/rss "Wired" "~Wired: Culture" "!Wired: Culture"
+https://www.wired.com/feed/category/security/latest/rss "Wired" "Technology" "~Wired: Security" "!Wired: Security"
+https://www.wired.com/feed/category/backchannel/latest/rss "Wired" "Technology" "~Wired: Backchannel" "!Wired: Backchannel"
+"query:Wired:tags # \"Wired\""
 
-http://rss.nytimes.com/services/xml/rss/nyt/World.xml "NYT" "World" "~NYT"
-
-http://feeds.bbci.co.uk/news/world/rss.xml "BBC" "World" "~BBC"
+http://rss.sciam.com/ScientificAmerican-Global "Scientific American" "Science" "Technology" "~Scientific American"
+https://massivesci.com/feed.xml "Massive" "Science" "Technology" "~Massive"
+http://nautil.us/rss/all "Nautilus" "Science" "Technology" "~Nautilus"
