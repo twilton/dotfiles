@@ -122,8 +122,8 @@ cd() {
 
 # Aliases {{{
 # force colors
-alias ls='ls --color=auto -hrtF'
-alias lsa='ls --color=auto -ahrtF'
+alias ls='ls --color=auto --group-directories-first -hrtF'
+alias lsa='ls --color=auto --group-directories-first -ahrtF'
 alias grep='grep --color=auto'
 
 # Add 'protection'
@@ -143,32 +143,43 @@ alias pls='sudo $(fc -ln -1)'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
+# }}}
 
+# Functions {{{
 # XDG for programs that don't follow XDG and don't have environment
 #   variables to set config file
 if [[ -n "$XDG_CONFIG_HOME" ]]; then
     # ncmpc
-    if [[ -x "$(which ncmpc 2> /dev/null)" ]] && [[ -r "$XDG_CONFIG_HOME/ncmpc/config" ]]; then
-        alias ncmpc="ncmpc -f $XDG_CONFIG_HOME/ncmpc/config"
+    if [[ -x "$(which ncmpc 2> /dev/null)" ]] && {
+        [[ -r "$XDG_CONFIG_HOME/ncmpc/config" ]] || [[ -r "$XDG_CONFIG_HOME/ncmpc/keys" ]]
+        }; then
+
+        ncmpc() {
+            if [[ -r "$XDG_CONFIG_HOME/ncmpc/config" ]] && [[ -r "$XDG_CONFIG_HOME/ncmpc/keys" ]]; then
+                command ncmpc -f "$XDG_CONFIG_HOME/ncmpc/config" -k "$XDG_CONFIG_HOME/ncmpc/keys" "$@"
+            elif [[ -r "$XDG_CONFIG_HOME/ncmpc/config" ]]; then
+                command ncmpc -f "$XDG_CONFIG_HOME/ncmpc/config" "$@"
+            else
+                command ncmpc -k "$XDG_CONFIG_HOME/ncmpc/keys" "$@"
+            fi
+        }
     fi
 
     # tmux
     if [[ -x "$(which tmux 2> /dev/null)" ]] && [[ -r "$XDG_CONFIG_HOME/tmux/tmux.conf" ]]; then
-        alias tmux="tmux -f $XDG_CONFIG_HOME/tmux/tmux.conf"
+        tmux() {
+            command tmux -f "$XDG_CONFIG_HOME/tmux/tmux.conf" "$@"
+        }
     fi
 
     # redshift
     if [[ -x "$(which redshift 2> /dev/null)" ]] && [[ -r "$XDG_CONFIG_HOME/redshift/redshift.conf" ]]; then
-        alias redshift="redshift -c $XDG_CONFIG_HOME/redshift/redshift.conf"
+        redshift() {
+            command redshift -c "$XDG_CONFIG_HOME/redshift/redshift.conf" "$@"
+        }
     fi
 fi
 
-if [[ -x "$(which rsync 2> /dev/null)" ]]; then
-    alias copy='rsync -avh --partial --info=progress2'
-fi
-# }}}
-
-# Functions {{{
 # got the time?
 the_time() {
     local -r current=$(date +'\e[39m%A \e[91m%d \e[94m%I:%M \e[39m%p')
@@ -176,17 +187,10 @@ the_time() {
     echo -e "Date: $current"
 }
 
-# google drive
-if [[ -x "$(which grive 2> /dev/null)" ]]; then
-    sync_drive() {
-        grive -p "$HOME/google_drive/"
-    }
-fi
-
 # keepasscli
 if [[ -x "$(which kpcli 2> /dev/null)" ]]; then
     keys() {
-        kpcli --kdb "$HOME/google_drive/Pass/cats.kdbx"
+        kpcli --kdb "$HOME/Sync/Passwords/cats.kdbx"
 
         # reset terminal
         reset
@@ -197,6 +201,20 @@ fi
 mkcd() {
     mkdir -p "$@" && eval cd "\"\$$#\""
 }
+
+# search
+if [[ -x "$(which surfraw 2> /dev/null)" ]]; then
+    s() {
+        surfraw searx "$@"
+    }
+fi
+
+# easier copy
+if [[ -x "$(which rsync 2> /dev/null)" ]]; then
+    copy() {
+        rsync -avh --partial --info=progress2 "$@"
+    }
+fi
 
 # easier extraction
 extract() {
