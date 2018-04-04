@@ -1,0 +1,215 @@
+# -----------------------------------------------------------------------------
+# Description: Key bindings for ncmpc
+# Location: $XDG_CONFIG_HOME/ncmpc/keys
+# -----------------------------------------------------------------------------
+
+# General {{{
+# -----------------------------------------------------------------------------
+## Key configuration screen
+key screen-keyedit = 'E'
+## Update screen
+# Ctrl-L (12)
+key update = 12
+
+## Quit
+key quit = 'q'
+# -----------------------------------------------------------------------------
+# }}}
+
+# Cursor {{{
+# -----------------------------------------------------------------------------
+## Move cursor up
+# Up (259)
+key up = 259,  'k'
+## Move cursor down
+# Down (258)
+key down = 258,  'j'
+
+## Move cursor to top of screen
+key top = 'H'
+## Move cursor to middle of screen
+key middle = 'M'
+## Move cursor to bottom of screen
+key bottom = 'L'
+
+## Move cursor to top of list
+# Home (262)
+key home = 262, 'g'
+## Move cursor to bottom of list
+# End (360)
+key end = 360, 'G'
+
+## Page up
+# PageUp (339)
+key pgup = 339
+## Page down
+# PageDown (338)
+key pgdn = 338
+
+## Scroll down one line
+key scroll-down-line = 0
+## Scroll up one line
+key scroll-up-line = 0
+## Scroll down half a screen
+# CTRL-D (4)
+key scroll-down-half = 4
+## Scroll up half a screen
+# CTRL-U (21)
+key scroll-up-half = 21
+# -----------------------------------------------------------------------------
+# }}}
+
+# Screen {{{
+# -----------------------------------------------------------------------------
+## Next screen
+# Tab (9)
+key screen-next = 9
+## Previous screen
+# Shift+Tab (353)
+key screen-prev = 353
+## Swap to most recent screen
+key screen-swap = '.'
+## Help screen
+# F1 (265)
+key screen-help = '1', 265
+## Playlist screen
+# F2 (266)
+key screen-playlist = '2', 266
+## Browse screen
+# F3 (267)
+key screen-browse = '3', 267
+## Artist screen
+# F4 (268)
+key screen-artist = '4', 268
+## Search screen
+# F5 (269)
+key screen-search = '5', 269
+## Lyrics screen
+# F7 (271)
+key screen-lyrics = '7', 271
+## Outputs screen
+# F8 (272)
+key screen-outputs = '8', 272
+# -----------------------------------------------------------------------------
+# }}}
+
+# Controls {{{
+# -----------------------------------------------------------------------------
+## Play/Enter directory
+# Enter (13)
+key play = 13
+## Pause (toggle)
+key pause = 'P'
+## Stop
+key stop = 's'
+## Crop
+key crop = 0
+
+## Next track
+# > (62)
+key next = 62
+## Previous track
+# < (60)
+key prev = 60
+
+## Seek forward
+key seek-forward = 'f'
+## Seek backward
+key seek-backward = 'b'
+
+## Increase volume
+# + (43)
+key volume-up = 43
+## Decrease volume
+# - (45)
+key volume-down = 45
+
+## Select/deselect song in playlist
+# Space (32)
+key select = 32
+## Range selection
+key range-select 'v'
+## Select all listed items
+key select_all = 'V'
+## Select currently playing song
+key select-playing 'l'
+## View the selected and the currently playing song
+key view = 'i'
+## edit current item
+key edit = 0
+
+## Move item up
+key move-up = 'K'
+## Move item down
+key move-down = 'J'
+
+## Clear playlist
+key clear = 'c'
+## Delete song from playlist
+#  Delete (330)
+key delete = 330,  'd'
+## Shuffle playlist
+key shuffle = 'Z'
+## Toggle repeat mode
+key repeat = 'r'
+## Toggle random mode
+key random = 'z'
+## Toggle single mode
+key single = 'y'
+## Toggle consume mode
+key consume = 'C'
+## Toggle crossfade mode
+key crossfade = 'x'
+## Start a music database update
+key db-update = 'U'
+
+## Save playlist
+key save = 'w'
+## Add url/file to playlist
+key add = 'a'
+# -----------------------------------------------------------------------------
+# }}}
+
+# Find {{{
+# -----------------------------------------------------------------------------
+## Go to root directory
+# ! (33)
+key go-root-directory = 33
+## Go to parent directory
+# " (34)
+key go-parent-directory = 34
+
+## Jump to
+key jump = 0
+## Forward find
+# / (47)
+key find = 47
+## Forward find next
+key find-next = 'n'
+## Backward find
+# ? (63)
+key rfind = 63
+## Backward find previous
+key rfind-next = 'p'
+## locate song in browser
+key locate = 'o'
+
+## Toggle find mode
+key wrap-mode = 0
+## Toggle auto center mode
+key autocenter-mode = 0
+## Change search mode
+key search-mode = 'm'
+# -----------------------------------------------------------------------------
+# }}}
+
+# Lyrics {{{
+# -----------------------------------------------------------------------------
+## Interrupt action
+key lyrics-interrupt = 0
+## Update lyrics
+key lyrics-update = 0
+# -----------------------------------------------------------------------------
+# }}}
+
+# vim:foldmethod=marker:foldlevel=0
