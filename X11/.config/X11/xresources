@@ -16,14 +16,14 @@
 ! Color Definitions
 #define Black     #000000
 #define DarkGray  #686049
-#define Red       #bd2024
-#define Green     #00721b
-#define Yellow    #e9c761
-#define Blue      #2661ac
-#define Magenta   #682599
-#define Cyan      #338880
+#define Red       #be001d
+#define Green     #2a5300
+#define Yellow    #f8c011
+#define Blue      #004898
+#define Magenta   #6c2882
+#define Cyan      #006165
 #define LightGray #b6ad92
-#define White     #ece3c3
+#define White     #f7f1e3
 
 ! Default
 *.background:     White

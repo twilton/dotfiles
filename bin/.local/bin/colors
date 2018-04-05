@@ -10,26 +10,26 @@ main() {
     readonly color0="#000000"
     readonly color8="#686049"
     # Red
-    readonly color1="#bd2024"
-    readonly color9="#bd2024"
+    readonly color1="#be001d"
+    readonly color9="#be001d"
     # Green
-    readonly color2="#00721b"
-    readonly color10="#00721b"
+    readonly color2="#2a5300"
+    readonly color10="#2a5300"
     # Yellow
-    readonly color3="#e9c761"
-    readonly color11="#e9c761"
+    readonly color3="#f9b000"
+    readonly color11="#f9b000"
     # Blue
-    readonly color4="#2661ac"
-    readonly color12="#2661ac"
+    readonly color4="#004898"
+    readonly color12="#004898"
     # Magenta
-    readonly color5="#682599"
-    readonly color13="#682599"
+    readonly color5="#6c2992"
+    readonly color13="#6c2992"
     # Cyan
-    readonly color6="#338880"
-    readonly color14="#338880"
+    readonly color6="#006165"
+    readonly color14="#006165"
     # White
     readonly color7="#b6ad92"
-    readonly color15="#ece3c3"
+    readonly color15="#f7f1e3"
 
     readonly background="${color15}"
     readonly foreground="${color0}"
