@@ -142,6 +142,18 @@ fi
 # Terminal
 if [[ -x "$(which urxvtc 2> /dev/null)" ]]; then
     export TERMINAL='urxvtc'
+
+# check for urxvt
+elif [[ -x "$(which urxvt 2> /dev/null)" ]]; then
+    export TERMINAL='urxvt'
+
+# check for st
+elif [[ -x "$(which st 2> /dev/null)" ]]; then
+    export TERMINAL='st'
+
+# check for xterm
+elif [[ -x "$(which xterm 2> /dev/null)" ]]; then
+    export TERMINAL='xterm'
 fi
 # }}}
 
