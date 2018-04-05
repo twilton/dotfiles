@@ -5,95 +5,79 @@
 # Location: $HOME/.local/bin/open_program
 # -----------------------------------------------------------------------------
 
-# open the terminal
-#   programs are prioritized in this order:
-#   1. $TERMINAL
-#   2. urxvtc
-#   3. urxvt
-#   4. st
-#   5. xterm
-function open_terminal() {
+# print relevant messaging
+open_msg() {
+    case "$1" in
+        1)
+            echo "$2 could not be started" >&2
+            notify-send "Error" "$2 could not be started"
+
+            exit 1
+            ;;
+        2)
+            echo "$2 could not be found" >&2
+            notify-send "Error" "$2 could not be found"
+
+            exit 1
+            ;;
+        *)
+            echo "No message type given" >&2
+
+            exit 1
+            ;;
+    esac
+}
+
+# open the terminal defined by $TERMINAL
+open_terminal() {
     # check if $TERMINAL is set
     if [[ -n "$TERMINAL" ]] && [[ -x "$(which $TERMINAL 2> /dev/null)" ]]; then
-        local -r terminal="$TERMINAL"
-
-    # check for urxvtc and running urxvtd
-    elif [[ -x "$(which urxvtc 2> /dev/null)" ]] && [[ -n "$(pidof urxvtd 2> /dev/null)" ]]; then
-        local -r terminal='urxvtc'
-
-    # check for urxvt
-    elif [[ -x "$(which urxvt 2> /dev/null)" ]]; then
-        local -r terminal='urxvt'
-
-    # check for st
-    elif [[ -x "$(which st 2> /dev/null)" ]]; then
-        local -r terminal='st'
-
-    # check for xterm
-    elif [[ -x "$(which xterm 2> /dev/null)" ]]; then
-        local -r terminal='xterm'
+        "$TERMINAL" "$@" || open_msg '1' "'$TERMINAL'"
 
     # didn't find anything
     else
-        notify-send "Error" "Could not find a terminal"
-        exit 1
+        open_msg '2' "'$TERMINAL'"
     fi
 
-    if [[ $# -gt 0 ]]; then
-        "$terminal" $@ ||
-            { notify-send "Error" "$terminal could not be started with arguments '$@'"; exit 1; }
-    else
-        "$terminal" ||
-            { notify-send "Error" "$terminal could not be started"; exit2; }
-    fi
 }
 
 # open the file_manager
 #   programs are prioritized in this order:
 #   1. ranger
-function open_file_manager() {
+open_file_manager() {
     # check for ranger
     if [[ -x "$(which ranger 2> /dev/null)" ]]; then
-        open_terminal '-e ranger'
+        open_terminal -e ranger || open_msg '1' "'ranger'"
 
     # didn't find anything
     else
-        notify-send "Error" "Could not find a file manager"
-        exit 1
+        open_msg '2' "'ranger'"
     fi
 }
 
 # open the music_player
 #   programs are prioritized in this order:
 #   1. ncmpc
-function open_music_player() {
+open_music_player() {
     # check for ncmpc
     if [[ -x "$(which ncmpc 2> /dev/null)" ]]; then
         # ncmpc doesn't follow xdg standards so specify config file that does
-        if [[ -n "$XDG_CONFIG_HOME" ]]; then
-            local -r config="$XDG_CONFIG_HOME/ncmpc/config"
-        else
-            local -r config="$HOME/.config/ncmpc/config"
-        fi
+        local -r config="$XDG_CONFIG_HOME/ncmpc/config"
+        local -r keys="$XDG_CONFIG_HOME/ncmpc/keys"
 
         # check if config is readable; use it if true
-        if [[ -r "$config" ]]; then
-            open_terminal "-e ncmpc -c -f $config"
-        else
-            open_terminal '-e ncmpc'
-        fi
+        open_terminal -e ncmpc -c -f "$config" -k "$keys" || open_msg '1' "'ncmpc'"
 
     # didn't find anything
     else
-        notify-send "Error" "Could not find a music player"
-        exit 1
+        open_msg '2' "'ncmpc'"
     fi
 }
 
 # open the spotlight
 #   programs are prioritized in this order:
-#   1. dmenu
-function open_spotlight() {
+#   1. rofi
+open_spotlight() {
     # Source colors
     . "$HOME/.local/bin/colors"
 
@@ -105,42 +89,30 @@ function open_spotlight() {
             -hide-scrollbar \
             -separator-style 'none' \
             -font 'Source code pro 10' \
-            -color-window "${background},${color7},${background}" \
+            -bw "$(bspc config border_width)" \
+            -color-window "${background},${color8},${background}" \
             -color-normal "${background},${foreground},${background},${color7},${foreground}" \
             -color-urgent "${background},${foreground},${background},${color7},${foreground}" \
             -color-active "${background},${foreground},${background},${color7},${foreground}"
 
     # didn't find anything
     else
-        notify-send "Error" "Could not find a spotlight"
-        exit 1
+        open_msg '2' "'rofi'"
     fi
 }
 
-# open the web_browser
-#   programs are prioritized in this order:
-#   1. $BRWOSER
-#   2. firefox
-#   3. chromium
-function open_web_browser() {
+# open the web_browser defined by $BROWSER
+open_web_browser() {
     # check for $BROWSER
     if [[ -n "$BROWSER" ]] && [[ -x "$(which $BROWSER 2> /dev/null)" ]]; then
-        "$BROWSER"
-
-    # check for firefox
-    elif [[ -x "$(which firefox 2> /dev/null)" ]]; then
-        firefox
-
-    # check for chromium
-    elif [[ -x "$(which chromium 2> /dev/null)" ]]; then
-        chromium
+        "$BROWSER" "$@" || open_msg '1' "'$BROWSER'"
 
     # didn't find anything
     else
-        notify-send "Error" "Could not find a web browser"
-        exit 1
+        open_msg '2' "'$BROWSER'"
     fi
 }
+
 
 function main() {
     case "$1" in
