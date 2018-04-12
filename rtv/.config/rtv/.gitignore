@@ -1,0 +1,8 @@
+*
+!.gitignore
+
+!themes/
+themes/**
+
+!rtv.cfg
+!themes/krul.cfg
