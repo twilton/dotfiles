@@ -13,8 +13,6 @@ shopt -s extglob
 # check window size after each command
 shopt -s checkwinsize
 
-# don't overwrite history
-shopt -s histappend
 # save multiline cmd as one history entry
 shopt -s cmdhist
 # Only set histfile if XDG_DATA_HOME is defined
@@ -26,10 +24,7 @@ if [[ -n "$XDG_DATA_HOME" ]]; then
     HISTFILE="$XDG_DATA_HOME/bash/history"
 fi
 # increase history size
-HISTSIZE=1000
-# delete duplicate entries
-HISTCONTROL=erasedups
-HISTIGNORE='ls:[bf]g:exit:pwd:clear:mount:umount'
+HISTSIZE=10000
 # -----------------------------------------------------------------------------
 # }}}
 
@@ -83,7 +78,7 @@ build_prompt() {
 
     # Solution to sync history between terminals
     #   https://unix.stackexchange.com/a/18443
-    history -n; history -w; history -c; history -r;
+    history -a; history -c; history -r;
 
     # modules to add to prompt
     local -r modules="$(prompt_hostname)$(prompt_directory)$(prompt_git)"
