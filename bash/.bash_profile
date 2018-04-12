@@ -127,7 +127,9 @@ export LANGUAGE='en_US.UTF-8'
 # Programs {{{
 # Defaults {{{
 # Browser
-if [[ -x "$(which firefox 2> /dev/null)" ]]; then
+if [[ -x "$(which firefox-nightly 2> /dev/null)" ]]; then
+    export BROWSER='firefox-nightly'
+elif [[ -x "$(which firefox 2> /dev/null)" ]]; then
     export BROWSER='firefox'
 elif [[ -x "$(which chromium 2> /dev/null)" ]]; then
     export BROWSER='chromium'
