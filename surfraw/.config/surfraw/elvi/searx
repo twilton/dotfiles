@@ -1,0 +1,83 @@
+#!/bin/sh
+
+# -----------------------------------------------------------------------------
+# Description: searx elvi for surfraw
+# Location: $XDG_CONFIG_HOME/surfraw/elvi/searx
+# -----------------------------------------------------------------------------
+
+. surfraw || exit 1
+
+w3_config_hook () {
+    def SURFRAW_searx_categories  "$SURFRAW_categories"
+    def SURFRAW_searx_base_url    "$SURFRAW_url"
+}
+
+w3_usage_hook () {
+    cat <<EOF
+
+Usage: $w3_argv0 [options] [search words]...
+Description:
+  Use the searx metasearch engine
+
+ -category,c=CATEGORIES
+
+  Local options:
+    default   | search category "general" (default)
+    vid       | search category "videos"
+    socialm   | search category "social+media"
+    news      | search category "news"
+    music     | search category "music"
+    map       | search category "map"
+    it        | search category "it"
+    img       | search category "images"
+    files     | search category "files"
+                 Default: general
+
+ -url,u=URL
+
+  Local options:
+    1       | https://searx.xyz
+    2       | https://searx.site
+    3       | https://searx.at
+                  Default: https://searx.xyz
+
+EOF
+    w3_global_usage
+}
+
+w3_parse_option_hook () {
+    opt="$1"
+    optarg="$2"
+    case "$opt" in
+    -c*=*)   setopt   SURFRAW_searx_categories   $optarg ;;
+    -u*=*)   setopt   SURFRAW_searx_base_url     $optarg ;;
+    *) return 1 ;;
+    esac
+    return 0
+}
+
+w3_config
+w3_parse_args "$@"
+
+case "$SURFRAW_searx_categories" in
+    default*)   category="general"        ;;
+    vid*)       category="videos"         ;;
+    socialm*)   category="social+media"   ;;
+    news*)      category="news"           ;;
+    music*)     category="music"          ;;
+    map*)       category="map"            ;;
+    it*)        category="it"             ;;
+    img*)       category="images"         ;;
+    files*)     category="files"          ;;
+    *)          category="general"        ;;
+esac
+case "$SURFRAW_searx_base_url" in
+    1*|xyz*) searx_url="https://searx.xyz"   ;;
+    2*|site*) searx_url="https://searx.site" ;;
+    3*|at*) searx_url="https://searx.at"     ;;
+    *)  searx_url="https://searx.xyz"        ;;
+esac
+# w3_args now contains a list of arguments
+escaped_args=$(w3_url_of_arg $w3_args)
+
+w3_browse_url "${searx_url}/?q=${escaped_args}&categories=${category}"
