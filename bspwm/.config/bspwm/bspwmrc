@@ -42,4 +42,17 @@ bspc config presel_feedback_color "${color8}"
 # -----------------------------------------------------------------------------
 # }}}
 
+# Rules {{{
+# -----------------------------------------------------------------------------
+# Stuff randomly opening in floating mode
+#   https://github.com/baskerville/bspwm/issues/551
+
+# firefox nightly
+bspc rule -a "Nightly" state=tiled
+
+# Zathura
+bspc rule -a "Zathura" state=tiled
+# -----------------------------------------------------------------------------
+# }}}
+
 # vim:foldmethod=marker:foldlevel=0
