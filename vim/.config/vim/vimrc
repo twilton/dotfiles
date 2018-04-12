@@ -566,14 +566,12 @@ nnoremap k gk
 " toggle folds with enter
 nnoremap <Enter> za
 
-"nnoremap <leader><space> <C-^>
-
+" jump to alternate buffer
+nnoremap <leader><space> <C-^>
 " Buffers
 nnoremap <leader>b :ls<cr>:b<space>
 nnoremap <leader>[ :bprevious<cr>
 nnoremap <leader>] :bnext<cr>
-" jump to alternate buffer
-nnoremap <BS> <C-^>
 " buffer delete
 nnoremap <leader><BS> :bd<cr>
 
