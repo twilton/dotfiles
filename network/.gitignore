@@ -1,0 +1,11 @@
+*
+!.gitignore
+
+!openresolv/
+openresolv/**
+
+!unbound/
+unbound/**
+
+!openresolv/resolvconf.conf
+!unbound/unbound.conf
