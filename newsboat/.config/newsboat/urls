@@ -15,8 +15,6 @@ https://www.youtube.com/feeds/videos.xml?channel_id=UCSc16oMxxlcJSb9SXkjwMjA "Yo
 https://www.archlinux.org/feeds/news/ "Archlinux" "Technology" "~Archlinux"
 https://act.eff.org/action.atom "EFF" "Technology" "~EFF Action Center"
 
-http://feeds.reuters.com/Reuters/topNews "Reuters" "World" "~Reuters"
-
 http://www.economist.com/sections/leaders/rss.xml "The_Economist" "World" "~The Economist: Leaders" "!The Economist: Leaders"
 http://www.economist.com/sections/americas/rss.xml "The_Economist" "Americas" "~The Economist: Americas" "!The Economist: Americas"
 http://www.economist.com/sections/united-states/rss.xml "The_Economist" "Americas" "United States" "~The Economist: U.S." "!The Economist: U.S."
