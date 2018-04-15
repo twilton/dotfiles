@@ -153,6 +153,7 @@ color browser-playlist = none
 
 # text color of progressbar
 color progressbar = white,bold
+color progressbar-background = white,bold
 
 # text color of playing / paused / ... in status window
 color status-state = black,bold

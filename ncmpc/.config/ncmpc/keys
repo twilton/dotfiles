@@ -84,9 +84,9 @@ key screen-artist = '4', 268
 ## Search screen
 # F5 (269)
 key screen-search = '5', 269
-## Lyrics screen
+## Lyrics screen (removed in 0.30?)
 # F7 (271)
-key screen-lyrics = '7', 271
+# key screen-lyrics = '7', 271
 ## Outputs screen
 # F8 (272)
 key screen-outputs = '8', 272
@@ -135,8 +135,8 @@ key select_all = 'V'
 key select-playing 'l'
 ## View the selected and the currently playing song
 key view = 'i'
-## edit current item
-key edit = 0
+## edit current item (removed in 0.30?)
+# key edit = 0
 
 ## Move item up
 key move-up = 'K'
@@ -205,10 +205,10 @@ key search-mode = 'm'
 
 # Lyrics {{{
 # -----------------------------------------------------------------------------
-## Interrupt action
-key lyrics-interrupt = 0
-## Update lyrics
-key lyrics-update = 0
+## Interrupt action (removed in 0.30?)
+# key lyrics-interrupt = 0
+## Update lyrics (removed in 0.30?)
+# key lyrics-update = 0
 # -----------------------------------------------------------------------------
 # }}}
 
