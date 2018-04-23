@@ -178,17 +178,6 @@ set smartcase
 set magic
 " }}}
 
-" Folds {{{
-" fold using syntax
-set foldmethod=manual
-
-" hide folding column
-set foldcolumn=0
-
-" max 10 nested folds
-set foldnestmax=4
-" }}}
-
 " Cursor {{{
 " don't highlight cursor line
 set nocursorline
