@@ -188,7 +188,6 @@ set number
 " fix scrolling
 set scrolloff=8
 set sidescrolloff=15
-set sidescroll=1
 
 " Show matching brackets when text indicator is over them
 set showmatch
