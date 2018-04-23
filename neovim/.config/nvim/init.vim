@@ -168,9 +168,6 @@ set shortmess+=c
 " }}}
 
 " Search {{{
-" Enables highlighting of search results
-set hlsearch
-
 " Ignore case when searching
 set ignorecase
 
