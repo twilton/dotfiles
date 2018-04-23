@@ -17,6 +17,7 @@ set autochdir
 
 " Plugins {{{
 " -----------------------------------------------------------------------------
+"  TODO: Disable netrw
 " vim-plug plugin manager (takes plugin directory as argument)
 call plug#begin('~/.local/share/nvim/plugged')
 
@@ -62,12 +63,6 @@ let g:buftabline_numbers = 1
 
 " Interface {{{
 " -----------------------------------------------------------------------------
-" window title
-set title
-
-" disable beep and flashing
-set vb t_vb=
-
 " Don't redraw while executing macros
 set lazyredraw
 " Faster redraws
