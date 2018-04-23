@@ -166,9 +166,6 @@ set shortmess+=I
 " don't give ins-completion-menu messages
 set shortmess+=c
 
-" display the current mode
-set showmode
-
 " ---more--- like less
 set more
 " }}}
