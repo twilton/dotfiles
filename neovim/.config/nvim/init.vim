@@ -5,96 +5,9 @@
 
 " Environment {{{
 " -----------------------------------------------------------------------------
-" XDG_CONFIG_HOME {{{
-" If $XDG_CONFIG_HOME has not been set use default
-let s:xdg_config_home = $XDG_CONFIG_HOME
-if empty(s:xdg_config_home)
-  let s:xdg_config_home = $HOME . '/.config'
-endif
-
-" Create vim config directory
-let s:vim_config_home = s:xdg_config_home . '/vim'
-unlet s:xdg_config_home
-if !isdirectory(s:vim_config_home)
-  call mkdir(s:vim_config_home, 'p')
-endif
-
-" change runtime to respect xdg
-"   see h: runtime for default string
-let &runtimepath = s:vim_config_home . ','
-let &runtimepath .= $VIM . '/vimfiles,' . $VIMRUNTIME . ',' . $VIM . '/vimfiles/after,'
-let &runtimepath .= s:vim_config_home . 'after'
-
-" don't unlet s:vim_config_home because vim-plug needs it to specify plugin
-"   directory
-" }}}
-
-" XDG_CACHE_HOME {{{
-" If $XDG_CACHE_HOME has not been set use default
-let s:xdg_cache_home = $XDG_CACHE_HOME
-if empty(s:xdg_cache_home)
-  let s:xdg_cache_home = $HOME . '/.cache'
-endif
-
-" Create vim cache directory
-let s:vim_cache_home = s:xdg_cache_home . '/vim'
-unlet s:xdg_cache_home
-if !isdirectory(s:vim_cache_home)
-  call mkdir(s:vim_cache_home, 'p')
-endif
-
-" Create vim swap location
-let s:vim_swap_home = s:vim_cache_home . '/swap'
-if !isdirectory(s:vim_swap_home)
-  call mkdir(s:vim_swap_home)
-endif
-let &directory = s:vim_swap_home . '//,/var/tmp//,/tmp//'
-unlet s:vim_swap_home
-
-" create backupdir incase backup is set
-let s:vim_backup_home = s:vim_cache_home . '/backup'
-if !isdirectory(s:vim_backup_home)
-  call mkdir(s:vim_backup_home)
-endif
-let &backupdir = s:vim_backup_home . '//,/var/tmp//,/tmp//'
-unlet s:vim_backup_home
-
 " marks for 10 files, 100 lines per register, 100 commands, 50 searches,
 "   10 inputs, viminfo file name
-let &viminfo = "'10,f1,<100,:100,/50,@10,n" . s:vim_cache_home . '/viminfo'
-
-unlet s:vim_cache_home
-" }}}
-
-" XDG_DATA_HOME {{{
-" If $XDG_DATA_HOME has not been set use default
-let s:xdg_data_home = $XDG_DATA_HOME
-if empty(s:xdg_data_home)
-  let s:xdg_data_home = $HOME . '/.local/share'
-endif
-
-" Create vim data directory
-let s:vim_data_home = s:xdg_data_home . '/vim'
-unlet s:xdg_data_home
-if !isdirectory(s:vim_data_home)
-  call mkdir(s:vim_data_home, 'p')
-endif
-
-" enable undofile
-if has('persistent_undo')
-    let s:vim_undo_home = s:vim_data_home . '/undo'
-    if !isdirectory(s:vim_undo_home)
-        call mkdir(s:vim_undo_home)
-    endif
-    let &undodir = s:vim_undo_home . '//,/var/tmp//,/tmp//'
-    unlet s:vim_undo_home
-endif
-
-" spellfile
-let &spellfile = s:vim_data_home . '/en.utf-8.add'
-
-unlet s:vim_data_home
-" }}}
+" let &viminfo = "'10,f1,<100,:100,/50,@10,n" . s:vim_cache_home . '/viminfo'
 
 " disable backups by default
 set nobackup
@@ -131,7 +44,7 @@ set autochdir
 " Plugins {{{
 " -----------------------------------------------------------------------------
 " vim-plug plugin manager (takes plugin directory as argument)
-call plug#begin(s:vim_config_home . '/plugged')
+call plug#begin('/plugged')
 
 " buffers in tabline
 Plug 'ap/vim-buftabline'
@@ -163,9 +76,6 @@ call plug#end()
 
 " Enable filetype plugins
 filetype plugin indent on
-
-" s:vim_config_home is no longer used
-unlet s:vim_config_home
 
 " builtin {{{
 " vim-gloaded
