@@ -5,11 +5,6 @@
 
 " Environment {{{
 " -----------------------------------------------------------------------------
-" vimconf is not vi-compatible
-if &compatible
-    set nocompatible
-endif
-
 " XDG_CONFIG_HOME {{{
 " If $XDG_CONFIG_HOME has not been set use default
 let s:xdg_config_home = $XDG_CONFIG_HOME
