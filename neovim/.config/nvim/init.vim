@@ -236,10 +236,6 @@ set iskeyword+=_,$,@,%,#
 set nowrap
 " dont cut words on wrap
 set linebreak
-" autowrap with newline char
-set formatoptions+=t
-" delete comment when joining commented lines
-set formatoptions+=j
 
 " Sentences delimit by two spaces
 set cpoptions+=J
