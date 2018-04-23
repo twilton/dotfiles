@@ -9,8 +9,6 @@
 if has('persistent_undo')
     set undofile
 endif
-" number of undos to keep
-set undolevels=1000
 
 " Automatically switch to file directory of buffer
 set autochdir
