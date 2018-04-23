@@ -12,9 +12,6 @@ endif
 " number of undos to keep
 set undolevels=1000
 
-" disable spelling by default
-set nospell
-
 " Automatically switch to file directory of buffer
 set autochdir
 " -----------------------------------------------------------------------------
