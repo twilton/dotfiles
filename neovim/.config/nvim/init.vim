@@ -5,9 +5,6 @@
 
 " Environment {{{
 " -----------------------------------------------------------------------------
-" disable backups by default
-set nobackup
-
 " enable undofile
 if has('persistent_undo')
     set undofile
