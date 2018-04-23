@@ -1,0 +1,658 @@
+" -----------------------------------------------------------------------------
+" Description: Config file for nvim
+" Location: $XDG_CONFIG_HOME/nvim/init.vim
+" -----------------------------------------------------------------------------
+
+" Environment {{{
+" -----------------------------------------------------------------------------
+" vimconf is not vi-compatible
+if &compatible
+    set nocompatible
+endif
+
+" XDG_CONFIG_HOME {{{
+" If $XDG_CONFIG_HOME has not been set use default
+let s:xdg_config_home = $XDG_CONFIG_HOME
+if empty(s:xdg_config_home)
+  let s:xdg_config_home = $HOME . '/.config'
+endif
+
+" Create vim config directory
+let s:vim_config_home = s:xdg_config_home . '/vim'
+unlet s:xdg_config_home
+if !isdirectory(s:vim_config_home)
+  call mkdir(s:vim_config_home, 'p')
+endif
+
+" change runtime to respect xdg
+"   see h: runtime for default string
+let &runtimepath = s:vim_config_home . ','
+let &runtimepath .= $VIM . '/vimfiles,' . $VIMRUNTIME . ',' . $VIM . '/vimfiles/after,'
+let &runtimepath .= s:vim_config_home . 'after'
+
+" don't unlet s:vim_config_home because vim-plug needs it to specify plugin
+"   directory
+" }}}
+
+" XDG_CACHE_HOME {{{
+" If $XDG_CACHE_HOME has not been set use default
+let s:xdg_cache_home = $XDG_CACHE_HOME
+if empty(s:xdg_cache_home)
+  let s:xdg_cache_home = $HOME . '/.cache'
+endif
+
+" Create vim cache directory
+let s:vim_cache_home = s:xdg_cache_home . '/vim'
+unlet s:xdg_cache_home
+if !isdirectory(s:vim_cache_home)
+  call mkdir(s:vim_cache_home, 'p')
+endif
+
+" Create vim swap location
+let s:vim_swap_home = s:vim_cache_home . '/swap'
+if !isdirectory(s:vim_swap_home)
+  call mkdir(s:vim_swap_home)
+endif
+let &directory = s:vim_swap_home . '//,/var/tmp//,/tmp//'
+unlet s:vim_swap_home
+
+" create backupdir incase backup is set
+let s:vim_backup_home = s:vim_cache_home . '/backup'
+if !isdirectory(s:vim_backup_home)
+  call mkdir(s:vim_backup_home)
+endif
+let &backupdir = s:vim_backup_home . '//,/var/tmp//,/tmp//'
+unlet s:vim_backup_home
+
+" marks for 10 files, 100 lines per register, 100 commands, 50 searches,
+"   10 inputs, viminfo file name
+let &viminfo = "'10,f1,<100,:100,/50,@10,n" . s:vim_cache_home . '/viminfo'
+
+unlet s:vim_cache_home
+" }}}
+
+" XDG_DATA_HOME {{{
+" If $XDG_DATA_HOME has not been set use default
+let s:xdg_data_home = $XDG_DATA_HOME
+if empty(s:xdg_data_home)
+  let s:xdg_data_home = $HOME . '/.local/share'
+endif
+
+" Create vim data directory
+let s:vim_data_home = s:xdg_data_home . '/vim'
+unlet s:xdg_data_home
+if !isdirectory(s:vim_data_home)
+  call mkdir(s:vim_data_home, 'p')
+endif
+
+" enable undofile
+if has('persistent_undo')
+    let s:vim_undo_home = s:vim_data_home . '/undo'
+    if !isdirectory(s:vim_undo_home)
+        call mkdir(s:vim_undo_home)
+    endif
+    let &undodir = s:vim_undo_home . '//,/var/tmp//,/tmp//'
+    unlet s:vim_undo_home
+endif
+
+" spellfile
+let &spellfile = s:vim_data_home . '/en.utf-8.add'
+
+unlet s:vim_data_home
+" }}}
+
+" disable backups by default
+set nobackup
+
+" enable undofile
+if has('persistent_undo')
+    set undofile
+endif
+" number of undos to keep
+set undolevels=1000
+
+" Number of command lines to remember
+set history=1000
+
+" disable spelling by default
+set nospell
+
+" if encoding is not utf-8 set termencoding
+if &encoding !=? 'utf-8'
+    let &termencoding = &encoding
+endif
+" Set utf8 as standard encoding
+set encoding=utf-8
+set fileencoding=utf-8
+
+" Use unix as the standard file type
+set fileformats=unix,mac,dos
+
+" Automatically switch to file directory of buffer
+set autochdir
+" -----------------------------------------------------------------------------
+" }}}
+
+" Plugins {{{
+" -----------------------------------------------------------------------------
+" vim-plug plugin manager (takes plugin directory as argument)
+call plug#begin(s:vim_config_home . '/plugged')
+
+" buffers in tabline
+Plug 'ap/vim-buftabline'
+
+" split width fixer
+Plug 'roman/golden-ratio'
+
+" completion engine
+Plug 'ajh17/VimCompletesMe'
+
+" align everything
+Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
+
+" check syntax
+Plug 'w0rp/ale'
+
+" text objects
+Plug 'wellle/targets.vim'
+
+" searching
+Plug 'haya14busa/is.vim'
+
+" racket language support
+Plug 'wlangstroth/vim-racket', { 'for': ['racket'] }
+
+" update &runtimepath and initialize plugins
+"   Automatically executes filetype plugin indent on and syntax enable
+call plug#end()
+
+" Enable filetype plugins
+filetype plugin indent on
+
+" s:vim_config_home is no longer used
+unlet s:vim_config_home
+
+" builtin {{{
+" vim-gloaded
+"   https://github.com/rbtnn/vim-gloaded
+" 2html provides function to transform file into HTML
+"   $VIMRUNTIME/plugin/tohtml.vim
+let g:loaded_2html_plugin = 1
+
+" Getscript simplifies retrieval of latest versions of scripts
+"   $VIMRUNTIME/autoload/getscript.vim
+"   $VIMRUNTIME/plugin/getscriptPlugin.vim
+let g:loaded_getscript = 1
+let g:loaded_getscriptPlugin = 1
+
+" LogiPat takes Boolean logic and produces regex to search
+"   $VIMRUNTIME/plugin/logiPat.vim
+"   $VIMRUNTIME/plugin/logiPat.vim
+let g:loaded_logipat = 1
+let g:loaded_logiPat = 1
+
+" Vim file explorer
+"   $VIMRUNTIME/autoload/netrw.vim
+"   $VIMRUNTIME/autoload/netrwFileHandlers.vim
+"   $VIMRUNTIME/plugin/netrwPlugin.vim
+"   $VIMRUNTIME/autoload/netrwSettings.vim
+let g:loaded_netrw = 1
+let g:loaded_netrwFileHandlers = 1
+let g:loaded_netrwPlugin = 1
+let g:loaded_netrwSettings = 1
+
+" rrhelepr provides helper function(s) for --remote-wait
+"   $VIMRUNTIME/plugin/rrhelper.vim
+let g:loaded_rrhelper = 1
+
+" spellfile provides function for downloading spell file
+"   $VIMRUNTIME/plugin/spellfile.vim
+let g:loaded_spellfile_plugin = 1
+
+" tar provides function for browsing tarfiles
+"   $VIMRUNTIME/autoload/tar.vim
+"   $VIMRUNTIME/plugin/tarPlugin.vim
+let g:loaded_tar = 1
+let g:loaded_tarPlugin = 1
+
+" vimball provides function for Vim based archiver
+"   $VIMRUNTIME/autoload/vimball.vim
+"   $VIMRUNTIME/plugin/vimballPlugin.vim
+let g:loaded_vimball = 1
+let g:loaded_vimballPlugin = 1
+
+" zip provides function for browsing zipfiles
+"   $VIMRUNTIME/plugin/gzip.vim
+"   $VIMRUNTIME/autoload/zip.vim
+"   $VIMRUNTIME/plugin/zipPlugin.vim
+let g:loaded_gzip = 1
+let g:loaded_zip = 1
+let g:loaded_zipPlugin = 1
+" }}}
+
+" ale {{{
+" messaging
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%severity%: %linter%] %s'
+" }}}
+
+" buftabline {{{
+let g:buftabline_show = 1
+let g:buftabline_numbers = 1
+" let g:buftabline_indicators = 0
+" }}}
+" -----------------------------------------------------------------------------
+" }}}
+
+" Interface {{{
+" -----------------------------------------------------------------------------
+" window title
+set title
+
+" disable beep and flashing
+set vb t_vb=
+
+" Don't redraw while executing macros
+set lazyredraw
+" Faster redraws
+set ttyfast
+
+" Buffers and Splits {{{
+" A buffer becomes hidden when it is abandoned
+set hidden
+
+" splits go below w/focus
+set splitbelow
+" vsplits go right w/focus
+set splitright
+" }}}
+
+" Statusline {{{
+if has('statusline')
+    " File Flags
+    function! FileFlags() abort
+        let l:flags=''
+
+        if &readonly
+            let l:flags.=' [≠]'
+        endif
+
+        if &modified
+            let l:flags.=' [+]'
+        endif
+
+        if &fileformat !=? 'unix'
+            let l:flags.=' [ff: &fileformat]'
+        endif
+
+        if &fileencoding !=? 'utf-8'
+            let l:flags.=' [fe: &fileencoding]'
+        endif
+
+        return l:flags
+    endfunction
+
+    " Linter Status
+    function! LinterStatus() abort
+        " count linter info
+        let l:counts = ale#statusline#Count(bufnr(''))
+        " if no info return
+        if l:counts.total == 0
+            return ''
+        endif
+
+        " sort linter info
+        let l:all_errors = l:counts.error + l:counts.style_error
+        let l:all_non_errors = l:counts.total - l:all_errors
+
+        " format linter info
+        let l:linter=''
+        " Add linter errors
+        if l:all_errors >= 1
+            let l:linter.=printf('%d error(s) ', l:all_errors)
+        endif
+        " Add linter warnings
+        if l:all_non_errors >= 1
+            let l:linter.=printf('%d warning(s) ', l:all_non_errors)
+        endif
+
+        return l:linter
+    endfunction
+
+    function! StatusLine() abort
+        " Buffer number
+        let l:status=' %n'
+
+        " File name
+        let l:status.=' %<%F'
+
+        " Flags
+        let l:status.='%{FileFlags()}'
+
+        " separate left/right side
+        let l:status.='%='
+
+        " Linter status
+        let l:status.='%{LinterStatus()}'
+
+        " Cursor info
+        if &number
+            let l:status.='%l:%c '
+        else
+            let l:status.='%l(%L):%c '
+        endif
+
+        return l:status
+    endfunction
+
+    " always show statusline if able
+    set laststatus=2
+    set statusline=%!StatusLine()
+endif
+" }}}
+
+" Messages {{{
+" show cmds being typed if able
+if has('cmdline_info')
+    set showcmd
+endif
+
+" disable startup message
+set shortmess+=I
+
+" don't give ins-completion-menu messages
+set shortmess+=c
+
+" display the current mode
+set showmode
+
+" ---more--- like less
+set more
+" }}}
+
+" Wildmenu {{{
+" better auto complete
+set wildmenu
+" bash-like auto complete
+set wildmode=longest,list,full
+" dont display these kinds of files in wildmenu
+set wildignore=*~
+" vim temp files
+set wildignore+=*.swp,*.swo
+" git
+set wildignore+=*.git
+" Unix
+set wildignore+=*/tmp/*,*.so,*DS_Store*,*.dmg
+" Windows
+set wildignore+=*\\tmp\\*,*.exe
+" c
+set wildignore+=*.a,*.o,*.so,*.obj
+" python
+set wildignore+=*.pyc
+" ruby
+set wildignore+=*.gem
+" docs
+set wildignore+=*.pdf
+" archives
+set wildignore+=*.zip
+" pictures
+set wildignore+=*.png,*.jpg,*.jpeg,*.gif
+" directories
+set wildignore+=*vim/cache*
+set wildignore+=*sass-cache*
+set wildignore+=vendor/rails/**
+set wildignore+=vendor/cache/**
+set wildignore+=log/**
+set wildignore+=tmp/**
+
+" scan current and included files for defined name or macro
+set complete+=d
+" }}}
+
+" Search {{{
+" Makes search act like modern browsers
+set incsearch
+
+" Enables highlighting of search results
+set hlsearch
+
+" Ignore case when searching
+set ignorecase
+
+" When searching try to be smart about cases
+set smartcase
+
+" For regular expressions turn magic on
+set magic
+" }}}
+
+" Folds {{{
+" fold using syntax
+set foldmethod=manual
+
+" hide folding column
+set foldcolumn=0
+
+" max 10 nested folds
+set foldnestmax=4
+" }}}
+
+" Cursor {{{
+" don't highlight cursor line
+set nocursorline
+
+" keep cursor column pos
+set nostartofline
+
+" line numbers
+set number
+
+" fix scrolling
+set scrolloff=8
+set sidescrolloff=15
+set sidescroll=1
+
+" Show matching brackets when text indicator is over them
+set showmatch
+" How many tenths of a second to blink when matching brackets
+set matchtime=2
+" matching for ci< or ci>
+set matchpairs+=<:>
+" }}}
+
+" Syntax {{{
+" Enable syntax highlighting
+syntax on
+
+" use this colorscheme
+colorscheme krul
+
+" Highlight problematic whitespace
+set list listchars=tab:>\ ,trail:_,extends:>,precedes:<,nbsp:~
+set showbreak=\\
+
+augroup syntax_trail
+    autocmd!
+    autocmd InsertEnter * :set listchars-=trail:_
+    autocmd InsertLeave * :set listchars+=trail:_
+augroup END
+" }}}
+" -----------------------------------------------------------------------------
+" }}}
+
+" Formatting {{{
+" -----------------------------------------------------------------------------
+" spaces instead of tabs
+set expandtab
+" Be smart when using tabs ;)
+set smarttab
+
+" indent stuff
+set autoindent
+set shiftround
+
+" 1 tab == 8 spaces
+set tabstop=8
+set softtabstop=4
+set shiftwidth=4
+set nojoinspaces
+
+" not word dividers
+set iskeyword+=_,$,@,%,#
+
+" dont wrap lines
+set nowrap
+" dont cut words on wrap
+set linebreak
+" autowrap with newline char
+set formatoptions+=t
+" delete comment when joining commented lines
+set formatoptions+=j
+
+" Sentences delimit by two spaces
+set cpoptions+=J
+
+" git {{{
+augroup ft_git
+    autocmd!
+    autocmd FileType git,gitcommit setlocal foldmethod=syntax foldlevel=1
+    autocmd Filetype git,gitcommit setlocal spell tw=72
+augroup END
+" }}}
+
+" C {{{
+augroup ft_c
+    autocmd!
+    autocmd FileType c,cpp setlocal foldmethod=marker foldmarker={,}
+    autocmd FileType c,cpp setlocal nospell tw=79 ts=8 sts=8 sw=8 expandtab
+augroup END
+" }}}
+
+" Python {{{
+augroup ft_python
+    autocmd!
+    autocmd FileType python setlocal foldmethod=syntax foldlevel=1
+    autocmd FileType python setlocal nospell tw=79 ts=8 sts=4 sw=4 expandtab
+augroup END
+" }}}
+
+" Text {{{
+augroup ft_text
+    autocmd!
+    autocmd FileType markdown,text,txt setlocal spell tw=72 ts=4 sts=4 sw=4 noexpandtab
+augroup END
+" }}}
+" -----------------------------------------------------------------------------
+" }}}
+
+" Mappings {{{
+" -----------------------------------------------------------------------------
+" fix escape key delay
+set timeout
+set timeoutlen=1000
+set ttimeoutlen=100
+
+" disable mouse
+set mouse=
+
+" Conflicts when using mapleader so map space to \
+map <space> <leader>
+
+" Treat wrapped lines as normal lines
+nnoremap j gj
+nnoremap k gk
+
+" toggle folds with enter
+nnoremap <Enter> za
+
+" jump to alternate buffer
+nnoremap <leader><space> <C-^>
+" Buffers
+nnoremap <leader>b :ls<cr>:b<space>
+nnoremap <leader>[ :bprevious<cr>
+nnoremap <leader>] :bnext<cr>
+" buffer delete
+nnoremap <leader><BS> :bd<cr>
+
+" open horizontal / vertical window
+nnoremap <leader>s <C-W>s
+nnoremap <leader>v <C-W>v
+" close windows
+nnoremap <leader>c <C-W>c
+nnoremap <leader>o :only<CR>
+" Move between windows
+nnoremap <leader>h <C-W>h
+xnoremap <leader>h <C-W>h
+nnoremap <leader>j <C-W>j
+xnoremap <leader>j <C-W>j
+nnoremap <leader>k <C-W>k
+xnoremap <leader>k <C-W>k
+nnoremap <leader>l <C-W>l
+xnoremap <leader>l <C-W>l
+" resize windows
+nnoremap <leader>H <C-W><
+xnoremap <leader>H <C-W><
+nnoremap <leader>J <C-W>-
+xnoremap <leader>J <C-W>-
+nnoremap <leader>K <C-W>+
+xnoremap <leader>K <C-W>+
+nnoremap <leader>L <C-W>>
+xnoremap <leader>L <C-W>>
+nnoremap <leader>- <C-W>\|
+xnoremap <leader>- <C-W>\|
+nnoremap <leader>\| <C-W>_
+xnoremap <leader>\| <C-W>_
+
+" Edit
+noremap <leader>es :sp<space>
+noremap <leader>ev :vsp<space>
+" Open file under cursor in vertal split
+nnoremap <leader>f :vertical wincmd f<CR>
+
+" Quicker search / replace
+nnoremap <leader>* *``cgn
+nnoremap <leader># #``cgN
+nnoremap <leader>% :%s/\<<C-r>=expand("<cword>")<CR>\>/
+
+" Change Y to be consistent with C and D
+nnoremap Y y$
+" yank/paste/delete to system clipboard
+nnoremap <leader>y "+y
+vnoremap <leader>y "+y
+nnoremap <leader>yy "+yy
+nnoremap <leader>Y "+y$
+nnoremap <leader>d "+d
+nnoremap <leader>dd "+dd
+nnoremap <leader>D "+D
+nnoremap <leader>p "+p
+nnoremap <leader>P "+P
+
+" Go to the starting position after visual modes
+vnoremap <ESC> o<ESC>
+" don't exit visual mode while shifting
+vnoremap < <gv
+vnoremap > >gv
+
+" reformat entire file
+nnoremap <leader>= gg=G``
+" Remove trailing whitespace
+nnoremap <leader>w m`:%s/\s\+$//<CR>:let @/=''<CR>``
+" alignment
+nmap <leader>a <Plug>(EasyAlign)
+xmap <leader>a <Plug>(EasyAlign)
+
+" lets enter select items in popupmenu without newline
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" make single quote act like backtick
+nnoremap ' `
+
+" disable ex mode
+nnoremap Q <Nop>
+" disable keyword man page
+nnoremap K <Nop>
+" -----------------------------------------------------------------------------
+" }}}
+
+" vim:foldmethod=marker:foldlevel=0
