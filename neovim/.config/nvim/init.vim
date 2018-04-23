@@ -275,11 +275,6 @@ augroup END
 
 " Mappings {{{
 " -----------------------------------------------------------------------------
-" fix escape key delay
-set timeout
-set timeoutlen=1000
-set ttimeoutlen=100
-
 " disable mouse
 set mouse=
 
