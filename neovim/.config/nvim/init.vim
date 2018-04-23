@@ -5,10 +5,6 @@
 
 " Environment {{{
 " -----------------------------------------------------------------------------
-" marks for 10 files, 100 lines per register, 100 commands, 50 searches,
-"   10 inputs, viminfo file name
-" let &viminfo = "'10,f1,<100,:100,/50,@10,n" . s:vim_cache_home . '/viminfo'
-
 " disable backups by default
 set nobackup
 
