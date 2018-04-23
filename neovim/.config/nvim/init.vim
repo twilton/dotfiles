@@ -165,9 +165,6 @@ set shortmess+=I
 
 " don't give ins-completion-menu messages
 set shortmess+=c
-
-" ---more--- like less
-set more
 " }}}
 
 " Wildmenu {{{
