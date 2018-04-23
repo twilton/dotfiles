@@ -198,9 +198,6 @@ set matchpairs+=<:>
 " }}}
 
 " Syntax {{{
-" Enable syntax highlighting
-syntax on
-
 " use this colorscheme
 colorscheme krul
 
@@ -208,6 +205,7 @@ colorscheme krul
 set list listchars=tab:>\ ,trail:_,extends:>,precedes:<,nbsp:~
 set showbreak=\\
 
+" Don't highlight trail in insert mode
 augroup syntax_trail
     autocmd!
     autocmd InsertEnter * :set listchars-=trail:_
