@@ -168,9 +168,6 @@ set shortmess+=c
 " }}}
 
 " Search {{{
-" Makes search act like modern browsers
-set incsearch
-
 " Enables highlighting of search results
 set hlsearch
 
