@@ -160,11 +160,6 @@ endif
 " }}}
 
 " Messages {{{
-" show cmds being typed if able
-if has('cmdline_info')
-    set showcmd
-endif
-
 " disable startup message
 set shortmess+=I
 
