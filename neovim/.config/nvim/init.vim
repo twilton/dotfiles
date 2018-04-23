@@ -12,9 +12,6 @@ endif
 " number of undos to keep
 set undolevels=1000
 
-" Number of command lines to remember
-set history=1000
-
 " disable spelling by default
 set nospell
 
