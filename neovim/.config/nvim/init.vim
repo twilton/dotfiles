@@ -275,9 +275,6 @@ augroup END
 
 " Mappings {{{
 " -----------------------------------------------------------------------------
-" disable mouse
-set mouse=
-
 " Conflicts when using mapleader so map space to \
 map <space> <leader>
 
