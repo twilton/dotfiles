@@ -162,6 +162,7 @@ set shortmess+=c
 " }}}
 
 " Search {{{
+" TODO: hlsearch not working??
 " Ignore case when searching
 set ignorecase
 
