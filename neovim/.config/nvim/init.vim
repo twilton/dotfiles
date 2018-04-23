@@ -1,6 +1,7 @@
 " -----------------------------------------------------------------------------
 " Description: Config file for nvim
 " Location: $XDG_CONFIG_HOME/nvim/init.vim
+" TODO: more if has() checks
 " -----------------------------------------------------------------------------
 
 " Environment {{{
@@ -189,6 +190,8 @@ set sidescrolloff=15
 set showmatch
 " How many tenths of a second to blink when matching brackets
 set matchtime=2
+" matching for ci< or ci>
+set matchpairs+=<:>
 " }}}
 
 " Syntax {{{
