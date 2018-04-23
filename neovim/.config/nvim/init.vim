@@ -196,7 +196,7 @@ set matchpairs+=<:>
 
 " Syntax {{{
 " use this colorscheme
-" colorscheme krul
+colorscheme krul
 
 " Highlight problematic whitespace
 set list listchars=tab:>\ ,trail:_,extends:>,precedes:<,nbsp:~
