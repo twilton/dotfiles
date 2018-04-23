@@ -179,9 +179,6 @@ set magic
 " }}}
 
 " Cursor {{{
-" don't highlight cursor line
-set nocursorline
-
 " keep cursor column pos
 set nostartofline
 
