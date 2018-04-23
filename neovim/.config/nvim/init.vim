@@ -65,8 +65,6 @@ let g:buftabline_numbers = 1
 " -----------------------------------------------------------------------------
 " Don't redraw while executing macros
 set lazyredraw
-" Faster redraws
-set ttyfast
 
 " Buffers and Splits {{{
 " A buffer becomes hidden when it is abandoned
