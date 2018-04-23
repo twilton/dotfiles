@@ -78,6 +78,7 @@ set splitright
 
 " Statusline {{{
 if has('statusline')
+    " TODO: fix statusline if a function fails
     " File Flags
     function! FileFlags() abort
         let l:flags=''
@@ -88,14 +89,6 @@ if has('statusline')
 
         if &modified
             let l:flags.=' [+]'
-        endif
-
-        if &fileformat !=? 'unix'
-            let l:flags.=' [ff: &fileformat]'
-        endif
-
-        if &fileencoding !=? 'utf-8'
-            let l:flags.=' [fe: &fileencoding]'
         endif
 
         return l:flags
