@@ -1,132 +1,15 @@
 " -----------------------------------------------------------------------------
 " Description: Config file for nvim
 " Location: $XDG_CONFIG_HOME/nvim/init.vim
+" TODO: more if has() checks
 " -----------------------------------------------------------------------------
 
 " Environment {{{
 " -----------------------------------------------------------------------------
-" vimconf is not vi-compatible
-if &compatible
-    set nocompatible
-endif
-
-" XDG_CONFIG_HOME {{{
-" If $XDG_CONFIG_HOME has not been set use default
-let s:xdg_config_home = $XDG_CONFIG_HOME
-if empty(s:xdg_config_home)
-  let s:xdg_config_home = $HOME . '/.config'
-endif
-
-" Create vim config directory
-let s:vim_config_home = s:xdg_config_home . '/vim'
-unlet s:xdg_config_home
-if !isdirectory(s:vim_config_home)
-  call mkdir(s:vim_config_home, 'p')
-endif
-
-" change runtime to respect xdg
-"   see h: runtime for default string
-let &runtimepath = s:vim_config_home . ','
-let &runtimepath .= $VIM . '/vimfiles,' . $VIMRUNTIME . ',' . $VIM . '/vimfiles/after,'
-let &runtimepath .= s:vim_config_home . 'after'
-
-" don't unlet s:vim_config_home because vim-plug needs it to specify plugin
-"   directory
-" }}}
-
-" XDG_CACHE_HOME {{{
-" If $XDG_CACHE_HOME has not been set use default
-let s:xdg_cache_home = $XDG_CACHE_HOME
-if empty(s:xdg_cache_home)
-  let s:xdg_cache_home = $HOME . '/.cache'
-endif
-
-" Create vim cache directory
-let s:vim_cache_home = s:xdg_cache_home . '/vim'
-unlet s:xdg_cache_home
-if !isdirectory(s:vim_cache_home)
-  call mkdir(s:vim_cache_home, 'p')
-endif
-
-" Create vim swap location
-let s:vim_swap_home = s:vim_cache_home . '/swap'
-if !isdirectory(s:vim_swap_home)
-  call mkdir(s:vim_swap_home)
-endif
-let &directory = s:vim_swap_home . '//,/var/tmp//,/tmp//'
-unlet s:vim_swap_home
-
-" create backupdir incase backup is set
-let s:vim_backup_home = s:vim_cache_home . '/backup'
-if !isdirectory(s:vim_backup_home)
-  call mkdir(s:vim_backup_home)
-endif
-let &backupdir = s:vim_backup_home . '//,/var/tmp//,/tmp//'
-unlet s:vim_backup_home
-
-" marks for 10 files, 100 lines per register, 100 commands, 50 searches,
-"   10 inputs, viminfo file name
-let &viminfo = "'10,f1,<100,:100,/50,@10,n" . s:vim_cache_home . '/viminfo'
-
-unlet s:vim_cache_home
-" }}}
-
-" XDG_DATA_HOME {{{
-" If $XDG_DATA_HOME has not been set use default
-let s:xdg_data_home = $XDG_DATA_HOME
-if empty(s:xdg_data_home)
-  let s:xdg_data_home = $HOME . '/.local/share'
-endif
-
-" Create vim data directory
-let s:vim_data_home = s:xdg_data_home . '/vim'
-unlet s:xdg_data_home
-if !isdirectory(s:vim_data_home)
-  call mkdir(s:vim_data_home, 'p')
-endif
-
-" enable undofile
-if has('persistent_undo')
-    let s:vim_undo_home = s:vim_data_home . '/undo'
-    if !isdirectory(s:vim_undo_home)
-        call mkdir(s:vim_undo_home)
-    endif
-    let &undodir = s:vim_undo_home . '//,/var/tmp//,/tmp//'
-    unlet s:vim_undo_home
-endif
-
-" spellfile
-let &spellfile = s:vim_data_home . '/en.utf-8.add'
-
-unlet s:vim_data_home
-" }}}
-
-" disable backups by default
-set nobackup
-
 " enable undofile
 if has('persistent_undo')
     set undofile
 endif
-" number of undos to keep
-set undolevels=1000
-
-" Number of command lines to remember
-set history=1000
-
-" disable spelling by default
-set nospell
-
-" if encoding is not utf-8 set termencoding
-if &encoding !=? 'utf-8'
-    let &termencoding = &encoding
-endif
-" Set utf8 as standard encoding
-set encoding=utf-8
-set fileencoding=utf-8
-
-" Use unix as the standard file type
-set fileformats=unix,mac,dos
 
 " Automatically switch to file directory of buffer
 set autochdir
@@ -135,8 +18,9 @@ set autochdir
 
 " Plugins {{{
 " -----------------------------------------------------------------------------
+"  TODO: Disable netrw
 " vim-plug plugin manager (takes plugin directory as argument)
-call plug#begin(s:vim_config_home . '/plugged')
+call plug#begin('~/.local/share/nvim/plugged')
 
 " buffers in tabline
 Plug 'ap/vim-buftabline'
@@ -159,76 +43,9 @@ Plug 'wellle/targets.vim'
 " searching
 Plug 'haya14busa/is.vim'
 
-" racket language support
-Plug 'wlangstroth/vim-racket', { 'for': ['racket'] }
-
 " update &runtimepath and initialize plugins
 "   Automatically executes filetype plugin indent on and syntax enable
 call plug#end()
-
-" Enable filetype plugins
-filetype plugin indent on
-
-" s:vim_config_home is no longer used
-unlet s:vim_config_home
-
-" builtin {{{
-" vim-gloaded
-"   https://github.com/rbtnn/vim-gloaded
-" 2html provides function to transform file into HTML
-"   $VIMRUNTIME/plugin/tohtml.vim
-let g:loaded_2html_plugin = 1
-
-" Getscript simplifies retrieval of latest versions of scripts
-"   $VIMRUNTIME/autoload/getscript.vim
-"   $VIMRUNTIME/plugin/getscriptPlugin.vim
-let g:loaded_getscript = 1
-let g:loaded_getscriptPlugin = 1
-
-" LogiPat takes Boolean logic and produces regex to search
-"   $VIMRUNTIME/plugin/logiPat.vim
-"   $VIMRUNTIME/plugin/logiPat.vim
-let g:loaded_logipat = 1
-let g:loaded_logiPat = 1
-
-" Vim file explorer
-"   $VIMRUNTIME/autoload/netrw.vim
-"   $VIMRUNTIME/autoload/netrwFileHandlers.vim
-"   $VIMRUNTIME/plugin/netrwPlugin.vim
-"   $VIMRUNTIME/autoload/netrwSettings.vim
-let g:loaded_netrw = 1
-let g:loaded_netrwFileHandlers = 1
-let g:loaded_netrwPlugin = 1
-let g:loaded_netrwSettings = 1
-
-" rrhelepr provides helper function(s) for --remote-wait
-"   $VIMRUNTIME/plugin/rrhelper.vim
-let g:loaded_rrhelper = 1
-
-" spellfile provides function for downloading spell file
-"   $VIMRUNTIME/plugin/spellfile.vim
-let g:loaded_spellfile_plugin = 1
-
-" tar provides function for browsing tarfiles
-"   $VIMRUNTIME/autoload/tar.vim
-"   $VIMRUNTIME/plugin/tarPlugin.vim
-let g:loaded_tar = 1
-let g:loaded_tarPlugin = 1
-
-" vimball provides function for Vim based archiver
-"   $VIMRUNTIME/autoload/vimball.vim
-"   $VIMRUNTIME/plugin/vimballPlugin.vim
-let g:loaded_vimball = 1
-let g:loaded_vimballPlugin = 1
-
-" zip provides function for browsing zipfiles
-"   $VIMRUNTIME/plugin/gzip.vim
-"   $VIMRUNTIME/autoload/zip.vim
-"   $VIMRUNTIME/plugin/zipPlugin.vim
-let g:loaded_gzip = 1
-let g:loaded_zip = 1
-let g:loaded_zipPlugin = 1
-" }}}
 
 " ale {{{
 " messaging
@@ -247,16 +64,8 @@ let g:buftabline_numbers = 1
 
 " Interface {{{
 " -----------------------------------------------------------------------------
-" window title
-set title
-
-" disable beep and flashing
-set vb t_vb=
-
 " Don't redraw while executing macros
 set lazyredraw
-" Faster redraws
-set ttyfast
 
 " Buffers and Splits {{{
 " A buffer becomes hidden when it is abandoned
@@ -270,6 +79,7 @@ set splitright
 
 " Statusline {{{
 if has('statusline')
+    " TODO: fix statusline if a function fails
     " File Flags
     function! FileFlags() abort
         let l:flags=''
@@ -280,14 +90,6 @@ if has('statusline')
 
         if &modified
             let l:flags.=' [+]'
-        endif
-
-        if &fileformat !=? 'unix'
-            let l:flags.=' [ff: &fileformat]'
-        endif
-
-        if &fileencoding !=? 'utf-8'
-            let l:flags.=' [fe: &fileencoding]'
         endif
 
         return l:flags
@@ -347,76 +149,20 @@ if has('statusline')
     endfunction
 
     " always show statusline if able
-    set laststatus=2
     set statusline=%!StatusLine()
 endif
 " }}}
 
 " Messages {{{
-" show cmds being typed if able
-if has('cmdline_info')
-    set showcmd
-endif
-
 " disable startup message
 set shortmess+=I
 
 " don't give ins-completion-menu messages
 set shortmess+=c
-
-" display the current mode
-set showmode
-
-" ---more--- like less
-set more
-" }}}
-
-" Wildmenu {{{
-" better auto complete
-set wildmenu
-" bash-like auto complete
-set wildmode=longest,list,full
-" dont display these kinds of files in wildmenu
-set wildignore=*~
-" vim temp files
-set wildignore+=*.swp,*.swo
-" git
-set wildignore+=*.git
-" Unix
-set wildignore+=*/tmp/*,*.so,*DS_Store*,*.dmg
-" Windows
-set wildignore+=*\\tmp\\*,*.exe
-" c
-set wildignore+=*.a,*.o,*.so,*.obj
-" python
-set wildignore+=*.pyc
-" ruby
-set wildignore+=*.gem
-" docs
-set wildignore+=*.pdf
-" archives
-set wildignore+=*.zip
-" pictures
-set wildignore+=*.png,*.jpg,*.jpeg,*.gif
-" directories
-set wildignore+=*vim/cache*
-set wildignore+=*sass-cache*
-set wildignore+=vendor/rails/**
-set wildignore+=vendor/cache/**
-set wildignore+=log/**
-set wildignore+=tmp/**
-
-" scan current and included files for defined name or macro
-set complete+=d
 " }}}
 
 " Search {{{
-" Makes search act like modern browsers
-set incsearch
-
-" Enables highlighting of search results
-set hlsearch
-
+" TODO: hlsearch not working??
 " Ignore case when searching
 set ignorecase
 
@@ -427,20 +173,9 @@ set smartcase
 set magic
 " }}}
 
-" Folds {{{
-" fold using syntax
-set foldmethod=manual
-
-" hide folding column
-set foldcolumn=0
-
-" max 10 nested folds
-set foldnestmax=4
-" }}}
-
 " Cursor {{{
-" don't highlight cursor line
-set nocursorline
+" disable guicursor
+set guicursor=""
 
 " keep cursor column pos
 set nostartofline
@@ -451,7 +186,6 @@ set number
 " fix scrolling
 set scrolloff=8
 set sidescrolloff=15
-set sidescroll=1
 
 " Show matching brackets when text indicator is over them
 set showmatch
@@ -462,9 +196,6 @@ set matchpairs+=<:>
 " }}}
 
 " Syntax {{{
-" Enable syntax highlighting
-syntax on
-
 " use this colorscheme
 colorscheme krul
 
@@ -472,6 +203,7 @@ colorscheme krul
 set list listchars=tab:>\ ,trail:_,extends:>,precedes:<,nbsp:~
 set showbreak=\\
 
+" Don't highlight trail in insert mode
 augroup syntax_trail
     autocmd!
     autocmd InsertEnter * :set listchars-=trail:_
@@ -485,11 +217,10 @@ augroup END
 " -----------------------------------------------------------------------------
 " spaces instead of tabs
 set expandtab
-" Be smart when using tabs ;)
+" insert blanks according to 'shiftwidth'
 set smarttab
 
 " indent stuff
-set autoindent
 set shiftround
 
 " 1 tab == 8 spaces
@@ -505,10 +236,6 @@ set iskeyword+=_,$,@,%,#
 set nowrap
 " dont cut words on wrap
 set linebreak
-" autowrap with newline char
-set formatoptions+=t
-" delete comment when joining commented lines
-set formatoptions+=j
 
 " Sentences delimit by two spaces
 set cpoptions+=J
@@ -548,14 +275,6 @@ augroup END
 
 " Mappings {{{
 " -----------------------------------------------------------------------------
-" fix escape key delay
-set timeout
-set timeoutlen=1000
-set ttimeoutlen=100
-
-" disable mouse
-set mouse=
-
 " Conflicts when using mapleader so map space to \
 map <space> <leader>
 

@@ -6,7 +6,7 @@
 # General Settings {{{
 # -----------------------------------------------------------------------------
 [core]
-    editor = /usr/bin/vim
+    editor = /usr/bin/nvim
 [user]
     name = twilton
     email = git@twilton.me
@@ -32,7 +32,7 @@
 [pull]
     default = current
 [diff]
-    tool = vimdiff
+    tool = nvim -d
     mnemonicprefix = true
 [difftool]
     prompt = false

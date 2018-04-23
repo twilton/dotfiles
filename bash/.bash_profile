@@ -66,7 +66,7 @@ if [[ -n "$XDG_CONFIG_HOME" ]]; then
     fi
 
     # wget
-    if [[ -x "$(which vim 2> /dev/null)" ]]; then
+    if [[ -x "$(which wget 2> /dev/null)" ]]; then
         export WGETRC="$XDG_CONFIG_HOME/wgetrc"
     fi
 
@@ -136,7 +136,10 @@ elif [[ -x "$(which chromium 2> /dev/null)" ]]; then
 fi
 
 # Editor
-if [[ -x "$(which vim 2> /dev/null)" ]]; then
+if [[ -x "$(which nvim 2> /dev/null)" ]]; then
+    export EDITOR='nvim'
+    export VISUAL="$EDITOR"
+elif [[ -x "$(which vim 2> /dev/null)" ]]; then
     export EDITOR='vim'
     export VISUAL="$EDITOR"
 fi
