@@ -155,7 +155,6 @@ if has('statusline')
     endfunction
 
     " always show statusline if able
-    set laststatus=2
     set statusline=%!StatusLine()
 endif
 " }}}
