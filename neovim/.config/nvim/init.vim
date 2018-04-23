@@ -18,7 +18,7 @@ set autochdir
 " Plugins {{{
 " -----------------------------------------------------------------------------
 " vim-plug plugin manager (takes plugin directory as argument)
-call plug#begin('/plugged')
+call plug#begin('~/.local/share/nvim/plugged')
 
 " buffers in tabline
 Plug 'ap/vim-buftabline'
