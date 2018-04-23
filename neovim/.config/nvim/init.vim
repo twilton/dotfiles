@@ -193,13 +193,11 @@ set sidescrolloff=15
 set showmatch
 " How many tenths of a second to blink when matching brackets
 set matchtime=2
-" matching for ci< or ci>
-set matchpairs+=<:>
 " }}}
 
 " Syntax {{{
 " use this colorscheme
-colorscheme krul
+" colorscheme krul
 
 " Highlight problematic whitespace
 set list listchars=tab:>\ ,trail:_,extends:>,precedes:<,nbsp:~
