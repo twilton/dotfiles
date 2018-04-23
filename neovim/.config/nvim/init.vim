@@ -167,45 +167,6 @@ set shortmess+=I
 set shortmess+=c
 " }}}
 
-" Wildmenu {{{
-" better auto complete
-set wildmenu
-" bash-like auto complete
-set wildmode=longest,list,full
-" dont display these kinds of files in wildmenu
-set wildignore=*~
-" vim temp files
-set wildignore+=*.swp,*.swo
-" git
-set wildignore+=*.git
-" Unix
-set wildignore+=*/tmp/*,*.so,*DS_Store*,*.dmg
-" Windows
-set wildignore+=*\\tmp\\*,*.exe
-" c
-set wildignore+=*.a,*.o,*.so,*.obj
-" python
-set wildignore+=*.pyc
-" ruby
-set wildignore+=*.gem
-" docs
-set wildignore+=*.pdf
-" archives
-set wildignore+=*.zip
-" pictures
-set wildignore+=*.png,*.jpg,*.jpeg,*.gif
-" directories
-set wildignore+=*vim/cache*
-set wildignore+=*sass-cache*
-set wildignore+=vendor/rails/**
-set wildignore+=vendor/cache/**
-set wildignore+=log/**
-set wildignore+=tmp/**
-
-" scan current and included files for defined name or macro
-set complete+=d
-" }}}
-
 " Search {{{
 " Makes search act like modern browsers
 set incsearch
