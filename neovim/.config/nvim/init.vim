@@ -217,11 +217,10 @@ augroup END
 " -----------------------------------------------------------------------------
 " spaces instead of tabs
 set expandtab
-" Be smart when using tabs ;)
+" insert blanks according to 'shiftwidth'
 set smarttab
 
 " indent stuff
-set autoindent
 set shiftround
 
 " 1 tab == 8 spaces
