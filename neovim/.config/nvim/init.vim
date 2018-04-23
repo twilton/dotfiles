@@ -21,17 +21,6 @@ set history=1000
 " disable spelling by default
 set nospell
 
-" if encoding is not utf-8 set termencoding
-if &encoding !=? 'utf-8'
-    let &termencoding = &encoding
-endif
-" Set utf8 as standard encoding
-set encoding=utf-8
-set fileencoding=utf-8
-
-" Use unix as the standard file type
-set fileformats=unix,mac,dos
-
 " Automatically switch to file directory of buffer
 set autochdir
 " -----------------------------------------------------------------------------
