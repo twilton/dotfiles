@@ -179,6 +179,9 @@ set magic
 " }}}
 
 " Cursor {{{
+" disable guicursor
+set guicursor=""
+
 " keep cursor column pos
 set nostartofline
 
