@@ -41,73 +41,9 @@ Plug 'wellle/targets.vim'
 " searching
 Plug 'haya14busa/is.vim'
 
-" racket language support
-Plug 'wlangstroth/vim-racket', { 'for': ['racket'] }
-
 " update &runtimepath and initialize plugins
 "   Automatically executes filetype plugin indent on and syntax enable
 call plug#end()
-
-" Enable filetype plugins
-filetype plugin indent on
-
-" builtin {{{
-" vim-gloaded
-"   https://github.com/rbtnn/vim-gloaded
-" 2html provides function to transform file into HTML
-"   $VIMRUNTIME/plugin/tohtml.vim
-let g:loaded_2html_plugin = 1
-
-" Getscript simplifies retrieval of latest versions of scripts
-"   $VIMRUNTIME/autoload/getscript.vim
-"   $VIMRUNTIME/plugin/getscriptPlugin.vim
-let g:loaded_getscript = 1
-let g:loaded_getscriptPlugin = 1
-
-" LogiPat takes Boolean logic and produces regex to search
-"   $VIMRUNTIME/plugin/logiPat.vim
-"   $VIMRUNTIME/plugin/logiPat.vim
-let g:loaded_logipat = 1
-let g:loaded_logiPat = 1
-
-" Vim file explorer
-"   $VIMRUNTIME/autoload/netrw.vim
-"   $VIMRUNTIME/autoload/netrwFileHandlers.vim
-"   $VIMRUNTIME/plugin/netrwPlugin.vim
-"   $VIMRUNTIME/autoload/netrwSettings.vim
-let g:loaded_netrw = 1
-let g:loaded_netrwFileHandlers = 1
-let g:loaded_netrwPlugin = 1
-let g:loaded_netrwSettings = 1
-
-" rrhelepr provides helper function(s) for --remote-wait
-"   $VIMRUNTIME/plugin/rrhelper.vim
-let g:loaded_rrhelper = 1
-
-" spellfile provides function for downloading spell file
-"   $VIMRUNTIME/plugin/spellfile.vim
-let g:loaded_spellfile_plugin = 1
-
-" tar provides function for browsing tarfiles
-"   $VIMRUNTIME/autoload/tar.vim
-"   $VIMRUNTIME/plugin/tarPlugin.vim
-let g:loaded_tar = 1
-let g:loaded_tarPlugin = 1
-
-" vimball provides function for Vim based archiver
-"   $VIMRUNTIME/autoload/vimball.vim
-"   $VIMRUNTIME/plugin/vimballPlugin.vim
-let g:loaded_vimball = 1
-let g:loaded_vimballPlugin = 1
-
-" zip provides function for browsing zipfiles
-"   $VIMRUNTIME/plugin/gzip.vim
-"   $VIMRUNTIME/autoload/zip.vim
-"   $VIMRUNTIME/plugin/zipPlugin.vim
-let g:loaded_gzip = 1
-let g:loaded_zip = 1
-let g:loaded_zipPlugin = 1
-" }}}
 
 " ale {{{
 " messaging
